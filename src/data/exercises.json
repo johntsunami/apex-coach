@@ -1,0 +1,2488 @@
+[
+  {
+    "id": "w1",
+    "name": "Cat-Cow Flow",
+    "category": "warmup",
+    "emoji": "🐱",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 1,
+    "reps": "10 each",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 3 },
+    "muscles": {
+      "primary": ["Erector Spinae"],
+      "secondary": ["TVA", "Multifidus"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Slow",
+    "purpose": "Warms spinal column segment by segment.",
+    "whyForYou": "Post-surgical back needs gentle segmental motion before any load.",
+    "steps": [
+      "All fours — hands under shoulders, knees under hips.",
+      "COW: Inhale 3s — drop belly, lift chest and tailbone.",
+      "CAT: Exhale 3s — round spine, tuck chin.",
+      "Move SLOWLY — one breath per transition."
+    ],
+    "formCues": [
+      "✅ Initiate from pelvis",
+      "✅ Elbows unlocked",
+      "✅ Equal weight all four points"
+    ],
+    "commonMistakes": [
+      "❌ Jerking between positions",
+      "❌ Only moving head/hips instead of full spine",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "LIGHT (20%) — gentle abdominal engagement, no brace.",
+    "injuryNotes": [
+      "⚠️ BACK: Sharp pain in cow = reduce range. Move within pain-free arc only.",
+      "⚠️ KNEE: Pad knees if kneeling is uncomfortable.",
+      "⚠️ SHOULDER: Wrist pain = make fists or use dumbbells as handles."
+    ],
+    "proTip": "Close eyes — feel segmental motion better.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute disc herniation with flexion intolerance",
+      "Wrist fracture (use fists or skip)"
+    ]
+  },
+  {
+    "id": "w2",
+    "name": "Dead Bug",
+    "category": "warmup",
+    "emoji": "🪲",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Core",
+    "sets": 2,
+    "reps": "8 each side",
+    "rest": 0,
+    "intensity": "RPE 4",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 4 },
+    "muscles": {
+      "primary": ["TVA", "Rectus Abdominis"],
+      "secondary": ["Obliques", "Hip Flexors"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Intermediate",
+    "tempo": "2s out, 1s hold, 2s return",
+    "purpose": "Anti-extension — most important pattern for protecting surgical site.",
+    "whyForYou": "Retrains deconditioned deep stabilizers without spinal load.",
+    "steps": [
+      "Lie flat. Press lower back INTO floor — no gap.",
+      "Arms straight up. Knees bent to 90°.",
+      "SLOWLY extend RIGHT arm + LEFT leg. Back stays GLUED to floor.",
+      "Exhale 4s during extension. Pause 1s. Return. Switch sides."
+    ],
+    "formCues": [
+      "✅ Lower back NEVER leaves floor",
+      "✅ Move slowly and controlled",
+      "✅ Full 4s exhale on every rep"
+    ],
+    "commonMistakes": [
+      "❌ Back arching off floor",
+      "❌ Moving too fast",
+      "❌ Holding breath during extension"
+    ],
+    "coreBracing": "MODERATE (40-50%) — press back into floor, maintain throughout.",
+    "injuryNotes": [
+      "⚠️ BACK: If lower back lifts off floor, BEND the extending leg instead of straightening it.",
+      "⚠️ KNEE: No impact — knees stay at 90°.",
+      "⚠️ SHOULDER: Keep arms within comfortable range."
+    ],
+    "proTip": "Place a towel under lower back — if it slides out, you lost the brace.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back flare-up (switch to breathing drills only)"
+    ]
+  },
+  {
+    "id": "w3",
+    "name": "Banded External Rotation",
+    "category": "warmup",
+    "emoji": "🎯",
+    "location": ["gym", "home"],
+    "bodyPart": "Shoulders",
+    "sets": 2,
+    "reps": "12 each",
+    "rest": 0,
+    "intensity": "RPE 3",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Infraspinatus", "Teres Minor"],
+      "secondary": ["Posterior Deltoid"]
+    },
+    "equipment": "Light resistance band",
+    "difficulty": "Beginner",
+    "tempo": "2s out, 2s return",
+    "purpose": "Pre-activates rotator cuff before any pressing movement.",
+    "whyForYou": "Left labrum tear requires RC activation before loading shoulder.",
+    "steps": [
+      "Pin elbow to side at 90° bend.",
+      "Rotate forearm outward approximately 45°.",
+      "Return SLOWLY under control. Always start with LEFT side."
+    ],
+    "formCues": [
+      "✅ Elbow PINNED to ribs",
+      "✅ Wrist stays neutral — no bending"
+    ],
+    "commonMistakes": [
+      "❌ Elbow drifting away from body",
+      "❌ Band too heavy — should be easy",
+      "❌ Shrugging shoulders up"
+    ],
+    "coreBracing": "LIGHT (20%) — stand tall, no lean.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: MANDATORY before any pressing. Front pinch = reduce range. This exercise HELPS the labrum.",
+      "⚠️ BACK: Stand tall — no leaning.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Pin a rolled towel between elbow and ribs for perfect form feedback.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder dislocation",
+      "Post-surgical shoulder (first 6 weeks)"
+    ]
+  },
+  {
+    "id": "w4",
+    "name": "Glute Bridge",
+    "category": "warmup",
+    "emoji": "🍑",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Glutes",
+    "sets": 2,
+    "reps": "15",
+    "rest": 0,
+    "intensity": "RPE 4",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gluteus Maximus", "Gluteus Medius"],
+      "secondary": ["Hamstrings", "TVA"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 1s squeeze, 2s down",
+    "purpose": "Activates glutes. When glutes are dormant, the back compensates.",
+    "whyForYou": "Post-surgical back = inhibited glutes. Must wake them up first.",
+    "steps": [
+      "Lie on back, knees bent, feet hip-width apart.",
+      "SQUEEZE glutes first — then push through HEELS.",
+      "Rise until body forms straight line from knees to shoulders. HOLD 1s.",
+      "Lower slowly — 2s descent."
+    ],
+    "formCues": [
+      "✅ Drive through HEELS not toes",
+      "✅ Glutes initiate — not hamstrings",
+      "✅ No hyperextending at top"
+    ],
+    "commonMistakes": [
+      "❌ Hyperextending lower back at top",
+      "❌ Feeling it in lower back instead of glutes = STOP",
+      "❌ Pushing through toes"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain neutral spine throughout.",
+    "injuryNotes": [
+      "⚠️ BACK: If you feel this in your back instead of glutes, STOP. Reduce height. Squeeze glutes harder before lifting.",
+      "⚠️ KNEE: Feet position affects knee stress — adjust until comfortable.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Place a fist between your knees and squeeze — turbocharges glute activation.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back spasm (rest instead)"
+    ]
+  },
+  {
+    "id": "w5",
+    "name": "VMO Wall Sit",
+    "category": "warmup",
+    "emoji": "🦵",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 2,
+    "reps": "20s hold",
+    "rest": 0,
+    "intensity": "RPE 4",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 3 },
+    "muscles": {
+      "primary": ["VMO", "Quadriceps"],
+      "secondary": ["Gluteus Medius"]
+    },
+    "equipment": "Wall",
+    "difficulty": "Beginner",
+    "tempo": "Static hold",
+    "purpose": "Isolates VMO — the #1 patellar tracking protector.",
+    "whyForYou": "Left VMO is weaker after knee surgery. Must pre-activate before squatting.",
+    "steps": [
+      "Back flat against wall. Slide down to approximately 45° knee bend.",
+      "Focus on inner quad (VMO). Actively flex it.",
+      "Hold 20s. Breathe continuously — don't hold breath."
+    ],
+    "formCues": [
+      "✅ Only 45° — NEVER deeper",
+      "✅ Weight through heels",
+      "✅ Knees track over toes"
+    ],
+    "commonMistakes": [
+      "❌ Going too deep (past 45°)",
+      "❌ Knees caving inward",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "LIGHT (20%) — just maintain posture.",
+    "injuryNotes": [
+      "⚠️ KNEE: 45° MAX — never 90°. Joint pain = too deep, come up. VMO activation is mandatory before any squatting pattern.",
+      "⚠️ BACK: Keep back flat on wall — no arching.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Place hand on inner quad (VMO) — feel it contract. If you can't feel it, you're too deep.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee swelling",
+      "Patellar instability (consult PT first)"
+    ]
+  },
+  {
+    "id": "w6",
+    "name": "Bird Dog",
+    "category": "warmup",
+    "emoji": "🐕",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Core",
+    "sets": 2,
+    "reps": "8 each side",
+    "rest": 0,
+    "intensity": "RPE 3",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 3 },
+    "muscles": {
+      "primary": ["Erector Spinae", "Multifidus", "TVA"],
+      "secondary": ["Gluteus Maximus", "Deltoids"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "2s out, 1s hold, 2s return",
+    "purpose": "McGill Big 3 — anti-rotation and anti-extension under contralateral load.",
+    "whyForYou": "Part of your mandatory McGill Big 3 daily protocol for back rehab.",
+    "steps": [
+      "All fours — hands under shoulders, knees under hips.",
+      "Brace core gently. Extend RIGHT arm and LEFT leg simultaneously.",
+      "Hold 1s at full extension — body forms straight line.",
+      "Return slowly. Complete all reps one side, then switch."
+    ],
+    "formCues": [
+      "✅ Hips stay LEVEL — no rotation",
+      "✅ Thumb points up on extending arm",
+      "✅ Reach long — don't lift high"
+    ],
+    "commonMistakes": [
+      "❌ Hips rotating or shifting",
+      "❌ Arching lower back",
+      "❌ Moving too fast — this is a stability drill"
+    ],
+    "coreBracing": "MODERATE (30-40%) — enough to prevent trunk rotation.",
+    "injuryNotes": [
+      "⚠️ BACK: McGill Big 3 — prescribed daily. If back fatigues, reduce reps not range. Stop if any radiating pain.",
+      "⚠️ KNEE: Pad knees if kneeling is uncomfortable.",
+      "⚠️ SHOULDER: Keep reaching arm below shoulder height if labrum is aggravated."
+    ],
+    "proTip": "Balance a water bottle on your lower back — if it falls, you're rotating.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute disc herniation with extension intolerance",
+      "Wrist fracture (use fists)"
+    ]
+  },
+  {
+    "id": "w7",
+    "name": "Quadruped Hip Circles",
+    "category": "warmup",
+    "emoji": "🔄",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Hips",
+    "sets": 1,
+    "reps": "8 each direction, each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Hip Rotators", "Gluteus Medius"],
+      "secondary": ["TVA", "Hip Flexors"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Slow and controlled",
+    "purpose": "Lubricates hip joint through full available ROM before loading.",
+    "whyForYou": "Tight hips force your back to compensate — mobilize hips to protect spine.",
+    "steps": [
+      "All fours position — hands under shoulders, knees under hips.",
+      "Lift RIGHT knee off ground slightly.",
+      "Draw large circles with the knee — 8 forward, 8 backward.",
+      "Switch to LEFT side. Keep torso completely still."
+    ],
+    "formCues": [
+      "✅ Torso stays STILL — movement only from hip",
+      "✅ Circles as large as pain-free ROM allows",
+      "✅ Slow and smooth — no jerking"
+    ],
+    "commonMistakes": [
+      "❌ Shifting weight excessively",
+      "❌ Circles too small — explore full range",
+      "❌ Rushing through the movement"
+    ],
+    "coreBracing": "LIGHT (20%) — just enough to stabilize torso.",
+    "injuryNotes": [
+      "⚠️ BACK: Keep torso rigid — all movement from hip socket only.",
+      "⚠️ KNEE: If kneeling hurts, fold mat for extra padding.",
+      "⚠️ SHOULDER: Wrist discomfort = use fists or dumbbells as handles."
+    ],
+    "proTip": "Think of stirring a pot with your knee — smooth, continuous circles.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute hip labral tear",
+      "Hip replacement (first 12 weeks — consult PT)"
+    ]
+  },
+  {
+    "id": "w8",
+    "name": "Side-Lying Thoracic Rotation",
+    "category": "warmup",
+    "emoji": "🌀",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 1,
+    "reps": "8 each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 1, "exhale": 4 },
+    "muscles": {
+      "primary": ["Thoracic Rotators", "Obliques"],
+      "secondary": ["Intercostals", "Serratus Anterior"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "3s open, 1s hold, 3s return",
+    "purpose": "Restores thoracic rotation — stiff T-spine forces lumbar compensation.",
+    "whyForYou": "Your lower back is post-surgical — thoracic mobility takes rotational demand off the lumbar spine.",
+    "steps": [
+      "Lie on LEFT side. Knees stacked at 90°, arms extended forward.",
+      "INHALE 3s. Rotate RIGHT arm open toward the ceiling/floor behind you.",
+      "HOLD 1s at end range. EXHALE 4s returning to start.",
+      "Complete all reps, then switch sides."
+    ],
+    "formCues": [
+      "✅ Knees stay STACKED — don't let top knee lift",
+      "✅ Follow hand with eyes",
+      "✅ Move from mid-back, not lower back"
+    ],
+    "commonMistakes": [
+      "❌ Knees separating during rotation",
+      "❌ Forcing range — let gravity do the work",
+      "❌ Rotating from lumbar spine"
+    ],
+    "coreBracing": "MINIMAL (10%) — this is a mobility drill, stay relaxed.",
+    "injuryNotes": [
+      "⚠️ BACK: Excellent for you — takes rotational stress off lumbar. Keep knees stacked to lock out lumbar rotation.",
+      "⚠️ KNEE: Place pillow between knees if uncomfortable.",
+      "⚠️ SHOULDER: If left shoulder pinches at end range, reduce rotation depth."
+    ],
+    "proTip": "Exhale into the stretch — you'll gain 10-15° more rotation each breath.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute rib injury",
+      "Recent thoracic spine surgery"
+    ]
+  },
+  {
+    "id": "w9",
+    "name": "Ankle Mobility Rocks",
+    "category": "warmup",
+    "emoji": "🦶",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 1,
+    "reps": "10 each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Tibialis Anterior", "Soleus"],
+      "secondary": ["Gastrocnemius", "Peroneals"]
+    },
+    "equipment": "None",
+    "difficulty": "Beginner",
+    "tempo": "2s forward, 2s return",
+    "purpose": "Restores ankle dorsiflexion — limited ankles cause knee valgus and back compensation.",
+    "whyForYou": "Better ankle mobility = safer squat mechanics = less knee and back stress.",
+    "steps": [
+      "Half-kneeling position — front foot flat, rear knee on pad.",
+      "Rock front knee forward over toes, keeping heel DOWN.",
+      "Push knee as far forward as possible without heel lifting.",
+      "Rock back to start. Repeat 10 times, then switch legs."
+    ],
+    "formCues": [
+      "✅ Heel stays GLUED to floor",
+      "✅ Knee tracks over 2nd toe",
+      "✅ Gentle, rhythmic rocking — not forcing"
+    ],
+    "commonMistakes": [
+      "❌ Heel lifting off ground",
+      "❌ Knee collapsing inward",
+      "❌ Bouncing aggressively"
+    ],
+    "coreBracing": "MINIMAL (10%) — relaxed drill.",
+    "injuryNotes": [
+      "⚠️ KNEE: Keep knee tracking straight over 2nd toe. Stop if joint pain (not muscle stretch).",
+      "⚠️ BACK: Use wall or rack for balance if needed — no twisting.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Place tape line 4 inches from wall — try to touch knee to wall without heel lifting. Track progress weekly.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute ankle sprain (wait until weight-bearing is pain-free)",
+      "Achilles tendon rupture (PT clearance required)"
+    ]
+  },
+  {
+    "id": "w10",
+    "name": "Scapular Push-Up",
+    "category": "warmup",
+    "emoji": "🔺",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Shoulders",
+    "sets": 2,
+    "reps": "10",
+    "rest": 0,
+    "intensity": "RPE 3",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Serratus Anterior"],
+      "secondary": ["Lower Trapezius", "Rhomboids"]
+    },
+    "equipment": "None",
+    "difficulty": "Beginner",
+    "tempo": "2s protract, 2s retract",
+    "purpose": "Activates serratus anterior — critical for shoulder blade stability during pressing.",
+    "whyForYou": "Labrum tear requires rock-solid scapular control before loading the shoulder.",
+    "steps": [
+      "High plank position — arms straight, hands under shoulders.",
+      "WITHOUT bending elbows, let shoulder blades pinch together (retract).",
+      "Push the floor away — spread shoulder blades apart (protract).",
+      "Move ONLY at the shoulder blades. Arms stay locked."
+    ],
+    "formCues": [
+      "✅ Elbows stay LOCKED straight",
+      "✅ Full protraction — push floor AWAY",
+      "✅ Body stays rigid — no sagging"
+    ],
+    "commonMistakes": [
+      "❌ Bending elbows (this is NOT a push-up)",
+      "❌ Sagging hips",
+      "❌ Rushing — this is a control drill"
+    ],
+    "coreBracing": "MODERATE (40%) — maintain plank position.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Start on KNEES if plank position aggravates labrum. This exercise HELPS shoulder stability.",
+      "⚠️ BACK: If plank position stresses back, do from knees or standing against wall.",
+      "⚠️ KNEE: Knee version available — pad knees on mat."
+    ],
+    "proTip": "Do against a wall first if plank is too challenging. Same movement, less load.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute wrist injury",
+      "Acute shoulder impingement (use wall version)"
+    ]
+  },
+  {
+    "id": "m1",
+    "name": "Trap Bar Deadlift",
+    "category": "main",
+    "emoji": "🏋️",
+    "location": ["gym"],
+    "bodyPart": "Full Body",
+    "sets": 4,
+    "reps": "6-8",
+    "rest": 120,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 3 },
+    "muscles": {
+      "primary": ["Gluteus Maximus", "Hamstrings", "Quadriceps"],
+      "secondary": ["Erector Spinae", "Trapezius", "TVA", "Forearms"]
+    },
+    "equipment": "Trap bar (hex bar)",
+    "difficulty": "Intermediate",
+    "tempo": "1s up, 3s down",
+    "purpose": "King compound lift. Trap bar reduces lumbar shear ~20% vs straight bar.",
+    "whyForYou": "Only approved deadlift variation — stays within your back's tolerance zone.",
+    "steps": [
+      "Step INSIDE the trap bar. Grab HIGH handles. Set back FLAT.",
+      "BRACE hard. Push the FLOOR away — don't pull the bar up.",
+      "Hips drive FORWARD to lockout. Stand tall. REBRACE before every rep."
+    ],
+    "formCues": [
+      "✅ Flat back — chest up, lats engaged",
+      "✅ Push floor away — leg drive, not back pull",
+      "✅ HIGH handles ONLY"
+    ],
+    "commonMistakes": [
+      "❌ ROUNDING BACK — immediate stop if this happens",
+      "❌ Hyperextending at lockout",
+      "❌ Jerking the bar off the floor"
+    ],
+    "coreBracing": "MAXIMUM (90-100%) — full Valsalva brace, rebrace every rep.",
+    "injuryNotes": [
+      "⚠️ BACK: HIGH handles ONLY until capacity increases. NO conventional deadlift — trap bar only. Any tingling, numbness, or radiating pain = STOP IMMEDIATELY. Stay under 70% 1RM.",
+      "⚠️ KNEE: Watch for knee valgus. VMO activation pre-sets are mandatory before this lift.",
+      "⚠️ SHOULDER: Neutral grip is shoulder-safe — no concerns here."
+    ],
+    "proTip": "Flat shoes or barefoot. Imagine pushing the earth away from you.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back pain or flare-up",
+      "Any radiating or nerve symptoms",
+      "No trap bar available (use DB Romanian Deadlift instead)",
+      "Back safety level RESTRICTED or STOP"
+    ]
+  },
+  {
+    "id": "m2",
+    "name": "Landmine Press",
+    "category": "main",
+    "emoji": "💥",
+    "location": ["gym"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "10 each",
+    "rest": 90,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Anterior Deltoid", "Upper Chest"],
+      "secondary": ["Serratus Anterior", "Triceps", "TVA"]
+    },
+    "equipment": "Barbell, landmine attachment",
+    "difficulty": "Intermediate",
+    "tempo": "2s up, 2s down",
+    "purpose": "Safest pressing pattern for labrum tears — arcing path avoids end-range danger.",
+    "whyForYou": "Your labrum tear prohibits overhead pressing at end-range. This is the safe alternative.",
+    "steps": [
+      "Staggered stance. Hold barbell end at shoulder height.",
+      "BRACE core. Press UP and forward along the arc.",
+      "Protract shoulder blade at top (push through). Return slowly."
+    ],
+    "formCues": [
+      "✅ Elbow at 45° — not flared",
+      "✅ No trunk rotation",
+      "✅ Protract at top for full serratus engagement"
+    ],
+    "commonMistakes": [
+      "❌ Elbow flaring out",
+      "❌ Arching lower back to compensate",
+      "❌ Not protracting at top"
+    ],
+    "coreBracing": "MOD-HIGH (60-70%) — brace to prevent rotation and back arch.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Your safest pressing option. Any click or pinch = reduce weight or range. External rotation warm-up MANDATORY before this exercise.",
+      "⚠️ BACK: Brace hard. Staggered stance reduces spinal load vs bilateral.",
+      "⚠️ KNEE: Staggered stance — ensure front knee tracks straight."
+    ],
+    "proTip": "Think 'punching the ceiling at an angle' — not pressing straight up.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder flare-up",
+      "Skipped external rotation warm-up",
+      "Behind-neck pressing (NEVER)"
+    ]
+  },
+  {
+    "id": "m3",
+    "name": "Bulgarian Split Squat",
+    "category": "main",
+    "emoji": "🦿",
+    "location": ["gym", "home"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "10 each",
+    "rest": 90,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Quadriceps (VMO emphasis)", "Gluteus Maximus"],
+      "secondary": ["Hip Stabilizers", "Adductors", "TVA"]
+    },
+    "equipment": "Bench (or sturdy elevated surface)",
+    "difficulty": "Intermediate",
+    "tempo": "3s down, 2s up",
+    "purpose": "Single-leg strength. Corrects bilateral imbalances.",
+    "whyForYou": "Forces each leg to work independently — exposes and corrects left knee weakness.",
+    "steps": [
+      "Rear foot on bench, laces down. Front foot positioned far enough forward.",
+      "DESCEND straight down — 3s controlled descent.",
+      "DRIVE through front HEEL to stand. Keep torso upright."
+    ],
+    "formCues": [
+      "✅ 80% of weight on front leg",
+      "✅ Knee tracks over toes — no valgus",
+      "✅ Torso stays upright"
+    ],
+    "commonMistakes": [
+      "❌ Knee collapsing inward (valgus)",
+      "❌ Leaning trunk forward",
+      "❌ Rear foot doing too much work"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain upright torso.",
+    "injuryNotes": [
+      "⚠️ KNEE: Start BODYWEIGHT ONLY on left side. Watch for valgus. Depth limited — don't go below comfortable range. VMO pre-activation mandatory.",
+      "⚠️ BACK: Upright torso minimizes spinal load. Hold rack for balance if needed.",
+      "⚠️ SHOULDER: Holding dumbbells is fine — no overhead component."
+    ],
+    "proTip": "Hold a squat rack for balance until you own the pattern. Depth comes later.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee swelling on working leg",
+      "Balance issues without support available",
+      "Deep flexion intolerance on left knee"
+    ]
+  },
+  {
+    "id": "m4",
+    "name": "Chest-Supported Row",
+    "category": "main",
+    "emoji": "🚣",
+    "location": ["gym"],
+    "bodyPart": "Back",
+    "sets": 3,
+    "reps": "10-12",
+    "rest": 75,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius"],
+      "secondary": ["Biceps", "Rear Deltoids"]
+    },
+    "equipment": "Incline bench + dumbbells",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 1s squeeze, 2s down",
+    "purpose": "Back thickness with ZERO spinal loading — chest supported removes back stress.",
+    "whyForYou": "Safest rowing variation for your post-surgical back. Bench does the stabilizing.",
+    "steps": [
+      "Lie face down on incline bench. Arms hang straight down.",
+      "RETRACT shoulder blades first — then PULL elbows to hips.",
+      "SQUEEZE shoulder blades together 1s at top. LOWER slowly."
+    ],
+    "formCues": [
+      "✅ Retract THEN pull — blade squeeze initiates",
+      "✅ Chest stays on pad throughout",
+      "✅ Neutral grip (palms facing each other)"
+    ],
+    "commonMistakes": [
+      "❌ Pulling with biceps instead of back",
+      "❌ Chest lifting off pad",
+      "❌ Using momentum"
+    ],
+    "coreBracing": "MINIMAL (10-20%) — the bench supports you.",
+    "injuryNotes": [
+      "⚠️ BACK: SAFEST row for you — zero spinal load. Go-to back exercise.",
+      "⚠️ SHOULDER: Use NEUTRAL grip (palms facing each other) to protect labrum. Avoid pronated grip.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Think 'elbows to back pockets' — cues the lats over the biceps.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Rib injury (lying on bench may be painful)"
+    ]
+  },
+  {
+    "id": "m5",
+    "name": "Pallof Press",
+    "category": "main",
+    "emoji": "🔄",
+    "location": ["gym"],
+    "bodyPart": "Core",
+    "sets": 3,
+    "reps": "10 each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 2, "exhale": 3 },
+    "muscles": {
+      "primary": ["Obliques", "TVA"],
+      "secondary": ["Rectus Abdominis", "Hip Stabilizers"]
+    },
+    "equipment": "Cable machine, D-handle",
+    "difficulty": "Intermediate",
+    "tempo": "2s press, 2s hold, 2s return",
+    "purpose": "Anti-rotation — the most functional core pattern. Rehab disguised as strength.",
+    "whyForYou": "Your back needs anti-rotation stability more than any crunching movement.",
+    "steps": [
+      "Stand perpendicular to cable. Handle at chest.",
+      "BRACE. PRESS handle straight out from chest. DON'T rotate.",
+      "HOLD 2s at full arm extension. Return slowly to chest."
+    ],
+    "formCues": [
+      "✅ Hips and shoulders stay SQUARE to front",
+      "✅ Hold at full extension — resist the pull",
+      "✅ Feet hip-width apart for stable base"
+    ],
+    "commonMistakes": [
+      "❌ ANY rotation toward cable",
+      "❌ Holding breath",
+      "❌ Too heavy — form breaks before fatigue"
+    ],
+    "coreBracing": "HIGH (70-80%) — resist rotation throughout.",
+    "injuryNotes": [
+      "⚠️ BACK: One of the BEST exercises for your back. Anti-rotation trains exactly what your spine needs.",
+      "⚠️ KNEE: Stand with soft knees — not locked.",
+      "⚠️ SHOULDER: Keep arms at chest height — no overhead reaching."
+    ],
+    "proTip": "Progress to half-kneeling for extra core demand. Then tall-kneeling for maximum.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute oblique strain"
+    ]
+  },
+  {
+    "id": "m6",
+    "name": "Face Pulls",
+    "category": "main",
+    "emoji": "🎯",
+    "location": ["gym"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "15",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Rear Deltoids", "Infraspinatus", "Teres Minor"],
+      "secondary": ["Rhomboids", "Lower Trapezius"]
+    },
+    "equipment": "Cable machine, rope attachment",
+    "difficulty": "Beginner",
+    "tempo": "2s pull, 1s hold, 2s return",
+    "purpose": "The most important shoulder corrective exercise. Counterbalances all pressing.",
+    "whyForYou": "MANDATORY counterbalance for labrum tear. Do this every session you press.",
+    "steps": [
+      "Cable at HIGH position. Grab rope with overhand grip.",
+      "Pull elbows BACK and APART — bring rope to face level.",
+      "SQUEEZE rear delts 1s — finish in 'double bicep pose' position. Return slowly."
+    ],
+    "formCues": [
+      "✅ Pull to FACE level — not chest",
+      "✅ Elbows stay HIGH",
+      "✅ Pull rope APART at end range"
+    ],
+    "commonMistakes": [
+      "❌ Pulling to chest instead of face",
+      "❌ Weight too heavy — ego lift",
+      "❌ Not pulling rope apart at end"
+    ],
+    "coreBracing": "LIGHT (20%) — this is an isolation movement.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: This exercise HELPS your labrum. Mandatory counterbalance to all pressing. Should feel good — never painful.",
+      "⚠️ BACK: Light weight — no spinal stress.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Finish each rep in 'double bicep pose' — external rotation at the top maximizes rotator cuff benefit.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder dislocation (consult PT)"
+    ]
+  },
+  {
+    "id": "m7",
+    "name": "Dumbbell Floor Press",
+    "category": "main",
+    "emoji": "🛏️",
+    "location": ["gym", "home"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "10-12",
+    "rest": 75,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Pectoralis Major", "Anterior Deltoid", "Triceps"],
+      "secondary": ["Serratus Anterior"]
+    },
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 2s down",
+    "purpose": "Pressing with limited shoulder ROM — floor stops elbows from going too deep.",
+    "whyForYou": "Floor limits range of motion to protect your labrum. Safer than bench press.",
+    "steps": [
+      "Lie on floor, knees bent. Hold dumbbells at chest height.",
+      "Press dumbbells up — neutral grip (palms facing each other).",
+      "Lower until elbows TOUCH floor — brief pause. Press back up."
+    ],
+    "formCues": [
+      "✅ Neutral grip protects shoulder",
+      "✅ Elbows at 45° — not flared 90°",
+      "✅ Pause on floor — eliminates bounce/stretch reflex"
+    ],
+    "commonMistakes": [
+      "❌ Flaring elbows to 90° (shoulder stress)",
+      "❌ Bouncing elbows off floor",
+      "❌ Arching back excessively"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain neutral spine on floor.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Floor limits ROM to protect labrum — that's the point. Use NEUTRAL grip only. External rotation warm-up mandatory before this exercise.",
+      "⚠️ BACK: Floor supports spine. Keep back flat — no excessive arch.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "The pause on the floor kills momentum — builds true pressing strength without relying on stretch reflex.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder impingement",
+      "Skipped external rotation warm-up"
+    ]
+  },
+  {
+    "id": "m8",
+    "name": "Incline Push-Up",
+    "category": "main",
+    "emoji": "📐",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "12-15",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Pectoralis Major", "Anterior Deltoid", "Triceps"],
+      "secondary": ["Serratus Anterior", "TVA"]
+    },
+    "equipment": "Bench, box, or sturdy elevated surface",
+    "difficulty": "Beginner",
+    "tempo": "2s down, 1s pause, 2s up",
+    "purpose": "Bodyweight pressing progression that's scalable and joint-friendly.",
+    "whyForYou": "Adjustable difficulty — higher incline = less load. Perfect for building pressing capacity safely.",
+    "steps": [
+      "Hands on elevated surface, shoulder-width apart.",
+      "Body forms straight line from head to heels.",
+      "Lower chest toward surface — 2s descent. Brief pause.",
+      "Push back up — protract shoulder blades at top."
+    ],
+    "formCues": [
+      "✅ Elbows at 45° — not flared",
+      "✅ Full body tension — plank position",
+      "✅ Protract at top for serratus activation"
+    ],
+    "commonMistakes": [
+      "❌ Sagging hips (break at the waist)",
+      "❌ Elbows flaring to 90°",
+      "❌ Not going through full range"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain plank integrity.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Higher incline = less shoulder stress. Start HIGH (counter height) and progress lower as tolerated. External rotation warm-up first.",
+      "⚠️ BACK: Keep core braced — no sagging. If back hurts, go to higher incline.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Counter height → bench height → low box → floor. Progress the incline down over weeks, not days.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute wrist injury",
+      "Acute shoulder flare-up"
+    ]
+  },
+  {
+    "id": "m9",
+    "name": "Single-Arm Landmine Press",
+    "category": "main",
+    "emoji": "🫸",
+    "location": ["gym"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "8 each",
+    "rest": 75,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Anterior Deltoid", "Upper Chest", "Serratus Anterior"],
+      "secondary": ["Triceps", "Obliques", "TVA"]
+    },
+    "equipment": "Barbell, landmine attachment",
+    "difficulty": "Intermediate",
+    "tempo": "2s up, 2s down",
+    "purpose": "Unilateral pressing with anti-rotation demand — pressing + core in one move.",
+    "whyForYou": "Same shoulder-safe arc as bilateral landmine press, plus forces core anti-rotation.",
+    "steps": [
+      "Half-kneeling position. Hold barbell end in one hand at shoulder.",
+      "BRACE core hard — don't let torso rotate.",
+      "Press up along the arc. Protract at top. Return slowly."
+    ],
+    "formCues": [
+      "✅ Half-kneeling for stability",
+      "✅ Zero trunk rotation",
+      "✅ Protract at top"
+    ],
+    "commonMistakes": [
+      "❌ Rotating toward pressing arm",
+      "❌ Leaning back to compensate",
+      "❌ Losing half-kneeling position"
+    ],
+    "coreBracing": "HIGH (70-80%) — anti-rotation demand is significant.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Same safe arc as bilateral landmine press. Start with LEFT arm (weaker side) first. Click or pinch = reduce weight.",
+      "⚠️ BACK: Half-kneeling reduces spinal load. Brace hard to prevent rotation.",
+      "⚠️ KNEE: Pad the kneeling knee. Front knee tracks straight."
+    ],
+    "proTip": "Squeeze the glute of the kneeling leg — locks your pelvis and protects your back.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder flare-up",
+      "Inability to maintain half-kneeling without pain",
+      "Skipped external rotation warm-up"
+    ]
+  },
+  {
+    "id": "m10",
+    "name": "Single-Arm Dumbbell Row",
+    "category": "main",
+    "emoji": "💪",
+    "location": ["gym", "home"],
+    "bodyPart": "Back",
+    "sets": 3,
+    "reps": "10 each",
+    "rest": 75,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Latissimus Dorsi", "Rhomboids"],
+      "secondary": ["Biceps", "Rear Deltoid", "TVA"]
+    },
+    "equipment": "Dumbbell, bench or sturdy surface",
+    "difficulty": "Intermediate",
+    "tempo": "2s up, 1s squeeze, 2s down",
+    "purpose": "Unilateral back development with bench support reducing spinal load.",
+    "whyForYou": "Hand-and-knee support on bench takes stress off your back while building pulling strength.",
+    "steps": [
+      "One hand and knee on bench. Other foot on floor. Back FLAT.",
+      "Let dumbbell hang straight down. Shoulder relaxed.",
+      "RETRACT shoulder blade. PULL elbow to hip — squeeze 1s at top.",
+      "Lower slowly — full stretch at bottom."
+    ],
+    "formCues": [
+      "✅ Back stays FLAT — no rounding",
+      "✅ Pull to hip, not to chest",
+      "✅ Initiate with shoulder blade, not bicep"
+    ],
+    "commonMistakes": [
+      "❌ Rotating torso to get weight up",
+      "❌ Rounding upper back",
+      "❌ Using momentum/body english"
+    ],
+    "coreBracing": "MODERATE (40%) — maintain flat back position.",
+    "injuryNotes": [
+      "⚠️ BACK: Bench support reduces spinal load significantly. Keep back FLAT — any rounding = reduce weight. Stop if pain.",
+      "⚠️ SHOULDER: Neutral grip. Don't force full stretch at bottom if labrum is sensitive.",
+      "⚠️ KNEE: Pad the kneeling knee on bench."
+    ],
+    "proTip": "Think 'start the lawn mower' — drive elbow back, not just pulling with the hand.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back flare-up (use chest-supported row instead)",
+      "Inability to maintain flat back"
+    ]
+  },
+  {
+    "id": "m11",
+    "name": "Seated Cable Row",
+    "category": "main",
+    "emoji": "🚤",
+    "location": ["gym"],
+    "bodyPart": "Back",
+    "sets": 3,
+    "reps": "12",
+    "rest": 75,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius"],
+      "secondary": ["Biceps", "Rear Deltoids", "Erector Spinae"]
+    },
+    "equipment": "Cable row machine, V-bar or neutral grip handle",
+    "difficulty": "Beginner",
+    "tempo": "2s pull, 1s squeeze, 2s return",
+    "purpose": "Horizontal pulling with controlled load — great for back thickness.",
+    "whyForYou": "Seated position with pad support limits spinal load while training pulling pattern.",
+    "steps": [
+      "Sit with chest against pad (if available). Feet on platform, knees slightly bent.",
+      "Grab handle with neutral grip. Sit tall — slight lean forward at start.",
+      "PULL handle to lower chest/upper abdomen — squeeze shoulder blades 1s.",
+      "Return slowly — controlled stretch forward without rounding back."
+    ],
+    "formCues": [
+      "✅ Chest stays tall throughout",
+      "✅ Squeeze shoulder blades at peak contraction",
+      "✅ Neutral grip protects shoulders"
+    ],
+    "commonMistakes": [
+      "❌ Excessive forward/backward lean (using momentum)",
+      "❌ Rounding lower back on the stretch",
+      "❌ Pulling with biceps — not engaging back"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain upright posture.",
+    "injuryNotes": [
+      "⚠️ BACK: Minimal forward lean — torso stays near upright. DO NOT round lower back on the forward stretch. Use chest-pad if machine has one.",
+      "⚠️ SHOULDER: Neutral grip (V-bar) is safest for labrum. Avoid wide/pronated grip.",
+      "⚠️ KNEE: Slight knee bend — no locking out."
+    ],
+    "proTip": "Imagine a tennis ball between your shoulder blades — squeeze it at peak contraction.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back pain (switch to chest-supported row)"
+    ]
+  },
+  {
+    "id": "m12",
+    "name": "Band Pull-Apart",
+    "category": "main",
+    "emoji": "↔️",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "15-20",
+    "rest": 45,
+    "intensity": "RPE 5",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Rear Deltoids", "Rhomboids"],
+      "secondary": ["Middle Trapezius", "Infraspinatus"]
+    },
+    "equipment": "Resistance band",
+    "difficulty": "Beginner",
+    "tempo": "2s apart, 1s squeeze, 2s return",
+    "purpose": "Rear delt and scapular retraction — counterbalances all forward-arm activities.",
+    "whyForYou": "Home/outdoor alternative to face pulls. Same shoulder-protective benefit, no cable needed.",
+    "steps": [
+      "Hold band at shoulder height, arms straight out, shoulder-width grip.",
+      "Pull band APART — squeeze shoulder blades together.",
+      "HOLD 1s at full retraction. Return slowly to start."
+    ],
+    "formCues": [
+      "✅ Arms stay at shoulder height",
+      "✅ Squeeze shoulder blades at end",
+      "✅ Chest opens — don't just move arms"
+    ],
+    "commonMistakes": [
+      "❌ Arms dropping below shoulder height",
+      "❌ Band too heavy — should be high-rep easy",
+      "❌ Shrugging shoulders up"
+    ],
+    "coreBracing": "LIGHT (20%) — stand tall.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: Excellent for labrum — builds rear delt strength to balance joint. Light band only. Should never cause pinching.",
+      "⚠️ BACK: Stand tall — no leaning.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Do 20 reps between every set of pressing — shoulders will thank you.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute posterior shoulder pain"
+    ]
+  },
+  {
+    "id": "m13",
+    "name": "Dumbbell Romanian Deadlift",
+    "category": "main",
+    "emoji": "🔽",
+    "location": ["gym", "home"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "10-12",
+    "rest": 90,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Hamstrings", "Gluteus Maximus"],
+      "secondary": ["Erector Spinae", "TVA", "Adductors"]
+    },
+    "equipment": "Dumbbells",
+    "difficulty": "Intermediate",
+    "tempo": "3s down, 2s up",
+    "purpose": "Hip hinge pattern with dumbbells — home alternative to trap bar deadlift.",
+    "whyForYou": "Your go-to hinge for home workouts. Lighter load than trap bar but same movement pattern.",
+    "steps": [
+      "Stand with dumbbells at thighs, feet hip-width. Slight knee bend.",
+      "HINGE at hips — push butt BACK. Dumbbells slide down thighs.",
+      "Lower until hamstring stretch (mid-shin for most). Back stays FLAT.",
+      "SQUEEZE glutes to stand. Drive hips forward."
+    ],
+    "formCues": [
+      "✅ Hinge from HIPS — not rounding back",
+      "✅ Dumbbells stay close to legs",
+      "✅ Slight knee bend — not a stiff-leg deadlift"
+    ],
+    "commonMistakes": [
+      "❌ Rounding lower back",
+      "❌ Dumbbells drifting away from body",
+      "❌ Squatting instead of hinging"
+    ],
+    "coreBracing": "HIGH (60-70%) — protect spine throughout hinge.",
+    "injuryNotes": [
+      "⚠️ BACK: LIGHTER than trap bar — start with very light DBs to groove the pattern. Back must stay FLAT. Any rounding = stop. No radiating symptoms.",
+      "⚠️ KNEE: Slight bend protects knee. Not a deep squat pattern.",
+      "⚠️ SHOULDER: Just holding DBs — no stress."
+    ],
+    "proTip": "Imagine closing a car door with your butt — that's the hip hinge.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back flare-up",
+      "Inability to hip hinge without rounding",
+      "Any radiating or nerve symptoms"
+    ]
+  },
+  {
+    "id": "m14",
+    "name": "Cable Pull-Through",
+    "category": "main",
+    "emoji": "🔗",
+    "location": ["gym"],
+    "bodyPart": "Glutes",
+    "sets": 3,
+    "reps": "12-15",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gluteus Maximus", "Hamstrings"],
+      "secondary": ["Erector Spinae", "TVA"]
+    },
+    "equipment": "Cable machine, rope attachment",
+    "difficulty": "Beginner",
+    "tempo": "2s hinge, 2s drive",
+    "purpose": "Teaches hip hinge pattern with constant cable tension — excellent glute builder.",
+    "whyForYou": "Low-impact hinge that reinforces the pattern without heavy spinal loading.",
+    "steps": [
+      "Face AWAY from low cable. Rope between legs. Step forward.",
+      "HINGE at hips — let cable pull you back. Soft knees.",
+      "DRIVE hips forward — squeeze glutes HARD at top. Stand tall."
+    ],
+    "formCues": [
+      "✅ Hinge from hips — not squatting",
+      "✅ Arms are just hooks — glutes do the work",
+      "✅ Hard glute squeeze at lockout"
+    ],
+    "commonMistakes": [
+      "❌ Squatting instead of hinging",
+      "❌ Pulling with arms",
+      "❌ Rounding lower back"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain neutral spine.",
+    "injuryNotes": [
+      "⚠️ BACK: Much lighter spinal load than deadlift. Excellent hinge teacher. Keep neutral spine.",
+      "⚠️ KNEE: Soft knee bend — no deep flexion involved.",
+      "⚠️ SHOULDER: Arms are passive — no shoulder stress."
+    ],
+    "proTip": "Pretend there's a wall 6 inches behind you — reach your butt back to touch it.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back pain",
+      "Inability to hip hinge without lumbar flexion"
+    ]
+  },
+  {
+    "id": "m15",
+    "name": "Hip Thrust",
+    "category": "main",
+    "emoji": "🍑",
+    "location": ["gym", "home"],
+    "bodyPart": "Glutes",
+    "sets": 3,
+    "reps": "12-15",
+    "rest": 75,
+    "intensity": "RPE 7",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gluteus Maximus"],
+      "secondary": ["Hamstrings", "TVA", "Quadriceps"]
+    },
+    "equipment": "Bench + barbell/dumbbell (or bodyweight)",
+    "difficulty": "Intermediate",
+    "tempo": "2s up, 1s squeeze, 2s down",
+    "purpose": "Maximum glute activation — higher than any squat or deadlift variation.",
+    "whyForYou": "Builds the glutes your back desperately needs, with minimal spinal load.",
+    "steps": [
+      "Upper back on bench edge. Feet flat, hip-width, directly under knees.",
+      "Drive through HEELS — squeeze glutes to lift hips to table-top.",
+      "HOLD 1s — hard glute squeeze. Chin tucked (look at knees, not ceiling).",
+      "Lower slowly — 2s descent."
+    ],
+    "formCues": [
+      "✅ Chin tucked — prevents back hyperextension",
+      "✅ Drive through HEELS",
+      "✅ Ribs down — not flared"
+    ],
+    "commonMistakes": [
+      "❌ Hyperextending lower back at top",
+      "❌ Looking at ceiling (causes back extension)",
+      "❌ Feet too far forward (hamstring dominant)"
+    ],
+    "coreBracing": "MODERATE (40-50%) — posterior pelvic tilt at top.",
+    "injuryNotes": [
+      "⚠️ BACK: Chin TUCKED — looking at ceiling causes back extension. Posterior pelvic tilt at top protects spine. Start bodyweight only.",
+      "⚠️ KNEE: Feet directly under knees — not too far forward or back. Adjust until no knee discomfort.",
+      "⚠️ SHOULDER: Bench edge at mid-scapula. Pad if uncomfortable for labrum."
+    ],
+    "proTip": "Start bodyweight. Add a dumbbell on hips when 15 reps is easy. Barbell comes much later.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back spasm",
+      "Inability to perform without feeling it in the back"
+    ]
+  },
+  {
+    "id": "m16",
+    "name": "Goblet Squat",
+    "category": "main",
+    "emoji": "🏆",
+    "location": ["gym", "home"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "12-15",
+    "rest": 75,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Quadriceps", "Gluteus Maximus"],
+      "secondary": ["TVA", "Adductors", "Erector Spinae"]
+    },
+    "equipment": "Dumbbell or kettlebell",
+    "difficulty": "Beginner",
+    "tempo": "3s down, 2s up",
+    "purpose": "Front-loaded squat that teaches upright torso — excellent squat pattern developer.",
+    "whyForYou": "Front load counterbalances you upright — reduces back stress vs barbell squat. Teaches the pattern.",
+    "steps": [
+      "Hold dumbbell/KB at chest with both hands — elbows under the weight.",
+      "Feet shoulder-width, toes slightly out. Brace core.",
+      "SIT DOWN AND BACK — 3s controlled descent to comfortable depth.",
+      "Drive through heels to stand. Stay upright throughout."
+    ],
+    "formCues": [
+      "✅ Elbows between knees at bottom",
+      "✅ Chest stays tall — dumbbell keeps you upright",
+      "✅ Knees track over toes"
+    ],
+    "commonMistakes": [
+      "❌ Tipping forward",
+      "❌ Knees caving in (valgus)",
+      "❌ Going too deep before earning the range"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain upright torso.",
+    "injuryNotes": [
+      "⚠️ BACK: Front load reduces spinal shear vs back squat. Stay UPRIGHT. Light weight only in Phase 1.",
+      "⚠️ KNEE: Depth limited to comfort — don't force depth. VMO pre-activation mandatory. Watch for valgus on left side.",
+      "⚠️ SHOULDER: Holding DB at chest — if left shoulder can't hold position, reduce weight."
+    ],
+    "proTip": "Use elbows to push knees out at the bottom — opens up the squat pattern.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee swelling",
+      "Inability to squat to comfortable depth without pain",
+      "Back safety level RESTRICTED or STOP"
+    ]
+  },
+  {
+    "id": "m17",
+    "name": "Box Squat",
+    "category": "main",
+    "emoji": "📦",
+    "location": ["gym"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "10-12",
+    "rest": 90,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 3, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Quadriceps", "Gluteus Maximus"],
+      "secondary": ["Hamstrings", "TVA", "Adductors"]
+    },
+    "equipment": "Box or bench, dumbbells (optional)",
+    "difficulty": "Beginner",
+    "tempo": "3s down, 1s pause, 2s up",
+    "purpose": "Controlled depth squat — box provides consistent depth target and safety net.",
+    "whyForYou": "Controls depth precisely for your knee. The box catches you — removes fear of going too deep.",
+    "steps": [
+      "Stand in front of box, feet shoulder-width. Hold dumbbells at sides (optional).",
+      "SIT BACK to box — 3s controlled descent. Shin stays vertical.",
+      "PAUSE 1s on box (don't collapse). Maintain tension.",
+      "Drive through heels to stand."
+    ],
+    "formCues": [
+      "✅ Sit BACK — shins stay vertical",
+      "✅ Pause on box — don't bounce",
+      "✅ Stand up with glutes, not momentum"
+    ],
+    "commonMistakes": [
+      "❌ Plopping onto box (no control)",
+      "❌ Relaxing on box (lose tension)",
+      "❌ Knees shooting forward over toes excessively"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain through the pause.",
+    "injuryNotes": [
+      "⚠️ KNEE: Box height controls depth — set it so left knee stays comfortable. Higher box = safer. VMO pre-activation mandatory.",
+      "⚠️ BACK: Sit BACK pattern reduces forward lean and spinal load. Keep chest tall.",
+      "⚠️ SHOULDER: Dumbbells at sides if used — no overhead loading."
+    ],
+    "proTip": "Start with a high box (above parallel). Lower it 1 inch per week as mobility and strength improve.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee swelling",
+      "Inability to control descent to box"
+    ]
+  },
+  {
+    "id": "m18",
+    "name": "Step-Up",
+    "category": "main",
+    "emoji": "⬆️",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "10 each",
+    "rest": 75,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Quadriceps (VMO)", "Gluteus Maximus"],
+      "secondary": ["Hip Stabilizers", "Calves", "TVA"]
+    },
+    "equipment": "Sturdy box, bench, or step (6-12 inches)",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 2s down",
+    "purpose": "Functional single-leg strength — mimics real-world movement (stairs, hiking).",
+    "whyForYou": "Low box height is knee-friendly. Builds unilateral strength relevant to your sport interests (hiking, surfing).",
+    "steps": [
+      "Place entire foot on box. Stand tall.",
+      "DRIVE through the heel of the top foot — step up fully. Don't push off back foot.",
+      "Stand tall on top. Controlled step down — 2s descent.",
+      "Complete all reps one leg, then switch."
+    ],
+    "formCues": [
+      "✅ Entire foot on box — heel included",
+      "✅ Drive through TOP foot only",
+      "✅ Knee tracks over toes — no valgus"
+    ],
+    "commonMistakes": [
+      "❌ Pushing off the back foot (cheating)",
+      "❌ Knee caving inward on step-up",
+      "❌ Box too high — start LOW"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain balance.",
+    "injuryNotes": [
+      "⚠️ KNEE: Start with 6-inch box on left side. Increase height gradually. VMO pre-activation mandatory. Watch for valgus.",
+      "⚠️ BACK: Upright torso throughout — no forward lean. Hold wall/rack for balance if needed.",
+      "⚠️ SHOULDER: Holding dumbbells at sides is fine if shoulder tolerates."
+    ],
+    "proTip": "Start with a low step (6 inches). Only increase height when you can do 12 reps with perfect knee tracking.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee pain on affected side",
+      "Balance impairment without support available"
+    ]
+  },
+  {
+    "id": "m19",
+    "name": "Farmer's Walk",
+    "category": "main",
+    "emoji": "🧑‍🌾",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Full Body",
+    "sets": 3,
+    "reps": "40s walk",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Trapezius", "Forearms", "TVA", "Obliques"],
+      "secondary": ["Gluteus Medius", "Erector Spinae", "Quadriceps", "Calves"]
+    },
+    "equipment": "Dumbbells or kettlebells (pair)",
+    "difficulty": "Beginner",
+    "tempo": "Controlled walking pace",
+    "purpose": "Loaded carry — builds grip, core stability, and total-body resilience under load.",
+    "whyForYou": "Walking under load trains core stability in a functional way. One of the safest loaded exercises for your back.",
+    "steps": [
+      "Pick up equal dumbbells/KBs — one in each hand.",
+      "Stand TALL. Shoulders back and down. Core braced.",
+      "Walk at controlled pace for 40s. Short steps, tall posture.",
+      "Set down with flat back — hinge, don't round."
+    ],
+    "formCues": [
+      "✅ Shoulders back and DOWN — no shrugging",
+      "✅ Walk tall — imagine balancing a book on your head",
+      "✅ Short, controlled steps"
+    ],
+    "commonMistakes": [
+      "❌ Shrugging shoulders to ears",
+      "❌ Leaning to one side",
+      "❌ Taking long, uncontrolled steps"
+    ],
+    "coreBracing": "HIGH (60-70%) — continuous brace while walking.",
+    "injuryNotes": [
+      "⚠️ BACK: Surprisingly safe — vertical spine under symmetrical load. Start LIGHT. Set down with hip hinge, not rounded back.",
+      "⚠️ KNEE: Walk on flat surface. Short steps reduce knee impact.",
+      "⚠️ SHOULDER: If grip irritates shoulder, use lighter weight."
+    ],
+    "proTip": "Pretend you're walking through a crowded room and don't want to bump anyone — forces perfect posture.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back flare-up",
+      "Grip injury",
+      "Uneven walking surface with heavy load"
+    ]
+  },
+  {
+    "id": "m20",
+    "name": "Suitcase Carry",
+    "category": "main",
+    "emoji": "💼",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Core",
+    "sets": 3,
+    "reps": "30s each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Obliques", "Quadratus Lumborum", "TVA"],
+      "secondary": ["Gluteus Medius", "Forearms", "Trapezius"]
+    },
+    "equipment": "Dumbbell or kettlebell (single)",
+    "difficulty": "Intermediate",
+    "tempo": "Controlled walking pace",
+    "purpose": "Anti-lateral flexion — trains core to resist side-bending under load.",
+    "whyForYou": "Builds the lateral core stability your back needs. Walking + anti-flexion = functional rehab.",
+    "steps": [
+      "Hold ONE dumbbell/KB in one hand at your side.",
+      "Stand TALL — do NOT lean toward or away from the weight.",
+      "Walk 30s. Body stays perfectly upright — as if carrying nothing.",
+      "Switch hands. Repeat."
+    ],
+    "formCues": [
+      "✅ Stay perfectly VERTICAL — no leaning",
+      "✅ Shoulder stays level — no hiking",
+      "✅ Controlled, deliberate steps"
+    ],
+    "commonMistakes": [
+      "❌ Leaning away from weight (obvious compensation)",
+      "❌ Hiking the loaded shoulder",
+      "❌ Weight too heavy — can't maintain upright posture"
+    ],
+    "coreBracing": "HIGH (60-70%) — anti-lateral flexion demand.",
+    "injuryNotes": [
+      "⚠️ BACK: Excellent for lateral core stability. Start VERY light — if you lean at all, weight is too heavy.",
+      "⚠️ KNEE: Flat surface. Short steps.",
+      "⚠️ SHOULDER: Alternate which hand carries — don't always load the same side."
+    ],
+    "proTip": "Check in a mirror — you should look identical to walking without a weight. If you can see the lean, go lighter.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lateral back pain",
+      "Acute oblique strain"
+    ]
+  },
+  {
+    "id": "m21",
+    "name": "Half-Kneeling Cable Chop",
+    "category": "main",
+    "emoji": "🪓",
+    "location": ["gym"],
+    "bodyPart": "Core",
+    "sets": 3,
+    "reps": "10 each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Obliques", "TVA", "Rectus Abdominis"],
+      "secondary": ["Hip Stabilizers", "Serratus Anterior"]
+    },
+    "equipment": "Cable machine, rope or handle",
+    "difficulty": "Intermediate",
+    "tempo": "2s chop, 2s return",
+    "purpose": "Diagonal core pattern in a stable base — rotational control without spinal risk.",
+    "whyForYou": "Half-kneeling locks out lumbar rotation — all movement comes from core, not lower back.",
+    "steps": [
+      "Half-kneeling perpendicular to cable. Inside knee down.",
+      "Grab rope/handle with both hands at shoulder height.",
+      "CHOP diagonally DOWN and ACROSS body. Rotate from torso, not arms.",
+      "Return slowly. Complete all reps, switch sides."
+    ],
+    "formCues": [
+      "✅ Hips stay SQUARE — don't rotate pelvis",
+      "✅ Movement from thoracic spine, not lumbar",
+      "✅ Arms are guides — core does the work"
+    ],
+    "commonMistakes": [
+      "❌ Rotating from hips instead of thoracic",
+      "❌ Pulling with arms",
+      "❌ Losing half-kneeling position"
+    ],
+    "coreBracing": "HIGH (60-70%) — controlled rotation with stability.",
+    "injuryNotes": [
+      "⚠️ BACK: Half-kneeling locks pelvis — protects lumbar spine. Light weight. Rotation must come from THORACIC spine, not lower back.",
+      "⚠️ KNEE: Pad the kneeling knee. Ensure comfortable position.",
+      "⚠️ SHOULDER: Keep arms in front of body — no reaching behind."
+    ],
+    "proTip": "Squeeze the glute of the down knee — locks your pelvis even more firmly.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute lower back pain",
+      "Acute oblique strain",
+      "Inability to maintain half-kneeling without pain"
+    ]
+  },
+  {
+    "id": "m22",
+    "name": "Dead Bug with Band",
+    "category": "main",
+    "emoji": "🪲",
+    "location": ["gym", "home"],
+    "bodyPart": "Core",
+    "sets": 3,
+    "reps": "8 each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 4 },
+    "muscles": {
+      "primary": ["TVA", "Rectus Abdominis", "Obliques"],
+      "secondary": ["Hip Flexors", "Diaphragm"]
+    },
+    "equipment": "Mat, resistance band or light dumbbell",
+    "difficulty": "Intermediate",
+    "tempo": "2s out, 1s hold, 2s return",
+    "purpose": "Progressed dead bug — added resistance increases anti-extension demand.",
+    "whyForYou": "Once bodyweight dead bug is mastered, this is the next step for your core rehab progression.",
+    "steps": [
+      "Lie flat. Press back INTO floor. Hold band overhead (anchored) or hold light DB.",
+      "Arms up, knees at 90°. Band provides constant pull to extend you.",
+      "RESIST the pull. Extend opposite arm and leg — back stays GLUED to floor.",
+      "Exhale 4s. Pause 1s. Return. Switch sides."
+    ],
+    "formCues": [
+      "✅ Back NEVER leaves floor — the band makes this harder",
+      "✅ Full 4s exhale on every extension",
+      "✅ Slow and controlled — speed defeats the purpose"
+    ],
+    "commonMistakes": [
+      "❌ Back arching under band tension",
+      "❌ Band too heavy — back lifts off",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "HIGH (60-70%) — resisting band-induced extension.",
+    "injuryNotes": [
+      "⚠️ BACK: If lower back lifts AT ALL, remove the band and do regular dead bug. Progress only when bodyweight version is flawless.",
+      "⚠️ KNEE: No impact — knees stay at 90°.",
+      "⚠️ SHOULDER: If holding band overhead bothers labrum, hold light DB at chest instead."
+    ],
+    "proTip": "Master 3×10 regular dead bug with ZERO back lift before adding the band.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Cannot perform regular dead bug without back lifting",
+      "Acute back flare-up"
+    ]
+  },
+  {
+    "id": "m23",
+    "name": "Band Lateral Walk",
+    "category": "main",
+    "emoji": "🦀",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Glutes",
+    "sets": 3,
+    "reps": "12 each direction",
+    "rest": 45,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gluteus Medius", "Gluteus Minimus"],
+      "secondary": ["Tensor Fasciae Latae", "Hip Rotators"]
+    },
+    "equipment": "Mini loop band (around ankles or above knees)",
+    "difficulty": "Beginner",
+    "tempo": "Controlled stepping",
+    "purpose": "Targets glute med — the #1 stabilizer for knee tracking and pelvic control.",
+    "whyForYou": "Weak glute med = knee valgus = knee pain. This directly protects your left knee.",
+    "steps": [
+      "Band around ankles (harder) or above knees (easier). Quarter squat position.",
+      "Step RIGHT — push through LEFT heel. Keep tension on band.",
+      "Step LEFT foot in — DON'T let band go slack.",
+      "12 steps right, then 12 steps left."
+    ],
+    "formCues": [
+      "✅ Stay in quarter squat throughout",
+      "✅ Toes point forward — no duck feet",
+      "✅ Constant band tension — never slack"
+    ],
+    "commonMistakes": [
+      "❌ Standing too tall (lose glute activation)",
+      "❌ Toes turning out",
+      "❌ Dragging trailing foot (band goes slack)"
+    ],
+    "coreBracing": "LIGHT (20-30%) — maintain quarter squat.",
+    "injuryNotes": [
+      "⚠️ KNEE: This exercise PROTECTS your knee by strengthening glute med. Band above knees if ankle position bothers knee.",
+      "⚠️ BACK: Stay in quarter squat — no bending forward.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Place hands on glutes while walking — you should feel them working with every step.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute hip bursitis",
+      "Acute IT band syndrome"
+    ]
+  },
+  {
+    "id": "m24",
+    "name": "Side-Lying Hip Abduction",
+    "category": "main",
+    "emoji": "🦵",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Hips",
+    "sets": 3,
+    "reps": "15 each",
+    "rest": 45,
+    "intensity": "RPE 5",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gluteus Medius", "Gluteus Minimus"],
+      "secondary": ["Tensor Fasciae Latae", "Obliques"]
+    },
+    "equipment": "Mat (mini band optional)",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 1s hold, 2s down",
+    "purpose": "Isolates glute med — the most important muscle for knee and pelvic stability.",
+    "whyForYou": "Direct glute med isolation for your left knee protection. Rehab staple.",
+    "steps": [
+      "Lie on side. Bottom leg bent for stability. Top leg straight.",
+      "Lift top leg approximately 30-40° — lead with the HEEL, not the toe.",
+      "HOLD 1s at top. Lower slowly — don't drop.",
+      "Complete all reps, then switch sides."
+    ],
+    "formCues": [
+      "✅ Lead with HEEL — slight external rotation",
+      "✅ Body stays STACKED — no rolling back",
+      "✅ Lift only 30-40° — not to ceiling"
+    ],
+    "commonMistakes": [
+      "❌ Rolling hips back (recruits hip flexors instead)",
+      "❌ Lifting too high (TFL takes over)",
+      "❌ Leading with toes (wrong muscle)"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain side position.",
+    "injuryNotes": [
+      "⚠️ KNEE: This exercise HELPS your knee — strengthens the muscle that prevents valgus.",
+      "⚠️ BACK: Keep body stacked. Place pillow under waist if side-lying bothers back.",
+      "⚠️ SHOULDER: Bottom arm under head for support — shouldn't stress shoulder."
+    ],
+    "proTip": "Place hand on outer hip — you should feel the glute med fire. If you feel the front of the hip, you're rolling back.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute hip bursitis on working side"
+    ]
+  },
+  {
+    "id": "m25",
+    "name": "Standing Calf Raise",
+    "category": "main",
+    "emoji": "🦶",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "15-20",
+    "rest": 45,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Gastrocnemius", "Soleus"],
+      "secondary": ["Tibialis Posterior", "Peroneals"]
+    },
+    "equipment": "Step or raised surface (optional: dumbbell)",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 1s hold, 2s down",
+    "purpose": "Calf strength for ankle stability, walking, and sport performance.",
+    "whyForYou": "Ankle stability supports your knee. Strong calves = better hiking, surfing, and daily function.",
+    "steps": [
+      "Stand on edge of step — heels hanging off. Hold wall/rack for balance.",
+      "Rise onto toes — SQUEEZE calves at top. Hold 1s.",
+      "Lower slowly below the step — full stretch. 2s descent.",
+      "Control the entire range — no bouncing."
+    ],
+    "formCues": [
+      "✅ Full range of motion — below step to full rise",
+      "✅ Slow and controlled — no bouncing",
+      "✅ Squeeze at top"
+    ],
+    "commonMistakes": [
+      "❌ Bouncing at bottom (using stretch reflex)",
+      "❌ Partial range — not getting full stretch",
+      "❌ Bending knees (turns into squat)"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain balance.",
+    "injuryNotes": [
+      "⚠️ KNEE: Straight knee targets gastrocnemius. If knee complains, do seated version (bent knee targets soleus).",
+      "⚠️ BACK: Hold support for balance — no twisting. Low spinal load.",
+      "⚠️ SHOULDER: Hold rail/wall with one hand — no overhead component."
+    ],
+    "proTip": "Do single-leg to expose side-to-side imbalances. The weak side gets extra reps.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute Achilles tendinitis (consult PT)",
+      "Acute ankle sprain"
+    ]
+  },
+  {
+    "id": "m26",
+    "name": "Dumbbell Bicep Curl",
+    "category": "main",
+    "emoji": "💪",
+    "location": ["gym", "home"],
+    "bodyPart": "Shoulders",
+    "sets": 2,
+    "reps": "12-15",
+    "rest": 45,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Biceps Brachii", "Brachialis"],
+      "secondary": ["Brachioradialis", "Forearms"]
+    },
+    "equipment": "Dumbbells",
+    "difficulty": "Beginner",
+    "tempo": "2s up, 2s down",
+    "purpose": "Elbow flexion isolation — supports pulling movements and grip strength.",
+    "whyForYou": "Supports your rowing and deadlift grip. Light isolation work aids connective tissue health.",
+    "steps": [
+      "Stand tall, dumbbells at sides, palms forward (supinated).",
+      "Curl both dumbbells up — keep elbows PINNED to sides.",
+      "Squeeze at top. Lower slowly — 2s descent. Full extension at bottom."
+    ],
+    "formCues": [
+      "✅ Elbows stay at your sides — don't drift forward",
+      "✅ Full extension at bottom — no partial reps",
+      "✅ Control the negative (lowering)"
+    ],
+    "commonMistakes": [
+      "❌ Swinging body for momentum",
+      "❌ Elbows drifting forward",
+      "❌ Going too heavy — ego curls"
+    ],
+    "coreBracing": "LIGHT (20%) — stand tall, no swaying.",
+    "injuryNotes": [
+      "⚠️ BACK: No swinging or leaning back — this causes back compression. Stand against wall if needed.",
+      "⚠️ SHOULDER: Neutral grip (hammer curl) if supinated grip bothers labrum.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Stand against a wall — if your elbows or back leave the wall, you're using momentum.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute elbow tendinitis",
+      "Acute biceps strain"
+    ]
+  },
+  {
+    "id": "m27",
+    "name": "Band Face Pull",
+    "category": "main",
+    "emoji": "🎯",
+    "location": ["home", "outdoor"],
+    "bodyPart": "Shoulders",
+    "sets": 3,
+    "reps": "15-20",
+    "rest": 45,
+    "intensity": "RPE 5",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Rear Deltoids", "Infraspinatus", "Teres Minor"],
+      "secondary": ["Rhomboids", "Lower Trapezius"]
+    },
+    "equipment": "Resistance band, door anchor or pole",
+    "difficulty": "Beginner",
+    "tempo": "2s pull, 1s squeeze, 2s return",
+    "purpose": "Home/outdoor alternative to cable face pulls — same shoulder-protective benefit.",
+    "whyForYou": "When you train at home or outdoors, you still need face pulls. This is how.",
+    "steps": [
+      "Anchor band at face height (door anchor, pole, tree).",
+      "Grab band ends with overhand grip. Step back for tension.",
+      "Pull elbows BACK and APART — bring band to face. External rotate at end.",
+      "SQUEEZE 1s. Return slowly."
+    ],
+    "formCues": [
+      "✅ Pull to FACE — not chest",
+      "✅ Elbows HIGH throughout",
+      "✅ Finish in 'double bicep pose' position"
+    ],
+    "commonMistakes": [
+      "❌ Pulling to chest level",
+      "❌ Band too heavy",
+      "❌ Not externally rotating at end"
+    ],
+    "coreBracing": "LIGHT (20%) — stand tall.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: MANDATORY for home/outdoor days — same labrum protection as cable face pulls.",
+      "⚠️ BACK: Light movement — no spinal stress.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Wrap band around a pole at face height — gives clearest line of pull for the movement.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "No secure anchor point for band"
+    ]
+  },
+  {
+    "id": "m28",
+    "name": "Lateral Lunge",
+    "category": "main",
+    "emoji": "↔️",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 3,
+    "reps": "8 each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Adductors", "Quadriceps", "Gluteus Medius"],
+      "secondary": ["Gluteus Maximus", "Hip Stabilizers"]
+    },
+    "equipment": "None (dumbbell optional)",
+    "difficulty": "Intermediate",
+    "tempo": "2s out, 2s return",
+    "purpose": "Frontal plane movement — most training is sagittal. This fills the gap.",
+    "whyForYou": "Lateral movement strength is critical for surfing, BJJ, and injury prevention.",
+    "steps": [
+      "Stand feet together. Step RIGHT foot wide to the side.",
+      "SIT back and RIGHT — weight into right hip. Left leg stays straight.",
+      "Push through right foot to return to center.",
+      "Complete all reps one side, then switch."
+    ],
+    "formCues": [
+      "✅ Sit BACK into the hip — not forward",
+      "✅ Stepping knee tracks over toes",
+      "✅ Chest stays tall"
+    ],
+    "commonMistakes": [
+      "❌ Knee collapsing inward",
+      "❌ Leaning forward excessively",
+      "❌ Step too wide too soon"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain balance in lateral plane.",
+    "injuryNotes": [
+      "⚠️ KNEE: Start with small steps — increase width as comfortable. LEFT side may need shallower depth. Watch for valgus.",
+      "⚠️ BACK: Keep chest tall — lateral movement shouldn't stress back. Bodyweight only in Phase 1.",
+      "⚠️ SHOULDER: No impact — arms at sides or holding light DB at chest."
+    ],
+    "proTip": "Start bodyweight with small steps. Think 'sit into the hip' not 'lunge sideways.'",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute adductor strain",
+      "Acute knee instability"
+    ]
+  },
+  {
+    "id": "m29",
+    "name": "Band-Assisted Row",
+    "category": "main",
+    "emoji": "🚣",
+    "location": ["home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 3,
+    "reps": "12-15",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 1, "exhale": 2 },
+    "muscles": {
+      "primary": ["Latissimus Dorsi", "Rhomboids"],
+      "secondary": ["Biceps", "Rear Deltoids", "TVA"]
+    },
+    "equipment": "Resistance band, door anchor or sturdy anchor point",
+    "difficulty": "Beginner",
+    "tempo": "2s pull, 1s squeeze, 2s return",
+    "purpose": "Home/outdoor rowing alternative — maintains pulling pattern without gym equipment.",
+    "whyForYou": "When no gym is available, you still need to pull. Band rows keep the pattern alive.",
+    "steps": [
+      "Anchor band at chest height. Grab both ends. Step back for tension.",
+      "Stand tall, slight lean back. Arms extended.",
+      "RETRACT shoulder blades. PULL elbows to ribs — squeeze 1s.",
+      "Return slowly — control the band forward."
+    ],
+    "formCues": [
+      "✅ Retract shoulder blades FIRST",
+      "✅ Pull to ribs — not face",
+      "✅ Stand tall — minimal lean"
+    ],
+    "commonMistakes": [
+      "❌ Pulling with biceps only",
+      "❌ Excessive backward lean",
+      "❌ Band too light (no challenge at end range)"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain upright posture.",
+    "injuryNotes": [
+      "⚠️ BACK: Standing row requires some spinal stabilization. If back is flared, sit on floor with legs extended and band around feet.",
+      "⚠️ SHOULDER: Neutral hand position — thumbs up. Don't force stretch at end range.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "Double the band or step further back to increase difficulty at end range.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "No secure anchor point for band",
+      "Acute lower back pain (switch to seated floor version)"
+    ]
+  },
+  {
+    "id": "m30",
+    "name": "Cable Woodchop Low-to-High",
+    "category": "main",
+    "emoji": "🪵",
+    "location": ["gym"],
+    "bodyPart": "Core",
+    "sets": 3,
+    "reps": "10 each side",
+    "rest": 60,
+    "intensity": "RPE 6",
+    "breathing": { "inhale": 2, "hold": 0, "exhale": 2 },
+    "muscles": {
+      "primary": ["Obliques", "TVA", "Serratus Anterior"],
+      "secondary": ["Rectus Abdominis", "Hip Rotators"]
+    },
+    "equipment": "Cable machine, handle",
+    "difficulty": "Intermediate",
+    "tempo": "2s chop up, 2s return",
+    "purpose": "Rotational core power in a controlled setting — functional for sport and daily life.",
+    "whyForYou": "Rotational strength for surfing, BJJ, and muay thai — your sports all demand this pattern.",
+    "steps": [
+      "Stand perpendicular to LOW cable. Grab handle with both hands.",
+      "Rotate and lift handle diagonally from low (near hip) to HIGH (opposite shoulder).",
+      "Rotate from THORACIC spine — hips stay relatively stable.",
+      "Return slowly along the same path."
+    ],
+    "formCues": [
+      "✅ Pivot from mid-back — not lower back",
+      "✅ Arms are guides — core generates the rotation",
+      "✅ Hips stay mostly square"
+    ],
+    "commonMistakes": [
+      "❌ Rotating from lumbar spine (dangerous for you)",
+      "❌ Using arms to pull instead of core to rotate",
+      "❌ Going too heavy"
+    ],
+    "coreBracing": "HIGH (60-70%) — controlled rotation with spinal protection.",
+    "injuryNotes": [
+      "⚠️ BACK: ALL rotation must come from thoracic spine — NOT lumbar. Light weight. If any back pain, STOP and switch to Pallof Press.",
+      "⚠️ KNEE: Feet stay planted — no pivoting on toes.",
+      "⚠️ SHOULDER: Keep hands in front of body at all times — no reaching behind."
+    ],
+    "proTip": "Film yourself from behind — if your lower back is twisting visibly, the weight is too heavy or you're initiating wrong.",
+    "phase": [2, 3],
+    "contraindications": [
+      "Acute lower back pain",
+      "Inability to differentiate thoracic from lumbar rotation",
+      "Phase 1 (master Pallof Press and half-kneeling chop first)"
+    ]
+  },
+  {
+    "id": "c1",
+    "name": "90/90 Hip Switch",
+    "category": "cooldown",
+    "emoji": "🔄",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Hips",
+    "sets": 1,
+    "reps": "8 each",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 4 },
+    "muscles": {
+      "primary": ["Hip Internal Rotators", "Hip External Rotators"],
+      "secondary": ["Gluteus Medius", "Adductors"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Slow — one breath per switch",
+    "purpose": "Restores internal and external hip rotation — both are essential for pain-free movement.",
+    "whyForYou": "Tight hips = back compensates for missing hip ROM = back pain. This breaks that cycle.",
+    "steps": [
+      "Sit on floor, both knees bent at 90°. Feet wide.",
+      "Let both knees fall to the RIGHT — hold one breath cycle.",
+      "SWITCH — let both knees fall to the LEFT.",
+      "Move smoothly between sides — one breath per switch."
+    ],
+    "formCues": [
+      "✅ Sit tall — don't slouch",
+      "✅ Move from hips, not just knees",
+      "✅ Smooth transitions — no jerking"
+    ],
+    "commonMistakes": [
+      "❌ Rushing through switches",
+      "❌ Slouching — rounds lower back",
+      "❌ Forcing range — respect what your hips give you today"
+    ],
+    "coreBracing": "NONE — this is passive mobility.",
+    "injuryNotes": [
+      "⚠️ KNEE: Widen feet if left knee is uncomfortable. Never force the knee to the ground.",
+      "⚠️ BACK: Sit on a yoga block or pillow if you can't sit tall without rounding.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Do 2 minutes of this every single morning — your hips and back will transform in weeks.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute hip labral tear with clicking",
+      "Acute knee injury (skip the affected side)"
+    ]
+  },
+  {
+    "id": "c2",
+    "name": "Child's Pose + Lat Reach",
+    "category": "cooldown",
+    "emoji": "🧘",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 1,
+    "reps": "30s each side + 30s center",
+    "rest": 0,
+    "intensity": "RPE 1",
+    "breathing": { "inhale": 4, "hold": 0, "exhale": 6 },
+    "muscles": {
+      "primary": ["Latissimus Dorsi", "Thoracolumbar Fascia"],
+      "secondary": ["Erector Spinae", "Quadratus Lumborum"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Static hold with breathing",
+    "purpose": "Decompresses spine after loaded exercises. Opens lats and lower back.",
+    "whyForYou": "Reverses compression from deadlifts and rows. Your back's 'reset button.'",
+    "steps": [
+      "Kneel on mat. Sit hips BACK toward heels. Walk hands forward.",
+      "Walk hands to the RIGHT — hold 30s. Breathe into the left side.",
+      "Walk hands to the LEFT — hold 30s. Breathe into the right side.",
+      "Return to CENTER — hold 30s. Exhale longer than inhale."
+    ],
+    "formCues": [
+      "✅ Hips sit BACK — don't hover forward",
+      "✅ Exhale longer than inhale (4 in, 6 out)",
+      "✅ Let gravity do the stretching"
+    ],
+    "commonMistakes": [
+      "❌ Not sitting hips back (no stretch)",
+      "❌ Holding breath",
+      "❌ Rushing through — this needs TIME"
+    ],
+    "coreBracing": "ZERO — fully relaxed. Let spine decompress.",
+    "injuryNotes": [
+      "⚠️ BACK: One of the BEST positions for your post-surgical back. Daily if possible.",
+      "⚠️ KNEE: If kneeling is uncomfortable, place rolled towel behind knees.",
+      "⚠️ SHOULDER: If left shoulder limits the reach, place a yoga block under that hand."
+    ],
+    "proTip": "This is your 'reset button' — use it any time your back feels compressed during the day.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee injury preventing kneeling (do seated forward fold instead)"
+    ]
+  },
+  {
+    "id": "c3",
+    "name": "Hamstring Stretch",
+    "category": "cooldown",
+    "emoji": "🦵",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 1,
+    "reps": "30s each leg",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 5 },
+    "muscles": {
+      "primary": ["Hamstrings"],
+      "secondary": ["Calves", "Sciatic Nerve (glide)"]
+    },
+    "equipment": "Mat, strap or towel",
+    "difficulty": "Beginner",
+    "tempo": "Static hold",
+    "purpose": "Tight hamstrings tilt pelvis posteriorly, increasing lower back pressure.",
+    "whyForYou": "Biggest modifiable contributor to your post-surgical back pain. Must stretch daily.",
+    "steps": [
+      "Lie flat on back. Loop strap around one foot.",
+      "Lift leg toward ceiling — pull gently to 6/10 stretch. NOT 10/10.",
+      "Hold 30s. Breathe — exhale into the stretch.",
+      "Switch legs. Repeat."
+    ],
+    "formCues": [
+      "✅ Knee stays straight (slight bend is OK)",
+      "✅ Back stays FLAT on floor",
+      "✅ 6/10 intensity — no forcing"
+    ],
+    "commonMistakes": [
+      "❌ Bouncing (triggers stretch reflex = tighter)",
+      "❌ Back arching off floor",
+      "❌ Pulling too aggressively — 6/10 max"
+    ],
+    "coreBracing": "MINIMAL — relax and breathe.",
+    "injuryNotes": [
+      "⚠️ BACK: If you feel tingling, numbness, or radiating pain down the leg = RELEASE IMMEDIATELY. This could be nerve, not muscle.",
+      "⚠️ KNEE: Slight knee bend is fine if hamstring is very tight.",
+      "⚠️ SHOULDER: No impact."
+    ],
+    "proTip": "Flex the foot (toes toward you) for a nerve glide component — helps mobilize the sciatic nerve.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Radiating pain down the leg (nerve issue — see PT)",
+      "Acute hamstring strain"
+    ]
+  },
+  {
+    "id": "c4",
+    "name": "Pigeon Stretch",
+    "category": "cooldown",
+    "emoji": "🐦",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Hips",
+    "sets": 1,
+    "reps": "45s each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 4, "hold": 0, "exhale": 6 },
+    "muscles": {
+      "primary": ["Piriformis", "Gluteus Medius", "Hip External Rotators"],
+      "secondary": ["Hip Flexors (back leg)", "TFL"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Static hold — sink deeper with each exhale",
+    "purpose": "Opens deep external hip rotators — tight piriformis can mimic sciatica.",
+    "whyForYou": "Tight piriformis compresses the sciatic nerve — which your post-surgical back can't afford.",
+    "steps": [
+      "From all fours, slide RIGHT knee forward behind right wrist.",
+      "Extend LEFT leg straight back. Hips square to the ground.",
+      "Walk hands forward — fold over front leg as tolerated.",
+      "Hold 45s. Breathe deeply into the stretch. Switch sides."
+    ],
+    "formCues": [
+      "✅ Hips stay SQUARE — don't let them rotate",
+      "✅ Front shin angle based on flexibility (more parallel = harder)",
+      "✅ Exhale to sink deeper — no forcing"
+    ],
+    "commonMistakes": [
+      "❌ Hips rotating (one hip drops)",
+      "❌ Forcing front shin parallel too soon",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "ZERO — fully relaxed.",
+    "injuryNotes": [
+      "⚠️ KNEE: LEFT knee — if front-leg position causes knee pain, do Figure-4 Stretch (c7) instead. The knee should feel zero stress.",
+      "⚠️ BACK: Fold forward only as far as back allows. Place block under front hip if it doesn't reach the floor.",
+      "⚠️ SHOULDER: Use blocks under hands if reaching floor is difficult."
+    ],
+    "proTip": "If your hip doesn't reach the floor, put a yoga block or folded towel under it. Keeps hips level.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee pain in the pigeon position (use Figure-4 instead)",
+      "Hip replacement (PT clearance required)"
+    ]
+  },
+  {
+    "id": "c5",
+    "name": "Doorway Pec Stretch",
+    "category": "cooldown",
+    "emoji": "🚪",
+    "location": ["gym", "home"],
+    "bodyPart": "Shoulders",
+    "sets": 1,
+    "reps": "30s each position (low, mid, high)",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 5 },
+    "muscles": {
+      "primary": ["Pectoralis Major", "Pectoralis Minor"],
+      "secondary": ["Anterior Deltoid", "Biceps (short head)"]
+    },
+    "equipment": "Doorframe or squat rack",
+    "difficulty": "Beginner",
+    "tempo": "Static hold — 3 angles",
+    "purpose": "Opens chest and anterior shoulder — counteracts forward posture from daily life.",
+    "whyForYou": "Tight pecs pull shoulder forward, stressing the labrum. This opens that up safely.",
+    "steps": [
+      "Stand in doorway. Place forearm on doorframe at LOW angle (45° below shoulder).",
+      "Step through with one foot — feel stretch across chest. Hold 30s.",
+      "Move arm to MID angle (shoulder height). Hold 30s.",
+      "Move arm to HIGH angle (45° above shoulder — ONLY if pain-free). Hold 30s."
+    ],
+    "formCues": [
+      "✅ Step through gently — no forcing",
+      "✅ 3 angles hit different pec fibers",
+      "✅ Breathe into the stretch"
+    ],
+    "commonMistakes": [
+      "❌ Forcing the high angle (dangerous for labrum)",
+      "❌ Rotating torso instead of stepping through",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "ZERO — passive stretch.",
+    "injuryNotes": [
+      "⚠️ SHOULDER: SKIP the HIGH angle (above shoulder) if it causes ANY pinching or discomfort in left shoulder. Low and mid angles only until labrum improves.",
+      "⚠️ BACK: Stand tall through the stretch — no arching back to compensate.",
+      "⚠️ KNEE: No impact."
+    ],
+    "proTip": "The low angle is often the tightest — spend extra time there. That's pec minor, which most people neglect.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder dislocation",
+      "Acute anterior shoulder pain (skip high angle)"
+    ]
+  },
+  {
+    "id": "c6",
+    "name": "Side-Lying Quad Stretch",
+    "category": "cooldown",
+    "emoji": "🦵",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 1,
+    "reps": "30s each leg",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 5 },
+    "muscles": {
+      "primary": ["Quadriceps", "Rectus Femoris"],
+      "secondary": ["Hip Flexors"]
+    },
+    "equipment": "Mat, strap (optional)",
+    "difficulty": "Beginner",
+    "tempo": "Static hold",
+    "purpose": "Stretches quads and hip flexors — tight hip flexors tilt pelvis anteriorly, stressing lower back.",
+    "whyForYou": "Tight quads/hip flexors pull your pelvis forward and compress your lower back. Must address daily.",
+    "steps": [
+      "Lie on your side. Bottom leg slightly bent for balance.",
+      "Grab top ankle (or use strap). Pull heel toward glute.",
+      "Keep knees together. Push hip slightly forward for deeper stretch.",
+      "Hold 30s. Breathe deeply. Switch sides."
+    ],
+    "formCues": [
+      "✅ Knees stay together",
+      "✅ Hip pushes slightly forward — stretches hip flexor too",
+      "✅ 6/10 intensity — no yanking"
+    ],
+    "commonMistakes": [
+      "❌ Arching lower back (defeats the purpose)",
+      "❌ Knee drifting behind body (too aggressive)",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "ZERO — passive stretch.",
+    "injuryNotes": [
+      "⚠️ KNEE: LEFT side — use strap if you can't reach ankle comfortably. DO NOT force deep flexion. Pull only to mild stretch — no sharp knee pain.",
+      "⚠️ BACK: Keep pelvis neutral — no excessive arching. If back hurts, reduce pull.",
+      "⚠️ SHOULDER: If reaching back bothers left shoulder, use strap or towel to extend reach."
+    ],
+    "proTip": "Side-lying version is safer for your back than standing — gravity doesn't pull you into extension.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee swelling preventing flexion",
+      "Acute quad/hip flexor strain"
+    ]
+  },
+  {
+    "id": "c7",
+    "name": "Figure-4 Stretch",
+    "category": "cooldown",
+    "emoji": "4️⃣",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Glutes",
+    "sets": 1,
+    "reps": "30s each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 5 },
+    "muscles": {
+      "primary": ["Piriformis", "Gluteus Medius"],
+      "secondary": ["Hip External Rotators", "Gluteus Maximus"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Static hold",
+    "purpose": "Supine pigeon alternative — same deep hip stretch, easier on the knee.",
+    "whyForYou": "Knee-friendly alternative to pigeon stretch. Same piriformis release, zero knee stress.",
+    "steps": [
+      "Lie on back. Cross RIGHT ankle over LEFT knee (making a '4' shape).",
+      "Pull LEFT thigh toward chest — feel stretch in RIGHT glute/hip.",
+      "Hold 30s. Breathe into the stretch.",
+      "Switch sides."
+    ],
+    "formCues": [
+      "✅ Head stays on floor — relaxed",
+      "✅ Pull thigh, not shin",
+      "✅ Flexed foot on the crossed leg (protects knee)"
+    ],
+    "commonMistakes": [
+      "❌ Head straining up off floor",
+      "❌ Pulling too hard — 6/10 stretch max",
+      "❌ Foot not flexed (knee unprotected)"
+    ],
+    "coreBracing": "ZERO — fully relaxed.",
+    "injuryNotes": [
+      "⚠️ KNEE: Flex the foot of the crossed leg — protects knee ligaments. If left knee can't tolerate crossing, do seated version on a chair.",
+      "⚠️ BACK: Supine position — back is supported. One of the safest hip stretches for you.",
+      "⚠️ SHOULDER: If reaching behind thigh is hard, use a strap/towel."
+    ],
+    "proTip": "Press the crossed knee gently away with your elbow for a deeper stretch into external rotation.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute knee injury preventing crossing position",
+      "Hip replacement (consult PT for clearance)"
+    ]
+  },
+  {
+    "id": "c8",
+    "name": "Thread the Needle",
+    "category": "cooldown",
+    "emoji": "🪡",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 1,
+    "reps": "8 each side",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 4 },
+    "muscles": {
+      "primary": ["Thoracic Rotators", "Rhomboids"],
+      "secondary": ["Posterior Deltoid", "Intercostals"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "3s thread, 2s hold, 3s open",
+    "purpose": "Thoracic rotation stretch — opens the mid-back and posterior shoulder.",
+    "whyForYou": "Opens your thoracic spine so it can rotate freely — keeps rotation demand OFF your lumbar spine.",
+    "steps": [
+      "Start on all fours. Slide RIGHT arm UNDER the left arm (threading).",
+      "Let right shoulder and temple rest on the floor.",
+      "Hold 2 breaths. Then open — reach right arm to ceiling.",
+      "Return to thread. Repeat 8 times, then switch sides."
+    ],
+    "formCues": [
+      "✅ Hips stay stacked over knees throughout",
+      "✅ Reach through fully — feel the mid-back open",
+      "✅ Open to ceiling fully — feel the chest open"
+    ],
+    "commonMistakes": [
+      "❌ Hips shifting back toward heels",
+      "❌ Rushing the movement",
+      "❌ Not reaching far enough in either direction"
+    ],
+    "coreBracing": "ZERO — mobility drill. Stay relaxed.",
+    "injuryNotes": [
+      "⚠️ BACK: Excellent for thoracic mobility — reduces lumbar rotation demand. Keep hips stable.",
+      "⚠️ KNEE: Pad knees if uncomfortable on all fours.",
+      "⚠️ SHOULDER: If left shoulder catches during the thread, reduce depth. The open-to-ceiling phase may need to be limited."
+    ],
+    "proTip": "Breathe OUT as you thread — you'll slide deeper. Breathe IN as you open — you'll reach further.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute shoulder dislocation on threading side",
+      "Acute thoracic disc issue"
+    ]
+  },
+  {
+    "id": "c9",
+    "name": "Supine Spinal Twist",
+    "category": "cooldown",
+    "emoji": "🌀",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Back",
+    "sets": 1,
+    "reps": "30s each side",
+    "rest": 0,
+    "intensity": "RPE 1",
+    "breathing": { "inhale": 4, "hold": 0, "exhale": 6 },
+    "muscles": {
+      "primary": ["Obliques", "Thoracic Rotators", "Erector Spinae"],
+      "secondary": ["Gluteus Medius", "Piriformis", "Pectorals"]
+    },
+    "equipment": "Mat",
+    "difficulty": "Beginner",
+    "tempo": "Static hold — let gravity work",
+    "purpose": "Gentle spinal rotation with full back support — decompresses and realigns.",
+    "whyForYou": "Supported spinal rotation — the floor does the work. Safe end-of-session release for your back.",
+    "steps": [
+      "Lie flat on back. Bring knees to chest.",
+      "Let both knees fall to the RIGHT. Keep LEFT shoulder on the floor.",
+      "Arms out in T-position. Look LEFT (opposite to knees).",
+      "Hold 30s. Breathe deeply — exhale to sink deeper. Switch sides."
+    ],
+    "formCues": [
+      "✅ Opposite shoulder stays DOWN",
+      "✅ Knees stay together",
+      "✅ Let gravity pull knees — no forcing"
+    ],
+    "commonMistakes": [
+      "❌ Forcing knees to the floor",
+      "❌ Opposite shoulder lifting (reduces the twist)",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "ZERO — completely passive. Let gravity do everything.",
+    "injuryNotes": [
+      "⚠️ BACK: Gentle and supported — safe for post-surgical back. If any sharp pain, reduce the twist (don't let knees go as far). STOP if radiating symptoms.",
+      "⚠️ KNEE: Place pillow between knees for comfort.",
+      "⚠️ SHOULDER: T-position arms — if left shoulder doesn't reach the floor, bend the elbow. No forcing."
+    ],
+    "proTip": "This is your last exercise of the session — take your time. 5 slow breaths each side minimum.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute disc herniation with rotational intolerance",
+      "Radiating nerve pain during the twist"
+    ]
+  },
+  {
+    "id": "c10",
+    "name": "Standing Calf Stretch",
+    "category": "cooldown",
+    "emoji": "🧱",
+    "location": ["gym", "home", "outdoor"],
+    "bodyPart": "Legs",
+    "sets": 1,
+    "reps": "30s each leg",
+    "rest": 0,
+    "intensity": "RPE 2",
+    "breathing": { "inhale": 3, "hold": 0, "exhale": 5 },
+    "muscles": {
+      "primary": ["Gastrocnemius", "Soleus"],
+      "secondary": ["Achilles Tendon", "Plantar Fascia"]
+    },
+    "equipment": "Wall or step",
+    "difficulty": "Beginner",
+    "tempo": "Static hold",
+    "purpose": "Restores calf/ankle flexibility — tight calves limit squat depth and increase knee stress.",
+    "whyForYou": "Tight calves restrict ankle dorsiflexion — which causes compensations up the chain to your knee and back.",
+    "steps": [
+      "Face wall. Step one foot back — keep back heel DOWN.",
+      "Lean into wall — feel stretch in back calf. Leg stays straight.",
+      "Hold 30s. Then BEND the back knee slightly — stretches soleus.",
+      "Hold 15s bent. Switch legs."
+    ],
+    "formCues": [
+      "✅ Back heel stays ON the ground",
+      "✅ Toes point straight ahead — no duck foot",
+      "✅ Two phases: straight leg (gastroc) then bent (soleus)"
+    ],
+    "commonMistakes": [
+      "❌ Heel lifting off ground",
+      "❌ Toes turning out",
+      "❌ Only stretching straight leg (missing soleus)"
+    ],
+    "coreBracing": "ZERO — passive stretch.",
+    "injuryNotes": [
+      "⚠️ KNEE: Bent-knee phase should be gentle — stop if knee discomfort.",
+      "⚠️ BACK: Lean forward from the ankle, not by rounding back.",
+      "⚠️ SHOULDER: Just leaning on wall — no stress."
+    ],
+    "proTip": "Do both straight-leg AND bent-knee versions — they hit different muscles. Most people skip the bent-knee.",
+    "phase": [1, 2, 3],
+    "contraindications": [
+      "Acute Achilles rupture",
+      "Acute calf strain"
+    ]
+  }
+]

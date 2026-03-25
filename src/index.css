@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: #060b18;
+  color: #e8ecf4;
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Users/johnc/Desktop/personal_trainer_app/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.json \\\\\\))"
+    ]
+  }
+}

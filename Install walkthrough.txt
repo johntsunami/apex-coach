@@ -1,0 +1,298 @@
+# APEX Coach — Full Install Walkthrough
+
+## What You Need
+- A computer (Mac or Windows)
+- An Anthropic account (you already have one since you're using Claude)
+- ~10 minutes
+
+---
+
+## Step 1: Install Node.js
+
+**Mac:**
+Go to https://nodejs.org → Download the LTS version → Run the installer
+
+**Windows:**
+Same — https://nodejs.org → LTS → Run installer
+
+**Verify it worked:**
+Open Terminal (Mac) or Command Prompt (Windows) and type:
+```bash
+node --version
+# Should show something like v22.x.x
+
+npm --version
+# Should show something like 10.x.x
+```
+
+---
+
+## Step 2: Install Claude Code
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+This installs the `claude` command globally on your machine.
+
+**Verify:**
+```bash
+claude --version
+```
+
+**First-time setup — it will ask you to authenticate:**
+```bash
+claude
+# It opens a browser window to log in with your Anthropic account
+# Once authenticated, you're connected
+```
+
+---
+
+## Step 3: Create Your Project
+
+```bash
+# Navigate to where you want the project (e.g., Desktop)
+cd ~/Desktop
+
+# Create the project with Vite (faster than create-react-app)
+npm create vite@latest apex-coach -- --template react
+
+# Move into the project
+cd apex-coach
+
+# Install dependencies
+npm install
+```
+
+---
+
+## Step 4: Set Up Your Files
+
+### 4a. Copy CLAUDE.md into the project root
+Take the `CLAUDE.md` file from this chat and save it as:
+```
+apex-coach/CLAUDE.md
+```
+
+### 4b. Copy the app code
+Take the `apex-coach.jsx` file from this chat and save it as:
+```
+apex-coach/src/App.jsx
+```
+(Replace the existing App.jsx that Vite created)
+
+### 4c. Update index.css for dark background
+Open `apex-coach/src/index.css` and replace contents with:
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: #060b18;
+  color: #e8ecf4;
+  -webkit-font-smoothing: antialiased;
+}
+```
+
+### 4d. Clean up Vite defaults
+Delete these files (they're Vite boilerplate you don't need):
+```bash
+rm src/App.css
+rm src/assets/react.svg
+rm public/vite.svg
+```
+
+---
+
+## Step 5: Test Locally
+
+```bash
+npm run dev
+```
+
+This starts a dev server. Open the URL it shows (usually http://localhost:5173).
+You should see APEX Coach running.
+
+**To access on your phone (same WiFi):**
+Vite shows a "Network" URL like `http://192.168.1.100:5173` — open that on your phone.
+
+---
+
+## Step 6: Initialize Claude Code
+
+With your terminal in the `apex-coach/` folder:
+```bash
+claude
+```
+
+Claude Code starts up and **automatically reads your CLAUDE.md file**. 
+You'll see it acknowledge the project context.
+
+**Now you can give it commands like:**
+- "Add the location selector to the check-in flow"
+- "Fix the rest timer — it's not showing between sets"
+- "Add localStorage to persist workout data"
+- "Expand the exercise library to 30 exercises"
+
+**Claude Code will:**
+1. Read the CLAUDE.md rules first (every session)
+2. Open the relevant source files
+3. Make surgical edits (not full rewrites, per Rule 2)
+4. Save the changes to your actual files
+5. You see the changes live in your browser immediately (Vite hot-reloads)
+
+---
+
+## Step 7: Deploy to Your Phone (Permanent URL)
+
+```bash
+# Install Vercel CLI (one-time)
+npm install -g vercel
+
+# Deploy (from your project root)
+vercel
+
+# First time: it asks a few questions
+# - Set up and deploy? Y
+# - Which scope? (select your account)
+# - Link to existing project? N
+# - Project name? apex-coach
+# - Directory? ./
+# - Override settings? N
+
+# It deploys and gives you a URL like:
+# https://apex-coach-abc123.vercel.app
+```
+
+**Bookmark this URL on your iPhone:**
+1. Open the URL in Safari
+2. Tap the Share button (square with arrow)
+3. Tap "Add to Home Screen"
+4. Name it "APEX Coach"
+5. Tap Add
+
+Now it opens like a native app from your home screen.
+
+**Every time you make changes and want to update:**
+```bash
+vercel
+```
+That's it. One command. Phone auto-gets the latest.
+
+---
+
+## Step 8: Set Up Git (Recommended — Prevents Data Loss)
+
+```bash
+# Initialize git
+git init
+
+# Create .gitignore
+echo "node_modules/
+dist/
+.vercel/
+" > .gitignore
+
+# First commit
+git add .
+git commit -m "Initial APEX Coach setup with CLAUDE.md rules"
+```
+
+Now you have version history. If Claude Code ever breaks something:
+```bash
+git diff          # See what changed
+git checkout .    # Undo all changes back to last commit
+```
+
+---
+
+## Daily Workflow
+
+### Making Changes (at your PC):
+```bash
+cd ~/Desktop/apex-coach
+claude
+# Tell it what you want. It edits the files directly.
+# Watch changes live at localhost:5173
+# When happy:
+git add . && git commit -m "description of changes"
+vercel
+```
+
+### Using the App (at the gym):
+Open your bookmarked URL on your phone. That's it.
+
+### Reporting Bugs (after gym):
+Come back to your PC, open Claude Code, describe what broke.
+Claude Code reads the files, fixes them, you redeploy.
+
+---
+
+## How Claude Code Reads Files — The Details
+
+Claude Code has FULL filesystem access within your project:
+
+| What it does | How |
+|---|---|
+| Reads files | Opens and reads any file in your project directory |
+| Edits files | Makes targeted changes to specific lines |
+| Creates files | Can create new components, utilities, etc. |
+| Runs commands | Can run `npm run dev`, `npm test`, etc. |
+| Reads CLAUDE.md | Automatically, every session start |
+| Reads .claude/rules/ | Automatically loads rule files from this directory |
+| Remembers corrections | Auto-memory saves things you correct it on |
+
+**What it CANNOT do:**
+- Access files outside your project directory (without permission)
+- Access the internet (unless you configure MCP servers)
+- Remember previous sessions (that's what CLAUDE.md is for)
+
+**The CLAUDE.md hierarchy:**
+```
+~/.claude/CLAUDE.md          ← Your personal global preferences (all projects)
+apex-coach/CLAUDE.md         ← Project-specific rules (THIS is your main one)
+apex-coach/.claude/rules/    ← Additional modular rule files
+```
+
+All of these load automatically. You never have to paste rules into a chat.
+
+---
+
+## Troubleshooting
+
+**"claude: command not found"**
+→ Run `npm install -g @anthropic-ai/claude-code` again
+
+**"node: command not found"**
+→ Reinstall Node.js from https://nodejs.org
+
+**App doesn't load on phone**
+→ Make sure phone and computer are on the same WiFi
+→ Check the Network URL from `npm run dev` output
+
+**Vercel deploy fails**
+→ Run `npm run build` first to check for errors
+→ Fix any errors, then `vercel` again
+
+**Claude Code ignores CLAUDE.md rules**
+→ Make sure CLAUDE.md is in the project ROOT (not in src/)
+→ Keep it under 200 lines for best adherence
+→ Use specific, concrete instructions (not vague)
+
+---
+
+## Quick Reference Commands
+
+```bash
+npm run dev              # Start local dev server
+npm run build            # Build for production
+vercel                   # Deploy to phone
+claude                   # Start Claude Code session
+git add . && git commit -m "msg"   # Save your work
+git diff                 # See what changed
+git log --oneline        # See commit history
+git checkout .           # Undo unsaved changes
+```
