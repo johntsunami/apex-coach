@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import exerciseDB from "./data/exercises.json";
 import { getSessions, saveSession, getStats, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
+import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capExerciseParams, getVolumeSummary, getTrainingWeek } from "./utils/volumeTracker.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -361,11 +362,11 @@ const CATEGORIES=["All","warmup","main","cooldown","rehab","mobility","mckenzie"
 const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
 const ABILITY_LEVELS=["All","any","standing","seated_only","supine_only","wheelchair_accessible","aquatic","bed_bound"];
 
-// Extract phase-appropriate sets/reps/rest/intensity from phaseParams
-function exParams(ex, phase=CURRENT_PHASE) {
+// Extract phase-appropriate sets/reps/rest/intensity from phaseParams (with volume caps)
+function exParams(ex, phase=CURRENT_PHASE, diff="standard") {
   if (ex._legacy) return { sets: ex.sets||1, reps: ex.reps||"—", rest: ex.rest||0, intensity: ex.intensity||"", tempo: ex.tempo||"" };
-  const p = ex.phaseParams?.[String(phase)] || Object.values(ex.phaseParams||{})[0] || {};
-  return { sets: parseInt(p.sets)||1, reps: p.reps||"—", rest: parseInt(p.rest)||0, intensity: p.intensity||"", tempo: p.tempo||"" };
+  const cp = capExerciseParams(ex, phase, diff);
+  return { sets: cp.sets, reps: cp.reps, rest: cp.rest, intensity: cp.intensity, tempo: cp.tempo, _capped: cp._capped, _deload: cp._deload };
 }
 
 // Normalize muscles access (new schema uses flat arrays)
@@ -409,7 +410,10 @@ function trySubstitute(ex, location, phase) {
   return { ...sub, _swappedFor: ex.name, _swapReason: location === "outdoor" ? "outdoor — no gym equipment" : "home — equipment not available" };
 }
 
-function buildWorkoutList(phase=1, location="gym") {
+function buildWorkoutList(phase=1, location="gym", difficulty="standard") {
+  const weeklyVol = getWeeklyVolume();
+  const runningVol = { ...weeklyVol }; // mutable copy for tracking within this session
+  const volSwaps = []; // track volume-based substitutions
   const pick = (category, limit) => {
     const pool = exerciseDB.filter(e =>
       e.category === category &&
@@ -421,23 +425,42 @@ function buildWorkoutList(phase=1, location="gym") {
     for (const ex of pool) {
       if (result.length >= limit) break;
       if (usedIds.has(ex.id)) continue;
+      // Location filter
+      let picked = null;
       if (locationFilter(ex, location)) {
-        result.push(ex);
-        usedIds.add(ex.id);
+        picked = ex;
       } else {
         const sub = trySubstitute(ex, location, phase);
-        if (sub && !usedIds.has(sub.id)) {
-          result.push(sub);
-          usedIds.add(sub.id);
-        }
+        if (sub && !usedIds.has(sub.id)) picked = sub;
       }
+      if (!picked) continue;
+      // Volume check for main exercises
+      if (category === "main") {
+        const volCheck = wouldExceedVolume(picked, runningVol, phase);
+        if (volCheck.exceeded) {
+          const mobSub = findVolumeSub(picked, exerciseDB, phase, location);
+          if (mobSub && !usedIds.has(mobSub.id)) {
+            const swapNote = `${volCheck.muscle.replace(/_/g," ")} is at ${volCheck.current}/${volCheck.limit} sets this week`;
+            volSwaps.push({ original: picked.name, reason: swapNote, replacement: mobSub.name });
+            result.push({ ...mobSub, _swappedFor: picked.name, _swapReason: swapNote + " — swapped to prevent overtraining" });
+            usedIds.add(mobSub.id);
+          }
+          continue;
+        }
+        // Track volume we're adding
+        const bp = picked.bodyPart || "other";
+        const cp = capExerciseParams(picked, phase, difficulty);
+        runningVol[bp] = (runningVol[bp] || 0) + cp.sets;
+      }
+      result.push(picked);
+      usedIds.add(picked.id);
     }
     return result;
   };
   const warmup = pick("warmup", 5);
   const main = pick("main", 6);
   const cooldown = pick("cooldown", 3);
-  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location };
+  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location, volSwaps, weeklyVol: runningVol };
 }
 
 // Default workout for backward compat with session flow
@@ -460,6 +483,7 @@ function HomeScreen({onStart}){const[si,setSi]=useState(null);const stats=getSta
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></Card>
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{[{v:String(stats.totalSessions),l:"Days Done"},{v:`${stats.streak} 🔥`,l:"Streak"},{v:String(stats.sessionsThisWeek),l:"This Week",c:C.teal},{v:stats.totalSessions>0?`${Math.min(100,Math.round(stats.streak/7*100))}%`:"—",l:"Consistency",c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:s.v.length>3?28:36,fontWeight:800,color:s.c||C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,textTransform:"uppercase",letterSpacing:1.5}}>{s.l}</div></Card>))}</div>
+  {(()=>{const vs=getVolumeSummary(CURRENT_PHASE);const tw=getTrainingWeek();return(<div><SectionTitle icon="📊" title={`Weekly Volume — Week ${tw.week}`} sub={tw.isDeload?"DELOAD WEEK — 50% volume for recovery":vs.groups.length===0?"No sessions this week yet":"Sets completed vs limit per muscle"}/>{tw.isDeload&&<Card style={{background:C.info+"10",borderColor:C.info+"30",marginBottom:10,padding:14}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>🔄</span><div><div style={{fontSize:13,fontWeight:700,color:C.info}}>Deload Week Active</div><div style={{fontSize:11,color:C.textMuted}}>All volume reduced 50%. Focus on movement quality and recovery. Max {vs.limit.max} sets/muscle.</div></div></div></Card>}{vs.groups.length>0&&<Card style={{padding:14}}>{vs.groups.map(g=>(<div key={g.muscle} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:11,fontWeight:600,color:C.text,minWidth:70}}>{g.muscle}</span><div style={{flex:1}}><ProgressBar value={g.sets} max={g.limit} color={g.over?C.danger:g.pct>=80?C.warning:C.teal} height={5}/></div><span style={{fontSize:10,fontWeight:700,color:g.over?C.danger:g.pct>=80?C.warning:C.textMuted,minWidth:44,textAlign:"right"}}>{g.sets}/{g.limit}</span></div>))}</Card>}</div>);})()}
   <div><SectionTitle icon="🗓️" title="Your Plan"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:"Phase 1",s:"Foundation",a:true},{n:"Phase 2",s:"Strength",a:false},{n:"Phase 3",s:"Hypertrophy",a:false}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:14,borderColor:p.a?C.teal+"40":C.border,background:p.a?C.tealBg:C.bgCard}}><div style={{fontSize:14,fontWeight:700,color:p.a?C.text:C.textDim}}>{p.n}</div><div style={{fontSize:11,color:p.a?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div></div>
   <div><SectionTitle icon="📋" title="Daily Minimums"/><Card>{[{i:"👟",l:"Steps",v:"4,200 / 8,000",p:52},{i:"🫀",l:"Cardio",v:"0 MIN",p:0},{i:"🧘",l:"Stretching",v:"0 MIN",p:0}].map(d=>(<div key={d.l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span>{d.i}</span><span style={{fontSize:14,color:C.text,fontWeight:600}}>{d.l}</span><span style={{fontSize:12,color:C.textMuted}}>— {d.v}</span></div><Badge color={d.p>0?C.teal:C.orange}>{d.p>0?`${d.p}%`:d.v.split(" ")[0]}</Badge></div>))}</Card></div>
   <div><SectionTitle icon="🩺" title="Active Injury Protocols" sub="Tap to expand"/>{INJURIES.map(inj=>(<Card key={inj.id} onClick={()=>setSi(si===inj.id?null:inj.id)} style={{marginBottom:8,cursor:"pointer"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{inj.area}</div><div style={{fontSize:12,color:C.textDim}}>{inj.type}</div></div><Badge color={inj.severity<=2?C.warning:C.danger}>SEV {inj.severity}/5</Badge></div>{si===inj.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>{inj.protocols.map((p,i)=><div key={i} style={{display:"flex",gap:8,padding:"5px 0"}}><span style={{color:C.teal}}>▸</span><span style={{fontSize:13,color:C.textMuted}}>{p}</span></div>)}</div>}</Card>))}</div>
@@ -878,7 +902,7 @@ export default function ApexCoach(){
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
-  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
   const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
@@ -890,7 +914,7 @@ export default function ApexCoach(){
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
-    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{setDifficulty(d||"standard");setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
+    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
     {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
