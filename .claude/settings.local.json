@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find /c/Users/johnc/Desktop/personal_trainer_app/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.json \\\\\\))"
+      "Bash(find /c/Users/johnc/Desktop/personal_trainer_app/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.json \\\\\\))",
+      "Bash(gh repo:*)",
+      "Bash(schtasks:*)",
+      "Bash(node -e \":*)",
+      "Bash(npm run:*)"
     ]
   }
 }
