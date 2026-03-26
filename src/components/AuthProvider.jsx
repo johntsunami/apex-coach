@@ -68,19 +68,41 @@ export default function AuthProvider({ children }) {
   }
 
   async function signUp(email, password, firstName) {
-    if (!isSupabaseAvailable()) return { error: { message: "Supabase not configured" } };
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { first_name: firstName } },
-    });
-    return { data, error };
+    if (!isSupabaseAvailable()) {
+      console.error("APEX signUp: Supabase not available");
+      return { error: { message: "Supabase not configured — check env vars" } };
+    }
+    try {
+      console.log("APEX signUp: attempting for", email);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { first_name: firstName } },
+      });
+      if (error) console.error("APEX signUp error:", error.message, error.status, error);
+      else console.log("APEX signUp success:", data?.user?.id);
+      return { data, error };
+    } catch (e) {
+      console.error("APEX signUp exception:", e);
+      return { error: { message: e.message || "Network error — check your connection" } };
+    }
   }
 
   async function signIn(email, password) {
-    if (!isSupabaseAvailable()) return { error: { message: "Supabase not configured" } };
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    return { data, error };
+    if (!isSupabaseAvailable()) {
+      console.error("APEX signIn: Supabase not available");
+      return { error: { message: "Supabase not configured — check env vars" } };
+    }
+    try {
+      console.log("APEX signIn: attempting for", email);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) console.error("APEX signIn error:", error.message, error.status, error);
+      else console.log("APEX signIn success:", data?.user?.id);
+      return { data, error };
+    } catch (e) {
+      console.error("APEX signIn exception:", e);
+      return { error: { message: e.message || "Network error — check your connection" } };
+    }
   }
 
   async function signOut() {

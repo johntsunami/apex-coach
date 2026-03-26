@@ -64,13 +64,22 @@ export function SignUpScreen({ onBack, onSuccess }) {
     if (!email.trim()) return setError("Email is required");
     if (password.length < 6) return setError("Password must be at least 6 characters");
     setLoading(true);
-    const { error: err } = await signUp(email.trim(), password, firstName.trim());
-    setLoading(false);
-    if (err) {
-      if (err.message?.includes("already registered")) setError("An account with this email already exists. Try logging in.");
-      else setError(err.message || "Sign up failed");
-    } else {
-      onSuccess?.();
+    try {
+      const { data, error: err } = await signUp(email.trim(), password, firstName.trim());
+      setLoading(false);
+      if (err) {
+        console.error("SignUp UI error:", err);
+        if (err.message?.includes("already registered")) setError("An account with this email already exists. Try logging in.");
+        else if (err.message?.includes("fetch") || err.message?.includes("load") || err.message?.includes("network")) setError("Network error — could not reach the server. Check your connection and try again.");
+        else setError(err.message || "Sign up failed — check console for details");
+      } else {
+        console.log("SignUp UI success, user:", data?.user?.id);
+        onSuccess?.();
+      }
+    } catch (e) {
+      setLoading(false);
+      console.error("SignUp UI exception:", e);
+      setError("Unexpected error: " + (e.message || "unknown") + " — check browser console");
     }
   };
 
