@@ -7,7 +7,12 @@ This is a fitness + mental health coaching app. The founder (John) is the test s
 ## Commands
 - `npm run dev` — Start dev server
 - `npm run build` — Production build
-- `vercel` — Deploy to phone
+- `git push origin master` — Auto-deploys to Vercel
+
+## Live URL
+- **Production**: https://apex-coach-five.vercel.app/
+- **GitHub**: https://github.com/johntsunami/apex-coach
+- Auto-deploys on every push to master via Vercel GitHub integration
 
 ## Architecture
 - Single React app in `src/App.tsx` (will be split into components later)
