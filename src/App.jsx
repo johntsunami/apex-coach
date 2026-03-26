@@ -604,21 +604,60 @@ function PlanScreen({checkIn,workout,onGo}){
       </div>))}
       <div style={{fontSize:9,color:C.textDim,marginTop:6,fontStyle:"italic"}}>Showing top {excluded.length} — full list of {exerciseDB.length - workout.all.length} excluded available in Library filters.</div>
     </Card>}
-    {/* Difficulty selector */}
-    <Card>
-      <div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>DIFFICULTY</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-        {[{id:"standard",label:"Standard",desc:"Recommended",icon:"✅",color:C.success},{id:"push",label:"Push It",desc:"+10% volume",icon:"💪",color:C.warning},{id:"send",label:"Full Send",desc:"Max capacity",icon:"🔥",color:C.danger}].map(d=>(<div key={d.id} onClick={()=>setDiff(d.id)} style={{textAlign:"center",padding:12,borderRadius:12,border:`1px solid ${diff===d.id?d.color+"60":C.border}`,background:diff===d.id?d.color+"12":"transparent",cursor:"pointer"}}>
-          <div style={{fontSize:18}}>{d.icon}</div>
-          <div style={{fontSize:12,fontWeight:700,color:diff===d.id?d.color:C.text,marginTop:4}}>{d.label}</div>
-          <div style={{fontSize:9,color:C.textDim,marginTop:2}}>{d.desc}</div>
-        </div>))}
-      </div>
-      {diff==="push"&&<div style={{fontSize:10,color:C.warning,marginTop:8,padding:8,background:C.warning+"10",borderRadius:8}}>⚠️ Adding ~10% volume. Extra sets on compounds. Stop if form breaks.</div>}
-      {diff==="send"&&<div style={{fontSize:10,color:C.danger,marginTop:8,padding:8,background:C.danger+"10",borderRadius:8}}>🔥 Maximum safe capacity. Only if RTT ≥70 and no pain flags. You asked for it.</div>}
-    </Card>
+    {/* Difficulty selector with safety gates */}
+    {(()=>{
+      const sessions=getSessions();
+      const recent2=sessions.slice(-2);
+      const maxSev=Math.max(...INJURIES.map(i=>i.severity));
+      const recentPain=recent2.length>0?Math.max(...recent2.map(s=>s.reflection?.pain||0)):0;
+      const sessionCount=sessions.length;
+      const isDeload=sessionCount>0&&Math.ceil(sessionCount/12)!==Math.ceil((sessionCount+1)/12); // every 12th session approximates 4th week
+      // Safety gate checks
+      const pushGates=[
+        {pass:maxSev<3,fail:`Back severity ${maxSev} is too high for increased intensity`},
+        {pass:recentPain<4,fail:`Pain rating ${recentPain}/10 in recent sessions — reduce before pushing`},
+        {pass:sessionCount>=4,fail:`Complete ${4-sessionCount} more session${4-sessionCount!==1?"s":""} at Standard first`},
+        {pass:!isDeload,fail:"This is a deload period — stay at Standard for recovery"},
+      ];
+      const sendGates=[
+        {pass:maxSev<2,fail:`Injury severity ${maxSev} must be below 2 for Full Send`},
+        {pass:recentPain<3,fail:`Pain rating must be below 3 — currently ${recentPain}/10`},
+        {pass:sessionCount>=8,fail:`Complete ${8-sessionCount} more session${8-sessionCount!==1?"s":""} at Standard/Push before unlocking`},
+        {pass:!isDeload,fail:"Deload week — Full Send is blocked for recovery"},
+        {pass:rtt>=70,fail:`RTT must be ≥70 (currently ${rtt}) — readiness too low`},
+      ];
+      const pushOk=pushGates.every(g=>g.pass);
+      const sendOk=sendGates.every(g=>g.pass);
+      const pushBlock=pushGates.find(g=>!g.pass);
+      const sendBlock=sendGates.find(g=>!g.pass);
+      const options=[
+        {id:"standard",label:"Standard",desc:"Recommended",icon:"✅",color:C.success,ok:true,detail:null},
+        {id:"push",label:"Push It",desc:"+15% vol, +1 set, -10s rest",icon:"💪",color:C.warning,ok:pushOk,detail:pushBlock?.fail,
+         impact:"Main exercises: +1 set each. Rest periods: -10s. Volume: +15%. Stop if form breaks."},
+        {id:"send",label:"Full Send",desc:"+25% vol, +2 sets, -20s rest",icon:"🔥",color:C.danger,ok:sendOk,detail:sendBlock?.fail,
+         impact:"Main exercises: +2 sets each. Rest: -20s. Volume: +25%. May add progression chain exercises."},
+      ];
+      return(<Card>
+        <div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>DIFFICULTY OVERRIDE</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+          {options.map(d=>(<div key={d.id} onClick={()=>d.ok&&setDiff(d.id)} style={{textAlign:"center",padding:12,borderRadius:12,border:`1px solid ${diff===d.id&&d.ok?d.color+"60":C.border}`,background:diff===d.id&&d.ok?d.color+"12":"transparent",cursor:d.ok?"pointer":"not-allowed",opacity:d.ok?1:0.4}}>
+            <div style={{fontSize:18}}>{d.icon}</div>
+            <div style={{fontSize:11,fontWeight:700,color:diff===d.id&&d.ok?d.color:d.ok?C.text:C.textDim,marginTop:4}}>{d.label}</div>
+            <div style={{fontSize:8,color:C.textDim,marginTop:2}}>{d.desc}</div>
+            {!d.ok&&<div style={{fontSize:8,color:C.danger,marginTop:4}}>🔒 Locked</div>}
+          </div>))}
+        </div>
+        {diff!=="standard"&&options.find(o=>o.id===diff)?.impact&&<div style={{marginTop:10,padding:10,background:(diff==="push"?C.warning:C.danger)+"10",borderRadius:8,borderLeft:`3px solid ${diff==="push"?C.warning:C.danger}`}}>
+          <div style={{fontSize:10,fontWeight:700,color:diff==="push"?C.warning:C.danger,marginBottom:4}}>CHANGES TO YOUR PLAN</div>
+          <div style={{fontSize:10,color:C.text}}>{options.find(o=>o.id===diff).impact}</div>
+          {diff==="push"&&<div style={{fontSize:10,color:C.textMuted,marginTop:4}}>Main sets: {workout.main.map(e=>{const p=exParams(e);return p.sets||1;}).join(",")} → {workout.main.map(e=>{const p=exParams(e);return(p.sets||1)+1;}).join(",")}</div>}
+          {diff==="send"&&<div style={{fontSize:10,color:C.textMuted,marginTop:4}}>Main sets: {workout.main.map(e=>{const p=exParams(e);return p.sets||1;}).join(",")} → {workout.main.map(e=>{const p=exParams(e);return(p.sets||1)+2;}).join(",")}</div>}
+        </div>}
+        {!pushOk&&diff==="standard"&&<div style={{marginTop:8,padding:8,background:C.bgGlass,borderRadius:8}}><div style={{fontSize:9,color:C.textDim}}>🔒 <b>Push It</b>: {pushBlock.fail}</div>{!sendOk&&<div style={{fontSize:9,color:C.textDim,marginTop:2}}>🔒 <b>Full Send</b>: {sendBlock.fail}</div>}</div>}
+      </Card>);
+    })()}
     {/* Go button */}
-    <Btn onClick={onGo} icon="⚡" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,fontSize:18}}>LOOKS GOOD — LET'S GO</Btn>
+    <Btn onClick={()=>onGo(diff)} icon="⚡" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,fontSize:18}}>LOOKS GOOD — LET'S GO</Btn>
     <div style={{height:90}}/>
   </div>);
 }
@@ -834,6 +873,7 @@ export default function ApexCoach(){
   const[sessionStart,setSessionStart]=useState(null);
   const[workout,setWorkout]=useState(defaultWorkout);
   const[workoutMode,setWorkoutMode]=useState("guided");
+  const[difficulty,setDifficulty]=useState("standard");
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
@@ -842,15 +882,15 @@ export default function ApexCoach(){
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
   const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
-  const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:null,soreness_areas:[],energy:null,stress:null,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:"just_right"});
-  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);};
+  const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:"just_right",difficulty});
+  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");};
   return(<div style={{fontFamily:"'DM Sans',-apple-system,sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",padding:"20px 16px 40px",boxSizing:"border-box"}}>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
-    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={()=>setScreen(workoutMode==="quick"?"quickmode":"perform")}/>}
+    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{setDifficulty(d||"standard");setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
     {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
