@@ -1,37 +1,15 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Supabase public credentials (anon key is designed to be public — RLS protects data)
+const SUPABASE_URL = "https://prwvkrftyeeshsgcfnay.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByd3ZrcmZ0eWVlc2hzZ2NmbmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NDkzNDIsImV4cCI6MjA5MDEyNTM0Mn0.lfPTT0NS00JDRRuR3H5vV9aJKWysrIT1KQ8nb4esubo";
 
-// Debug: log what env vars we received (redacted)
-console.log("APEX Supabase config:", {
-  url: supabaseUrl ? supabaseUrl.substring(0, 30) + "..." : "MISSING",
-  keyPrefix: supabaseAnonKey ? supabaseAnonKey.substring(0, 10) + "..." : "MISSING",
-  keyLength: supabaseAnonKey?.length || 0,
-});
+// Use env vars if available, fallback to hardcoded public credentials
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn("APEX: Supabase env vars missing — running in offline/localStorage mode");
-  console.warn("APEX: Expected VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env or Vercel env vars");
-}
-
-// Supabase anon keys are JWTs (start with 'eyJ'). Warn if format looks wrong.
-if (supabaseAnonKey && !supabaseAnonKey.startsWith("eyJ")) {
-  console.warn("APEX: Anon key doesn't look like a Supabase JWT (expected 'eyJ...'). Check your Supabase dashboard → Settings → API → anon/public key.");
-}
-
-let supabase = null;
-try {
-  if (supabaseUrl && supabaseAnonKey) {
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
-    console.log("APEX: Supabase client created successfully");
-  }
-} catch (e) {
-  console.error("APEX: Failed to create Supabase client:", e);
-}
-
-export { supabase };
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export function isSupabaseAvailable() {
-  return !!supabase;
+  return true;
 }

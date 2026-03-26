@@ -84,7 +84,7 @@ export default function AuthProvider({ children }) {
       return { data, error };
     } catch (e) {
       console.error("APEX signUp exception:", e);
-      return { error: { message: e.message || "Network error — check your connection" } };
+      return { error: { message: "Sign up failed: " + (e.message || "unknown error") } };
     }
   }
 
@@ -101,7 +101,7 @@ export default function AuthProvider({ children }) {
       return { data, error };
     } catch (e) {
       console.error("APEX signIn exception:", e);
-      return { error: { message: e.message || "Network error — check your connection" } };
+      return { error: { message: "Login failed: " + (e.message || "unknown error") } };
     }
   }
 
