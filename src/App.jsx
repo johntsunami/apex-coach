@@ -492,13 +492,131 @@ function TrainScreen({onStart,workout}){
 }
 
 // ── CHECK-IN ────────────────────────────────────────────────────
-function CheckInScreen({onComplete}){const[step,setStep]=useState(0);const[location,setLocation]=useState(null);const[sleep,setSleep]=useState(null);const[sore,setSore]=useState([]);const[energy,setEnergy]=useState(5);const[stress,setStress]=useState(5);const toggle=id=>{if(id==="none"){setSore([]);return;}setSore(p=>p.includes(id)?p.filter(x=>x!==id):[...p.filter(x=>x!=="none"),id]);};const adapt=sv=>sv<=3?[{l:"Warm-up",v:"Standard"},{l:"Volume",v:"Full"},{l:"Rest",v:"Standard"},{l:"Tone",v:"Direct"},{l:"Length",v:"Standard"}]:sv<=6?[{l:"Warm-up",v:"+5 min"},{l:"Volume",v:"-20%"},{l:"Rest",v:"+15 sec"},{l:"Tone",v:"Supportive"},{l:"Length",v:"Can shorten"}]:[{l:"Warm-up",v:"+8 min"},{l:"Volume",v:"-40%"},{l:"Rest",v:"+30 sec"},{l:"Tone",v:"Gentle"},{l:"Length",v:"Shortened"}];const compute=()=>{const ss=sleep==="great"?10:sleep==="good"?7:sleep==="ok"?5:3;const so=sore.length===0?10:Math.max(2,10-sore.length*1.5);const r=Math.round((ss*0.3+so*0.2+energy*0.2+(11-stress)*0.15+6*0.15)*10);onComplete({readiness:r,capacity:Math.max(20,Math.min(100,r-INJURIES.reduce((s,i)=>s+i.severity*5,0))),location:location||"gym"});};
+function CheckInScreen({onComplete}){const[step,setStep]=useState(0);const[location,setLocation]=useState(null);const[sleep,setSleep]=useState(null);const[sore,setSore]=useState([]);const[energy,setEnergy]=useState(5);const[stress,setStress]=useState(5);const toggle=id=>{if(id==="none"){setSore([]);return;}setSore(p=>p.includes(id)?p.filter(x=>x!==id):[...p.filter(x=>x!=="none"),id]);};const adapt=sv=>sv<=3?[{l:"Warm-up",v:"Standard"},{l:"Volume",v:"Full"},{l:"Rest",v:"Standard"},{l:"Tone",v:"Direct"},{l:"Length",v:"Standard"}]:sv<=6?[{l:"Warm-up",v:"+5 min"},{l:"Volume",v:"-20%"},{l:"Rest",v:"+15 sec"},{l:"Tone",v:"Supportive"},{l:"Length",v:"Can shorten"}]:[{l:"Warm-up",v:"+8 min"},{l:"Volume",v:"-40%"},{l:"Rest",v:"+30 sec"},{l:"Tone",v:"Gentle"},{l:"Length",v:"Shortened"}];const compute=()=>{const ss=sleep==="great"?10:sleep==="good"?7:sleep==="ok"?5:3;const so=sore.length===0?10:Math.max(2,10-sore.length*1.5);const r=Math.round((ss*0.3+so*0.2+energy*0.2+(11-stress)*0.15+6*0.15)*10);onComplete({readiness:r,capacity:Math.max(20,Math.min(100,r-INJURIES.reduce((s,i)=>s+i.severity*5,0))),location:location||"gym",sleep:sleep||"ok",soreness:sore,energy,stress});};
 return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><h2 style={{fontSize:24,fontWeight:800,color:C.text,margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>CHECK-IN</h2><div style={{fontSize:12,color:C.textMuted}}>BEFORE WE START</div></div><button onClick={compute} style={{background:"none",border:"none",color:C.teal,fontSize:13,fontWeight:600,cursor:"pointer"}}>Skip →</button></div><Card style={{background:C.tealBg,borderColor:C.teal+"30",padding:14}}><Badge>DAY 2 · UPPER BODY + CORE</Badge><div style={{fontSize:12,color:C.textMuted,marginTop:6}}>5 quick questions to calibrate today's session.</div></Card>
 {step===0&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 12px"}}>📍 Where are you training?</h3>{[{id:"gym",i:"🏋️",l:"Gym",d:"Full equipment access"},{id:"home",i:"🏠",l:"Home",d:"Bodyweight + bands + DBs"},{id:"outdoor",i:"🌳",l:"Outdoor",d:"Bodyweight + minimal gear"}].map(o=>(<Card key={o.id} onClick={()=>{setLocation(o.id);setTimeout(()=>setStep(1),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:14,marginBottom:8,cursor:"pointer",borderColor:location===o.id?C.teal:C.border,background:location===o.id?C.tealBg:C.bgCard}}><span style={{fontSize:24}}>{o.i}</span><div><div style={{fontSize:14,fontWeight:600,color:C.text}}>{o.l}</div><div style={{fontSize:11,color:C.textDim}}>{o.d}</div></div></Card>))}</div>}
 {step===1&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 12px"}}>😴 How did you sleep?</h3>{[{id:"great",i:"🌟",l:"Great — 8+ hrs"},{id:"good",i:"😊",l:"Good — 7-8 hrs"},{id:"ok",i:"😐",l:"OK — 5-6 hrs"},{id:"poor",i:"😩",l:"Poor — under 5 hrs"}].map(o=>(<Card key={o.id} onClick={()=>{setSleep(o.id);setTimeout(()=>setStep(2),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:14,marginBottom:8,cursor:"pointer",borderColor:sleep===o.id?C.teal:C.border,background:sleep===o.id?C.tealBg:C.bgCard}}><span style={{fontSize:20}}>{o.i}</span><span style={{fontSize:14,fontWeight:600,color:C.text}}>{o.l}</span></Card>))}</div>}
 {step===2&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>💪 Any soreness?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:12}}>Select all that apply</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{BODY_PARTS.map(bp=>(<Card key={bp.id} onClick={()=>toggle(bp.id)} style={{display:"flex",alignItems:"center",gap:8,padding:10,cursor:"pointer",borderColor:sore.includes(bp.id)?C.teal:C.border,background:sore.includes(bp.id)?C.tealBg:C.bgCard}}><span style={{fontSize:14}}>{bp.icon}</span><span style={{fontSize:12,color:sore.includes(bp.id)?C.text:C.textMuted}}>{bp.label}</span></Card>))}</div><Card onClick={()=>setSore([])} style={{display:"flex",alignItems:"center",gap:8,padding:12,marginTop:8,cursor:"pointer",borderColor:sore.length===0?C.teal:C.border,background:sore.length===0?C.tealBg:C.bgCard}}><span>✅</span><span style={{fontSize:13,fontWeight:600,color:C.text}}>No Soreness Today</span></Card><Btn onClick={()=>setStep(3)} style={{marginTop:14}}>Next →</Btn><div style={{height:90}}/></div>}
 {step===3&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 16px"}}>⚡ Energy level?</h3><input type="range" min={1} max={10} value={energy} onChange={e=>setEnergy(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Empty</span><span style={{fontSize:11,color:C.textDim}}>Charged</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{energy}</div></div><Btn onClick={()=>setStep(4)}>Next →</Btn></div>}
 {step===4&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧠 Stress level?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:16}}>Shapes coaching tone and volume</div><input type="range" min={1} max={10} value={stress} onChange={e=>setStress(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Calm</span><span style={{fontSize:11,color:C.textDim}}>Overwhelmed</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{stress}</div></div><Card style={{borderColor:C.teal+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>HOW THIS SHAPES TODAY</div>{adapt(stress).map(a=>(<div key={a.l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,color:C.textMuted}}>{a.l}</span><span style={{fontSize:13,color:C.teal,fontWeight:600}}>{a.v}</span></div>))}</Card><Btn onClick={compute} style={{marginTop:16}}>See My Plan →</Btn></div>}<div style={{height:90}}/></div>);}
+
+// ── PLAN SCREEN (Transparency Report) ─────────────────────────
+function PlanScreen({checkIn,workout,onGo}){
+  const[diff,setDiff]=useState("standard");
+  const rtt=checkIn?.readiness||50, ctp=checkIn?.capacity||50;
+  const safetyLevel=rtt>=70?"CLEAR":rtt>=50?"CAUTION":rtt>=30?"RESTRICTED":"STOP";
+  const safetyColor=rtt>=70?C.success:rtt>=50?C.warning:rtt>=30?C.orange:C.danger;
+  const loc=(checkIn?.location||"gym");
+  const locLabel=loc.charAt(0).toUpperCase()+loc.slice(1);
+  const sleepLabel={great:"Great (8+ hrs)",good:"Good (7-8 hrs)",ok:"OK (5-6 hrs)",poor:"Poor (<5 hrs)"}[checkIn?.sleep]||"Not reported";
+  const sleepImpact=checkIn?.sleep==="great"?"Full capacity":checkIn?.sleep==="good"?"Slight reduction possible":checkIn?.sleep==="ok"?"Moderate reduction — lighter loads":checkIn?.sleep==="poor"?"Significant reduction — focus on mobility":"Default capacity";
+  const soreAreas=(checkIn?.soreness||[]);
+  const soreLabel=soreAreas.length===0?"None reported":soreAreas.map(id=>{const bp=BODY_PARTS.find(b=>b.id===id);return bp?bp.label:id;}).join(", ");
+  const soreImpact=soreAreas.length===0?"No adjustments needed":soreAreas.length<=2?"Minor adjustments — avoiding direct loading of sore areas":"Significant adjustments — reduced volume, extra warm-up for affected areas";
+  const stressLvl=checkIn?.stress||5;
+  const stressImpact=stressLvl<=3?"Standard volume and pace":stressLvl<=6?"-20% volume, +15s rest, supportive coaching tone":"-40% volume, +30s rest, simplified exercises, gentle tone";
+  // Compute excluded exercises
+  const excluded=useMemo(()=>{
+    const selectedIds=new Set(workout.all.map(e=>e.id));
+    const reasons=[];
+    exerciseDB.forEach(e=>{
+      if(selectedIds.has(e.id))return;
+      if(!(e.phaseEligibility||[]).includes(CURRENT_PHASE)){if(e.category==="main")reasons.push({name:e.name,reason:"Phase "+Math.min(...(e.phaseEligibility||[9]))+"+ required"});return;}
+      if(e.safetyTier==="red"){reasons.push({name:e.name,reason:"Red safety tier — requires clearance"});return;}
+      const sg=e.contraindications?.severity_gate||{};
+      if(sg.lower_back<3){reasons.push({name:e.name,reason:"Blocked by lower back severity ("+sg.lower_back+" gate)"});return;}
+      if(sg.knee<2){reasons.push({name:e.name,reason:"Blocked by knee severity ("+sg.knee+" gate)"});return;}
+      if(sg.shoulder<2){reasons.push({name:e.name,reason:"Blocked by shoulder severity ("+sg.shoulder+" gate)"});return;}
+      if(loc!=="gym"&&!locationFilter(e,loc)){reasons.push({name:e.name,reason:locLabel+" — equipment not available"});return;}
+    });
+    return reasons.slice(0,12);
+  },[workout,loc]);
+  const injuryBlocked=exerciseDB.filter(e=>{const sg=e.contraindications?.severity_gate||{};return sg.lower_back<3||sg.knee<2||sg.shoulder<2;}).length;
+  const lastSession=getSessions().slice(-1)[0];
+  return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
+    {/* Header */}
+    <div><div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:3,textTransform:"uppercase"}}>YOUR COACHING TEAM BUILT THIS</div><h2 style={{fontSize:26,fontWeight:800,color:C.text,margin:"4px 0 0",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>TODAY'S PLAN</h2></div>
+    {/* Readiness scores */}
+    <Card glow={safetyColor+"30"} style={{borderColor:safetyColor+"40"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <div style={{fontSize:11,fontWeight:700,color:safetyColor,letterSpacing:2,textTransform:"uppercase"}}>READINESS</div>
+        <Badge color={safetyColor}>{safetyLevel}</Badge>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+        <div style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{rtt}</div><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>RTT Score</div></div>
+        <div style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ctp}</div><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>CTP Score</div></div>
+        <div style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:safetyColor,fontFamily:"'Bebas Neue',sans-serif"}}>{locLabel==="Gym"?"🏋️":locLabel==="Home"?"🏠":"🌳"}</div><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>{locLabel}</div></div>
+      </div>
+      <div style={{textAlign:"center",marginTop:8}}><span style={{fontSize:11,color:C.textMuted}}>Phase {CURRENT_PHASE} · Week 1 · Stabilization Endurance</span></div>
+    </Card>
+    {/* Factors considered */}
+    <Card>
+      <div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>FACTORS SHAPING TODAY</div>
+      {[
+        {icon:"😴",label:"Sleep",value:sleepLabel,impact:sleepImpact,color:checkIn?.sleep==="great"||checkIn?.sleep==="good"?C.success:C.warning},
+        {icon:"💪",label:"Soreness",value:soreLabel,impact:soreImpact,color:soreAreas.length===0?C.success:soreAreas.length<=2?C.warning:C.danger},
+        {icon:"🧠",label:"Stress",value:stressLvl+"/10",impact:stressImpact,color:stressLvl<=3?C.success:stressLvl<=6?C.warning:C.danger},
+        {icon:"⚡",label:"Energy",value:(checkIn?.energy||5)+"/10",impact:checkIn?.energy>=7?"Full intensity cleared":checkIn?.energy>=4?"Standard intensity":"Reduced intensity — listen to your body",color:(checkIn?.energy||5)>=7?C.success:(checkIn?.energy||5)>=4?C.warning:C.danger},
+        {icon:"🩺",label:"Injuries",value:INJURIES.length+" active",impact:injuryBlocked+" exercises blocked system-wide, "+workout.all.filter(e=>e._swappedFor).length+" swapped today",color:C.warning},
+      ].map(f=>(<div key={f.label} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
+        <span style={{fontSize:16,flexShrink:0}}>{f.icon}</span>
+        <div style={{flex:1}}>
+          <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:12,fontWeight:700,color:C.text}}>{f.label}</span><span style={{fontSize:11,color:f.color,fontWeight:600}}>{f.value}</span></div>
+          <div style={{fontSize:10,color:C.textMuted,marginTop:2}}>{f.impact}</div>
+        </div>
+      </div>))}
+      {lastSession&&<div style={{display:"flex",gap:10,padding:"8px 0"}}>
+        <span style={{fontSize:16,flexShrink:0}}>📋</span>
+        <div style={{flex:1}}>
+          <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:12,fontWeight:700,color:C.text}}>Last Session</span><span style={{fontSize:11,color:C.info,fontWeight:600}}>{new Date(lastSession.date).toLocaleDateString()}</span></div>
+          <div style={{fontSize:10,color:C.textMuted,marginTop:2}}>Difficulty {lastSession.reflection?.difficulty||"—"}/10, Pain {lastSession.reflection?.pain||"—"}/10 — {(lastSession.reflection?.pain||5)>=7?"reducing intensity today":(lastSession.reflection?.difficulty||5)<=3?"progressing load slightly":"maintaining current level"}</div>
+        </div>
+      </div>}
+    </Card>
+    {/* Exercise list with WHY */}
+    <Card>
+      <div style={{fontSize:11,fontWeight:700,color:C.teal,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>YOUR EXERCISES ({workout.all.length} total · ~{Math.round(workout.all.length*3.5)} min)</div>
+      {[{label:"WARM-UP",exercises:workout.warmup,color:C.info},{label:"MAIN",exercises:workout.main,color:C.teal},{label:"COOLDOWN",exercises:workout.cooldown,color:C.success}].map(sec=>(
+        <div key={sec.label}>
+          <div style={{display:"flex",alignItems:"center",gap:6,margin:"10px 0 6px"}}><div style={{width:6,height:6,borderRadius:3,background:sec.color}}/><span style={{fontSize:10,fontWeight:700,color:sec.color,letterSpacing:1.5}}>{sec.label}</span></div>
+          {sec.exercises.map(ex=>(<div key={ex.id} style={{display:"flex",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}08`}}>
+            <span style={{fontSize:16,flexShrink:0}}>{ex.emoji}</span>
+            <div style={{flex:1}}>
+              <div style={{fontSize:12,fontWeight:600,color:C.text}}>{ex.name}</div>
+              <div style={{fontSize:10,color:C.textMuted}}>{ex.whyForYou||ex.purpose}</div>
+              {ex._swappedFor&&<div style={{fontSize:9,color:C.warning,marginTop:2}}>🔄 Swapped for {ex._swappedFor} — {ex._swapReason}</div>}
+            </div>
+          </div>))}
+        </div>
+      ))}
+    </Card>
+    {/* Excluded exercises */}
+    {excluded.length>0&&<Card style={{borderColor:C.danger+"20"}}>
+      <div style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>EXCLUDED ({excluded.length}+ exercises)</div>
+      {excluded.map((ex,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}>
+        <span style={{fontSize:11,color:C.textDim}}>{ex.name}</span>
+        <span style={{fontSize:9,color:C.danger}}>{ex.reason}</span>
+      </div>))}
+      <div style={{fontSize:9,color:C.textDim,marginTop:6,fontStyle:"italic"}}>Showing top {excluded.length} — full list of {exerciseDB.length - workout.all.length} excluded available in Library filters.</div>
+    </Card>}
+    {/* Difficulty selector */}
+    <Card>
+      <div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>DIFFICULTY</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+        {[{id:"standard",label:"Standard",desc:"Recommended",icon:"✅",color:C.success},{id:"push",label:"Push It",desc:"+10% volume",icon:"💪",color:C.warning},{id:"send",label:"Full Send",desc:"Max capacity",icon:"🔥",color:C.danger}].map(d=>(<div key={d.id} onClick={()=>setDiff(d.id)} style={{textAlign:"center",padding:12,borderRadius:12,border:`1px solid ${diff===d.id?d.color+"60":C.border}`,background:diff===d.id?d.color+"12":"transparent",cursor:"pointer"}}>
+          <div style={{fontSize:18}}>{d.icon}</div>
+          <div style={{fontSize:12,fontWeight:700,color:diff===d.id?d.color:C.text,marginTop:4}}>{d.label}</div>
+          <div style={{fontSize:9,color:C.textDim,marginTop:2}}>{d.desc}</div>
+        </div>))}
+      </div>
+      {diff==="push"&&<div style={{fontSize:10,color:C.warning,marginTop:8,padding:8,background:C.warning+"10",borderRadius:8}}>⚠️ Adding ~10% volume. Extra sets on compounds. Stop if form breaks.</div>}
+      {diff==="send"&&<div style={{fontSize:10,color:C.danger,marginTop:8,padding:8,background:C.danger+"10",borderRadius:8}}>🔥 Maximum safe capacity. Only if RTT ≥70 and no pain flags. You asked for it.</div>}
+    </Card>
+    {/* Go button */}
+    <Btn onClick={onGo} icon="⚡" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,fontSize:18}}>LOOKS GOOD — LET'S GO</Btn>
+    <div style={{height:90}}/>
+  </div>);
+}
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
 function ExerciseScreen({exercise,index,total,phase,onDone,onSub}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const tr=useRef(null);
@@ -640,7 +758,7 @@ export default function ApexCoach(){
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
-  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("perform");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
   const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
@@ -652,6 +770,7 @@ export default function ApexCoach(){
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
+    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={()=>setScreen("perform")}/>}
     {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
     {screen==="reflect"&&<ReflectScreen onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
