@@ -466,12 +466,17 @@ function HomeScreen({onStart}){const[si,setSi]=useState(null);const stats=getSta
   <div style={{height:90}}/></div>);}
 
 // ── TRAIN PAGE ──────────────────────────────────────────────────
-function TrainScreen({onStart,workout}){
+function TrainScreen({onStart,workout,mode,onModeChange}){
   const w = workout || defaultWorkout;
   const loc = w.location || "gym";
   const totalEx = w.all.length;
+  const m=mode||"guided";
   return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div></div>
+    {/* Mode toggle */}
+    <div style={{display:"flex",background:C.bgElevated,borderRadius:12,padding:3,border:`1px solid ${C.border}`}}>
+      {[{id:"guided",label:"Guided Mode",icon:"📋",desc:"Step-by-step coaching"},{id:"quick",label:"Quick Mode",icon:"✅",desc:"Checklist — experienced users"}].map(o=>(<button key={o.id} onClick={()=>onModeChange?.(o.id)} style={{flex:1,padding:"10px 8px",borderRadius:10,background:m===o.id?C.tealBg:"transparent",border:m===o.id?`1px solid ${C.teal}30`:"1px solid transparent",cursor:"pointer",textAlign:"center"}}><div style={{fontSize:14}}>{o.icon}</div><div style={{fontSize:11,fontWeight:700,color:m===o.id?C.teal:C.textDim}}>{o.label}</div><div style={{fontSize:9,color:C.textDim}}>{o.desc}</div></button>))}
+    </div>
     <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>{totalEx} Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · {loc.charAt(0).toUpperCase()+loc.slice(1)}{loc!=="gym"?" (adapted)":""}</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
     {[{label:"WARM-UP",exercises:w.warmup,color:C.info},{label:"MAIN WORK",exercises:w.main,color:C.teal},{label:"COOLDOWN",exercises:w.cooldown,color:C.success}].map(section=>(
       <div key={section.label}>
@@ -733,6 +738,80 @@ function CoachScreen(){const[mode,setMode]=useState(null);const[msgs,setMsgs]=us
   </div>);
 }
 
+// ── QUICK MODE ──────────────────────────────────────────────────
+function QuickModeScreen({workout,onComplete}){
+  const[checked,setChecked]=useState({});
+  const[expanded,setExpanded]=useState(null);
+  const[timerOn,setTimerOn]=useState(false);
+  const[tl,setTl]=useState(0);
+  const[timerFor,setTimerFor]=useState(null);
+  const tr=useRef(null);
+  useEffect(()=>{if(timerOn&&tl>0)tr.current=setTimeout(()=>setTl(t=>t-1),1000);else if(timerOn&&tl===0){setTimerOn(false);setTimerFor(null);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
+  const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
+  const w=workout||defaultWorkout;
+  const allDone=w.all.length>0&&w.all.every(e=>checked[e.id]);
+  const doneCount=w.all.filter(e=>checked[e.id]).length;
+  const toggleCheck=(id)=>setChecked(p=>({...p,[id]:!p[id]}));
+  const startRest=(ex)=>{const ep2=exParams(ex);const r=ep2.rest||60;setTl(r);setTimerFor(ex.id);setTimerOn(true);};
+  const handleComplete=()=>{
+    const exercisesCompleted=w.all.filter(e=>checked[e.id]).map(e=>{const ep2=exParams(e);return{exercise_id:e.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false};});
+    onComplete(exercisesCompleted);
+  };
+  return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+      <div><div style={{fontSize:24,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>QUICK MODE</div><div style={{fontSize:11,color:C.textMuted}}>{doneCount}/{w.all.length} exercises · Tap name to expand</div></div>
+      <Badge color={allDone?C.success:C.warning}>{Math.round(doneCount/Math.max(1,w.all.length)*100)}%</Badge>
+    </div>
+    <ProgressBar value={doneCount} max={w.all.length} color={C.teal} height={4}/>
+    {/* Rest timer floating card */}
+    {timerOn&&<Card glow={C.infoGlow} style={{textAlign:"center",position:"sticky",top:0,zIndex:50}}><div style={{fontSize:10,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase"}}>REST — HYDRATE 💧</div><div style={{fontSize:36,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setTimerFor(null);}} style={{margin:"4px auto 0",width:"auto"}}>Skip →</Btn></Card>}
+    {[{label:"WARM-UP",exercises:w.warmup,color:C.info},{label:"MAIN",exercises:w.main,color:C.teal},{label:"COOLDOWN",exercises:w.cooldown,color:C.success}].map(sec=>(
+      <div key={sec.label}>
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}><div style={{width:6,height:6,borderRadius:3,background:sec.color}}/><span style={{fontSize:10,fontWeight:700,color:sec.color,letterSpacing:1.5}}>{sec.label}</span></div>
+        {sec.exercises.map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);const done=checked[ex.id];const isExp=expanded===ex.id;return(<Card key={ex.id} style={{padding:0,marginBottom:4,opacity:done?0.6:1,borderColor:done?C.success+"40":C.border}}>
+          {/* Main row */}
+          <div style={{display:"flex",alignItems:"center",gap:0}}>
+            {/* Checkbox */}
+            <button onClick={()=>toggleCheck(ex.id)} style={{width:48,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",background:"none",border:"none",cursor:"pointer",flexShrink:0}}>
+              <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${done?C.success:C.border}`,background:done?C.success:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>{done&&<span style={{color:"#000",fontSize:14,fontWeight:800}}>✓</span>}</div>
+            </button>
+            {/* Exercise info — tap to expand */}
+            <div onClick={()=>setExpanded(isExp?null:ex.id)} style={{flex:1,padding:"10px 12px 10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:18,flexShrink:0}}>{ex.emoji}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:13,fontWeight:600,color:done?C.textDim:C.text,textDecoration:done?"line-through":"none"}}>{ex.name}</div>
+                <div style={{fontSize:10,color:C.textDim}}>{ep2.sets}×{ep2.reps} · {(ex.bodyPart||"").replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>
+              </div>
+              <span style={{color:C.textDim,fontSize:10,transform:isExp?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>
+            </div>
+          </div>
+          {/* Expanded detail view */}
+          {isExp&&<div style={{padding:"0 14px 14px",borderTop:`1px solid ${C.border}`}}>
+            {/* SVG Illustration — CLAUDE.md Rule 3: always visible when expanded */}
+            <div style={{marginTop:10}}><ExerciseIllustration exerciseId={ex.id}/></div>
+            {/* Muscles */}
+            <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:8}}>{em2.primary.map(mu=><Badge key={mu}>{mu}</Badge>)}{em2.secondary.slice(0,2).map(mu=><Badge key={mu} color={C.textDim}>{mu}</Badge>)}</div>
+            {/* Key form cues */}
+            <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:8}}><div style={{fontSize:10,fontWeight:700,color:C.success,marginBottom:4}}>KEY FORM CUES</div>{(ex.formCues||[]).slice(0,3).map((c,i)=><div key={i} style={{fontSize:11,color:C.text,padding:"2px 0"}}>{c}</div>)}</div>
+            {/* Injury notes */}
+            <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><div style={{fontSize:10,fontWeight:700,color:C.danger,marginBottom:4}}>INJURY NOTES</div>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:10,color:C.text,padding:"2px 0"}}><b style={{color:k==="lower_back"?C.danger:k==="knee"?C.warning:C.info}}>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<div style={{fontSize:11,color:C.text}}>{ex.injuryNotes}</div>}</div>
+            {/* Breathing */}
+            {ex.breathing&&<div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:ex.breathing.inhale,c:C.info},...(ex.breathing.hold&&ex.breathing.hold!=="0"?[{l:"Hold",v:ex.breathing.hold,c:C.warning}]:[]),{l:"Out",v:ex.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}{String(b.v).match(/^\d+$/)?'s':''}</div><div style={{fontSize:8,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div>{ex.breathing.pattern&&<div style={{fontSize:9,color:C.textMuted,textAlign:"center",marginTop:4,fontStyle:"italic"}}>{ex.breathing.pattern}</div>}</div>}
+            {/* Rest timer button */}
+            {ep2.rest>0&&<Btn variant="dark" size="sm" onClick={()=>startRest(ex)} style={{marginTop:8}} icon="⏱️">{timerFor===ex.id&&timerOn?`Resting... ${fmt(tl)}`:`Start ${ep2.rest}s Rest Timer`}</Btn>}
+          </div>}
+        </Card>);})}
+      </div>
+    ))}
+    {/* Complete button */}
+    <div style={{position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}>
+      <Btn onClick={handleComplete} disabled={!allDone} icon={allDone?"🏆":"🔒"} style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{allDone?"COMPLETE WORKOUT":"CHECK ALL EXERCISES TO FINISH"}</Btn>
+      {!allDone&&<div style={{textAlign:"center",fontSize:10,color:C.textDim,marginTop:4}}>{w.all.length-doneCount} remaining</div>}
+    </div>
+    <div style={{height:90}}/>
+  </div>);
+}
+
 // ── OTHER SCREENS ───────────────────────────────────────────────
 function Mindfulness({onContinue,type}){const b={warmupToMain:{t:"TRANSITION",s:"Warm-up done. 3 deep breaths.",i:"🧘",br:{i:4,h:4,e:6}},mainToCooldown:{t:"DELOAD",s:"Main work done.",i:"🌊",br:{i:4,h:2,e:8}},midSession:{t:"CHECK-IN",s:"Halfway.",i:"💭",br:{i:3,h:3,e:5}}}[type]||{t:"PAUSE",s:"Breathe.",i:"🧘",br:{i:4,h:4,e:6}};return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:24,minHeight:400,textAlign:"center"}}><div style={{fontSize:64}}>{b.i}</div><h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{b.t}</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:280}}>{b.s}</p><Card style={{background:C.bgGlass,width:"100%",maxWidth:300}}><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:b.br.i,c:C.info},{l:"Hold",v:b.br.h,c:C.warning},{l:"Out",v:b.br.e,c:C.success}].map(x=>(<div key={x.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:x.c,fontFamily:"'Bebas Neue',sans-serif"}}>{x.v}s</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{x.l}</div></div>))}</div></Card><Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn><div style={{height:90}}/></div>);}
 function ReflectScreen({onComplete}){const qs=[{id:"d",label:"Difficulty",icon:"📊"},{id:"p",label:"Pain",icon:"⚠️"},{id:"e",label:"Enjoyment",icon:"😊"},{id:"f",label:"Form",icon:"🎯"}];const[r,setR]=useState(()=>{const o={};qs.forEach(q=>o[q.id]=5);return o;});return(<div style={{display:"flex",flexDirection:"column",gap:16}}><h2 style={{fontSize:24,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,margin:0}}>REFLECT</h2><Card>{qs.map(q=>(<div key={q.id} style={{padding:"12px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:13,color:C.text}}>{q.icon} {q.label}</span><span style={{fontSize:14,fontWeight:700,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{r[q.id]}/10</span></div><input type="range" min={1} max={10} value={r[q.id]} onChange={e=>setR(p=>({...p,[q.id]:parseInt(e.target.value)}))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/></div>))}</Card><Btn onClick={()=>onComplete(r)}>Complete Session →</Btn><div style={{height:90}}/></div>);}
@@ -754,6 +833,7 @@ export default function ApexCoach(){
   const[completedExercises,setCompletedExercises]=useState([]);
   const[sessionStart,setSessionStart]=useState(null);
   const[workout,setWorkout]=useState(defaultWorkout);
+  const[workoutMode,setWorkoutMode]=useState("guided");
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
@@ -768,9 +848,10 @@ export default function ApexCoach(){
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")}/>}
-    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout}/>}
+    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
-    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={()=>setScreen("perform")}/>}
+    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={()=>setScreen(workoutMode==="quick"?"quickmode":"perform")}/>}
+    {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
     {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
     {screen==="reflect"&&<ReflectScreen onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
