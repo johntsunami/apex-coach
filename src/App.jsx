@@ -386,12 +386,58 @@ function exLocationLabel(ex) {
   return (ex.locationCompatible || []).join(", ") || (ex.equipmentRequired || []).join(", ");
 }
 
-// Build workout exercise list for a given phase and location from the 300-exercise DB
+// ── Location-aware workout builder with equipment filtering + substitutions ──
+const HOME_EQUIPMENT = new Set(["none","mat","band","dumbbell","kettlebell","foam_roller","towel","strap","wall","bench","stability_ball","box"]);
+const exById = Object.fromEntries(exerciseDB.map(e => [e.id, e]));
+
+function locationFilter(ex, location) {
+  if (location === "gym") return true;
+  if (location === "outdoor") return (ex.locationCompatible || []).includes("outdoor");
+  // home: every piece of equipmentRequired must be in HOME_EQUIPMENT
+  return (ex.equipmentRequired || []).every(eq => HOME_EQUIPMENT.has(eq));
+}
+
+function trySubstitute(ex, location, phase) {
+  const subKey = location === "outdoor" ? "outdoor" : "home";
+  const subId = ex.substitutions?.[subKey];
+  if (!subId) return null;
+  const sub = exById[subId];
+  if (!sub) return null;
+  if (!(sub.phaseEligibility || []).includes(phase)) return null;
+  if (!locationFilter(sub, location)) return null;
+  // Return the substitute exercise with swap metadata
+  return { ...sub, _swappedFor: ex.name, _swapReason: location === "outdoor" ? "outdoor — no gym equipment" : "home — equipment not available" };
+}
+
 function buildWorkoutList(phase=1, location="gym") {
-  const warmup = exerciseDB.filter(e => e.category === "warmup" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location)).slice(0, 5);
-  const main = exerciseDB.filter(e => e.category === "main" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location) && e.safetyTier !== "red").slice(0, 6);
-  const cooldown = exerciseDB.filter(e => e.category === "cooldown" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location)).slice(0, 3);
-  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown] };
+  const pick = (category, limit) => {
+    const pool = exerciseDB.filter(e =>
+      e.category === category &&
+      (e.phaseEligibility || []).includes(phase) &&
+      (category !== "main" || e.safetyTier !== "red")
+    );
+    const result = [];
+    const usedIds = new Set();
+    for (const ex of pool) {
+      if (result.length >= limit) break;
+      if (usedIds.has(ex.id)) continue;
+      if (locationFilter(ex, location)) {
+        result.push(ex);
+        usedIds.add(ex.id);
+      } else {
+        const sub = trySubstitute(ex, location, phase);
+        if (sub && !usedIds.has(sub.id)) {
+          result.push(sub);
+          usedIds.add(sub.id);
+        }
+      }
+    }
+    return result;
+  };
+  const warmup = pick("warmup", 5);
+  const main = pick("main", 6);
+  const cooldown = pick("cooldown", 3);
+  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location };
 }
 
 // Default workout for backward compat with session flow
@@ -420,13 +466,14 @@ function HomeScreen({onStart}){const[si,setSi]=useState(null);const stats=getSta
   <div style={{height:90}}/></div>);}
 
 // ── TRAIN PAGE ──────────────────────────────────────────────────
-function TrainScreen({onStart}){
-  const workout = defaultWorkout;
-  const totalEx = workout.all.length;
+function TrainScreen({onStart,workout}){
+  const w = workout || defaultWorkout;
+  const loc = w.location || "gym";
+  const totalEx = w.all.length;
   return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div></div>
-    <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>{totalEx} Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · Gym · from 300-exercise DB</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
-    {[{label:"WARM-UP",exercises:workout.warmup,color:C.info},{label:"MAIN WORK",exercises:workout.main,color:C.teal},{label:"COOLDOWN",exercises:workout.cooldown,color:C.success}].map(section=>(
+    <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>{totalEx} Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · {loc.charAt(0).toUpperCase()+loc.slice(1)}{loc!=="gym"?" (adapted)":""}</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
+    {[{label:"WARM-UP",exercises:w.warmup,color:C.info},{label:"MAIN WORK",exercises:w.main,color:C.teal},{label:"COOLDOWN",exercises:w.cooldown,color:C.success}].map(section=>(
       <div key={section.label}>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{width:8,height:8,borderRadius:4,background:section.color}}/><span style={{fontSize:12,fontWeight:700,color:section.color,letterSpacing:2}}>{section.label}</span><span style={{fontSize:11,color:C.textDim}}>· {section.exercises.length} exercises</span></div>
         {section.exercises.map(ex=>{const p=exParams(ex);const m=exMuscles(ex);return(<Card key={ex.id} style={{padding:12,marginBottom:6}}>
@@ -435,6 +482,7 @@ function TrainScreen({onStart}){
             <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{p.sets}×{p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div></div>
             <div style={{display:"flex",flexWrap:"wrap",gap:3,maxWidth:90}}>{m.primary.slice(0,2).map(mu=><span key={mu} style={{fontSize:9,color:C.teal,background:C.tealBg,padding:"2px 6px",borderRadius:4}}>{mu}</span>)}</div>
           </div>
+          {ex._swappedFor&&<div style={{marginTop:6,padding:"6px 10px",background:C.warning+"10",borderRadius:8,borderLeft:`3px solid ${C.warning}`}}><span style={{fontSize:10,color:C.warning,fontWeight:700}}>🔄 SWAPPED</span><span style={{fontSize:10,color:C.textMuted}}> for {ex._swappedFor} — {ex._swapReason}</span></div>}
         </Card>);})}
       </div>
     ))}
@@ -587,20 +635,24 @@ export default function ApexCoach(){
   const[checkInData,setCheckInData]=useState(null);
   const[completedExercises,setCompletedExercises]=useState([]);
   const[sessionStart,setSessionStart]=useState(null);
+  const[workout,setWorkout]=useState(defaultWorkout);
+  // Derive exercise list + phase boundaries from current workout
+  const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
+  const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
-  const handleCheckIn=(data)=>{setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("perform");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("perform");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
-  const handleExDone=()=>{trackExDone(allEx[exIdx]);const n=exIdx+1;if(n>=allEx.length){setScreen("reflect");return;}if(n===wEnd||n===mEnd){setExIdx(n);setScreen("mindfulness");return;}const mainLen=defaultWorkout.main.length;const mid=wEnd+Math.floor(mainLen/2);if(n===mid&&getPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
-  const getMT=()=>exIdx===wEnd?"warmupToMain":exIdx===mEnd?"mainToCooldown":"midSession";
+  const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
+  const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
   const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:null,soreness_areas:[],energy:null,stress:null,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:"just_right"});
   const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);};
   return(<div style={{fontFamily:"'DM Sans',-apple-system,sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",padding:"20px 16px 40px",boxSizing:"border-box"}}>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")}/>}
-    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")}/>}
+    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
-    {screen==="perform"&&<ExerciseScreen exercise={allEx[exIdx]} index={exIdx} total={allEx.length} phase={getPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
+    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
     {screen==="reflect"&&<ReflectScreen onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
