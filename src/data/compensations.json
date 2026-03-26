@@ -1,0 +1,219 @@
+[
+  {
+    "id": "comp_knees_cave_in",
+    "name": "Knees Cave In (Valgus Collapse)",
+    "description": "During squat or lunge patterns, knees collapse medially past the toes. Indicates glute medius/maximus weakness and adductor/TFL dominance.",
+    "observedDuring": ["squat", "lunge", "step_down", "single_leg_balance", "walking"],
+    "overactive": ["Adductors", "TFL", "Vastus Lateralis"],
+    "underactive": ["Gluteus Medius", "Gluteus Maximus", "VMO"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_adductors", "fr_tfl", "fr_it_band"],
+        "instructions": "Foam roll each area for 30-60s, pausing on tender spots for 30s."
+      },
+      "lengthen": {
+        "exercises": ["stretch_adductor", "rehab_it_band_stretch"],
+        "instructions": "Static stretch each muscle 30s, 2 sets. Breathe into the stretch."
+      },
+      "activate": {
+        "exercises": ["corr_clamshell", "corr_side_lying_hip_abd", "rehab_vmo_wall_sit"],
+        "instructions": "2 sets of 12-15 reps, slow tempo (4/2/1). Focus on mind-muscle connection."
+      },
+      "integrate": {
+        "exercises": ["str_bw_squat", "corr_monster_walk"],
+        "instructions": "Perform squat with mini-band above knees to cue abduction. 2 sets of 12."
+      }
+    },
+    "assessmentCue": "Watch knees during overhead squat or single-leg squat. If medial knee displacement >2 inches, this compensation is active.",
+    "commonCauses": ["Sedentary lifestyle", "Weak hip stabilizers", "Poor footwear", "Ankle mobility deficit"],
+    "relatedConditions": ["patellar_tendinitis", "acl_risk", "it_band_syndrome"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment",
+    "tags": ["nasm_corrective", "lower_body", "squat_compensation"]
+  },
+  {
+    "id": "comp_feet_turn_out",
+    "name": "Feet Turn Out (Duck Feet)",
+    "description": "During squat or walking, feet externally rotate past 10 degrees. Indicates lateral calf/biceps femoris tightness and medial stabilizer weakness.",
+    "observedDuring": ["squat", "walking", "single_leg_balance"],
+    "overactive": ["Soleus", "Lateral Gastrocnemius", "Biceps Femoris (lateral hamstring)"],
+    "underactive": ["Medial Gastrocnemius", "Medial Hamstring (semimembranosus/semitendinosus)", "Gracilis", "Popliteus"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_calves", "fr_hamstrings"],
+        "instructions": "Foam roll lateral calves and lateral hamstrings 30-60s each. Focus on outer fibers."
+      },
+      "lengthen": {
+        "exercises": ["stretch_standing_calf", "stretch_hamstring"],
+        "instructions": "Static stretch calves (lateral bias) and lateral hamstrings 30s, 2 sets."
+      },
+      "activate": {
+        "exercises": ["iso_calf_raise", "rehab_tib_ant_raise"],
+        "instructions": "Single-leg calf raises with toes slightly inward. Tibialis raises for anterior balance. 2x15."
+      },
+      "integrate": {
+        "exercises": ["str_bw_squat"],
+        "instructions": "Squat with feet straight (tape lines on floor as guide). 2 sets of 12."
+      }
+    },
+    "assessmentCue": "Place tape on floor parallel. Have client squat with feet on tape. If feet rotate out past 10°, compensation is active.",
+    "commonCauses": ["Tight lateral calf complex", "Weak medial stabilizers", "Hip external rotator tightness", "Ankle mobility deficit"],
+    "relatedConditions": ["ankle_instability", "plantar_fasciitis", "knee_valgus_secondary"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment",
+    "tags": ["nasm_corrective", "lower_body", "gait_compensation"]
+  },
+  {
+    "id": "comp_excessive_forward_lean",
+    "name": "Excessive Forward Lean",
+    "description": "During squat, torso leans forward excessively (more than ~30° from vertical). Indicates calf/hip flexor tightness and glute/erector weakness.",
+    "observedDuring": ["squat", "step_up", "deadlift"],
+    "overactive": ["Soleus", "Gastrocnemius", "Hip Flexors (Iliopsoas)", "Abdominals (when overdominant)"],
+    "underactive": ["Anterior Tibialis", "Gluteus Maximus", "Erector Spinae"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_calves", "fr_tfl", "corr_kneeling_hip_flexor_str"],
+        "instructions": "Foam roll calves and hip flexors 30-60s each. Use ball on TFL."
+      },
+      "lengthen": {
+        "exercises": ["stretch_standing_calf", "corr_standing_hip_flexor_str"],
+        "instructions": "Static stretch calves and hip flexors 30s, 2 sets each."
+      },
+      "activate": {
+        "exercises": ["str_glute_bridge", "corr_prone_cobra"],
+        "instructions": "Glute bridges 2x15 with 2s squeeze. Prone cobra 2x10 with 3s hold."
+      },
+      "integrate": {
+        "exercises": ["str_goblet_squat"],
+        "instructions": "Goblet squat with anterior load forces upright posture. 2 sets of 12, slow tempo."
+      }
+    },
+    "assessmentCue": "Side view during squat. If shoulders fall significantly forward of hips, compensation is active.",
+    "commonCauses": ["Tight ankle complex", "Tight hip flexors", "Weak posterior chain", "Poor squat pattern learning"],
+    "relatedConditions": ["lower_back_pain", "anterior_pelvic_tilt"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment",
+    "tags": ["nasm_corrective", "lower_body", "squat_compensation"]
+  },
+  {
+    "id": "comp_low_back_arch",
+    "name": "Low Back Arches (Anterior Pelvic Tilt / Excessive Lordosis)",
+    "description": "During squat or overhead movements, low back hyperextends. Classic lower crossed syndrome. Indicates hip flexor/erector dominance and glute/core weakness.",
+    "observedDuring": ["squat", "overhead_press", "plank", "walking"],
+    "overactive": ["Hip Flexors (Iliopsoas, Rectus Femoris)", "Erector Spinae", "Latissimus Dorsi"],
+    "underactive": ["Gluteus Maximus", "Hamstrings", "TVA", "Internal Obliques"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_tfl", "fr_lats", "fr_thoracic"],
+        "instructions": "Foam roll hip flexors (TFL area), lats, and thoracic spine 30-60s each."
+      },
+      "lengthen": {
+        "exercises": ["corr_kneeling_hip_flexor_str", "stretch_lat"],
+        "instructions": "Kneeling hip flexor stretch 30s each side. Lat stretch 30s each side."
+      },
+      "activate": {
+        "exercises": ["stab_dead_bug", "str_glute_bridge", "corr_supine_pelvic_tilt"],
+        "instructions": "Dead bug 2x8 each side. Glute bridge 2x15. Pelvic tilts 2x10."
+      },
+      "integrate": {
+        "exercises": ["stab_ball_squat"],
+        "instructions": "Ball squat against wall with focus on maintaining neutral pelvis. 2 sets of 12."
+      }
+    },
+    "assessmentCue": "Side view during squat. If visible lordotic curve increases during descent, compensation is active. Also check standing posture — hand should not fit between low back and wall beyond 1 inch.",
+    "commonCauses": ["Prolonged sitting", "Weak core/glutes", "Tight hip flexors", "Poor posture habits"],
+    "relatedConditions": ["disc_herniation", "spondylolisthesis", "lower_back_pain", "anterior_pelvic_tilt"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment, Janda Lower Crossed Syndrome",
+    "tags": ["nasm_corrective", "lower_crossed_syndrome", "spinal_compensation"]
+  },
+  {
+    "id": "comp_arms_fall_forward",
+    "name": "Arms Fall Forward",
+    "description": "During overhead squat assessment, arms drift forward past the ears. Indicates lat/pec tightness and mid-back weakness.",
+    "observedDuring": ["overhead_squat", "overhead_press", "wall_angel"],
+    "overactive": ["Latissimus Dorsi", "Teres Major", "Pectoralis Major/Minor"],
+    "underactive": ["Mid/Lower Trapezius", "Rhomboids", "Rotator Cuff (external rotators)"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_lats", "fr_pecs"],
+        "instructions": "Foam roll lats 30-60s each side. Ball on pecs against wall 30-60s each side."
+      },
+      "lengthen": {
+        "exercises": ["stretch_lat", "stretch_pec_doorway"],
+        "instructions": "Lat stretch (kneeling, arms on bench) 30s each side. Doorway pec stretch 30s at 3 angles."
+      },
+      "activate": {
+        "exercises": ["corr_prone_cobra", "rehab_prone_y", "str_band_pull_apart"],
+        "instructions": "Prone cobra 2x10. Prone Y raises 2x10. Band pull-aparts 2x15."
+      },
+      "integrate": {
+        "exercises": ["str_cable_row", "str_chest_supported_row"],
+        "instructions": "Row with full scapular retraction. 2 sets of 12. 2:1 pull-to-push ratio in all sessions."
+      }
+    },
+    "assessmentCue": "During overhead squat, arms should stay in line with ears (side view). If arms drift forward of ear line, compensation is active.",
+    "commonCauses": ["Excessive pressing without pulling", "Tight lats from pull-ups/pulldowns", "Desk posture", "Weak scapular retractors"],
+    "relatedConditions": ["shoulder_impingement", "upper_crossed_syndrome", "thoracic_kyphosis"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment",
+    "tags": ["nasm_corrective", "upper_body", "shoulder_compensation"]
+  },
+  {
+    "id": "comp_shoulders_elevate",
+    "name": "Shoulders Elevate (Shrug During Movement)",
+    "description": "During squat, pressing, or carrying, shoulders hike toward ears. Indicates upper trap/levator dominance and lower trap/serratus weakness.",
+    "observedDuring": ["squat", "overhead_press", "lateral_raise", "farmer_carry"],
+    "overactive": ["Upper Trapezius", "Levator Scapulae", "SCM (Sternocleidomastoid)"],
+    "underactive": ["Mid/Lower Trapezius", "Serratus Anterior"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_upper_back"],
+        "instructions": "Foam roll upper traps with ball against wall 30-60s each side. Gentle — this area is often sensitive."
+      },
+      "lengthen": {
+        "exercises": ["corr_upper_trap_stretch", "corr_levator_stretch"],
+        "instructions": "Upper trap stretch (ear to shoulder) 30s each side. Levator stretch (nose to armpit) 30s each side."
+      },
+      "activate": {
+        "exercises": ["corr_prone_cobra", "corr_serratus_wall_slide"],
+        "instructions": "Prone cobra 2x10 — depress shoulders deliberately. Serratus wall slides 2x10 — reach at top."
+      },
+      "integrate": {
+        "exercises": ["corr_wall_angel"],
+        "instructions": "Wall angels 2x10 — keep shoulders DOWN while arms move. If shoulders hike, reduce ROM."
+      }
+    },
+    "assessmentCue": "Watch shoulders during overhead squat or pressing. If shoulders visibly rise toward ears during the movement, compensation is active.",
+    "commonCauses": ["Stress/tension patterns", "Weak lower traps", "Overactive upper traps from desk work", "Breathing pattern dysfunction (chest breathing)"],
+    "relatedConditions": ["neck_pain", "tension_headaches", "upper_crossed_syndrome", "shoulder_impingement"],
+    "source": "NASM CPT 7th Edition — Overhead Squat Assessment",
+    "tags": ["nasm_corrective", "upper_body", "shoulder_compensation"]
+  },
+  {
+    "id": "comp_head_forward",
+    "name": "Head Juts Forward (Forward Head Posture)",
+    "description": "Head translates anteriorly past the shoulder line. Indicates deep cervical flexor weakness and upper trap/SCM/suboccipital tightness.",
+    "observedDuring": ["standing_posture", "squat", "deadlift", "pressing"],
+    "overactive": ["Upper Trapezius", "Levator Scapulae", "SCM", "Suboccipitals"],
+    "underactive": ["Deep Cervical Flexors (Longus Colli, Longus Capitis)", "Lower Trapezius"],
+    "protocol": {
+      "inhibit": {
+        "exercises": ["fr_upper_back"],
+        "instructions": "Place lacrosse ball at base of skull (suboccipitals). Gentle pressure 30-60s. Also roll upper traps with ball against wall."
+      },
+      "lengthen": {
+        "exercises": ["corr_upper_trap_stretch", "corr_levator_stretch", "stretch_neck_side_bend"],
+        "instructions": "Upper trap stretch 30s each. Levator stretch 30s each. SCM stretch (look up and to the side) 30s each."
+      },
+      "activate": {
+        "exercises": ["corr_chin_tuck", "corr_prone_cobra"],
+        "instructions": "Chin tucks 3x10 with 5s hold — train deep cervical flexors. Prone cobra 2x10 — depress and retract."
+      },
+      "integrate": {
+        "exercises": ["corr_wall_angel"],
+        "instructions": "Wall angels with head against wall (chin tucked). 2x10. Head must maintain wall contact throughout."
+      }
+    },
+    "assessmentCue": "Side view standing: ear should be over shoulder. If ear is visibly anterior to shoulder, forward head posture is present.",
+    "commonCauses": ["Phone/computer use", "Weak deep neck flexors", "Tight suboccipitals", "Thoracic kyphosis (compensatory)"],
+    "relatedConditions": ["neck_pain", "tension_headaches", "cervical_disc_issues", "upper_crossed_syndrome", "thoracic_outlet_syndrome"],
+    "source": "NASM CPT 7th Edition — Static Posture Assessment, Janda Upper Crossed Syndrome",
+    "tags": ["nasm_corrective", "upper_crossed_syndrome", "cervical_compensation"]
+  }
+]

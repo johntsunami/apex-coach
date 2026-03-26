@@ -1,0 +1,4072 @@
+[
+  {
+    "id": "cond_boxing_drills",
+    "name": "Boxing Drills (Seated or Standing)",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Deltoids", "Pectorals", "Triceps"],
+    "secondaryMuscles": ["Core", "Biceps", "Obliques", "Hip Flexors"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist", "hip"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 4 },
+      "painFreeROM": [],
+      "notes": "Accessible for neurological populations. Seated version available for wheelchair users."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": "seated_punches",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "boxing_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["rotator_cuff_tear_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 4 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "seated_punches",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "30-60s rounds", "tempo": "natural", "rest": "30-60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "🥊",
+    "steps": [
+      "Stand with feet shoulder-width apart, knees slightly bent, or sit upright in a sturdy chair.",
+      "Bring fists up by chin, elbows tucked at your sides.",
+      "Throw alternating jabs, crosses, and hooks with controlled speed — fully extend but don't lock elbows.",
+      "Rotate your torso with each punch to engage core."
+    ],
+    "formCues": [
+      "✅ Keep guard up between punches — fists at chin height",
+      "✅ Rotate torso with each cross and hook",
+      "✅ Stay light on feet, weight slightly forward"
+    ],
+    "commonMistakes": [
+      "❌ Dropping hands between punches",
+      "❌ Locking elbows on full extension — hyperextension risk",
+      "❌ Holding breath — exhale sharply with each punch"
+    ],
+    "coreBracing": "LIGHT (20-30%) — engage core through natural rotation, brace on impact",
+    "breathing": { "inhale": "1", "hold": "0", "exhale": "1", "pattern": "Sharp exhale with each punch, inhale between combos" },
+    "injuryNotes": {
+      "lower_back": "Seated version eliminates spinal rotation under load. Stand version: keep punches compact, avoid wild hooks.",
+      "knee": "Seated version removes all knee demand. Standing: stay flat-footed, no bouncing.",
+      "shoulder": "Keep punches below shoulder height if labrum is sensitive. Avoid wide hooks. Stop if clicking or catching."
+    },
+    "purpose": "Coordination, speed, and dopamine activation — evidence-based for Parkinson's disease management (Rock Steady Boxing).",
+    "whyForYou": "Cardio without lower body impact. Seated option if energy is low. Great stress release on high-stress days.",
+    "proTip": "Focus on speed and snap, not power. Imagine snapping a towel — fast out, fast back.",
+    "source": "Rock Steady Boxing / LSVT BIG principles",
+    "lastReviewed": "2025-01-01",
+    "tags": ["parkinsons", "neurological", "cardio", "coordination", "seated_option", "low_impact"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "cond_affected_arm_rom",
+    "name": "Affected Arm Passive ROM",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Deltoids", "Rotator Cuff"],
+    "secondaryMuscles": ["Biceps", "Triceps", "Upper Trapezius"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Post-stroke rehab. Affected arm guided by unaffected arm to prevent contracture."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "cond_bilateral_arm",
+      "unlockCriteria": "3 sessions pain-free with full passive ROM",
+      "chainFamily": "stroke_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 each direction", "tempo": "3/1/3", "rest": "30s", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🦾",
+    "steps": [
+      "Sit or lie comfortably. Use your unaffected hand to hold the wrist of the affected arm.",
+      "Slowly raise the affected arm overhead (flexion) as far as comfortable — hold 2s at end range.",
+      "Lower slowly. Repeat for abduction (out to side) and external rotation.",
+      "Perform 10 reps in each direction, twice daily."
+    ],
+    "formCues": [
+      "✅ Move slowly and gently — let the unaffected arm do the work",
+      "✅ Support the wrist and elbow to prevent hanging",
+      "✅ Stop at first sign of pain or resistance"
+    ],
+    "commonMistakes": [
+      "❌ Forcing the arm past its available range",
+      "❌ Jerking or bouncing at end range",
+      "❌ Forgetting to breathe — tension increases spasticity"
+    ],
+    "coreBracing": "MINIMAL (10%) — focus is on relaxation of the affected arm",
+    "breathing": { "inhale": "3", "hold": "1", "exhale": "3", "pattern": "Inhale at rest, exhale during the movement to promote relaxation" },
+    "injuryNotes": {
+      "lower_back": "Perform seated or supine to avoid standing fatigue.",
+      "knee": "No knee involvement. Seated or supine.",
+      "shoulder": "If labrum tear is on the affected side, limit abduction to 90 degrees and avoid end-range external rotation."
+    },
+    "purpose": "Prevent contracture and maintain joint ROM in the affected arm after stroke. Repetitive passive motion supports neuroplasticity.",
+    "whyForYou": "Applicable shoulder ROM principles — gentle passive motion is also beneficial for your labrum recovery on low-energy days.",
+    "proTip": "Do this in a warm shower — heat relaxes muscles and allows greater ROM.",
+    "source": "Stroke rehabilitation guidelines / Constraint-Induced Movement Therapy principles",
+    "lastReviewed": "2025-01-01",
+    "tags": ["post_stroke", "rehab", "passive_rom", "neuroplasticity", "shoulder_rom"],
+    "abilityLevel": "seated_only"
+  },
+  {
+    "id": "cond_bilateral_arm",
+    "name": "Bilateral Arm Training (Mirror Movements)",
+    "category": "rehab",
+    "type": "rehab",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Deltoids", "Biceps", "Triceps"],
+    "secondaryMuscles": ["Rotator Cuff", "Forearm Flexors", "Forearm Extensors"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": ["cond_affected_arm_rom"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Post-stroke rehab. Both arms move simultaneously to leverage neuroplasticity."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "cond_affected_arm_rom",
+      "progressTo": null,
+      "unlockCriteria": "3 sessions pain-free with passive ROM",
+      "chainFamily": "stroke_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "cond_affected_arm_rom",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 each pattern", "tempo": "3/1/3", "rest": "30s", "intensity": "RPE 2-4" }
+    },
+    "emoji": "🪞",
+    "steps": [
+      "Sit upright. Extend both arms in front of you at chest height.",
+      "Perform matching movements with both arms simultaneously — flexion, abduction, or elbow curls.",
+      "Let the unaffected arm lead; the affected arm mirrors as closely as possible.",
+      "Complete 10 reps per pattern. Focus on symmetry, not range."
+    ],
+    "formCues": [
+      "✅ Both arms move at the same speed — match the slower side",
+      "✅ Keep movements smooth and rhythmic",
+      "✅ Sit tall with shoulders relaxed, not shrugged"
+    ],
+    "commonMistakes": [
+      "❌ Letting the strong arm dominate speed and range",
+      "❌ Tensing the neck and upper traps — relax the jaw",
+      "❌ Giving up on the affected side — even small movements count"
+    ],
+    "coreBracing": "LIGHT (15-20%) — enough to sit upright, not more",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "Exhale during the movement, inhale on return" },
+    "injuryNotes": {
+      "lower_back": "Seated position is safe. Use a back-supported chair.",
+      "knee": "No knee involvement.",
+      "shoulder": "If labrum is involved, limit range to pain-free arc. Avoid end-range overhead."
+    },
+    "purpose": "Bilateral training activates motor cortex on both sides simultaneously, enhancing neuroplasticity after stroke.",
+    "whyForYou": "Mirror training principles can help your shoulder rehab — the strong side teaches the injured side.",
+    "proTip": "Use a mirror between your arms so your brain sees the affected arm moving perfectly — this is called mirror therapy.",
+    "source": "Bilateral arm training studies / Mirror therapy (Ramachandran)",
+    "lastReviewed": "2025-01-01",
+    "tags": ["post_stroke", "rehab", "bilateral", "neuroplasticity", "mirror_therapy"],
+    "abilityLevel": "seated_only"
+  },
+  {
+    "id": "cond_sit_to_stand",
+    "name": "Sit-to-Stand Practice",
+    "category": "rehab",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "Glute Max"],
+    "secondaryMuscles": ["Hamstrings", "Core", "Calves"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Fundamental functional movement. Critical for post-stroke independence."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "str_bw_squat",
+      "unlockCriteria": "10 reps without arm support, controlled 3s each way",
+      "chainFamily": "squat_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "seated_leg_ext",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-12", "tempo": "3/1/3", "rest": "30-60s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🪑",
+    "steps": [
+      "Sit on a sturdy chair with feet flat, hip-width apart, knees over ankles.",
+      "Lean forward from the hips — nose over toes — and press through your heels to stand.",
+      "Stand fully upright, squeeze glutes at the top.",
+      "Slowly lower back to the chair over 3 seconds — control the descent, don't plop."
+    ],
+    "formCues": [
+      "✅ Lean forward before standing — shift weight to feet first",
+      "✅ Drive through heels, not toes",
+      "✅ Keep chest up and spine neutral throughout"
+    ],
+    "commonMistakes": [
+      "❌ Using momentum or rocking to stand — control the movement",
+      "❌ Knees caving inward (valgus) — push knees out over toes",
+      "❌ Dropping onto the chair on the way down — lower slowly"
+    ],
+    "coreBracing": "MODERATE (30%) — brace core to keep trunk stable during the transition",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "Inhale seated, exhale as you stand. Inhale at top, exhale as you lower." },
+    "injuryNotes": {
+      "lower_back": "Keep spine neutral. Use a higher chair to reduce hip flexion demand. Use arms on armrests for assist if needed.",
+      "knee": "Use a higher seat to limit knee flexion. Press through heels. Watch for left knee valgus.",
+      "shoulder": "No shoulder involvement. Arms can be crossed on chest or used for balance."
+    },
+    "purpose": "Functional independence — the ability to stand from a chair is the #1 predictor of independence in older adults and post-stroke populations.",
+    "whyForYou": "Builds foundational squat-pattern strength without load. Good warm-up for knee and back on low-energy days.",
+    "proTip": "Add a 3-second pause at the bottom to eliminate momentum — pure strength.",
+    "source": "Post-stroke rehabilitation guidelines / Functional movement assessment",
+    "lastReviewed": "2025-01-01",
+    "tags": ["post_stroke", "functional", "squat_pattern", "beginner", "independence", "rehab"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_pursed_lip",
+    "name": "Pursed Lip Breathing with Movement",
+    "category": "rehab",
+    "type": "rehab",
+    "movementPattern": "breathing",
+    "bodyPart": "core",
+    "primaryMuscles": ["Diaphragm", "Intercostals"],
+    "secondaryMuscles": ["TVA", "Pelvic Floor"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "COPD primary breathing technique. Safe for all populations."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "breath_diaphragmatic",
+      "unlockCriteria": "",
+      "chainFamily": "breathing_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "8-10 breaths", "tempo": "2/0/4", "rest": "as needed", "intensity": "RPE 1-2" }
+    },
+    "emoji": "💨",
+    "steps": [
+      "Sit or stand comfortably. Relax your shoulders and neck.",
+      "Inhale slowly through your nose for 2 counts — feel belly expand.",
+      "Purse your lips as if blowing through a straw. Exhale slowly for 4 counts.",
+      "Pair with gentle arm raises or walking once the pattern is comfortable."
+    ],
+    "formCues": [
+      "✅ Exhale should be TWICE as long as inhale",
+      "✅ Keep shoulders down and relaxed — breathe into belly, not chest",
+      "✅ Purse lips gently — not forced"
+    ],
+    "commonMistakes": [
+      "❌ Exhaling too fast — the slow exhale is the therapeutic component",
+      "❌ Chest-breathing instead of diaphragmatic breathing",
+      "❌ Tensing neck and shoulders during exhale"
+    ],
+    "coreBracing": "MINIMAL (10%) — natural diaphragm engagement only",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "4", "pattern": "Nose inhale 2s, pursed lip exhale 4s. Ratio is key: 1:2." },
+    "injuryNotes": {
+      "lower_back": "Seated position recommended. This breathing pattern supports core stabilization.",
+      "knee": "No knee involvement.",
+      "shoulder": "Keep arms relaxed at sides if shoulder is sensitive."
+    },
+    "purpose": "Improves breathing efficiency by maintaining positive airway pressure, preventing airway collapse in COPD. Also excellent for stress management.",
+    "whyForYou": "Great pre-workout breathing drill. Activates diaphragm and parasympathetic system — calms stress before training.",
+    "proTip": "Use this technique during rest periods between sets to accelerate recovery and lower heart rate.",
+    "source": "ACSM Guidelines for COPD / Pulmonary Rehabilitation Standards",
+    "lastReviewed": "2025-01-01",
+    "tags": ["copd", "respiratory", "breathing", "stress_management", "warm_up", "recovery"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_ub_ergometer",
+    "name": "Upper Body Ergometer (Arm Bike)",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "rotation",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Deltoids", "Biceps", "Triceps"],
+    "secondaryMuscles": ["Pectorals", "Latissimus Dorsi", "Core"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["cable"],
+    "locationCompatible": ["gym"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Cardio without lower body demand. Ideal for COPD, lower limb injuries, wheelchair users."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "cardio_chain"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": "seated_punches",
+      "outdoor": "cond_boxing_drills",
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "cardio_bike",
+      "no_equipment": "seated_punches"
+    },
+    "phaseParams": {
+      "1": { "sets": "1", "reps": "5-15 min", "tempo": "steady", "rest": "n/a", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🚴",
+    "steps": [
+      "Adjust seat height so handles are at chest level. Sit upright with feet flat.",
+      "Grip handles, start pedaling forward with a smooth, circular motion.",
+      "Maintain steady cadence — 40-60 RPM. Increase resistance gradually.",
+      "After 5-15 minutes, reverse direction for 2-3 minutes to balance muscles."
+    ],
+    "formCues": [
+      "✅ Sit tall — no slouching or leaning into the machine",
+      "✅ Smooth circular motion — no jerky pulling",
+      "✅ Breathe rhythmically — don't hold breath"
+    ],
+    "commonMistakes": [
+      "❌ Hunching shoulders up to ears — relax them down",
+      "❌ Gripping too tight — light grip reduces forearm fatigue",
+      "❌ Going too fast with poor form — steady cadence over speed"
+    ],
+    "coreBracing": "LIGHT (15-20%) — maintain upright posture without rigid bracing",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Rhythmic breathing matched to cadence. Pursed lip exhale for COPD patients." },
+    "injuryNotes": {
+      "lower_back": "Seated position with back support is safe. No spinal load.",
+      "knee": "No knee involvement — excellent lower-body-free cardio option.",
+      "shoulder": "Monitor for labrum clicking. Reduce range if impingement occurs. Keep resistance low initially."
+    },
+    "purpose": "Cardiovascular conditioning without lower body demand. Primary cardio modality for COPD, wheelchair users, and lower limb injuries.",
+    "whyForYou": "Knee-friendly cardio option. Use on days when your knee is flared up but you still want conditioning work.",
+    "proTip": "Reverse pedaling targets the posterior chain (rear delts, rhomboids) — do 30% of your time in reverse.",
+    "source": "ACSM Guidelines / Pulmonary Rehabilitation Standards",
+    "lastReviewed": "2025-01-01",
+    "tags": ["copd", "cardio", "upper_body", "wheelchair_accessible", "knee_safe", "respiratory"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "cond_post_meal_walk",
+    "name": "Post-Meal Walking (10-15 min)",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Quadriceps", "Hamstrings", "Calves", "Glute Max"],
+    "secondaryMuscles": ["Core", "Hip Flexors"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Primary glucose management tool. 10-15 min light walking within 30 min of eating."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "cardio_walking",
+      "unlockCriteria": "",
+      "chainFamily": "walking_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1", "reps": "10-15 min", "tempo": "easy pace", "rest": "n/a", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🚶",
+    "steps": [
+      "Within 15-30 minutes of finishing a meal, begin walking at a comfortable pace.",
+      "Maintain an easy, conversational pace — you should be able to talk normally.",
+      "Walk for 10-15 minutes. Indoors (treadmill/hallway) or outdoors.",
+      "Focus on posture: tall spine, relaxed shoulders, natural arm swing."
+    ],
+    "formCues": [
+      "✅ Walk at a pace where you can hold a conversation easily",
+      "✅ Stand tall — don't slouch or look down at phone",
+      "✅ Land heel-to-toe with a natural stride"
+    ],
+    "commonMistakes": [
+      "❌ Walking too fast — this is NOT a workout, it's glucose management",
+      "❌ Waiting too long after eating — within 30 min is most effective",
+      "❌ Skipping it after large meals — this is when it matters most"
+    ],
+    "coreBracing": "MINIMAL (10%) — natural walking posture",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Natural relaxed breathing. Nasal breathing preferred." },
+    "injuryNotes": {
+      "lower_back": "Gentle walking supports disc nutrition. Keep it flat terrain.",
+      "knee": "Flat ground only. Slow pace. If knee is flared, seated marching is an alternative.",
+      "shoulder": "No involvement. Let arms swing naturally."
+    },
+    "purpose": "Post-meal walking reduces blood glucose spikes by 30-50%. Most impactful single health habit for diabetes management.",
+    "whyForYou": "Adds daily movement without fatigue. Supports recovery between training sessions and improves metabolic health.",
+    "proTip": "After your largest meal of the day is the most impactful time. Even 5 minutes helps if 15 feels like too much.",
+    "source": "ACSM Diabetes Guidelines / Diabetes Care journal meta-analysis",
+    "lastReviewed": "2025-01-01",
+    "tags": ["diabetes", "metabolic", "walking", "glucose_management", "daily_habit", "low_impact"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_circuit_training",
+    "name": "Circuit Training Template",
+    "category": "main",
+    "type": "cardio",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Quadriceps", "Pectorals", "Latissimus Dorsi", "Core"],
+    "secondaryMuscles": ["Glute Max", "Deltoids", "Hamstrings", "Biceps", "Triceps"],
+    "jointsInvolved": ["hip", "knee", "ankle", "shoulder", "elbow"],
+    "equipmentRequired": ["dumbbell"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "prerequisites": {
+      "minCompletedSessions": 4,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 4 },
+      "painFreeROM": [],
+      "notes": "Alternating upper/lower body exercises with minimal rest. Excellent metabolic conditioning for diabetes."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "metabolic_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 4 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3 rounds", "reps": "10-15 per exercise", "tempo": "2/0/2", "rest": "15-30s between exercises, 60-90s between rounds", "intensity": "RPE 5-7" }
+    },
+    "emoji": "🔄",
+    "steps": [
+      "Select 4-6 exercises alternating upper and lower body (e.g., squat, push-up, lunge, row, glute bridge, plank).",
+      "Perform 10-15 reps of each exercise back-to-back with only 15-30s rest between.",
+      "After completing all exercises (1 round), rest 60-90s.",
+      "Repeat for 2-3 total rounds. Adjust exercise selection to your injury profile."
+    ],
+    "formCues": [
+      "✅ Maintain form quality even when fatigued — slow down rather than get sloppy",
+      "✅ Keep transitions quick but controlled",
+      "✅ Monitor breathing — don't hold breath between exercises"
+    ],
+    "commonMistakes": [
+      "❌ Sacrificing form for speed — quality over pace",
+      "❌ Choosing exercises that are too complex for a fatigued state",
+      "❌ Skipping the rest between rounds — the recovery matters"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain brace throughout circuit, especially on transitions",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Exhale on exertion for each exercise. Deep breaths during transitions." },
+    "injuryNotes": {
+      "lower_back": "Exclude deadlifts and loaded flexion. Use glute bridges, pallof press, bird dog instead.",
+      "knee": "Replace lunges with glute bridges. Limit squat depth. No jumping movements.",
+      "shoulder": "Replace overhead pressing with landmine press. Include face pulls as one station."
+    },
+    "purpose": "Metabolic conditioning that improves insulin sensitivity and glucose uptake. Alternating muscle groups keeps heart rate elevated.",
+    "whyForYou": "Efficient full-body conditioning when time is limited. Adapts to your injuries by swapping individual exercises.",
+    "proTip": "Place your hardest exercises first when you're freshest. End with core or carries.",
+    "source": "ACSM Diabetes Exercise Guidelines / NSCA Circuit Training Protocols",
+    "lastReviewed": "2025-01-01",
+    "tags": ["diabetes", "metabolic", "circuit", "full_body", "conditioning", "time_efficient"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_modified_plank",
+    "name": "Modified Plank (Incline/Knees)",
+    "category": "main",
+    "type": "stabilization",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": ["TVA", "Rectus Abdominis"],
+    "secondaryMuscles": ["Obliques", "Glute Max", "Deltoids"],
+    "jointsInvolved": ["shoulder", "spine", "hip"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 4 },
+      "painFreeROM": [],
+      "notes": "Pregnancy-safe core training. Incline version avoids supine position after 1st trimester."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "stab_plank",
+      "unlockCriteria": "30s hold with perfect form, no low back sagging",
+      "chainFamily": "core_anti_extension_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 4 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "stab_dead_bug",
+      "injury_knee": null,
+      "injury_shoulder": "stab_dead_bug",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "15-30s hold", "tempo": "isometric", "rest": "30-60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "🧱",
+    "steps": [
+      "Place hands on elevated surface (bench/wall) or set up on knees on the floor.",
+      "Walk feet back until body forms a straight line from head to knees (or heels if incline).",
+      "Squeeze glutes, brace core at 40%. Hold position — do not let hips sag or pike.",
+      "Breathe normally throughout the hold. Release when form breaks."
+    ],
+    "formCues": [
+      "✅ Body forms ONE straight line — no sagging or piking",
+      "✅ Squeeze glutes to protect the lower back",
+      "✅ Elbows or hands directly under shoulders"
+    ],
+    "commonMistakes": [
+      "❌ Hips dropping toward the floor — core disengagement",
+      "❌ Holding breath — breathe steadily throughout",
+      "❌ Looking up or forward — keep neck neutral, eyes at floor"
+    ],
+    "coreBracing": "MODERATE (40%) — maintain steady brace throughout hold",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe normally through the hold. Don't hold your breath." },
+    "injuryNotes": {
+      "lower_back": "Use incline version (hands on bench) to reduce load. Stop if any low back pain.",
+      "knee": "Pad knees if on-knees version. Incline full plank avoids knee pressure entirely.",
+      "shoulder": "Use forearms instead of hands if wrist/shoulder discomfort. Reduce hold time."
+    },
+    "purpose": "Core stabilization without supine position — safe during pregnancy (2nd/3rd trimester) and for anyone who cannot lie flat.",
+    "whyForYou": "Lower-load plank variant for your post-surgical back. Use incline to scale difficulty perfectly to your capacity.",
+    "proTip": "The wall plank is the easiest version — start there and progressively lower the surface height over weeks.",
+    "source": "ACOG Exercise During Pregnancy Guidelines / NASM OPT Phase 1",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pregnancy", "postpartum", "core", "anti_extension", "beginner", "scalable"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_kegels",
+    "name": "Pelvic Floor Kegels (Progressive)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "core",
+    "primaryMuscles": ["Pelvic Floor"],
+    "secondaryMuscles": ["TVA", "Diaphragm"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Pregnancy and postpartum foundational exercise. Also benefits everyone for core stability."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "pf_kegel_holds",
+      "unlockCriteria": "Able to isolate PF without bearing down",
+      "chainFamily": "pelvic_floor_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "3", "reps": "10 holds", "tempo": "3-5s hold/3-5s relax", "rest": "30s between sets", "intensity": "RPE 3-4" }
+    },
+    "emoji": "🔐",
+    "steps": [
+      "Sit, stand, or lie down comfortably. Relax your abdomen, thighs, and buttocks.",
+      "Imagine stopping the flow of urine — gently lift and squeeze the pelvic floor muscles.",
+      "Hold for 3-5 seconds (progress to 10 seconds over weeks). Fully relax for equal time.",
+      "Perform 10 repetitions, 3 times per day. Quality over quantity."
+    ],
+    "formCues": [
+      "✅ Isolate the pelvic floor — no squeezing glutes or inner thighs",
+      "✅ The release is as important as the contraction — fully relax between reps",
+      "✅ Breathe normally throughout — don't hold your breath"
+    ],
+    "commonMistakes": [
+      "❌ Bearing down instead of lifting up — this is the opposite of a Kegel",
+      "❌ Squeezing glutes and thighs — only the pelvic floor should engage",
+      "❌ Holding breath — this increases intra-abdominal pressure"
+    ],
+    "coreBracing": "MINIMAL — isolate pelvic floor only, do not globally brace",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Exhale gently during contraction, inhale during relaxation" },
+    "injuryNotes": {
+      "lower_back": "Supine position may be most comfortable. PF engagement supports spinal stabilization.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Strengthens the pelvic floor to prevent/treat incontinence, support pregnancy, and improve core stability.",
+    "whyForYou": "Pelvic floor is the base of your core canister. Strengthening it improves your dead bug, plank, and all bracing exercises.",
+    "proTip": "Try cueing 'lift your pelvic floor like an elevator going up floors 1-2-3' to find the right muscles.",
+    "source": "ACOG Pregnancy Guidelines / Pelvic Floor Physical Therapy Standards",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pregnancy", "postpartum", "pelvic_floor", "core", "daily", "beginner"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_clamshell_preg",
+    "name": "Side-Lying Clamshell (Pregnancy-Safe)",
+    "category": "main",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Glute Med", "Glute Min"],
+    "secondaryMuscles": ["Piriformis", "TFL", "Core"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Pregnancy-safe hip strengthening. Side-lying avoids supine position. Safe throughout all trimesters."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "corr_clamshell",
+      "unlockCriteria": "20 reps pain-free with band",
+      "chainFamily": "hip_abduction_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "seated_hip_abd",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "12-20", "tempo": "2/1/2", "rest": "30s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "🦪",
+    "steps": [
+      "Lie on your side with knees bent to 45 degrees, hips stacked, head resting on bottom arm.",
+      "Keep feet together. Slowly rotate the top knee upward like opening a clamshell.",
+      "Hold at the top for 1 second — feel the glute engage, not the hip flexor.",
+      "Lower slowly with control. Complete all reps, then switch sides."
+    ],
+    "formCues": [
+      "✅ Hips stay stacked — do NOT roll backward to get more range",
+      "✅ Feel the contraction deep in the side of the glute, not the front of the hip",
+      "✅ Keep core gently engaged to prevent trunk rotation"
+    ],
+    "commonMistakes": [
+      "❌ Rolling the pelvis backward to cheat more range — keep hips stacked",
+      "❌ Using momentum — slow and controlled wins",
+      "❌ Only working one side — do both sides even if one feels easier"
+    ],
+    "coreBracing": "LIGHT (20%) — enough to prevent trunk rotation",
+    "breathing": { "inhale": "2", "hold": "1", "exhale": "2", "pattern": "Exhale as knee opens, inhale as it closes" },
+    "injuryNotes": {
+      "lower_back": "Side-lying is a spine-neutral position. Place a pillow between knees if uncomfortable.",
+      "knee": "If knee pain occurs with rotation, reduce range of motion. Pillow between knees for support.",
+      "shoulder": "Bottom arm may compress shoulder — use a pillow under your head."
+    },
+    "purpose": "Strengthens hip abductors to prevent knee valgus, support pelvic stability during pregnancy, and reduce low back pain.",
+    "whyForYou": "Your left knee valgus tendency needs strong hip abductors. This exercise targets the exact muscles that prevent knee caving.",
+    "proTip": "Place a mini band just above your knees for progressive resistance. Start without band, add when 20 reps is easy.",
+    "source": "ACOG Pregnancy Exercise Guidelines / NASM Corrective Exercise",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pregnancy", "hip_stability", "glute_med", "corrective", "knee_valgus_prevention", "beginner"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_joint_rom_cycling",
+    "name": "Joint-Specific ROM Cycling",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Joint-specific muscles surrounding affected joint"],
+    "secondaryMuscles": ["Stabilizers of adjacent joints"],
+    "jointsInvolved": ["hip", "knee", "ankle", "shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Daily ROM maintenance for osteoarthritis. Move every affected joint through its full available range."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "joint_health_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "10 circles each direction per joint", "tempo": "slow/controlled", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🔁",
+    "steps": [
+      "Start at the neck and work downward: neck circles, shoulder circles, elbow bends, wrist circles.",
+      "Continue to hips: hip circles (standing or seated), knee bends, ankle circles.",
+      "Move each joint through its FULL available range in both directions — 10 reps each way.",
+      "Spend extra time on joints that feel stiff. Apply gentle heat beforehand if available."
+    ],
+    "formCues": [
+      "✅ Move slowly and smoothly through the full available range",
+      "✅ Both directions — clockwise AND counterclockwise",
+      "✅ Stop at pain, not through pain — work to the edge, not past it"
+    ],
+    "commonMistakes": [
+      "❌ Forcing range of motion through pain — this worsens OA inflammation",
+      "❌ Skipping joints that feel 'fine' — maintenance prevents future stiffness",
+      "❌ Rushing through the movement — slow, deliberate circles are therapeutic"
+    ],
+    "coreBracing": "MINIMAL (10%) — relaxed, natural engagement",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe naturally. Exhale on the tightest portion of each circle." },
+    "injuryNotes": {
+      "lower_back": "For spine: use cat-cow instead of lumbar circles. Avoid full spinal rotation under load.",
+      "knee": "Move knee through available range only — never force past pain. Seated version reduces load.",
+      "shoulder": "Small circles first, gradually increase. Avoid end-range if labrum is catching."
+    },
+    "purpose": "Daily ROM cycling lubricates joints, maintains range of motion, and reduces morning stiffness in osteoarthritis.",
+    "whyForYou": "Great morning ritual for your left knee and left shoulder. Use as a daily check-in — are things getting better or worse?",
+    "proTip": "Do this in a warm shower — heat + movement is the best combination for stiff joints.",
+    "source": "ACSM Osteoarthritis Guidelines / Arthritis Foundation Exercise Recommendations",
+    "lastReviewed": "2025-01-01",
+    "tags": ["osteoarthritis", "rom", "daily", "joint_health", "morning_routine", "mobility"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "cond_iso_quad_set",
+    "name": "Isometric Quad Set",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "VMO"],
+    "secondaryMuscles": [],
+    "jointsInvolved": ["knee"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Gold standard for knee OA. Strengthens quads without joint motion — zero stress on cartilage."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "rehab_quad_set",
+      "unlockCriteria": "10x10s holds pain-free",
+      "chainFamily": "knee_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "3", "reps": "10 x 5-10s holds", "tempo": "isometric", "rest": "30s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🦵",
+    "steps": [
+      "Sit with legs extended or lie supine. Place a small rolled towel under the knee for slight bend.",
+      "Press the back of your knee DOWN into the floor or towel — straighten the leg fully.",
+      "You should see the quad muscle tighten and the kneecap pull upward slightly.",
+      "Hold 5-10 seconds. Relax completely. Repeat 10 times per set."
+    ],
+    "formCues": [
+      "✅ Focus on the VMO (teardrop muscle above inner knee) — it should visibly contract",
+      "✅ Press firmly but not maximally — 60-70% effort",
+      "✅ Keep foot relaxed — don't point or flex the ankle"
+    ],
+    "commonMistakes": [
+      "❌ Not fully engaging the quad — you should SEE the muscle contract",
+      "❌ Holding breath during the hold — breathe normally",
+      "❌ Skipping the full relaxation between reps — the release matters"
+    ],
+    "coreBracing": "MINIMAL (10%) — relaxed, focus entirely on the quad",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Breathe normally throughout. Don't hold breath." },
+    "injuryNotes": {
+      "lower_back": "Supine position is safe. No spinal load.",
+      "knee": "This is a PRIMARY knee rehab exercise. Zero joint motion = zero cartilage stress. Do daily.",
+      "shoulder": "No involvement."
+    },
+    "purpose": "Quadriceps strengthening without joint motion — the single most protective factor against knee OA progression.",
+    "whyForYou": "Your left knee needs VMO strengthening daily. This is the safest quad exercise possible — use it as pre-activation before every session.",
+    "proTip": "Place your fingers on the VMO (inner knee) to feel it contract. If you can't feel it, you're not engaging it correctly.",
+    "source": "ACSM Osteoarthritis Guidelines / Knee OA Clinical Practice Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["osteoarthritis", "knee_rehab", "vmo", "isometric", "daily", "pain_free"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "yoga_seated_cat_cow",
+    "name": "Seated Cat-Cow",
+    "category": "mobility",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "back",
+    "primaryMuscles": ["Erector Spinae", "TVA"],
+    "secondaryMuscles": ["Multifidus", "Obliques", "Diaphragm"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Chair yoga — spinal mobility while seated. Accessible for wheelchair users."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mob_cat_cow",
+      "unlockCriteria": "Pain-free seated, ready for hands-and-knees version",
+      "chainFamily": "spinal_mobility_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "8-10", "tempo": "3/0/3", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🐱",
+    "steps": [
+      "Sit upright in a chair, feet flat on floor, hands on thighs.",
+      "COW: Inhale — arch your back, lift chest, look up slightly. Open shoulders.",
+      "CAT: Exhale — round your spine, tuck chin, draw belly button in.",
+      "Flow between positions with your breath. One breath per transition."
+    ],
+    "formCues": [
+      "✅ Initiate from the pelvis — tilt pelvis forward for cow, backward for cat",
+      "✅ Move through the ENTIRE spine segment by segment",
+      "✅ Keep feet grounded and weight even on both sit bones"
+    ],
+    "commonMistakes": [
+      "❌ Only moving the head and neck — the whole spine should flow",
+      "❌ Holding breath — breath drives the movement",
+      "❌ Rushing — slow, intentional movement gets better results"
+    ],
+    "coreBracing": "LIGHT (15%) — gentle engagement, focus on mobility not stability",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Inhale into cow (extension), exhale into cat (flexion)" },
+    "injuryNotes": {
+      "lower_back": "Move within pain-free range only. Reduce the arc if extension or flexion hurts. This is gentle segmental motion.",
+      "knee": "No knee involvement.",
+      "shoulder": "Hands rest on thighs — no shoulder load."
+    },
+    "purpose": "Gentle spinal mobility and segmental motion. Warm-up for any seated population including wheelchair users.",
+    "whyForYou": "Your post-surgical back benefits from daily gentle spinal motion. This is the safest way to warm up your spine.",
+    "proTip": "Close your eyes and visualize each vertebra moving independently — you'll feel more segments unlock.",
+    "source": "Yoga Alliance Adaptive Yoga / Chair Yoga for Seniors",
+    "lastReviewed": "2025-01-01",
+    "tags": ["chair_yoga", "spinal_mobility", "warm_up", "wheelchair_accessible", "gentle", "daily"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "yoga_seated_forward_fold",
+    "name": "Seated Forward Fold",
+    "category": "cooldown",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "back",
+    "primaryMuscles": ["Hamstrings", "Erector Spinae"],
+    "secondaryMuscles": ["Glute Max", "Calves"],
+    "jointsInvolved": ["spine", "hip"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Chair yoga. Gentle hamstring and back stretch in seated position."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "stretch_hamstring",
+      "unlockCriteria": "Comfortable reaching past knees without pain",
+      "chainFamily": "hamstring_flexibility_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["disc_herniation_acute"],
+      "movements_to_avoid": ["spinal_flexion_under_load"],
+      "severity_gate": { "lower_back": 3, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "yoga_seated_cat_cow",
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "20-30s hold", "tempo": "hold", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🙏",
+    "steps": [
+      "Sit on the edge of the chair, feet flat, legs hip-width apart.",
+      "Hinge forward from the hips — NOT by rounding the lower back.",
+      "Let your hands slide down your legs or hang toward the floor.",
+      "Hold 20-30 seconds. Breathe deeply. Rise slowly using your hands on thighs."
+    ],
+    "formCues": [
+      "✅ Hinge from the hips first — maintain a long spine as long as possible",
+      "✅ Let gravity do the work — don't force the stretch",
+      "✅ Relax the neck — let the head hang naturally"
+    ],
+    "commonMistakes": [
+      "❌ Rounding the lower back aggressively — lead with the chest, not the head",
+      "❌ Bouncing at the bottom — hold steady",
+      "❌ Holding breath — long exhales deepen the stretch naturally"
+    ],
+    "coreBracing": "MINIMAL (10%) — relax into the stretch",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "5", "pattern": "Long exhales relax the nervous system and deepen the stretch naturally" },
+    "injuryNotes": {
+      "lower_back": "If disc herniation history: hinge from hips only, keep lower back flat. Avoid if acute flexion intolerance.",
+      "knee": "No knee stress in seated version.",
+      "shoulder": "Arms hang passively — no shoulder load."
+    },
+    "purpose": "Hamstring and back stretch in seated position. Promotes relaxation and parasympathetic activation.",
+    "whyForYou": "Your tight hamstrings contribute to lower back strain. This gentle seated stretch is safe for your back when done with hip hinge form.",
+    "proTip": "Place your hands on your shins and maintain a flat back for the first 10 seconds, then let the rounding happen naturally.",
+    "source": "Yoga Alliance Adaptive Yoga / Chair Yoga for Seniors",
+    "lastReviewed": "2025-01-01",
+    "tags": ["chair_yoga", "hamstring_stretch", "cooldown", "wheelchair_accessible", "gentle", "relaxation"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "yoga_seated_spinal_twist",
+    "name": "Seated Spinal Twist",
+    "category": "cooldown",
+    "type": "flexibility",
+    "movementPattern": "rotation",
+    "bodyPart": "back",
+    "primaryMuscles": ["Obliques", "Erector Spinae"],
+    "secondaryMuscles": ["Multifidus", "Rotator Cuff", "Rhomboids"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Chair yoga. Thoracic rotation stretch. Gentle spinal twist in seated position."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mob_thoracic_rotation",
+      "unlockCriteria": "Pain-free full rotation both sides",
+      "chainFamily": "thoracic_rotation_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["disc_herniation_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 3, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "yoga_seated_cat_cow",
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "20-30s each side", "tempo": "hold", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🌀",
+    "steps": [
+      "Sit tall in a chair, feet flat on the floor, spine long.",
+      "Place your right hand on the outside of your left knee. Left hand behind you on the chair back.",
+      "Inhale to lengthen the spine. Exhale to gently twist left — look over your left shoulder.",
+      "Hold 20-30 seconds. Return to center. Repeat on the other side."
+    ],
+    "formCues": [
+      "✅ Grow tall BEFORE you twist — length first, rotation second",
+      "✅ Twist from the mid-back (thoracic), not the lower back",
+      "✅ Keep both hips grounded on the chair — don't let one lift"
+    ],
+    "commonMistakes": [
+      "❌ Twisting from the lower back — the lumbar spine has very little rotation",
+      "❌ Forcing the twist with your arm — let the exhale deepen the rotation naturally",
+      "❌ Slouching before twisting — sit tall first"
+    ],
+    "coreBracing": "LIGHT (15%) — gentle engagement to maintain upright posture",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "4", "pattern": "Inhale to lengthen, exhale to deepen the twist. Each breath should add a little more rotation." },
+    "injuryNotes": {
+      "lower_back": "Keep rotation in the thoracic spine ONLY. If lower back pain occurs, reduce range. Avoid if acute disc issue.",
+      "knee": "No knee involvement.",
+      "shoulder": "Don't pull hard with the hand on knee. Gentle guidance only."
+    },
+    "purpose": "Thoracic rotation and spinal mobility in a safe seated position. Decompresses the spine after sitting.",
+    "whyForYou": "Your thoracic spine needs rotation work to avoid compensating through the lower back. This is the safest way to train rotation.",
+    "proTip": "Each exhale should take you slightly deeper into the twist — don't force it on the inhale.",
+    "source": "Yoga Alliance Adaptive Yoga / Chair Yoga for Seniors",
+    "lastReviewed": "2025-01-01",
+    "tags": ["chair_yoga", "thoracic_rotation", "cooldown", "wheelchair_accessible", "gentle", "spinal_mobility"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "yoga_seated_eagle_arms",
+    "name": "Seated Eagle Arms",
+    "category": "cooldown",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Rhomboids", "Posterior Deltoids", "Upper Trapezius"],
+    "secondaryMuscles": ["Infraspinatus", "Teres Minor", "Latissimus Dorsi"],
+    "jointsInvolved": ["shoulder", "elbow"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Chair yoga. Stretches posterior shoulder and upper back. Modify for shoulder injuries."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "stretch_cross_body_shoulder",
+      "unlockCriteria": "Full wrap position without pain",
+      "chainFamily": "shoulder_flexibility_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["labrum_tear_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "stretch_cross_body_shoulder",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "20-30s each side", "tempo": "hold", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🦅",
+    "steps": [
+      "Sit tall. Extend arms forward at shoulder height.",
+      "Cross right arm UNDER left. Bend elbows and try to bring palms together (or backs of hands).",
+      "Lift elbows slightly and press forearms forward — feel the stretch across your upper back.",
+      "Hold 20-30 seconds. Unwind and repeat with left arm under right."
+    ],
+    "formCues": [
+      "✅ Lift elbows to shoulder height to maximize the stretch",
+      "✅ Press forearms away from your face to deepen the stretch",
+      "✅ Keep shoulders down away from ears"
+    ],
+    "commonMistakes": [
+      "❌ Shrugging shoulders up — actively pull them down",
+      "❌ Forcing palms together if flexibility isn't there yet — back of hands touching is fine",
+      "❌ Holding breath — breathe into the stretch"
+    ],
+    "coreBracing": "MINIMAL (10%) — relaxed, upright posture",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "4", "pattern": "Breathe into the stretch between your shoulder blades. Exhale to relax deeper." },
+    "injuryNotes": {
+      "lower_back": "No spinal load. Safe in seated position.",
+      "knee": "No knee involvement.",
+      "shoulder": "If labrum catches or clicks, use cross-body stretch instead. Avoid full wrap if painful."
+    },
+    "purpose": "Stretches posterior shoulder, upper back, and space between shoulder blades. Counteracts forward-rounded posture.",
+    "whyForYou": "Your left labrum needs careful stretching — use the modified version (backs of hands) to avoid impingement.",
+    "proTip": "The deeper wrap creates more stretch. If you can't get palms together, hold a strap between your hands.",
+    "source": "Yoga Alliance Adaptive Yoga / Chair Yoga for Seniors",
+    "lastReviewed": "2025-01-01",
+    "tags": ["chair_yoga", "shoulder_stretch", "upper_back", "cooldown", "wheelchair_accessible", "posture"],
+    "abilityLevel": "wheelchair_accessible"
+  },
+  {
+    "id": "pf_kegel_holds",
+    "name": "Kegel Holds (Progressive)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "core",
+    "primaryMuscles": ["Pelvic Floor — Slow-Twitch Fibers"],
+    "secondaryMuscles": ["TVA", "Diaphragm"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Progressive pelvic floor endurance. Start at 3s holds, build to 10s over weeks."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "pf_quick_flicks",
+      "unlockCriteria": "10 x 10s holds with full relaxation between",
+      "chainFamily": "pelvic_floor_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "3", "reps": "10 holds", "tempo": "3-10s hold / equal rest", "rest": "30s between sets", "intensity": "RPE 3-4" }
+    },
+    "emoji": "🔒",
+    "steps": [
+      "Sit, lie, or stand comfortably. Relax everything except the pelvic floor.",
+      "Slowly contract the pelvic floor — imagine lifting an elevator. Hold for 3 seconds (progress to 5, then 10).",
+      "Fully release for equal time — the relaxation phase is as important as the contraction.",
+      "Repeat 10 times. Perform 3 sets daily."
+    ],
+    "formCues": [
+      "✅ Lift and squeeze gently — not a max effort contraction",
+      "✅ Fully relax between reps — incomplete relaxation leads to hypertonic PF",
+      "✅ Breathe naturally throughout — never hold breath"
+    ],
+    "commonMistakes": [
+      "❌ Bearing down instead of lifting — think UP not DOWN",
+      "❌ Engaging glutes, inner thighs, or abs — isolate the PF",
+      "❌ Skipping the relaxation phase — hypertonicity is a real problem"
+    ],
+    "coreBracing": "NONE — isolate pelvic floor only",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Exhale during contraction, inhale during relaxation" },
+    "injuryNotes": {
+      "lower_back": "PF engagement supports spinal stability. No spinal load.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Progressive pelvic floor endurance training targeting slow-twitch fibers for sustained support.",
+    "whyForYou": "Your core rehabilitation starts at the pelvic floor — it's the base of the core canister that protects your back.",
+    "proTip": "Do one set in each position: lying, sitting, standing. Standing is hardest — gravity works against you.",
+    "source": "Pelvic Floor Physical Therapy Standards / ACOG",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pelvic_floor", "core", "rehab", "daily", "progressive", "endurance"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "pf_quick_flicks",
+    "name": "Pelvic Floor Quick Flicks",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "core",
+    "primaryMuscles": ["Pelvic Floor — Fast-Twitch Fibers"],
+    "secondaryMuscles": ["TVA"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": ["pf_kegel_holds"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Fast-twitch pelvic floor training. Targets the quick-response muscles that activate during coughs, sneezes, jumps."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "pf_kegel_holds",
+      "progressTo": "pf_diaphragm_coord",
+      "unlockCriteria": "20 quick flicks with clear contraction-release cycle",
+      "chainFamily": "pelvic_floor_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "3", "reps": "10-20 flicks", "tempo": "1s contract / 1s relax", "rest": "30s between sets", "intensity": "RPE 3-4" }
+    },
+    "emoji": "⚡",
+    "steps": [
+      "Sit or stand comfortably.",
+      "Quickly contract and fully release the pelvic floor — like a rapid on-off switch.",
+      "Each contraction is about 1 second. Full release between each.",
+      "Perform 10-20 rapid flicks per set. Rest 30 seconds between sets."
+    ],
+    "formCues": [
+      "✅ Quick, sharp contractions — not sustained holds",
+      "✅ Full release between each flick — don't hold residual tension",
+      "✅ Keep breathing natural — don't hold breath"
+    ],
+    "commonMistakes": [
+      "❌ Not fully releasing between flicks — this builds tension, not power",
+      "❌ Using accessory muscles (glutes, abs) — isolate the PF",
+      "❌ Going too fast and losing the contraction quality"
+    ],
+    "coreBracing": "NONE — isolate pelvic floor only",
+    "breathing": { "inhale": "natural", "hold": "0", "exhale": "natural", "pattern": "Breathe naturally — don't sync breath to flicks" },
+    "injuryNotes": {
+      "lower_back": "No spinal load or movement.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Trains fast-twitch pelvic floor fibers for reactive support during coughs, sneezes, impacts, and sudden movements.",
+    "whyForYou": "Fast-twitch PF fibers activate during heavy lifts — these support intra-abdominal pressure that protects your back.",
+    "proTip": "Practice a quick flick right before you cough or sneeze — this is the functional application.",
+    "source": "Pelvic Floor Physical Therapy Standards",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pelvic_floor", "fast_twitch", "rehab", "core", "reactive_stability"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "pf_diaphragm_coord",
+    "name": "Diaphragm-Pelvic Floor Coordination Breathing",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "breathing",
+    "bodyPart": "core",
+    "primaryMuscles": ["Diaphragm", "Pelvic Floor"],
+    "secondaryMuscles": ["TVA", "Multifidus", "Intercostals"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": ["pf_kegel_holds"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Coordinates the diaphragm and pelvic floor — they move in opposition. Foundation for all bracing."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "pf_quick_flicks",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "pelvic_floor_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-10 breaths", "tempo": "4/1/6", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🫁",
+    "steps": [
+      "Lie supine or sit comfortably. One hand on chest, one on belly.",
+      "INHALE through nose (4 counts): belly rises, pelvic floor RELAXES and descends naturally.",
+      "Brief pause (1 count).",
+      "EXHALE through mouth (6 counts): belly draws in, pelvic floor LIFTS and engages automatically."
+    ],
+    "formCues": [
+      "✅ Inhale = PF relaxes down. Exhale = PF lifts up. They move in sync with the diaphragm.",
+      "✅ Chest should NOT rise — all movement is in the belly",
+      "✅ The PF engagement on exhale should feel natural, not forced"
+    ],
+    "commonMistakes": [
+      "❌ Reversing the pattern — holding PF tight during inhale prevents full diaphragm descent",
+      "❌ Chest-breathing instead of diaphragmatic — hand on belly should move more than hand on chest",
+      "❌ Forcing the PF instead of letting it respond to the breath"
+    ],
+    "coreBracing": "NATURAL — this IS the bracing mechanism. Let it happen through breathing.",
+    "breathing": { "inhale": "4", "hold": "1", "exhale": "6", "pattern": "Inhale: PF descends. Exhale: PF ascends. This is the core canister in action." },
+    "injuryNotes": {
+      "lower_back": "This is the foundation of spinal stabilization. Master this before all loaded exercises.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Coordinates the diaphragm and pelvic floor as a unit — the foundation of all core bracing and intra-abdominal pressure regulation.",
+    "whyForYou": "This is THE most important exercise for your back. Your core canister (diaphragm + TVA + PF + multifidus) is what protects your surgical site.",
+    "proTip": "Practice this before every single training session. It's your core's on-switch.",
+    "source": "Pelvic Floor PT / Diaphragmatic Breathing Research / Core Canister Model",
+    "lastReviewed": "2025-01-01",
+    "tags": ["pelvic_floor", "diaphragm", "core_canister", "breathing", "foundation", "daily"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "tmj_jaw_opening",
+    "name": "Jaw Opening with Tongue on Roof",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Masseter", "Temporalis", "Medial Pterygoid"],
+    "secondaryMuscles": ["Lateral Pterygoid", "Digastric", "Suprahyoids"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "TMJ rehabilitation. Controlled mandibular depression with tongue stabilization prevents anterior disc displacement."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "tmj_lateral_slides",
+      "unlockCriteria": "Full opening without clicking or deviation",
+      "chainFamily": "tmj_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10", "tempo": "2/1/2", "rest": "15s", "intensity": "RPE 2-3" }
+    },
+    "emoji": "👄",
+    "steps": [
+      "Sit upright with good posture. Place the tip of your tongue on the roof of your mouth behind your front teeth.",
+      "Keeping the tongue in place, slowly open your mouth as wide as comfortable — the tongue limits how far you can open.",
+      "Hold for 1 second at maximum opening. Close slowly.",
+      "Repeat 10 times. The jaw should move straight down without deviating left or right."
+    ],
+    "formCues": [
+      "✅ Tongue stays on the roof of the mouth throughout — this is the control mechanism",
+      "✅ Jaw opens straight down — watch in a mirror for deviation",
+      "✅ Slow, controlled movement — no snapping open or closed"
+    ],
+    "commonMistakes": [
+      "❌ Tongue slipping off the roof — this removes the protective mechanism",
+      "❌ Opening too wide — pain means you've gone too far",
+      "❌ Jaw deviating to one side — the movement should be symmetrical"
+    ],
+    "coreBracing": "NONE — completely relaxed body, focus on jaw only",
+    "breathing": { "inhale": "2", "hold": "1", "exhale": "2", "pattern": "Breathe naturally through the nose" },
+    "injuryNotes": {
+      "lower_back": "No involvement. Sit comfortably.",
+      "knee": "No involvement.",
+      "shoulder": "No involvement. Relax shoulders away from ears."
+    },
+    "purpose": "Restores controlled mandibular depression. Tongue placement prevents anterior disc displacement and retrains proper jaw mechanics.",
+    "whyForYou": "Jaw tension often increases during heavy exertion. This helps you maintain relaxed jaw during training — less tension = better performance.",
+    "proTip": "Use a mirror to watch for jaw deviation. If it curves to one side, that's the tight side — it needs more attention.",
+    "source": "TMJ Physical Therapy / DPT Clinical Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["tmj", "jaw", "rehab", "mobility", "daily", "facial"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "tmj_lateral_slides",
+    "name": "Lateral Jaw Slides",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Lateral Pterygoid", "Medial Pterygoid"],
+    "secondaryMuscles": ["Masseter", "Temporalis"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": ["tmj_jaw_opening"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "TMJ lateral pterygoid mobility. Restores side-to-side jaw movement."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "tmj_jaw_opening",
+      "progressTo": "tmj_resisted_opening",
+      "unlockCriteria": "Equal range both sides without clicking",
+      "chainFamily": "tmj_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "10 each side", "tempo": "2/1/2", "rest": "15s", "intensity": "RPE 2-3" }
+    },
+    "emoji": "↔️",
+    "steps": [
+      "Sit upright. Slightly open your mouth (about 1 finger-width).",
+      "Slowly slide your lower jaw to the LEFT as far as comfortable. Hold 1 second.",
+      "Return to center. Slide to the RIGHT. Hold 1 second.",
+      "Repeat 10 times each side. Movements should be equal range and smooth."
+    ],
+    "formCues": [
+      "✅ Keep the movement slow and controlled",
+      "✅ Equal range of motion both sides — the tight side needs extra attention",
+      "✅ Keep upper teeth still — only the lower jaw moves"
+    ],
+    "commonMistakes": [
+      "❌ Moving the entire head instead of just the jaw",
+      "❌ Clicking or popping during the slide — reduce range until silent",
+      "❌ Forcing past the comfortable range"
+    ],
+    "coreBracing": "NONE — completely relaxed",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Breathe naturally through the nose" },
+    "injuryNotes": {
+      "lower_back": "No involvement.",
+      "knee": "No involvement.",
+      "shoulder": "No involvement. Relax shoulders."
+    },
+    "purpose": "Restores lateral pterygoid mobility and balanced side-to-side jaw movement. Reduces TMJ asymmetry.",
+    "whyForYou": "Balanced jaw mechanics reduce tension headaches and neck tension — both of which can affect your training performance.",
+    "proTip": "If one side has less range, spend 50% more time on that side. Asymmetry drives TMJ problems.",
+    "source": "TMJ Physical Therapy / DPT Clinical Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["tmj", "jaw", "rehab", "mobility", "lateral_movement"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "tmj_resisted_opening",
+    "name": "Resisted Jaw Opening",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Suprahyoids", "Lateral Pterygoid", "Digastric"],
+    "secondaryMuscles": ["Masseter", "Temporalis"],
+    "jointsInvolved": [],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["tmj_jaw_opening", "tmj_lateral_slides"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "TMJ strengthening. Isometric resistance against jaw opening to build stabilizer strength."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "tmj_lateral_slides",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "tmj_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 x 5s holds", "tempo": "isometric", "rest": "15s", "intensity": "RPE 3-4" }
+    },
+    "emoji": "✊",
+    "steps": [
+      "Sit upright. Place your fist under your chin.",
+      "Try to open your mouth while your fist resists the movement — isometric hold.",
+      "Hold 5 seconds at about 50% effort. You should feel the muscles under your chin working.",
+      "Relax completely. Repeat 10 times."
+    ],
+    "formCues": [
+      "✅ Moderate effort only — 50% of your max, not 100%",
+      "✅ The jaw should NOT actually move — this is isometric",
+      "✅ Keep the head and neck in neutral — don't push your head down"
+    ],
+    "commonMistakes": [
+      "❌ Pushing too hard — this is rehabilitation, not max effort",
+      "❌ Moving the jaw against the resistance — keep it isometric",
+      "❌ Tensing the neck and shoulders — isolate the jaw muscles"
+    ],
+    "coreBracing": "NONE — relaxed body",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "Breathe normally. Exhale during the hold to stay relaxed." },
+    "injuryNotes": {
+      "lower_back": "No involvement.",
+      "knee": "No involvement.",
+      "shoulder": "No involvement."
+    },
+    "purpose": "Strengthens jaw stabilizers to improve joint control and reduce clicking, popping, and locking.",
+    "whyForYou": "Strong jaw stabilizers mean you can keep your jaw relaxed during heavy lifts instead of clenching. Less tension, better performance.",
+    "proTip": "Cue 'tongue on roof, teeth apart, lips together' during all your training — this is the ideal jaw position.",
+    "source": "TMJ Physical Therapy / DPT Clinical Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["tmj", "jaw", "rehab", "isometric", "strengthening", "stabilization"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "sport_power_clean",
+    "name": "Power Clean (from Hang)",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "hinge",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Glute Max", "Quadriceps", "Hamstrings", "Trapezius"],
+    "secondaryMuscles": ["Erector Spinae", "Deltoids", "Forearm Flexors", "Calves", "Core"],
+    "jointsInvolved": ["hip", "knee", "ankle", "shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["barbell"],
+    "locationCompatible": ["gym"],
+    "phaseEligibility": [4, 5],
+    "difficultyLevel": 5,
+    "weekMinimum": 24,
+    "prerequisites": {
+      "minCompletedSessions": 24,
+      "requiredExercisesMastered": ["str_trap_bar_dl_high", "str_front_squat"],
+      "requiredCapabilities": ["hip_hinge_competent", "heavy_loading_ready", "barbell_competent"],
+      "minPhase": 4,
+      "maxInjurySeverity": { "lower_back": 1, "knee": 2, "shoulder": 2 },
+      "painFreeROM": ["hip_flexion_120", "shoulder_flexion_160", "wrist_extension_70"],
+      "notes": "Elite-level Olympic lift derivative. Requires mastery of hinge pattern, front squat rack position, and barbell competency. Lower back must be severity 1 or less."
+    },
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "str_trap_bar_dl_high",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "hip_hinge_chain"
+    },
+    "contraindications": {
+      "injuries": ["lower_back_post_surgical", "disc_herniation_acute", "spondylolisthesis"],
+      "conditions": ["disc_herniation_acute", "spondylolisthesis", "spinal_stenosis"],
+      "movements_to_avoid": ["axial_loading_heavy"],
+      "severity_gate": { "lower_back": 1, "knee": 2, "shoulder": 2 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "kb_swing",
+      "injury_knee": "kb_swing",
+      "injury_shoulder": "str_trap_bar_dl_high",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "4": { "sets": "4-6", "reps": "1-3", "tempo": "X/X/X", "rest": "3-5min", "intensity": "70-85% 1RM" },
+      "5": { "sets": "3-5", "reps": "1-5", "tempo": "X/X/X", "rest": "3-5min", "intensity": "75-90% 1RM" }
+    },
+    "emoji": "🏋️",
+    "steps": [
+      "Stand with barbell at hang position (mid-thigh), shoulder-width grip, hips back, chest up.",
+      "Explosively extend hips, knees, and ankles (triple extension) — shrug the bar upward.",
+      "Pull yourself UNDER the bar, catching it in a front rack position (elbows high).",
+      "Stand up from the catch position. Lower bar to hang and reset."
+    ],
+    "formCues": [
+      "✅ Triple extension is the power source — hips, knees, ankles all extend together",
+      "✅ Keep bar close to body throughout — it should brush your thighs",
+      "✅ Fast elbows in the catch — elbows whip around and UP"
+    ],
+    "commonMistakes": [
+      "❌ Pulling with arms instead of driving with hips — this is a JUMP, not a curl",
+      "❌ Bar drifting away from body — causes forward pull and back strain",
+      "❌ Not getting under the bar — you pull YOURSELF down, not the bar up"
+    ],
+    "coreBracing": "MAXIMUM (100%) — full valsalva brace through the entire lift",
+    "breathing": { "inhale": "deep", "hold": "through lift", "exhale": "after catch", "pattern": "Big breath and brace before pull. Hold through triple extension and catch. Exhale at the top." },
+    "injuryNotes": {
+      "lower_back": "BLOCKED for John (severity 3). Requires back severity 1 or less. Massive spinal loading. No exceptions.",
+      "knee": "Requires pain-free full squat depth for the catch. Monitor for patellar stress.",
+      "shoulder": "Requires full front rack mobility. Wrist extension critical. Labrum must be fully stable."
+    },
+    "purpose": "Maximum power development through triple extension. Develops explosive hip drive for athletic performance.",
+    "whyForYou": "Currently BLOCKED due to lower back severity 3. This is a long-term goal — requires Phase 4+ AND back severity 1.",
+    "proTip": "Master the hang clean pull (no catch) first. Then add the catch. Progression: pull → muscle clean → power clean.",
+    "source": "NSCA Essentials of Strength Training / USAW",
+    "lastReviewed": "2025-01-01",
+    "tags": ["olympic_lift", "power", "sport_performance", "phase_4", "elite", "triple_extension"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_box_jump",
+    "name": "Box Jump",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "Glute Max", "Calves"],
+    "secondaryMuscles": ["Hamstrings", "Hip Flexors", "Core"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["box"],
+    "locationCompatible": ["gym"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 4,
+    "weekMinimum": 16,
+    "prerequisites": {
+      "minCompletedSessions": 16,
+      "requiredExercisesMastered": ["str_bw_squat", "str_goblet_squat"],
+      "requiredCapabilities": ["plyometric_ready", "single_leg_stable"],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 1, "shoulder": 5 },
+      "painFreeROM": ["knee_flexion_120", "hip_flexion_120"],
+      "notes": "Plyometric exercise. Requires knee severity 1 or less — BLOCKED for John (knee severity 2). No plyometrics with knee issues."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "str_bw_squat",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "plyometric_chain"
+    },
+    "contraindications": {
+      "injuries": ["knee_post_surgical", "acl_post_op_early", "meniscus_acute"],
+      "conditions": ["acl_post_op_early", "meniscus_acute"],
+      "movements_to_avoid": ["plyometrics", "deep_knee_flexion"],
+      "severity_gate": { "lower_back": 3, "knee": 1, "shoulder": 5 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "str_goblet_squat",
+      "injury_shoulder": null,
+      "no_equipment": "str_bw_squat"
+    },
+    "phaseParams": {
+      "3": { "sets": "3-4", "reps": "3-5", "tempo": "X/land/reset", "rest": "90-120s", "intensity": "RPE 7-8" },
+      "4": { "sets": "4-5", "reps": "3-5", "tempo": "X/land/reset", "rest": "2-3min", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "1-5", "tempo": "X/land/reset", "rest": "2-3min", "intensity": "RPE 8-9" }
+    },
+    "emoji": "📦",
+    "steps": [
+      "Stand facing a box (start low — 12-16 inches). Feet hip-width, arms back.",
+      "Swing arms forward and JUMP explosively — drive hips up and forward.",
+      "Land softly on the box with BOTH feet fully on the surface. Absorb through hips and knees.",
+      "Stand up fully on the box. Step DOWN (don't jump down). Reset and repeat."
+    ],
+    "formCues": [
+      "✅ Land softly — quiet feet means good absorption",
+      "✅ Full foot on the box — heels must be ON the surface",
+      "✅ Step DOWN, don't jump down — the landing is where injuries happen"
+    ],
+    "commonMistakes": [
+      "❌ Landing on toes at the edge of the box — full foot, centered",
+      "❌ Jumping DOWN off the box — always step down to protect knees",
+      "❌ Knees caving inward on landing — push knees out"
+    ],
+    "coreBracing": "MODERATE (40-50%) — brace on takeoff, maintain through landing",
+    "breathing": { "inhale": "before jump", "hold": "during jump", "exhale": "on landing", "pattern": "Inhale and brace before jump. Hold through flight. Exhale on landing." },
+    "injuryNotes": {
+      "lower_back": "Keep spine neutral during jump and landing. No loaded version.",
+      "knee": "BLOCKED for John (severity 2). Requires knee severity 1. NO plyometrics with post-surgical knee.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Lower body power development through explosive hip and knee extension. Trains reactive strength and landing mechanics.",
+    "whyForYou": "Currently BLOCKED due to left knee severity 2. Requires Phase 3+ AND knee severity 1. Long-term goal for athletic development.",
+    "proTip": "Box height should challenge you, not scare you. If you have to tuck your knees to make it, the box is too high.",
+    "source": "NSCA Essentials of Strength Training / Plyometric Training Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["plyometric", "power", "sport_performance", "phase_3", "landing_mechanics", "explosive"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_med_ball_slam",
+    "name": "Medicine Ball Slam",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Rectus Abdominis", "Obliques", "Latissimus Dorsi", "Deltoids"],
+    "secondaryMuscles": ["Triceps", "Hip Flexors", "Quadriceps", "Erector Spinae"],
+    "jointsInvolved": ["shoulder", "spine", "hip", "knee"],
+    "equipmentRequired": ["medicine_ball"],
+    "locationCompatible": ["gym", "outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 12,
+    "prerequisites": {
+      "minCompletedSessions": 12,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": ["core_stability_intermediate"],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 2, "knee": 3, "shoulder": 2 },
+      "painFreeROM": ["shoulder_flexion_160"],
+      "notes": "Requires overhead movement and explosive spinal flexion. Lower back and shoulder must be well-managed."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "sport_med_ball_rot_throw",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "power_chain"
+    },
+    "contraindications": {
+      "injuries": ["lower_back_post_surgical", "labrum_tear_acute"],
+      "conditions": ["disc_herniation_acute"],
+      "movements_to_avoid": ["axial_loading_heavy", "end_range_shoulder"],
+      "severity_gate": { "lower_back": 2, "knee": 3, "shoulder": 2 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "sport_battle_ropes",
+      "injury_knee": null,
+      "injury_shoulder": "sport_battle_ropes",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "3": { "sets": "3-4", "reps": "6-10", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 7-8" },
+      "4": { "sets": "4-5", "reps": "6-10", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "6-10", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 8-9" }
+    },
+    "emoji": "💥",
+    "steps": [
+      "Stand with feet shoulder-width, holding a slam ball at chest height.",
+      "Reach the ball overhead with extended arms — rise onto toes for full extension.",
+      "Slam the ball down HARD directly in front of you — drive hips back, crunch abs.",
+      "Catch the ball on the bounce (or pick it up). Reset and repeat explosively."
+    ],
+    "formCues": [
+      "✅ Use your WHOLE body — hips, core, and arms all drive the slam",
+      "✅ Slam in front of your feet, not between them — protect your face",
+      "✅ Full extension overhead before the slam — long arc = more power"
+    ],
+    "commonMistakes": [
+      "❌ Using only arms — this is a full-body power movement",
+      "❌ Rounding the lower back on the slam — hinge at hips",
+      "❌ Slamming between your feet — ball can bounce into your face"
+    ],
+    "coreBracing": "HIGH (60-70%) — brace through the slam, especially the overhead-to-slam transition",
+    "breathing": { "inhale": "during reach overhead", "hold": "brief", "exhale": "forcefully on slam", "pattern": "Inhale reaching up. Forceful exhale on the slam — like a martial arts kiai." },
+    "injuryNotes": {
+      "lower_back": "BLOCKED for John (severity 3). Requires severity 2 or less. The overhead-to-flexion movement stresses the spine significantly.",
+      "knee": "Minimal knee stress — primarily hip-driven. Safe if knee severity 3 or less.",
+      "shoulder": "Requires full overhead ROM pain-free. BLOCKED for John (severity 2 with end-range restriction in Phase 1-2)."
+    },
+    "purpose": "Full-body power development combining upper body pull, core flexion power, and stress release.",
+    "whyForYou": "Currently BLOCKED due to back (sev 3) and shoulder restrictions. Future goal — battle ropes are your current power alternative.",
+    "proTip": "Use a dead ball (no bounce) for maximum power expression. Slam ball if you want a catch-and-repeat rhythm.",
+    "source": "NSCA Sport Performance / ACE Power Training Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["power", "sport_performance", "full_body", "phase_3", "explosive", "stress_release"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_med_ball_rot_throw",
+    "name": "Medicine Ball Rotational Throw",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "rotation",
+    "bodyPart": "core",
+    "primaryMuscles": ["Obliques", "TVA", "Hip Rotators"],
+    "secondaryMuscles": ["Pectorals", "Deltoids", "Latissimus Dorsi", "Glute Med"],
+    "jointsInvolved": ["hip", "spine", "shoulder"],
+    "equipmentRequired": ["medicine_ball", "wall"],
+    "locationCompatible": ["gym", "outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 12,
+    "prerequisites": {
+      "minCompletedSessions": 12,
+      "requiredExercisesMastered": ["core_pallof_stand"],
+      "requiredCapabilities": ["core_stability_intermediate"],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 2, "knee": 4, "shoulder": 3 },
+      "painFreeROM": [],
+      "notes": "Rotational power for combat sports (BJJ, Muay Thai). Requires anti-rotation mastery first."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": "core_pallof_stand",
+      "progressTo": "sport_med_ball_slam",
+      "unlockCriteria": "10 throws each side with full hip rotation, no pain",
+      "chainFamily": "power_chain"
+    },
+    "contraindications": {
+      "injuries": ["lower_back_post_surgical"],
+      "conditions": ["disc_herniation_acute", "spondylolisthesis"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 2, "knee": 4, "shoulder": 3 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "core_pallof_stand",
+      "injury_knee": null,
+      "injury_shoulder": "core_pallof_stand",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "3": { "sets": "3-4", "reps": "6-8 each side", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 7-8" },
+      "4": { "sets": "4-5", "reps": "6-8 each side", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "6-8 each side", "tempo": "X/X/X", "rest": "60-90s", "intensity": "RPE 8-9" }
+    },
+    "emoji": "🌪️",
+    "steps": [
+      "Stand sideways to a wall, 3-4 feet away. Hold a medicine ball at hip height on the far side.",
+      "Load by rotating away from the wall — hips turn, back foot pivots.",
+      "Explosively rotate hips toward the wall and throw the ball against it.",
+      "Catch the rebound (or pick up). Reset. Complete all reps on one side, then switch."
+    ],
+    "formCues": [
+      "✅ Power comes from the HIPS — not the arms. Think of throwing from your back hip.",
+      "✅ Back foot pivots — heel comes up as hips rotate through",
+      "✅ Arms are the delivery system, not the engine"
+    ],
+    "commonMistakes": [
+      "❌ Throwing with arms only — the hips must initiate the rotation",
+      "❌ Feet staying planted — the back foot MUST pivot",
+      "❌ Rounding the back during the throw — stay tall and rotate"
+    ],
+    "coreBracing": "HIGH (60%) — brace through the rotation to protect the spine",
+    "breathing": { "inhale": "during load (away from wall)", "hold": "brief", "exhale": "forcefully on throw", "pattern": "Load on inhale. Explosive exhale on throw — like a combat sport strike." },
+    "injuryNotes": {
+      "lower_back": "BLOCKED for John (severity 3). Rotational loading on a post-surgical spine is high-risk. Use Pallof press instead.",
+      "knee": "Minimal knee stress. The pivot is from the hip. Safe if knee allows standing rotation.",
+      "shoulder": "Keep ball at chest/hip level — no overhead component. Should be tolerable for moderate labrum issues."
+    },
+    "purpose": "Develops rotational power essential for combat sports (BJJ, Muay Thai), golf, and throwing activities.",
+    "whyForYou": "Currently BLOCKED due to back severity 3. Future goal for your combat sports (BJJ, Muay Thai). Pallof press is your current rotational training.",
+    "proTip": "Film yourself from above — you should see your belt buckle face the wall at release. If not, your hips aren't rotating enough.",
+    "source": "NSCA Sport Performance / Combat Sport Conditioning",
+    "lastReviewed": "2025-01-01",
+    "tags": ["power", "rotation", "sport_performance", "combat_sports", "phase_3", "explosive"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_sled_push",
+    "name": "Sled Push",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Quadriceps", "Glute Max", "Calves"],
+    "secondaryMuscles": ["Hamstrings", "Core", "Deltoids", "Triceps"],
+    "jointsInvolved": ["hip", "knee", "ankle", "shoulder"],
+    "equipmentRequired": ["sled"],
+    "locationCompatible": ["gym", "outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 12,
+    "prerequisites": {
+      "minCompletedSessions": 12,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 3, "shoulder": 3 },
+      "painFreeROM": [],
+      "notes": "Concentric-only exercise — no eccentric phase means minimal muscle soreness. Excellent for conditioning."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "sport_sled_pull",
+      "unlockCriteria": "4x40m at moderate load without form breakdown",
+      "chainFamily": "sled_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 3, "knee": 3, "shoulder": 3 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "cardio_walking",
+      "injury_knee": "cardio_bike",
+      "injury_shoulder": null,
+      "no_equipment": "dyn_walking_lunges"
+    },
+    "phaseParams": {
+      "3": { "sets": "3-5", "reps": "20-40m", "tempo": "continuous", "rest": "90-120s", "intensity": "RPE 7-8" },
+      "4": { "sets": "4-6", "reps": "20-40m", "tempo": "continuous", "rest": "2-3min", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "20-40m", "tempo": "continuous", "rest": "2-3min", "intensity": "RPE 8-9" }
+    },
+    "emoji": "🛷",
+    "steps": [
+      "Load the sled appropriately. Grip the high handles with arms extended.",
+      "Lean into the sled at a 45-degree angle — body forms a straight line from head to ankles.",
+      "Drive one leg at a time, pushing through the forefoot. Keep driving with short, powerful steps.",
+      "Maintain the forward lean throughout. Stop at the end of the distance."
+    ],
+    "formCues": [
+      "✅ 45-degree forward lean — like sprinting against a wall",
+      "✅ Short, powerful steps — drive through the balls of your feet",
+      "✅ Arms locked out — push from the legs, not the arms"
+    ],
+    "commonMistakes": [
+      "❌ Standing too upright — you lose mechanical advantage",
+      "❌ Taking long strides — short, quick steps are more powerful",
+      "❌ Holding breath — breathe rhythmically with your steps"
+    ],
+    "coreBracing": "HIGH (60-70%) — maintain rigid torso throughout the push",
+    "breathing": { "inhale": "every 2-3 steps", "hold": "0", "exhale": "every 2-3 steps", "pattern": "Rhythmic breathing matched to step cadence. Don't hold breath." },
+    "injuryNotes": {
+      "lower_back": "No eccentric spinal loading — safer than most power exercises. Keep spine neutral throughout. Use lighter loads initially.",
+      "knee": "Concentric-only = joint-friendly. Start light. If knee pain occurs, reduce load or switch to arm-only pushing.",
+      "shoulder": "Keep arms locked out, not actively pressing. Minimal shoulder demand."
+    },
+    "purpose": "Full-body conditioning with zero eccentric load — less soreness, faster recovery. Excellent GPP (general physical preparedness).",
+    "whyForYou": "One of the safest power exercises for your back — no eccentric spinal loading. Great conditioning tool once you reach Phase 3.",
+    "proTip": "Heavy sled + slow speed = strength. Light sled + fast speed = conditioning. Vary both.",
+    "source": "NSCA Conditioning / Westside Barbell GPP Methods",
+    "lastReviewed": "2025-01-01",
+    "tags": ["sled", "conditioning", "concentric_only", "sport_performance", "phase_3", "full_body"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_battle_ropes",
+    "name": "Battle Ropes",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Deltoids", "Trapezius", "Core", "Forearm Flexors"],
+    "secondaryMuscles": ["Biceps", "Triceps", "Latissimus Dorsi", "Quadriceps"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist", "hip", "knee"],
+    "equipmentRequired": ["battle_ropes"],
+    "locationCompatible": ["gym", "outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 12,
+    "prerequisites": {
+      "minCompletedSessions": 12,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": ["shoulder_pressing_cleared"],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 5, "shoulder": 2 },
+      "painFreeROM": ["shoulder_flexion_120"],
+      "notes": "High-intensity upper body cardio. Requires shoulder stability and cardiovascular base."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "conditioning_chain"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute", "rotator_cuff_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 3, "knee": 5, "shoulder": 2 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "cardio_bike",
+      "injury_knee": null,
+      "injury_shoulder": "cardio_bike",
+      "no_equipment": "cond_boxing_drills"
+    },
+    "phaseParams": {
+      "3": { "sets": "3-5", "reps": "20-30s work", "tempo": "continuous", "rest": "30-60s", "intensity": "RPE 7-9" },
+      "4": { "sets": "4-6", "reps": "30-45s work", "tempo": "continuous", "rest": "30-60s", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "30-60s work", "tempo": "continuous", "rest": "30-60s", "intensity": "RPE 8-9" }
+    },
+    "emoji": "🪢",
+    "steps": [
+      "Stand in athletic position — feet wide, knees bent, hips back. Hold one rope end in each hand.",
+      "Alternating waves: rapidly raise and lower each arm to create waves down the rope.",
+      "Keep waves powerful — the wave should reach the anchor point.",
+      "Maintain for 20-30 seconds. Rest and repeat."
+    ],
+    "formCues": [
+      "✅ Power comes from the hips and core — don't just use arms",
+      "✅ Athletic stance — knees bent, chest up, slight forward lean",
+      "✅ Waves should be big and forceful, not small and frantic"
+    ],
+    "commonMistakes": [
+      "❌ Standing upright with locked knees — stay in athletic stance",
+      "❌ Only using arms — hips and core should drive the movement",
+      "❌ Ropes going slack — maintain tension throughout"
+    ],
+    "coreBracing": "MODERATE (40-50%) — maintain brace throughout to protect spine during high-velocity movement",
+    "breathing": { "inhale": "every 2-3 waves", "hold": "0", "exhale": "every 2-3 waves", "pattern": "Rhythmic breathing. Don't hold breath — this is cardio." },
+    "injuryNotes": {
+      "lower_back": "Stay in athletic stance with neutral spine. The rope motion should not come from the back.",
+      "knee": "Minimal knee stress — static athletic stance. Adjust width for comfort.",
+      "shoulder": "Keep waves below shoulder height. Avoid overhead slams if labrum is sensitive. Start with short intervals."
+    },
+    "purpose": "High-intensity upper body cardio and conditioning. Excellent for combat sport preparation and metabolic training.",
+    "whyForYou": "Your best power/conditioning option given shoulder and back restrictions. Waves below shoulder height keep the labrum safe. No spinal loading.",
+    "proTip": "Try different patterns: alternating waves, double waves, lateral waves, circles. Each targets different muscles.",
+    "source": "NSCA Conditioning / ACE Performance Training",
+    "lastReviewed": "2025-01-01",
+    "tags": ["battle_ropes", "conditioning", "cardio", "upper_body", "sport_performance", "phase_3"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_sled_pull",
+    "name": "Sled Pull (Backward or Rope)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "full_body",
+    "primaryMuscles": ["Hamstrings", "Glute Max", "Latissimus Dorsi"],
+    "secondaryMuscles": ["Quadriceps", "Calves", "Biceps", "Core", "Forearm Flexors"],
+    "jointsInvolved": ["hip", "knee", "ankle", "shoulder", "elbow"],
+    "equipmentRequired": ["sled"],
+    "locationCompatible": ["gym", "outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 12,
+    "prerequisites": {
+      "minCompletedSessions": 12,
+      "requiredExercisesMastered": ["sport_sled_push"],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 3, "shoulder": 3 },
+      "painFreeROM": [],
+      "notes": "Concentric-only pulling exercise. Backward walking version strengthens VMO and quads in reverse."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "sport_sled_push",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "sled_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 3, "knee": 3, "shoulder": 3 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "str_cable_row",
+      "injury_knee": "str_cable_row",
+      "injury_shoulder": null,
+      "no_equipment": "str_inverted_row"
+    },
+    "phaseParams": {
+      "3": { "sets": "3-5", "reps": "20-40m", "tempo": "continuous", "rest": "90-120s", "intensity": "RPE 7-8" },
+      "4": { "sets": "4-6", "reps": "20-40m", "tempo": "continuous", "rest": "2-3min", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "20-40m", "tempo": "continuous", "rest": "2-3min", "intensity": "RPE 8-9" }
+    },
+    "emoji": "🔗",
+    "steps": [
+      "Attach a strap or rope to the sled. Walk backward while pulling the sled toward you.",
+      "Stay low — hips down, chest up, arms pulling hand-over-hand on the rope.",
+      "Drive backward through your heels with each step.",
+      "Alternative: face away and drag the sled backward using a hip belt."
+    ],
+    "formCues": [
+      "✅ Stay low with hips back — like a backward athletic shuffle",
+      "✅ Pull with the whole body — arms, back, and legs together",
+      "✅ Keep spine neutral — don't round forward under the pull"
+    ],
+    "commonMistakes": [
+      "❌ Standing too upright — you lose pulling power and strain the back",
+      "❌ Pulling only with arms — drive backward with legs simultaneously",
+      "❌ Looking over shoulder — face the sled, watch where you're pulling"
+    ],
+    "coreBracing": "HIGH (60-70%) — maintain rigid torso during pulling",
+    "breathing": { "inhale": "every 2-3 pulls", "hold": "0", "exhale": "every 2-3 pulls", "pattern": "Rhythmic breathing matched to pulling cadence" },
+    "injuryNotes": {
+      "lower_back": "Concentric-only = joint-friendly. Keep spine neutral. Use lighter loads if back is sensitive.",
+      "knee": "Backward walking is excellent for VMO strengthening. Start very light. Monitor for patellar pain.",
+      "shoulder": "Rope pulling engages lats and biceps. Monitor for labrum strain — reduce load if shoulder clicks."
+    },
+    "purpose": "Posterior chain conditioning with concentric-only loading. Backward sled pull is excellent for knee rehabilitation and VMO strengthening.",
+    "whyForYou": "Backward sled pull is one of the best VMO exercises available — targets your left knee weak point. No eccentric = low soreness.",
+    "proTip": "Light backward sled pull is used by top knee rehab PTs — it strengthens the VMO without stressing the patella.",
+    "source": "NSCA Conditioning / Westside Barbell / Ben Patrick (Knees Over Toes)",
+    "lastReviewed": "2025-01-01",
+    "tags": ["sled", "posterior_chain", "conditioning", "vmo", "sport_performance", "concentric_only"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "sport_barbell_hip_thrust",
+    "name": "Barbell Hip Thrust",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Max"],
+    "secondaryMuscles": ["Hamstrings", "Core", "Adductors"],
+    "jointsInvolved": ["hip", "knee"],
+    "equipmentRequired": ["barbell", "bench"],
+    "locationCompatible": ["gym"],
+    "phaseEligibility": [2, 3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 8,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": ["str_glute_bridge"],
+      "requiredCapabilities": ["hip_hinge_competent"],
+      "minPhase": 2,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 3, "shoulder": 5 },
+      "painFreeROM": ["hip_extension_full"],
+      "notes": "Requires mastery of bodyweight glute bridge. Barbell adds significant load to hip extension pattern."
+    },
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "str_glute_bridge",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "hip_hinge_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 3, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": "band_hip_thrust",
+      "outdoor": "str_glute_bridge",
+      "injury_lower_back": "str_glute_bridge",
+      "injury_knee": "str_glute_bridge",
+      "injury_shoulder": null,
+      "no_equipment": "str_glute_bridge"
+    },
+    "phaseParams": {
+      "2": { "sets": "3-4", "reps": "8-12", "tempo": "2/1/2", "rest": "60-90s", "intensity": "RPE 6-8" },
+      "3": { "sets": "3-5", "reps": "6-12", "tempo": "2/1/2", "rest": "60-120s", "intensity": "RPE 7-9" },
+      "4": { "sets": "4-6", "reps": "4-8", "tempo": "2/1/1", "rest": "2-3min", "intensity": "RPE 8-9" },
+      "5": { "sets": "3-5", "reps": "3-8", "tempo": "2/1/1", "rest": "2-3min", "intensity": "85-95% 1RM" }
+    },
+    "emoji": "🍑",
+    "steps": [
+      "Sit on floor with upper back against a bench. Roll a loaded barbell over your legs to your hip crease. Use a pad.",
+      "Feet flat, shoulder-width, slightly in front of knees. Drive through heels and squeeze glutes to lift hips.",
+      "Lock out at the top — torso and thighs form a straight line. Hold 1 second.",
+      "Lower slowly under control. Don't let hips drop. Reset at the bottom."
+    ],
+    "formCues": [
+      "✅ Drive through HEELS — not toes. This maximizes glute engagement.",
+      "✅ Chin tucked at the top — don't hyperextend the neck or lower back",
+      "✅ Full lockout = squeeze glutes HARD at the top for 1 second"
+    ],
+    "commonMistakes": [
+      "❌ Hyperextending the lower back at the top — stop at neutral hip extension",
+      "❌ Feet too far forward (hamstring dominant) or too close (quad dominant)",
+      "❌ Rising onto toes — heels must stay planted"
+    ],
+    "coreBracing": "MODERATE (40-50%) — brace to prevent lower back hyperextension at the top",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Inhale at the bottom. Exhale and brace as you drive up." },
+    "injuryNotes": {
+      "lower_back": "Relatively back-friendly when done correctly — no spinal flexion or axial loading. But hyperextension at top is the risk. Tuck chin, brace core.",
+      "knee": "Minimal knee stress — primarily hip movement. If knee pain, check foot position.",
+      "shoulder": "Upper back rests on bench — no active shoulder involvement."
+    },
+    "purpose": "Maximum glute force production. The hip thrust loads the glute max at full hip extension where it's strongest — a unique loading profile.",
+    "whyForYou": "Your back needs strong glutes to protect it. Hip thrust loads the glutes heavily without spinal load — ideal for post-surgical backs.",
+    "proTip": "Place a mini band above your knees to add hip abduction cue — prevents knee caving and engages glute med.",
+    "source": "Bret Contreras Hip Thrust Research / NSCA",
+    "lastReviewed": "2025-01-01",
+    "tags": ["glute_strength", "hip_thrust", "compound", "phase_2", "back_safe", "sport_performance"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "outdoor_bench_stepup",
+    "name": "Park Bench Step-Ups",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "lunge",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "Glute Max"],
+    "secondaryMuscles": ["Hamstrings", "Calves", "Core"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["bench"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "prerequisites": {
+      "minCompletedSessions": 4,
+      "requiredExercisesMastered": ["str_bw_squat"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": ["knee_flexion_90"],
+      "notes": "Unilateral leg strength using park bench. Bench height determines difficulty."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "cond_sit_to_stand",
+      "progressTo": "str_bss_bw",
+      "unlockCriteria": "10 reps each leg without holding on for balance",
+      "chainFamily": "lunge_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": ["deep_knee_flexion"],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": "cond_sit_to_stand",
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "cond_sit_to_stand",
+      "injury_shoulder": null,
+      "no_equipment": "cond_sit_to_stand"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-12 each leg", "tempo": "3/1/2", "rest": "60s", "intensity": "RPE 5-7" }
+    },
+    "emoji": "🪜",
+    "steps": [
+      "Stand facing a park bench. Place your entire right foot on the bench surface.",
+      "Drive through your RIGHT heel to step up — don't push off the back leg.",
+      "Stand tall on the bench, squeeze the glute at the top. Tap the left foot.",
+      "Lower slowly on the RIGHT leg (3 seconds). Complete all reps, then switch legs."
+    ],
+    "formCues": [
+      "✅ Drive through the WORKING leg heel — the ground leg is just for balance",
+      "✅ Keep torso upright — don't lean forward excessively",
+      "✅ Knee tracks over toes — no valgus (knee caving)"
+    ],
+    "commonMistakes": [
+      "❌ Pushing off the back leg — defeats the purpose of unilateral training",
+      "❌ Knee caving inward — push knee out over toes",
+      "❌ Dropping fast on the descent — slow 3-second lowering builds strength"
+    ],
+    "coreBracing": "MODERATE (30-40%) — brace to maintain upright torso on single leg",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Inhale at the bottom. Exhale as you drive up." },
+    "injuryNotes": {
+      "lower_back": "Bodyweight-only — minimal spinal load. Keep torso upright.",
+      "knee": "Use a LOWER step if knee flexion is limited. Watch for left knee valgus. Stop if pain above RPE 3.",
+      "shoulder": "No shoulder involvement. Arms for balance only."
+    },
+    "purpose": "Unilateral leg strength and balance using available outdoor equipment. Identifies and corrects left-right imbalances.",
+    "whyForYou": "Tests and builds single-leg strength — reveals imbalances between your left (injured) and right knee.",
+    "proTip": "Start with a lower step (curb height) and progress to full bench height over weeks.",
+    "source": "NASM OPT / Outdoor Functional Training",
+    "lastReviewed": "2025-01-01",
+    "tags": ["outdoor", "unilateral", "leg_strength", "balance", "park", "bodyweight"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "outdoor_bench_pushup",
+    "name": "Park Bench Incline Push-Ups",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": ["Pectorals", "Triceps", "Anterior Deltoids"],
+    "secondaryMuscles": ["Core", "Serratus Anterior"],
+    "jointsInvolved": ["shoulder", "elbow"],
+    "equipmentRequired": ["bench"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 3 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Outdoor push-up variation using park bench for incline. Adjustable difficulty by angle."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "str_wall_push_up",
+      "progressTo": "str_floor_push_up",
+      "unlockCriteria": "15 reps with full ROM, no compensations",
+      "chainFamily": "horizontal_push_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": "str_incline_push_up",
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "str_wall_push_up",
+      "no_equipment": "str_wall_push_up"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10-15", "tempo": "2/1/2", "rest": "60s", "intensity": "RPE 5-7" }
+    },
+    "emoji": "💪",
+    "steps": [
+      "Place hands on the bench seat, slightly wider than shoulder-width. Walk feet back until body is straight.",
+      "Lower chest toward the bench by bending elbows to 45 degrees from body (not flared).",
+      "Touch chest to bench (or close). Press back up until arms are fully extended.",
+      "Maintain a rigid plank position throughout — no sagging or piking."
+    ],
+    "formCues": [
+      "✅ Elbows at 45 degrees from body — not straight out to the sides",
+      "✅ Body stays in one straight line — squeeze glutes to prevent hip sag",
+      "✅ Full range of motion — all the way down, all the way up"
+    ],
+    "commonMistakes": [
+      "❌ Flaring elbows to 90 degrees — causes shoulder impingement",
+      "❌ Sagging hips — brace core and squeeze glutes",
+      "❌ Short range of motion — chest should reach the bench"
+    ],
+    "coreBracing": "MODERATE (40%) — maintain plank position throughout",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Inhale on the way down. Exhale pressing up." },
+    "injuryNotes": {
+      "lower_back": "Incline reduces core demand vs floor push-up. Squeeze glutes to protect back.",
+      "knee": "No knee involvement.",
+      "shoulder": "Incline reduces shoulder load significantly. Keep elbows at 45 degrees. Stop if labrum clicks."
+    },
+    "purpose": "Horizontal push pattern outdoors. Incline reduces load compared to floor — ideal for beginners or shoulder-sensitive individuals.",
+    "whyForYou": "The incline reduces shoulder load — friendlier for your labrum than floor push-ups. Perfect outdoor pressing exercise.",
+    "proTip": "The higher the incline, the easier. Start with the bench backrest (more upright), progress to the seat (lower).",
+    "source": "NASM OPT / Outdoor Functional Training",
+    "lastReviewed": "2025-01-01",
+    "tags": ["outdoor", "push", "chest", "beginner", "park", "scalable"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "outdoor_bench_dips",
+    "name": "Park Bench Tricep Dips",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "arms",
+    "primaryMuscles": ["Triceps", "Anterior Deltoids"],
+    "secondaryMuscles": ["Pectorals", "Core"],
+    "jointsInvolved": ["shoulder", "elbow"],
+    "equipmentRequired": ["bench"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [2, 3, 4, 5],
+    "difficultyLevel": 3,
+    "weekMinimum": 6,
+    "prerequisites": {
+      "minCompletedSessions": 6,
+      "requiredExercisesMastered": ["str_floor_push_up"],
+      "requiredCapabilities": ["shoulder_pressing_cleared"],
+      "minPhase": 2,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 2 },
+      "painFreeROM": ["shoulder_extension_30"],
+      "notes": "Bench dips require shoulder extension under load. Contraindicated for anterior shoulder instability."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "outdoor_bench_pushup",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "horizontal_push_chain"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["labrum_tear_acute"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 2 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": "iso_tricep_pushdown",
+      "outdoor": "outdoor_bench_pushup",
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "outdoor_bench_pushup",
+      "no_equipment": "str_floor_push_up"
+    },
+    "phaseParams": {
+      "2": { "sets": "2-3", "reps": "8-12", "tempo": "2/1/2", "rest": "60s", "intensity": "RPE 6-7" },
+      "3": { "sets": "3-4", "reps": "8-15", "tempo": "2/1/2", "rest": "60s", "intensity": "RPE 7-8" }
+    },
+    "emoji": "🔽",
+    "steps": [
+      "Sit on bench edge, hands gripping the seat beside your hips, fingers forward.",
+      "Slide your hips off the bench. Legs extended or knees bent (bent = easier).",
+      "Lower your body by bending elbows to 90 degrees — keep back close to the bench.",
+      "Press back up until arms are straight. Don't lock elbows aggressively."
+    ],
+    "formCues": [
+      "✅ Keep back close to the bench — don't drift forward",
+      "✅ Elbows point straight back — don't let them flare",
+      "✅ Lower to 90 degrees ONLY — deeper puts shoulder at risk"
+    ],
+    "commonMistakes": [
+      "❌ Going too deep — past 90 degrees stresses the anterior shoulder capsule",
+      "❌ Shoulders shrugging up to ears — press shoulders DOWN",
+      "❌ Pushing hips forward instead of straight up — vertical motion"
+    ],
+    "coreBracing": "LIGHT (25%) — maintain upright torso",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Inhale lowering. Exhale pressing up." },
+    "injuryNotes": {
+      "lower_back": "Minimal spinal load in seated position. Safe for back issues.",
+      "knee": "Bent knees reduce load. Extended legs increase it. Choose based on comfort.",
+      "shoulder": "HIGH RISK for labrum. Do NOT go past 90 degrees. If any clicking, popping, or pain — STOP and substitute bench push-ups."
+    },
+    "purpose": "Tricep and anterior shoulder strength using outdoor equipment. Common outdoor calisthenics exercise.",
+    "whyForYou": "Proceed with CAUTION — your left labrum may not tolerate the shoulder extension position. Use shallow ROM and monitor closely.",
+    "proTip": "Bent knees = easier. Straight legs = harder. Feet elevated on another bench = hardest.",
+    "source": "Calisthenics Training / NASM Bodyweight Exercise",
+    "lastReviewed": "2025-01-01",
+    "tags": ["outdoor", "triceps", "push", "calisthenics", "park", "bodyweight"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "outdoor_hill_sprints",
+    "name": "Hill Sprints (Short)",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "push",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "Glute Max", "Calves", "Hamstrings"],
+    "secondaryMuscles": ["Hip Flexors", "Core"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [3, 4, 5],
+    "difficultyLevel": 4,
+    "weekMinimum": 16,
+    "prerequisites": {
+      "minCompletedSessions": 16,
+      "requiredExercisesMastered": ["cardio_walking"],
+      "requiredCapabilities": ["plyometric_ready"],
+      "minPhase": 3,
+      "maxInjurySeverity": { "lower_back": 3, "knee": 1, "shoulder": 5 },
+      "painFreeROM": ["hip_flexion_120", "knee_flexion_120"],
+      "notes": "High-intensity sprint. Requires knee severity 1 — BLOCKED for John (severity 2). Incline reduces impact vs flat sprints."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "outdoor_trail_walking",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "sprint_chain"
+    },
+    "contraindications": {
+      "injuries": ["knee_post_surgical", "acl_post_op_early"],
+      "conditions": ["acl_post_op_early", "meniscus_acute"],
+      "movements_to_avoid": ["plyometrics"],
+      "severity_gate": { "lower_back": 3, "knee": 1, "shoulder": 5 }
+    },
+    "safetyTier": "red",
+    "substitutions": {
+      "home": "cardio_bike",
+      "outdoor": "outdoor_trail_walking",
+      "injury_lower_back": "outdoor_trail_walking",
+      "injury_knee": "outdoor_trail_walking",
+      "injury_shoulder": null,
+      "no_equipment": "outdoor_trail_walking"
+    },
+    "phaseParams": {
+      "3": { "sets": "4-6", "reps": "10-20s sprint", "tempo": "max effort", "rest": "walk back down (2-3min)", "intensity": "RPE 9-10" },
+      "4": { "sets": "6-8", "reps": "10-20s sprint", "tempo": "max effort", "rest": "walk back down (2-3min)", "intensity": "RPE 9-10" },
+      "5": { "sets": "6-10", "reps": "10-30s sprint", "tempo": "max effort", "rest": "walk back down (2-3min)", "intensity": "RPE 9-10" }
+    },
+    "emoji": "⛰️",
+    "steps": [
+      "Find a moderate hill (15-30% grade). Warm up with 5-10 minutes of walking and dynamic stretching.",
+      "Sprint uphill at 90-100% effort for 10-20 seconds.",
+      "Walk back down slowly — this IS your rest period (2-3 minutes).",
+      "Repeat 4-6 sprints. Cool down with 5 minutes easy walking."
+    ],
+    "formCues": [
+      "✅ Drive knees high and pump arms aggressively",
+      "✅ Lean INTO the hill — let the incline support your sprint posture",
+      "✅ Land on forefoot/midfoot — heels barely touch on the incline"
+    ],
+    "commonMistakes": [
+      "❌ Starting too fast and burning out — build into max speed over the first few steps",
+      "❌ Running back down — WALK down. The descent is where injuries happen.",
+      "❌ Not warming up adequately — sprint pulls happen to cold muscles"
+    ],
+    "coreBracing": "MODERATE (40%) — maintain trunk stability during high-velocity movement",
+    "breathing": { "inhale": "rapid", "hold": "0", "exhale": "rapid", "pattern": "Rapid rhythmic breathing during sprint. Deep recovery breathing on walk down." },
+    "injuryNotes": {
+      "lower_back": "Incline reduces impact vs flat sprints. Keep core braced. Stop if any radiating pain.",
+      "knee": "BLOCKED for John (severity 2). Requires knee severity 1. High-impact sprinting is contraindicated post-surgical knee.",
+      "shoulder": "No shoulder involvement. Arms swing naturally."
+    },
+    "purpose": "Maximum cardiovascular and power output. Hill reduces impact vs flat sprints while increasing intensity. Builds speed, power, and VO2 max.",
+    "whyForYou": "Currently BLOCKED due to left knee severity 2. Trail walking is your outdoor cardio until knee clears to severity 1.",
+    "proTip": "Start with 4 sprints of 10 seconds. Add 1 sprint per week. Never add duration AND volume in the same week.",
+    "source": "NSCA Sprint Training / HIIT Research",
+    "lastReviewed": "2025-01-01",
+    "tags": ["sprint", "hiit", "outdoor", "power", "cardio", "phase_3"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "outdoor_trail_walking",
+    "name": "Trail Walking with Incline",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "mobility",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "Glute Max", "Calves", "Hamstrings"],
+    "secondaryMuscles": ["Hip Flexors", "Core", "Ankle Stabilizers"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Zone 2 cardio on uneven terrain. Builds ankle stability and general conditioning."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": "cardio_walking",
+      "progressTo": "outdoor_hill_sprints",
+      "unlockCriteria": "30 minutes sustained walking on moderate terrain without pain",
+      "chainFamily": "walking_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": "cardio_walking",
+      "outdoor": null,
+      "injury_lower_back": "cardio_walking",
+      "injury_knee": "cardio_walking",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1", "reps": "15-45 min", "tempo": "conversational pace", "rest": "n/a", "intensity": "RPE 3-5 (Zone 2)" }
+    },
+    "emoji": "🥾",
+    "steps": [
+      "Choose a trail with moderate terrain — some incline, some flat, some uneven ground.",
+      "Walk at a conversational pace (Zone 2 — can talk but slightly breathless).",
+      "Maintain tall posture. Engage core lightly on uneven terrain for stability.",
+      "Build duration over weeks: start at 15 minutes, progress to 45+ minutes."
+    ],
+    "formCues": [
+      "✅ Walk tall — don't slouch forward even on uphills",
+      "✅ Shorten stride on downhills to reduce knee impact",
+      "✅ Land midfoot on uneven terrain — avoid heel-striking on rocks"
+    ],
+    "commonMistakes": [
+      "❌ Going too fast — this is Zone 2, not a race",
+      "❌ Long strides downhill — shorter steps protect the knees",
+      "❌ Staring at your feet — look 10-15 feet ahead for better balance"
+    ],
+    "coreBracing": "LIGHT (20%) — gentle engagement for stability on uneven terrain",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Nasal breathing at conversational pace. Mouth breathing is ok on steep uphills." },
+    "injuryNotes": {
+      "lower_back": "Walking is therapeutic for disc nutrition. Avoid steep downhills that jar the spine.",
+      "knee": "Shorten stride on downhills. Use trekking poles if available to reduce knee load by 20-30%.",
+      "shoulder": "No shoulder involvement. Trekking poles add upper body engagement if desired."
+    },
+    "purpose": "Zone 2 cardio on natural terrain. Builds ankle stability, proprioception, and cardiovascular base while being low-impact.",
+    "whyForYou": "Your best outdoor cardio option. Zone 2 improves recovery between sessions. Uneven terrain builds the ankle stability for your hiking goals.",
+    "proTip": "Walking poles reduce knee load by 25% on descents — highly recommended for your left knee.",
+    "source": "ACSM Cardio Guidelines / Zone 2 Training Research",
+    "lastReviewed": "2025-01-01",
+    "tags": ["outdoor", "cardio", "zone_2", "hiking", "ankle_stability", "low_impact"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "outdoor_playground_pullup",
+    "name": "Playground Pull-Ups / Hanging",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": ["Latissimus Dorsi", "Biceps", "Forearm Flexors"],
+    "secondaryMuscles": ["Rhomboids", "Lower Trapezius", "Core", "Infraspinatus"],
+    "jointsInvolved": ["shoulder", "elbow", "wrist"],
+    "equipmentRequired": ["pull_up_bar"],
+    "locationCompatible": ["outdoor"],
+    "phaseEligibility": [2, 3, 4, 5],
+    "difficultyLevel": 4,
+    "weekMinimum": 8,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": ["str_inverted_row"],
+      "requiredCapabilities": ["pull_up_ready"],
+      "minPhase": 2,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 2 },
+      "painFreeROM": ["shoulder_flexion_160"],
+      "notes": "Requires pull-up readiness (assessed through inverted rows and dead hangs). Shoulder must tolerate overhead position."
+    },
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "grip_dead_hang",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "vertical_pull_chain"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute", "rotator_cuff_tear_acute"],
+      "conditions": ["labrum_tear_acute"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 4, "knee": 5, "shoulder": 2 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": "str_inverted_row",
+      "outdoor": "str_inverted_row",
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "str_inverted_row",
+      "no_equipment": "str_inverted_row"
+    },
+    "phaseParams": {
+      "2": { "sets": "3-4", "reps": "1-5 (or dead hang 15-30s)", "tempo": "2/1/3", "rest": "90-120s", "intensity": "RPE 7-9" },
+      "3": { "sets": "3-5", "reps": "3-8", "tempo": "2/1/3", "rest": "90-120s", "intensity": "RPE 7-9" }
+    },
+    "emoji": "🐒",
+    "steps": [
+      "Find a sturdy bar (playground monkey bars, park fitness equipment). Grip overhand, shoulder-width.",
+      "Dead hang first — relax shoulders, decompress spine, hold 15-30 seconds.",
+      "For pull-up: retract shoulder blades DOWN first, then pull chin over the bar.",
+      "Lower slowly (3 seconds) to full dead hang. Reset and repeat."
+    ],
+    "formCues": [
+      "✅ Initiate with shoulder blade retraction — pull blades DOWN and BACK first",
+      "✅ Full range of motion — dead hang to chin over bar",
+      "✅ Slow eccentric (3 seconds down) builds more strength than fast reps"
+    ],
+    "commonMistakes": [
+      "❌ Kipping or swinging — strict form builds real strength",
+      "❌ Starting from a bent-arm position — full dead hang every rep",
+      "❌ Craning neck to get chin over — your body should rise, not your chin"
+    ],
+    "coreBracing": "MODERATE (40%) — engage core to prevent swinging and protect lower back",
+    "breathing": { "inhale": "2", "hold": "at top", "exhale": "3", "pattern": "Inhale at the bottom. Pull while holding. Exhale on slow descent." },
+    "injuryNotes": {
+      "lower_back": "Dead hang decompresses the spine — therapeutic. Don't swing or kip.",
+      "knee": "No knee involvement. Legs hang freely.",
+      "shoulder": "HIGH RISK for labrum in full overhead position. Start with dead hangs ONLY. Progress to pull-ups only if pain-free hanging for 30s."
+    },
+    "purpose": "Upper body pulling strength, grip endurance, and spinal decompression. Dead hang alone has therapeutic benefits.",
+    "whyForYou": "Start with dead hangs for spinal decompression (great for your back). Progress to pull-ups only after shoulder tolerates hanging pain-free.",
+    "proTip": "If you can't do a pull-up yet, do negative-only reps: jump to the top, lower yourself as slowly as possible (5-10 seconds).",
+    "source": "NASM Bodyweight Training / Calisthenics Progressions",
+    "lastReviewed": "2025-01-01",
+    "tags": ["outdoor", "pull", "back", "grip", "calisthenics", "decompression"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "rehab_pendulum_swing",
+    "name": "Pendulum Shoulder Swing (Codman's)",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Rotator Cuff (passive)", "Deltoids (passive)"],
+    "secondaryMuscles": [],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Post-surgical shoulder gold standard. Gravity provides gentle traction. Safe at ANY shoulder severity — this is a day-1 exercise."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "cond_affected_arm_rom",
+      "unlockCriteria": "10 circles each direction pain-free",
+      "chainFamily": "shoulder_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 each direction", "tempo": "slow/pendulum", "rest": "as needed", "intensity": "RPE 1-2" }
+    },
+    "emoji": "🔔",
+    "steps": [
+      "Bend at the hips and support yourself with your non-affected hand on a table or chair.",
+      "Let the affected arm hang straight down like a pendulum — completely relaxed.",
+      "Shift your body weight to create gentle swinging: forward/back, side-to-side, then small circles.",
+      "Perform 10 swings each direction. The arm should be PASSIVE — let gravity and momentum work."
+    ],
+    "formCues": [
+      "✅ Arm is completely relaxed — like a wet noodle hanging from your shoulder",
+      "✅ Movement comes from shifting your BODY, not from the arm muscles",
+      "✅ Start with small arcs and gradually increase"
+    ],
+    "commonMistakes": [
+      "❌ Actively swinging the arm with shoulder muscles — it must be PASSIVE",
+      "❌ Tensing the arm or gripping — let it hang completely loose",
+      "❌ Going too big too fast — start small, increase gradually"
+    ],
+    "coreBracing": "MINIMAL (10%) — just enough to support the bent-over position",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Slow, relaxed breathing. The exercise should feel calming, not effortful." },
+    "injuryNotes": {
+      "lower_back": "Lean on a surface for support. Don't stay bent over if back is uncomfortable — try seated version.",
+      "knee": "No knee involvement. Can be done seated.",
+      "shoulder": "Safe at ALL severity levels. This is often the first exercise prescribed post-surgery. If painful, reduce arc size."
+    },
+    "purpose": "Gentle passive shoulder ROM using gravity. Creates joint space through gentle traction. First-line exercise for frozen shoulder and post-op shoulder.",
+    "whyForYou": "Excellent daily maintenance for your left labrum. Decompresses the joint and maintains ROM without any active muscle engagement.",
+    "proTip": "Hold a light weight (1-2 lbs) to increase the traction effect. The weight should pull the arm, not be lifted.",
+    "source": "Codman's Pendulum Exercise / Shoulder Rehabilitation Protocols",
+    "lastReviewed": "2025-01-01",
+    "tags": ["shoulder_rehab", "post_op", "frozen_shoulder", "passive_rom", "daily", "gentle"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_scapular_clock",
+    "name": "Scapular Clock Exercise",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Serratus Anterior", "Lower Trapezius", "Rhomboids"],
+    "secondaryMuscles": ["Middle Trapezius", "Levator Scapulae", "Rotator Cuff"],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["wall"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 4 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Scapular motor control exercise. Targets dyskinesis — poor scapular movement patterns."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "rehab_pendulum_swing",
+      "progressTo": "rehab_scap_wall_slides",
+      "unlockCriteria": "All 4 positions held 10s without winging",
+      "chainFamily": "scapular_stability_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 4 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "rehab_pendulum_swing",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "5 each position x 5-10s hold", "tempo": "isometric", "rest": "30s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🕐",
+    "steps": [
+      "Face a wall. Place your hand at 12 o'clock position (overhead) with light pressure against wall.",
+      "Hold for 5-10 seconds while maintaining proper scapular position (no winging).",
+      "Move hand to 3 o'clock (arm out to side), then 6 o'clock (down), then 9 o'clock (across body).",
+      "At each position, hold isometrically while focusing on scapular stability. 5 reps each."
+    ],
+    "formCues": [
+      "✅ Scapula stays flat against ribcage at every position — no winging",
+      "✅ Light pressure against wall — just enough to activate stabilizers",
+      "✅ Shoulder blade moves WITH the arm, not independently"
+    ],
+    "commonMistakes": [
+      "❌ Scapula winging (lifting off ribcage) — serratus anterior is weak",
+      "❌ Shrugging at overhead position — depress shoulder blade",
+      "❌ Pressing too hard into wall — light pressure only"
+    ],
+    "coreBracing": "LIGHT (15%) — maintain upright posture",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe normally through each hold. Don't hold breath." },
+    "injuryNotes": {
+      "lower_back": "Standing exercise. No spinal load.",
+      "knee": "No knee involvement.",
+      "shoulder": "Skip the 12 o'clock position if overhead is painful. Start at 3 and 9 o'clock only."
+    },
+    "purpose": "Retrains scapular motor control — the scapula must move correctly for the shoulder to function safely. Addresses dyskinesis.",
+    "whyForYou": "Your left labrum depends on perfect scapular control. A winging or poorly tracking scapula increases labrum stress dramatically.",
+    "proTip": "Have someone watch your scapula from behind. If it wings or tilts, you've found your weak link.",
+    "source": "Scapular Dyskinesis Rehabilitation / DPT Clinical Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["scapular_stability", "shoulder_rehab", "dyskinesis", "motor_control", "corrective"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "rehab_chin_tuck_band",
+    "name": "Chin Tuck with Band Resistance",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Deep Cervical Flexors (Longus Colli, Longus Capitis)"],
+    "secondaryMuscles": ["SCM", "Scalenes"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["band"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "prerequisites": {
+      "minCompletedSessions": 4,
+      "requiredExercisesMastered": ["corr_chin_tuck"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Progression from bodyweight chin tuck. Band adds resistance to strengthen deep cervical flexors."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_chin_tuck",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "cervical_stability_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": "corr_chin_tuck",
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": "corr_chin_tuck"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 x 5-10s holds", "tempo": "isometric", "rest": "30s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🎯",
+    "steps": [
+      "Sit upright. Loop a light resistance band around the back of your head at ear level.",
+      "Hold the band ends in front of you at forehead height, creating gentle forward pull.",
+      "Perform a chin tuck — draw chin straight back (double chin motion) AGAINST the band resistance.",
+      "Hold 5-10 seconds. Relax. Repeat 10 times."
+    ],
+    "formCues": [
+      "✅ Chin moves straight BACK — not down. Think 'make a double chin'",
+      "✅ Eyes stay level — don't tilt your head up or down",
+      "✅ Light band tension only — this is rehab, not strength training"
+    ],
+    "commonMistakes": [
+      "❌ Tucking chin DOWN toward chest — the motion is straight back, horizontal",
+      "❌ Using too much band resistance — light tension only",
+      "❌ Jutting the jaw forward instead of retracting the whole head"
+    ],
+    "coreBracing": "NONE — relaxed posture, focus on cervical muscles only",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "Breathe normally. Exhale during the hold to stay relaxed." },
+    "injuryNotes": {
+      "lower_back": "No involvement. Seated position.",
+      "knee": "No involvement.",
+      "shoulder": "Holding the band requires mild arm engagement. Rest elbows on a surface if shoulder is sensitive."
+    },
+    "purpose": "Strengthens deep cervical flexors with resistance — the muscles that maintain proper head position and prevent forward head posture.",
+    "whyForYou": "Forward head posture increases neck and shoulder strain. Strong deep cervical flexors protect against this during desk work and training.",
+    "proTip": "Use the lightest band possible. If you can't feel the deep muscles at the front of your neck, the band is too heavy.",
+    "source": "Cervical Stabilization Research / DPT Clinical Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["cervical", "neck", "rehab", "deep_flexors", "posture", "forward_head"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_cervical_snag",
+    "name": "Cervical SNAG (Self-Mobilization with Towel)",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Cervical Facet Joints (passive)", "Deep Cervical Flexors"],
+    "secondaryMuscles": ["Upper Trapezius", "Scalenes"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["towel"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["corr_chin_tuck"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Self-mobilization for chronic neck stiffness. Based on Mulligan SNAG technique adapted for self-treatment."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_chin_tuck",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "cervical_mobility_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["disc_herniation_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": "corr_chin_tuck",
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": "corr_chin_tuck"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "6-10", "tempo": "2/2/2", "rest": "30s", "intensity": "RPE 2-4" }
+    },
+    "emoji": "🧣",
+    "steps": [
+      "Sit upright. Wrap a towel around the back of your neck at the stiff segment.",
+      "Hold one end of the towel in each hand, angled slightly upward (toward the eyes).",
+      "Pull the towel gently forward and upward while simultaneously turning your head in the restricted direction.",
+      "The towel provides a glide of the vertebra while you move — this should feel freeing, NEVER painful."
+    ],
+    "formCues": [
+      "✅ Towel angle: pull toward the EYES, not straight forward",
+      "✅ The movement should be PAIN-FREE — if it hurts, stop immediately",
+      "✅ Combine the towel pull with the head turn simultaneously"
+    ],
+    "commonMistakes": [
+      "❌ Pulling towel too hard — gentle sustained pressure only",
+      "❌ Wrong angle — towel should glide the vertebra upward and forward",
+      "❌ Continuing if painful — this technique should ONLY feel better, not worse"
+    ],
+    "coreBracing": "NONE — relaxed body, focused on cervical movement",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "Exhale during the mobilization to promote relaxation" },
+    "injuryNotes": {
+      "lower_back": "No involvement.",
+      "knee": "No involvement.",
+      "shoulder": "Holding the towel requires minimal arm effort. Rest elbows on table if needed."
+    },
+    "purpose": "Self-mobilization technique for cervical stiffness based on Mulligan Sustained Natural Apophyseal Glides. Restores segmental motion.",
+    "whyForYou": "Neck stiffness from desk work and stress can refer tension into your shoulders. Keeping cervical spine mobile protects your shoulder rehab.",
+    "proTip": "If this technique provides immediate relief, it's the right technique. If it doesn't help or worsens, stop and reassess.",
+    "source": "Mulligan Concept SNAG Technique / Manual Therapy Evidence Base",
+    "lastReviewed": "2025-01-01",
+    "tags": ["cervical", "neck", "mobility", "self_mobilization", "mulligan", "stiffness"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "mck_prone_press_exhale",
+    "name": "Prone Press-Up with Exhale (McKenzie Variant)",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "back",
+    "primaryMuscles": ["Erector Spinae (passive)", "Multifidus"],
+    "secondaryMuscles": ["Glute Max", "TVA"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["mck_back_press_up"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 4 },
+      "painFreeROM": [],
+      "notes": "McKenzie press-up variant specifically for post-fusion adjacent segment management. Exhale cue prevents valsalva."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "mck_back_prone_elbows",
+      "progressTo": "mck_back_ext_standing",
+      "unlockCriteria": "10 reps with full exhale, no pain, centralization occurring",
+      "chainFamily": "mckenzie_back_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["spinal_stenosis"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 5, "shoulder": 4 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "mck_back_prone_elbows",
+      "injury_knee": null,
+      "injury_shoulder": "mck_back_prone_elbows",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "10", "tempo": "2/1/2", "rest": "as needed", "intensity": "RPE 2-4" }
+    },
+    "emoji": "🐍",
+    "steps": [
+      "Lie face-down (prone) with hands placed under shoulders, as for a push-up.",
+      "EXHALE as you press your upper body up, keeping hips on the floor.",
+      "Rise only as far as comfortable — the exhale prevents dangerous pressure buildup.",
+      "Hold 1 second at the top. Lower slowly on the inhale. Repeat 10 times."
+    ],
+    "formCues": [
+      "✅ EXHALE on the way UP — this is the critical safety modification",
+      "✅ Hips stay glued to the floor — this is spinal extension, not a push-up",
+      "✅ Let the lower back sag and relax — don't clench the glutes"
+    ],
+    "commonMistakes": [
+      "❌ Holding breath during the press-up — exhale prevents dangerous intra-abdominal pressure",
+      "❌ Lifting hips off the floor — only the upper body rises",
+      "❌ Pushing through pain — centralization (pain moving toward midline) is OK, peripheralization is NOT"
+    ],
+    "coreBracing": "MINIMAL — let the back relax and extend passively. Exhale provides natural gentle brace.",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "3", "pattern": "EXHALE going UP (critical for post-fusion). Inhale lowering down." },
+    "injuryNotes": {
+      "lower_back": "The exhale modification makes this safer for post-fusion adjacent segments. No valsalva = less disc pressure.",
+      "knee": "No knee involvement.",
+      "shoulder": "Pressing up requires shoulder extension. Use elbows (prone on elbows version) if shoulder is painful."
+    },
+    "purpose": "McKenzie extension for post-fusion adjacent segment management. The exhale cue prevents dangerous pressure buildup at fusion levels.",
+    "whyForYou": "Your post-surgical back benefits from daily extension work. The exhale cue is critical — it reduces disc pressure during the movement.",
+    "proTip": "Audibly exhale — the sound ensures you're actually releasing air, not just pretending to exhale.",
+    "source": "McKenzie MDT / Post-Fusion Rehabilitation Modifications",
+    "lastReviewed": "2025-01-01",
+    "tags": ["mckenzie", "back_rehab", "extension", "post_fusion", "adjacent_segment", "daily"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_hooklying_march",
+    "name": "Hooklying March (Post-Fusion Safe)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": ["TVA", "Multifidus", "Hip Flexors"],
+    "secondaryMuscles": ["Rectus Abdominis", "Obliques", "Pelvic Floor"],
+    "jointsInvolved": ["hip", "spine"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Post-fusion safe core activation. Zero spinal motion — all movement comes from the hips. Safe at any back severity."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "stab_dead_bug",
+      "unlockCriteria": "20 reps (10 each side) with lower back stable on floor",
+      "chainFamily": "core_anti_extension_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 each side", "tempo": "2/1/2", "rest": "30s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🚶",
+    "steps": [
+      "Lie on your back, knees bent, feet flat on floor (hooklying position). Press lower back into floor.",
+      "Brace core gently (30%). Slowly lift one foot off the floor — knee stays bent at 90 degrees.",
+      "Lift until thigh is vertical (hip at 90 degrees). Hold 1 second.",
+      "Lower slowly to floor. Repeat with opposite leg. Alternate for 10 reps each side."
+    ],
+    "formCues": [
+      "✅ Lower back stays PRESSED INTO THE FLOOR throughout — this is the #1 priority",
+      "✅ Knee stays bent at 90 degrees — don't straighten the leg",
+      "✅ Move SLOWLY — if you speed up, you lose core control"
+    ],
+    "commonMistakes": [
+      "❌ Lower back arching off floor — reduce range of motion until you can control it",
+      "❌ Holding breath — breathe normally, exhale on the lift",
+      "❌ Using momentum — slow, controlled marching is the goal"
+    ],
+    "coreBracing": "MODERATE (30%) — press lower back into floor and maintain throughout",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Exhale as you lift the leg. Inhale as you lower. Back stays pressed into floor." },
+    "injuryNotes": {
+      "lower_back": "THE safest core exercise for post-surgical backs. Zero spinal motion. All hip movement. Start here.",
+      "knee": "Hip flexion only — knee angle stays constant. No knee stress.",
+      "shoulder": "Arms rest at sides or on belly. No shoulder involvement."
+    },
+    "purpose": "Core activation without ANY spinal motion. Post-fusion safe because the spine stays completely still while the hips move.",
+    "whyForYou": "Your #1 core exercise. Zero spinal motion means zero risk to your surgical site. This is where your core training starts every session.",
+    "proTip": "Place your hands on your hip bones to feel them stay level. If one side tilts, your core isn't stabilizing enough.",
+    "source": "Post-Fusion Rehabilitation / Core Stability Research",
+    "lastReviewed": "2025-01-01",
+    "tags": ["core", "post_fusion", "anti_extension", "spinal_safe", "beginner", "daily", "foundation"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_pelvic_clock",
+    "name": "Pelvic Clock Exercise (Supine)",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Hip Flexors", "Glute Max", "Obliques"],
+    "secondaryMuscles": ["TVA", "Erector Spinae", "Pelvic Floor"],
+    "jointsInvolved": ["hip", "spine"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Lumbopelvic dissociation exercise. Teaches independent pelvic motion — critical for post-fusion and core control."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "rehab_hooklying_march",
+      "unlockCriteria": "Full clock circles in both directions with smooth control",
+      "chainFamily": "lumbopelvic_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "5 circles each direction", "tempo": "slow/controlled", "rest": "as needed", "intensity": "RPE 2-3" }
+    },
+    "emoji": "🕰️",
+    "steps": [
+      "Lie on your back, knees bent, feet flat. Imagine a clock face under your pelvis (12 = belly button, 6 = tailbone).",
+      "Tilt your pelvis to 12 o'clock (flatten lower back into floor) — then to 6 o'clock (arch lower back).",
+      "Move to 3 o'clock (tilt right hip toward floor) — then 9 o'clock (tilt left).",
+      "Combine into a smooth circle: 12 → 3 → 6 → 9 → 12. Then reverse direction."
+    ],
+    "formCues": [
+      "✅ Only the pelvis moves — upper back and feet stay still",
+      "✅ Small, controlled movements — this is about awareness, not range",
+      "✅ Smooth transitions between 'hours' — no jumping between positions"
+    ],
+    "commonMistakes": [
+      "❌ Moving the upper back or legs — isolate the pelvis only",
+      "❌ Making the circles too big — subtlety is the goal",
+      "❌ Rushing — slow and deliberate builds motor control"
+    ],
+    "coreBracing": "MINIMAL (10-15%) — gentle engagement, focus on pelvic awareness",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe naturally. Don't sync breathing to movement — just relax." },
+    "injuryNotes": {
+      "lower_back": "Extremely gentle lumbopelvic motion. Safe for post-fusion as the motion is minimal and self-controlled.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Teaches lumbopelvic dissociation — the ability to move the pelvis independently from the spine. Foundation for all core and hip exercises.",
+    "whyForYou": "After back surgery, pelvic awareness is often lost. This exercise retrains your brain-pelvis connection for better core control.",
+    "proTip": "Do this exercise FIRST before any core work — it's your nervous system warm-up for the pelvis.",
+    "source": "Feldenkrais Method / Post-Fusion Rehabilitation / Motor Control Research",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lumbopelvic", "motor_control", "post_fusion", "awareness", "gentle", "foundation", "daily"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_tall_kneeling_balance",
+    "name": "Tall Kneeling Balance",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": ["Glute Max", "TVA", "Hip Flexors"],
+    "secondaryMuscles": ["Quadriceps", "Obliques", "Multifidus"],
+    "jointsInvolved": ["hip", "knee"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["rehab_hooklying_march"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Hip/core integration without spinal load. Kneeling removes ankle and foot variables."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "rehab_hooklying_march",
+      "progressTo": "stab_bird_dog",
+      "unlockCriteria": "30s hold with eyes closed without losing balance",
+      "chainFamily": "balance_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "rehab_hooklying_march",
+      "injury_knee": "rehab_hooklying_march",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "3-5 x 15-30s holds", "tempo": "isometric", "rest": "30s", "intensity": "RPE 3-5" }
+    },
+    "emoji": "🧎",
+    "steps": [
+      "Kneel on a padded surface, knees hip-width apart, tops of feet flat on floor.",
+      "Stack your body: ankles → knees → hips → shoulders → ears in one vertical line.",
+      "Squeeze glutes hard. Brace core. Don't let your lower back arch.",
+      "Hold 15-30 seconds. Progress by closing eyes or adding arm movements."
+    ],
+    "formCues": [
+      "✅ Squeeze glutes HARD — they prevent lower back hyperextension",
+      "✅ Straight vertical line from knee to ear — no leaning",
+      "✅ Ribs down, core braced — don't flare the ribcage"
+    ],
+    "commonMistakes": [
+      "❌ Arching the lower back — tuck pelvis slightly and squeeze glutes",
+      "❌ Leaning forward from the hips — stay completely vertical",
+      "❌ Relaxing the core — maintain active brace throughout"
+    ],
+    "coreBracing": "MODERATE (40%) — active brace to maintain neutral spine while kneeling",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe normally through the hold. Maintain brace while breathing." },
+    "injuryNotes": {
+      "lower_back": "No spinal load — body weight is supported through hips and knees. Squeeze glutes to protect back.",
+      "knee": "Pad knees well. If kneeling is painful, use hooklying march instead.",
+      "shoulder": "No shoulder involvement unless adding arm challenges."
+    },
+    "purpose": "Hip and core integration in a gravity-loaded position without spinal compression. Removes ankle/foot variables for pure hip-core control.",
+    "whyForYou": "Trains your glutes and core to work together — the exact pattern that protects your lower back during standing exercises.",
+    "proTip": "Once 30s is easy, close your eyes. Once that's easy, hold a weight at chest height. Each progression adds challenge.",
+    "source": "Core Stability Research / NASM Corrective Exercise",
+    "lastReviewed": "2025-01-01",
+    "tags": ["balance", "core", "hip_integration", "kneeling", "progression", "spinal_safe"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_eccentric_decline_squat",
+    "name": "Eccentric Squat on Decline Board",
+    "category": "rehab",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps (especially Vastus Medialis)", "Patellar Tendon"],
+    "secondaryMuscles": ["Glute Max", "Hamstrings", "Calves"],
+    "jointsInvolved": ["knee", "hip", "ankle"],
+    "equipmentRequired": ["decline_board"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["cond_iso_quad_set"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 3, "shoulder": 5 },
+      "painFreeROM": ["knee_flexion_90"],
+      "notes": "Gold standard for patellar tendinopathy (Alfredson/Purdam protocol). The decline angle isolates the patellar tendon and VMO."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "cond_iso_quad_set",
+      "progressTo": "rehab_spanish_squat",
+      "unlockCriteria": "3x15 pain-free on single leg with bodyweight",
+      "chainFamily": "knee_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": ["acl_post_op_early", "meniscus_acute"],
+      "conditions": ["acl_post_op_early"],
+      "movements_to_avoid": ["deep_knee_flexion"],
+      "severity_gate": { "lower_back": 5, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "cond_iso_quad_set",
+      "injury_shoulder": null,
+      "no_equipment": "rehab_spanish_squat"
+    },
+    "phaseParams": {
+      "1": { "sets": "3", "reps": "15", "tempo": "3/0/1 (3s down, use other leg to help up)", "rest": "60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "📐",
+    "steps": [
+      "Stand on a 25-degree decline board with feet hip-width apart.",
+      "Slowly squat down over 3 seconds to approximately 60-70 degrees of knee flexion (NOT full depth).",
+      "The LOWERING phase is the exercise. Use the non-affected leg (or both) to return to standing.",
+      "Repeat 15 times. Progress to single-leg when bilateral is pain-free."
+    ],
+    "formCues": [
+      "✅ SLOW eccentric — 3 full seconds on the way down",
+      "✅ The decline board shifts load to the patellar tendon — trust the angle",
+      "✅ Keep torso upright — don't lean forward"
+    ],
+    "commonMistakes": [
+      "❌ Going too deep — stop at 60-70 degrees, not full squat depth",
+      "❌ Dropping fast — the SLOW lowering is the therapeutic mechanism",
+      "❌ Avoiding mild discomfort — up to 5/10 pain during exercise is acceptable per the protocol"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain upright posture",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "2", "pattern": "Inhale during the slow eccentric (lowering). Exhale returning to standing." },
+    "injuryNotes": {
+      "lower_back": "Upright posture, minimal spinal load. Safe for back issues.",
+      "knee": "This IS a knee rehabilitation exercise. Up to 5/10 pain is acceptable during the protocol. If pain exceeds 5/10, reduce depth.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Gold standard eccentric loading protocol for patellar tendinopathy. The decline angle increases patellar tendon load compared to flat squats.",
+    "whyForYou": "Your left knee post-surgical rehab benefits from eccentric loading. This targets the VMO and patellar tendon specifically.",
+    "proTip": "No decline board? Use a rolled-up towel under your heels or stand on a slanted surface. The angle matters.",
+    "source": "Alfredson Protocol / Purdam Decline Squat Study / BJSM Tendinopathy Guidelines",
+    "lastReviewed": "2025-01-01",
+    "tags": ["patellar_tendinopathy", "eccentric", "knee_rehab", "gold_standard", "decline", "vmo"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "rehab_spanish_squat",
+    "name": "Spanish Squat (Band Behind Knees)",
+    "category": "rehab",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": ["Quadriceps", "VMO", "Patellar Tendon"],
+    "secondaryMuscles": ["Glute Max", "Hamstrings"],
+    "jointsInvolved": ["knee", "hip"],
+    "equipmentRequired": ["band"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["cond_iso_quad_set"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 3, "shoulder": 5 },
+      "painFreeROM": ["knee_flexion_90"],
+      "notes": "Patellar tendinopathy alternative to decline squat. The band creates a posterior pull allowing more vertical tibia."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "cond_iso_quad_set",
+      "progressTo": "str_bw_squat",
+      "unlockCriteria": "3x15 pain-free with moderate band tension",
+      "chainFamily": "knee_rehab_chain"
+    },
+    "contraindications": {
+      "injuries": ["acl_post_op_early", "meniscus_acute"],
+      "conditions": ["acl_post_op_early"],
+      "movements_to_avoid": ["deep_knee_flexion"],
+      "severity_gate": { "lower_back": 5, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "cond_iso_quad_set",
+      "injury_shoulder": null,
+      "no_equipment": "cond_iso_quad_set"
+    },
+    "phaseParams": {
+      "1": { "sets": "3-4", "reps": "12-15 (or 30-45s isometric holds)", "tempo": "3/1/2", "rest": "60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "🇪🇸",
+    "steps": [
+      "Loop a heavy resistance band around a rack at knee height. Step into the band behind your knees.",
+      "Walk back until the band is taut. Feet shoulder-width, toes forward.",
+      "Sit back into a squat — the band pulls your knees back, keeping your shins vertical.",
+      "Lower to 60-70 degrees over 3 seconds. Hold briefly. Return to standing."
+    ],
+    "formCues": [
+      "✅ Sit BACK into the band — let it support your knee position",
+      "✅ Shins stay nearly vertical — this is the magic of the Spanish squat",
+      "✅ Upright torso throughout — don't fold forward"
+    ],
+    "commonMistakes": [
+      "❌ Standing too close to the anchor — you need enough band tension to pull knees back",
+      "❌ Going too deep — same 60-70 degree limit as decline squat",
+      "❌ Letting knees drift forward past band — the band should keep tibia vertical"
+    ],
+    "coreBracing": "LIGHT (20%) — upright posture, minimal spinal demand",
+    "breathing": { "inhale": "3", "hold": "1", "exhale": "2", "pattern": "Inhale lowering. Brief hold at bottom. Exhale rising." },
+    "injuryNotes": {
+      "lower_back": "Very low spinal load due to upright posture and band support. Safe for back issues.",
+      "knee": "This IS a knee rehabilitation exercise. The vertical tibia reduces patellofemoral compression. Up to 5/10 pain acceptable.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Alternative to decline squat for patellar tendinopathy. The band provides a posterior force that keeps the tibia vertical, reducing patellofemoral compression.",
+    "whyForYou": "Easier to set up than a decline board and arguably more comfortable. Great alternative for your left knee patellar tendon work.",
+    "proTip": "Try isometric holds at various depths (30s at 30°, 30s at 60°) — isometrics have strong evidence for tendon pain reduction.",
+    "source": "Tendinopathy Rehabilitation / Spanish Squat Clinical Studies",
+    "lastReviewed": "2025-01-01",
+    "tags": ["patellar_tendinopathy", "knee_rehab", "band", "spanish_squat", "vertical_tibia", "vmo"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "rehab_serratus_punch",
+    "name": "Serratus Anterior Punch (Supine)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Serratus Anterior"],
+    "secondaryMuscles": ["Pectorals", "Anterior Deltoid", "Core"],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["dumbbell"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 4 },
+      "painFreeROM": ["shoulder_flexion_90"],
+      "notes": "Scapular protraction strengthening. Targets the serratus anterior — the muscle that holds the scapula flat against the ribcage."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "rehab_scapular_clock",
+      "unlockCriteria": "3x15 without scapular winging",
+      "chainFamily": "scapular_stability_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 4 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "rehab_pendulum_swing",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "12-15", "tempo": "2/1/2", "rest": "30-60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "👊",
+    "steps": [
+      "Lie face-up holding a light dumbbell (or no weight) with one arm extended straight toward the ceiling.",
+      "Without bending the elbow, punch the weight toward the ceiling by protracting (rounding forward) the shoulder blade.",
+      "Hold the protracted position for 1 second — feel the serratus anterior engage below your armpit.",
+      "Slowly retract the shoulder blade back to the floor. Repeat."
+    ],
+    "formCues": [
+      "✅ The elbow stays locked — all movement comes from the shoulder blade",
+      "✅ Think 'punch the ceiling' — the hand should travel 2-3 inches upward",
+      "✅ Feel the muscle engage on the side of your ribcage below the armpit"
+    ],
+    "commonMistakes": [
+      "❌ Bending the elbow — this becomes a tricep exercise, not serratus",
+      "❌ Using too much weight — this is rehab, 2-5 lbs is sufficient",
+      "❌ Not fully retracting between reps — the full protraction-retraction cycle matters"
+    ],
+    "coreBracing": "LIGHT (15%) — maintain neutral spine supine",
+    "breathing": { "inhale": "2", "hold": "1", "exhale": "2", "pattern": "Exhale on the punch (protraction). Inhale on the retraction." },
+    "injuryNotes": {
+      "lower_back": "Supine position. No spinal load.",
+      "knee": "No knee involvement.",
+      "shoulder": "Start with NO weight if labrum is sensitive. The protraction movement is generally safe for labrum issues as it creates space in the joint."
+    },
+    "purpose": "Strengthens the serratus anterior to prevent scapular winging and improve overhead shoulder mechanics. Foundation for pressing safety.",
+    "whyForYou": "A strong serratus anterior keeps your scapula properly positioned during pressing — critical for protecting your left labrum.",
+    "proTip": "Place your opposite hand on the serratus (side ribs below armpit) to feel it contract. If you can't feel it, you're pressing too hard.",
+    "source": "Scapular Stabilization Research / Shoulder Rehabilitation Protocols",
+    "lastReviewed": "2025-01-01",
+    "tags": ["serratus_anterior", "scapular_stability", "shoulder_rehab", "protraction", "pressing_safety"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_thoracic_ext_roller",
+    "name": "Thoracic Extension over Foam Roller",
+    "category": "mobility",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "back",
+    "primaryMuscles": ["Thoracic Erector Spinae (passive)"],
+    "secondaryMuscles": ["Rhomboids", "Lower Trapezius", "Intercostals"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["foam_roller"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Thoracic kyphosis correction. Opens the mid-back. Safe for almost all populations."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mob_thoracic_rotation",
+      "unlockCriteria": "Full comfortable extension over roller at 3 segments",
+      "chainFamily": "thoracic_mobility_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": "yoga_seated_cat_cow"
+    },
+    "phaseParams": {
+      "1": { "sets": "1-2", "reps": "5 extensions at each segment (3-4 segments)", "tempo": "2/2/2", "rest": "as needed", "intensity": "RPE 2-4" }
+    },
+    "emoji": "🧘",
+    "steps": [
+      "Lie face-up with a foam roller positioned horizontally under your mid-back (just below the shoulder blades).",
+      "Cross arms over chest or hands behind head to move shoulder blades out of the way.",
+      "Slowly extend backward over the roller — let gravity open your thoracic spine. Hold 2-3 seconds.",
+      "Move the roller up one segment (toward head) and repeat. Work through 3-4 thoracic segments."
+    ],
+    "formCues": [
+      "✅ Only extend at the THORACIC spine — not the lower back",
+      "✅ Keep hips on the floor — don't bridge up",
+      "✅ Breathe deeply into the stretch — exhale to deepen the extension"
+    ],
+    "commonMistakes": [
+      "❌ Extending at the lower back instead of mid-back — keep abs engaged to lock lumbar spine",
+      "❌ Rolling too fast along the spine — pause and extend at each segment",
+      "❌ Placing the roller on the lower back — ONLY upper/mid back"
+    ],
+    "coreBracing": "LIGHT (20%) — engage abs to prevent lumbar extension. The extension should happen at the thoracic spine ONLY.",
+    "breathing": { "inhale": "3", "hold": "2", "exhale": "3", "pattern": "Inhale to prepare. Exhale and relax into the extension. Deep breathing opens the ribcage." },
+    "injuryNotes": {
+      "lower_back": "Keep the roller at thoracic spine ONLY — never place on lumbar spine. Engage abs to prevent lumbar extension.",
+      "knee": "No knee involvement. Bend knees with feet flat for comfort.",
+      "shoulder": "Hands behind head position may be uncomfortable — cross arms over chest instead."
+    },
+    "purpose": "Opens the thoracic spine and reverses kyphosis. A stiff thoracic spine forces compensations at the lumbar spine and shoulders.",
+    "whyForYou": "Thoracic mobility is CRITICAL for your back and shoulder. A stiff mid-back forces your lower back and shoulder to overwork — exactly what you need to avoid.",
+    "proTip": "Do this before EVERY session. 2 minutes of thoracic extension prevents hours of compensatory movement.",
+    "source": "NASM Corrective Exercise / Thoracic Mobility Research",
+    "lastReviewed": "2025-01-01",
+    "tags": ["thoracic_mobility", "kyphosis", "foam_roller", "daily", "posture", "compensatory_prevention"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_standing_hip_march",
+    "name": "Standing Hip Flexor March (Band)",
+    "category": "rehab",
+    "type": "strength",
+    "movementPattern": "isolation",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Iliopsoas", "Rectus Femoris"],
+    "secondaryMuscles": ["Core", "Glute Med (stance leg)", "Quadriceps"],
+    "jointsInvolved": ["hip", "knee"],
+    "equipmentRequired": ["band"],
+    "locationCompatible": ["gym", "home"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["rehab_hooklying_march"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": ["hip_flexion_90"],
+      "notes": "Standing hip flexor strengthening with band resistance. Targets hip flexors without impingement risk."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "rehab_hooklying_march",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "hip_flexor_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": "rehab_hooklying_march",
+      "injury_lower_back": "rehab_hooklying_march",
+      "injury_knee": "rehab_hooklying_march",
+      "injury_shoulder": null,
+      "no_equipment": "rehab_hooklying_march"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10-15 each leg", "tempo": "2/1/2", "rest": "30-60s", "intensity": "RPE 4-6" }
+    },
+    "emoji": "🦩",
+    "steps": [
+      "Stand on one leg. Loop a band around the foot of the working leg and anchor it low behind you.",
+      "Brace core. Lift the working knee up toward chest against the band resistance.",
+      "Raise knee to 90 degrees hip flexion. Hold 1 second at the top.",
+      "Lower slowly against the band tension. Complete all reps, then switch legs."
+    ],
+    "formCues": [
+      "✅ Stand tall — don't lean back to compensate for the band pull",
+      "✅ Control the lowering phase — don't let the band snap the leg down",
+      "✅ Stance leg glute should be active — squeeze to stay balanced"
+    ],
+    "commonMistakes": [
+      "❌ Leaning backward to lift the knee higher — stay upright",
+      "❌ Using momentum instead of controlled hip flexion",
+      "❌ Neglecting the stance leg — it's working too"
+    ],
+    "coreBracing": "MODERATE (30-40%) — brace to prevent lumbar extension during hip flexion",
+    "breathing": { "inhale": "2", "hold": "1", "exhale": "2", "pattern": "Exhale as you lift the knee. Inhale lowering." },
+    "injuryNotes": {
+      "lower_back": "Brace core to prevent lumbar extension. If back arches, regress to hooklying march.",
+      "knee": "Monitor for pinching at the front of the hip. Reduce range if impingement occurs.",
+      "shoulder": "No shoulder involvement. Hold a wall or chair for balance support."
+    },
+    "purpose": "Strengthens hip flexors with resistance for improved gait, stair climbing, and athletic performance. Targets iliopsoas without impingement.",
+    "whyForYou": "Strong hip flexors support your walking, stair climbing, and sport activities. The band provides progressive loading without spinal stress.",
+    "proTip": "Focus on the stance leg just as much — single-leg balance + hip flexor strength is a two-for-one exercise.",
+    "source": "Hip Flexor Rehabilitation / Functional Movement Training",
+    "lastReviewed": "2025-01-01",
+    "tags": ["hip_flexor", "standing", "band", "balance", "functional", "gait_improvement"],
+    "abilityLevel": "standing"
+  }
+]

@@ -1,0 +1,1702 @@
+[
+  {
+    "id": "corr_chin_tuck",
+    "name": "Chin Tuck (Deep Cervical Flexor Activation)",
+    "category": "rehab",
+    "type": "rehab",
+    "movementPattern": "isolation",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Deep Cervical Flexors", "Longus Colli", "Longus Capitis"],
+    "secondaryMuscles": ["Lower Trapezius"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Safe for all levels. First exercise in upper crossed correction."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "corr_prone_cobra",
+      "unlockCriteria": "Hold 10s x 10 reps pain-free for 3 sessions",
+      "chainFamily": "upper_crossed_correction"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10-15 (hold 5-10s each)", "tempo": "2/5/2", "rest": "30s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "10-15 (hold 10s each)", "tempo": "2/10/2", "rest": "30s", "intensity": "Bodyweight" },
+      "3": { "sets": "2-3", "reps": "10-15 (hold 10s each)", "tempo": "2/10/2", "rest": "30s", "intensity": "Bodyweight" }
+    },
+    "emoji": "🦒",
+    "steps": [
+      "Sit or stand tall with shoulders relaxed and eyes looking straight ahead.",
+      "Draw your chin straight BACK (not down) as if making a double chin — imagine a string pulling the back of your head up and back.",
+      "Hold the retracted position for 5-10 seconds while breathing normally.",
+      "Release slowly and repeat. You should feel a gentle stretch at the base of your skull."
+    ],
+    "formCues": [
+      "✅ Keep eyes level — do not look down",
+      "✅ Pull chin straight back, not tucked down to chest",
+      "✅ Shoulders stay relaxed and down",
+      "✅ Imagine lengthening the back of your neck toward the ceiling"
+    ],
+    "commonMistakes": [
+      "❌ Tilting head down instead of retracting chin horizontally",
+      "❌ Jutting jaw forward on release",
+      "❌ Tensing shoulders up toward ears",
+      "❌ Holding breath during hold"
+    ],
+    "coreBracing": "MINIMAL (10%) — light postural engagement only",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe normally throughout the hold. Do not hold breath." },
+    "injuryNotes": {
+      "lower_back": "Perform seated if standing causes back fatigue. Maintain neutral spine.",
+      "knee": "No impact on knee. Sit if preferred.",
+      "shoulder": "No shoulder involvement. Safe regardless of shoulder status."
+    },
+    "purpose": "Activates underactive deep cervical flexors to counteract forward head posture — a hallmark of upper crossed syndrome.",
+    "whyForYou": "Desk work and phone use pull your head forward, overloading your upper traps and neck. This retrains the deep stabilizers that hold your head in alignment.",
+    "proTip": "Do 5 chin tucks every hour at your desk. Consistency beats volume for postural correction.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise, Chapter 8; Jull GA et al., Cranio-cervical flexion test",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "neck", "activate", "beginner"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_prone_cobra",
+    "name": "Prone Cobra",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": ["Lower Trapezius", "Rhomboids", "Middle Trapezius"],
+    "secondaryMuscles": ["Posterior Deltoid", "Erector Spinae", "Deep Cervical Flexors"],
+    "jointsInvolved": ["spine", "shoulder"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 5, "shoulder": 4 },
+      "painFreeROM": [],
+      "notes": "Requires ability to lie prone. Mild spinal extension involved."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_chin_tuck",
+      "progressTo": "corr_serratus_wall_slide",
+      "unlockCriteria": "Hold 15s x 8 reps pain-free for 3 sessions",
+      "chainFamily": "upper_crossed_correction"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["disc_herniation_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 5, "shoulder": 4 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_chin_tuck",
+      "injury_knee": null,
+      "injury_shoulder": "corr_chin_tuck",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-12 (hold 10-15s)", "tempo": "3/10/3", "rest": "30-60s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "10-15 (hold 15s)", "tempo": "3/15/3", "rest": "30s", "intensity": "Bodyweight" },
+      "3": { "sets": "2-3", "reps": "10-15 (hold 15s)", "tempo": "3/15/3", "rest": "30s", "intensity": "Bodyweight" }
+    },
+    "emoji": "🐍",
+    "steps": [
+      "Lie face-down on a mat with arms at your sides, palms facing down, forehead on the mat.",
+      "Squeeze shoulder blades together and DOWN (toward back pockets), then lift chest 2-3 inches off the floor while rotating thumbs toward the ceiling.",
+      "Tuck chin slightly (maintain chin tuck position) and hold for 10-15 seconds.",
+      "Lower slowly with control. Rest 2-3 seconds between reps."
+    ],
+    "formCues": [
+      "✅ Squeeze shoulder blades DOWN and together — not just together",
+      "✅ Keep chin tucked — do not crane neck up",
+      "✅ Rotate thumbs toward ceiling to externally rotate shoulders",
+      "✅ Lift chest only 2-3 inches — this is not a superman"
+    ],
+    "commonMistakes": [
+      "❌ Lifting too high and hyperextending the lower back",
+      "❌ Shrugging shoulders toward ears (upper trap compensation)",
+      "❌ Looking up and extending the neck",
+      "❌ Holding breath during the hold"
+    ],
+    "coreBracing": "LIGHT (20%) — gentle abdominal engagement to protect lower back",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "4", "pattern": "Inhale to prepare, exhale as you lift. Breathe normally during hold." },
+    "injuryNotes": {
+      "lower_back": "Keep lift small — 2 inches max. If back pain increases, reduce range or substitute chin tucks only.",
+      "knee": "No knee involvement. Place a pillow under shins for comfort if needed.",
+      "shoulder": "If shoulder pinches, keep arms closer to body and reduce external rotation range."
+    },
+    "purpose": "Activates the lower traps and rhomboids — the key underactive muscles in upper crossed syndrome — while teaching scapular depression.",
+    "whyForYou": "Your lower traps are fighting against dominant upper traps. This teaches them to fire and pull your shoulders back and DOWN where they belong.",
+    "proTip": "Think of sliding your shoulder blades into your back pockets. If you feel your upper traps burning, you're compensating — lower the lift height.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; McGill S, Low Back Disorders 3rd Ed",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "activate", "lower_traps", "scapular_stability"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_serratus_wall_slide",
+    "name": "Serratus Anterior Wall Slide",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Serratus Anterior"],
+    "secondaryMuscles": ["Lower Trapezius", "Anterior Deltoid"],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["wall"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": ["shoulder_flexion_120"],
+      "notes": "Requires pain-free shoulder flexion to at least 120 degrees."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "corr_prone_cobra",
+      "progressTo": "corr_wall_angel",
+      "unlockCriteria": "12 reps full ROM pain-free for 3 sessions",
+      "chainFamily": "upper_crossed_correction"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute", "frozen_shoulder"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "corr_prone_cobra",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10-12", "tempo": "3/1/3", "rest": "30-60s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "12-15", "tempo": "2/1/2", "rest": "30s", "intensity": "Bodyweight" },
+      "3": { "sets": "2-3", "reps": "12-15", "tempo": "2/1/2", "rest": "30s", "intensity": "Bodyweight" }
+    },
+    "emoji": "🧱",
+    "steps": [
+      "Stand facing a wall with forearms flat against it, elbows at shoulder height, forming a 90-degree angle.",
+      "Press forearms firmly into the wall and slide arms upward along the wall while protracting shoulder blades (pushing them apart).",
+      "Slide up as far as you can while maintaining forearm contact with the wall and keeping ribs down.",
+      "Slowly slide back down to starting position with control."
+    ],
+    "formCues": [
+      "✅ Push forearms INTO the wall throughout — feel serratus fire",
+      "✅ Keep ribs down and core lightly engaged — do not arch back",
+      "✅ Shoulder blades should wrap around ribcage (protraction)",
+      "✅ Move slowly — 3 seconds up, 3 seconds down"
+    ],
+    "commonMistakes": [
+      "❌ Shrugging shoulders up as arms slide higher",
+      "❌ Arching lower back to get arms higher",
+      "❌ Losing forearm contact with wall",
+      "❌ Rushing through the movement"
+    ],
+    "coreBracing": "LIGHT (20%) — keep ribs tucked, maintain neutral spine",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Exhale as you slide up (concentric). Inhale as you slide down." },
+    "injuryNotes": {
+      "lower_back": "Stand close to wall to keep spine neutral. No arching.",
+      "knee": "No knee involvement. Stand with soft knee bend.",
+      "shoulder": "Stay within PAIN-FREE range only. Do not force arms higher than comfortable. With labrum tear, limit slide height to just above shoulder level in Phase 1."
+    },
+    "purpose": "Activates the serratus anterior — the key muscle for scapular upward rotation and stability, commonly underactive in upper crossed syndrome.",
+    "whyForYou": "A weak serratus lets your shoulder blades wing out and your upper traps take over. This builds the foundation for safe overhead work later.",
+    "proTip": "If you can't feel serratus working, push HARDER into the wall. The pressing force is what triggers serratus anterior activation.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Ludewig PM, Scapular muscle activity analysis",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "activate", "serratus", "scapular_stability"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_pec_stretch",
+    "name": "Pec Doorway Stretch",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "chest",
+    "primaryMuscles": ["Pectoralis Major", "Pectoralis Minor"],
+    "secondaryMuscles": ["Anterior Deltoid", "Biceps Brachii"],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["wall"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": [],
+      "notes": "Go gently with active shoulder injuries. Reduce depth if labrum is sensitive."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "upper_crossed_lengthen"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "stretch_cross_body_shoulder",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 (hold 30s each)", "tempo": "N/A", "rest": "15s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 (hold 30s each)", "tempo": "N/A", "rest": "15s", "intensity": "Moderate stretch" },
+      "3": { "sets": "2", "reps": "2-3 (hold 30s each)", "tempo": "N/A", "rest": "15s", "intensity": "Moderate stretch" }
+    },
+    "emoji": "🚪",
+    "steps": [
+      "Stand in a doorway (or next to a wall). Place forearm against the door frame with elbow at shoulder height, arm making a 90-degree angle.",
+      "Step the same-side foot forward through the doorway and gently lean forward until you feel a stretch across your chest.",
+      "Hold for 30 seconds, breathing deeply. Keep shoulders relaxed and down.",
+      "Repeat on the other side. For a different angle, try elbow slightly above or below shoulder height."
+    ],
+    "formCues": [
+      "✅ Elbow at shoulder height for mid-pec, higher for upper pec, lower for pec minor",
+      "✅ Keep shoulder blade pulled back — do not let it round forward",
+      "✅ Stretch should feel across the chest, NOT in the front of the shoulder joint",
+      "✅ Stand tall — do not slouch into the stretch"
+    ],
+    "commonMistakes": [
+      "❌ Forcing the stretch too aggressively",
+      "❌ Letting shoulder roll forward — defeats the purpose",
+      "❌ Arching lower back to get more depth",
+      "❌ Holding breath — breathe into the stretch"
+    ],
+    "coreBracing": "MINIMAL (10%) — maintain upright posture only",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Deep diaphragmatic breathing. Exhale slowly to deepen the stretch naturally." },
+    "injuryNotes": {
+      "lower_back": "Keep spine neutral. Do not arch to increase stretch depth.",
+      "knee": "Step forward gently. No impact on knee.",
+      "shoulder": "With labrum tear: stay well within comfort zone. If you feel a pinch or click in the shoulder JOINT (not muscle), reduce depth or skip. Stretch should be in the MUSCLE, not the joint."
+    },
+    "purpose": "Lengthens overactive pectoralis major and minor — the primary pullers in upper crossed syndrome that drag shoulders forward.",
+    "whyForYou": "Tight pecs from sitting and screen time pull your shoulders into internal rotation, stressing your already-compromised labrum. This opens the front of your chest safely.",
+    "proTip": "Do this 3x daily — morning, lunch, evening. 30 seconds each time. Frequency beats intensity for postural change.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise, Chapter 8; Sahrmann S, Movement System Impairment Syndromes",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "lengthen", "pecs", "stretch"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_upper_trap_stretch",
+    "name": "Upper Trap Stretch (Ear to Shoulder)",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Upper Trapezius"],
+    "secondaryMuscles": ["Levator Scapulae", "SCM"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Safe for essentially everyone. Gentle self-limiting stretch."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "upper_crossed_lengthen"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" }
+    },
+    "emoji": "🦻",
+    "steps": [
+      "Sit or stand tall. Reach your right hand over the top of your head to gently rest on the left side of your head.",
+      "Slowly tilt your right ear toward your right shoulder using gentle hand pressure — do NOT pull hard.",
+      "Anchor the stretch by reaching your left hand toward the ground or sitting on your left hand.",
+      "Hold 30 seconds. Breathe deeply. Switch sides."
+    ],
+    "formCues": [
+      "✅ Apply gentle overpressure only — let gravity and hand weight do the work",
+      "✅ Keep both shoulders level and down",
+      "✅ Breathe into the stretch — exhale to deepen",
+      "✅ You should feel the stretch along the side of the neck, not pain"
+    ],
+    "commonMistakes": [
+      "❌ Pulling the head aggressively — can strain neck muscles",
+      "❌ Hiking the opposite shoulder up",
+      "❌ Rotating the head instead of pure lateral flexion",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "MINIMAL (10%) — sit tall, no bracing needed",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Slow, deep breaths. Each exhale lets the stretch deepen slightly." },
+    "injuryNotes": {
+      "lower_back": "Sit on a chair with back support if standing causes fatigue.",
+      "knee": "No knee involvement.",
+      "shoulder": "Keep the anchoring arm relaxed. No shoulder stress in this stretch."
+    },
+    "purpose": "Lengthens overactive upper trapezius — one of the most dominant muscles in upper crossed syndrome, responsible for shoulder elevation and neck tension.",
+    "whyForYou": "Your upper traps are working overtime to compensate for weak lower traps. This releases the tension cycle that contributes to neck stiffness and headaches.",
+    "proTip": "For a different fiber angle, slightly rotate your nose TOWARD the stretching side (look into your armpit). This targets the posterior fibers more.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Janda V, Muscles in Pathogenesis of Musculoskeletal Disorders",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "lengthen", "upper_traps", "stretch", "neck"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_levator_stretch",
+    "name": "Levator Scapulae Stretch",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "neck",
+    "primaryMuscles": ["Levator Scapulae"],
+    "secondaryMuscles": ["Upper Trapezius"],
+    "jointsInvolved": ["spine"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Safe for all. The angle difference from upper trap stretch is key."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "upper_crossed_lengthen"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" }
+    },
+    "emoji": "↗️",
+    "steps": [
+      "Sit tall. Rotate your head 45 degrees to the RIGHT (look toward your right armpit).",
+      "Place your right hand on the back of your head and gently pull your nose DOWN toward your right armpit.",
+      "Anchor the left side by sitting on your left hand or reaching toward the ground.",
+      "Hold 30 seconds. You should feel the stretch on the LEFT side of the back of your neck. Switch sides."
+    ],
+    "formCues": [
+      "✅ Rotate head 45 degrees FIRST, then flex down — this targets levator specifically",
+      "✅ Apply very gentle overpressure — this is a small, deep muscle",
+      "✅ Keep opposite shoulder anchored down",
+      "✅ Stretch should feel along the back-side of the neck toward the shoulder blade"
+    ],
+    "commonMistakes": [
+      "❌ Not rotating first — just doing a side bend (that's upper trap stretch, not levator)",
+      "❌ Pulling too aggressively on the head",
+      "❌ Letting opposite shoulder hike up",
+      "❌ Rushing — this needs a full 30-second hold"
+    ],
+    "coreBracing": "MINIMAL (10%) — sit tall, no bracing needed",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Slow deep breaths. Each exhale allows gentle deepening." },
+    "injuryNotes": {
+      "lower_back": "Sit with back support if needed.",
+      "knee": "No knee involvement.",
+      "shoulder": "No shoulder stress. Safe regardless of shoulder condition."
+    },
+    "purpose": "Lengthens the levator scapulae — the muscle that elevates the scapula and is chronically overactive in upper crossed syndrome and desk workers.",
+    "whyForYou": "The levator scapulae is a hidden source of neck and upper back stiffness. Releasing it improves scapular movement for every pulling and pressing exercise.",
+    "proTip": "If one side is significantly tighter, give it an extra 15-second hold. Asymmetry here often correlates with your dominant hand side.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Janda V, Muscles in Pathogenesis of Musculoskeletal Disorders",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "lengthen", "levator_scapulae", "stretch", "neck"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_band_pull_apart_hr",
+    "name": "Band Pull-Apart (High Rep)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": ["Rhomboids", "Middle Trapezius", "Lower Trapezius"],
+    "secondaryMuscles": ["Posterior Deltoid", "Infraspinatus"],
+    "jointsInvolved": ["shoulder"],
+    "equipmentRequired": ["band"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": [],
+      "notes": "Uses a light band. Higher rep range than standard band pull-aparts for corrective purpose."
+    },
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "corr_prone_cobra",
+      "progressTo": "corr_wall_angel",
+      "unlockCriteria": "20 reps with good scapular retraction and no upper trap compensation for 3 sessions",
+      "chainFamily": "upper_crossed_correction"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "corr_prone_cobra",
+      "no_equipment": "corr_prone_cobra"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "15-25", "tempo": "2/1/2", "rest": "30-60s", "intensity": "Light band" },
+      "2": { "sets": "3", "reps": "20-30", "tempo": "2/1/2", "rest": "30s", "intensity": "Light band" },
+      "3": { "sets": "3", "reps": "20-30", "tempo": "2/1/2", "rest": "30s", "intensity": "Light-medium band" }
+    },
+    "emoji": "↔️",
+    "steps": [
+      "Stand tall. Hold a light resistance band at arms' length in front of you at shoulder height, hands shoulder-width apart.",
+      "Pull the band apart by squeezing your shoulder blades together and pulling hands outward until the band touches your chest.",
+      "Pause for 1 second at full retraction. Focus on squeezing the muscles between your shoulder blades.",
+      "Slowly return to start. Maintain an upright posture throughout — no leaning back."
+    ],
+    "formCues": [
+      "✅ Initiate the pull from your SHOULDER BLADES, not your arms",
+      "✅ Keep shoulders down — do not let them shrug up",
+      "✅ Arms stay at shoulder height throughout",
+      "✅ Think about bringing shoulder blades toward your spine"
+    ],
+    "commonMistakes": [
+      "❌ Using too heavy a band — this is corrective, not strength",
+      "❌ Shrugging shoulders up (upper trap compensation)",
+      "❌ Leaning backward to complete the pull",
+      "❌ Rushing reps — quality over speed"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain upright posture",
+    "breathing": { "inhale": "2", "hold": "1", "exhale": "2", "pattern": "Inhale at start, exhale as you pull apart, inhale as you return." },
+    "injuryNotes": {
+      "lower_back": "Stand with slight knee bend. No spinal loading involved.",
+      "knee": "No knee involvement. Stand with soft knees.",
+      "shoulder": "Use the LIGHTEST band available. If labrum irritated, reduce range — pull to 80% of full pull-apart. Stop if any clicking or pinching."
+    },
+    "purpose": "Integrates rhomboid and lower/middle trap activation into a functional pulling pattern — the integration phase of upper crossed correction.",
+    "whyForYou": "High-rep band work teaches your scapular muscles endurance. This is the bridge between isolated correctives and real pulling exercises.",
+    "proTip": "Do 25 reps between every pressing set. This maintains the 2:1 pull-to-push ratio that keeps upper crossed syndrome from returning.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Cressey E, Shoulder Performance Training",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "integrate", "rhomboids", "scapular_stability"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_wall_angel",
+    "name": "Wall Angel",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": ["Lower Trapezius", "Serratus Anterior", "Rotator Cuff"],
+    "secondaryMuscles": ["Rhomboids", "Middle Trapezius", "Deep Cervical Flexors"],
+    "jointsInvolved": ["shoulder", "spine"],
+    "equipmentRequired": ["wall"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["corr_chin_tuck"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 3 },
+      "painFreeROM": ["shoulder_flexion_140"],
+      "notes": "Requires overhead ROM. The ultimate test for upper crossed syndrome correction."
+    },
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "corr_band_pull_apart_hr",
+      "progressTo": null,
+      "unlockCriteria": "12 reps full ROM with back, head, and arms maintaining wall contact for 3 sessions",
+      "chainFamily": "upper_crossed_correction"
+    },
+    "contraindications": {
+      "injuries": ["labrum_tear_acute"],
+      "conditions": ["rotator_cuff_tear_acute", "frozen_shoulder"],
+      "movements_to_avoid": ["end_range_shoulder"],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 3 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": "corr_band_pull_apart_hr",
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-12", "tempo": "3/1/3", "rest": "30-60s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "10-15", "tempo": "2/1/2", "rest": "30s", "intensity": "Bodyweight" },
+      "3": { "sets": "2-3", "reps": "10-15", "tempo": "2/1/2", "rest": "30s", "intensity": "Bodyweight" }
+    },
+    "emoji": "👼",
+    "steps": [
+      "Stand with your back flat against a wall. Feet 6 inches from the wall, knees slightly bent. Head, upper back, and hips touching the wall.",
+      "Place arms against the wall in a 'goalpost' position — elbows at 90 degrees, backs of hands touching the wall.",
+      "Slowly slide arms up the wall overhead while keeping your head, back, elbows, and wrists in contact with the wall.",
+      "Slide up as far as you can while maintaining ALL contact points, then slide back down. Do not let anything peel off the wall."
+    ],
+    "formCues": [
+      "✅ ALL contact points stay on wall: head, upper back, lower back, elbows, wrists",
+      "✅ Ribs stay down — do not flare to get arms higher",
+      "✅ Chin stays tucked — do not let head push forward",
+      "✅ Move SLOWLY — the slower the better for corrective benefit"
+    ],
+    "commonMistakes": [
+      "❌ Lower back arching off wall as arms go up",
+      "❌ Elbows or wrists peeling off the wall (loss of external rotation)",
+      "❌ Head pushing forward off the wall",
+      "❌ Rushing — this is a slow, controlled corrective"
+    ],
+    "coreBracing": "MODERATE (30%) — actively press lower back toward wall",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Exhale as you slide up (the hard part). Inhale as you slide down." },
+    "injuryNotes": {
+      "lower_back": "Press lower back firmly into wall. If back arches off, limit arm slide height.",
+      "knee": "Soft knee bend for comfort. No knee stress.",
+      "shoulder": "With labrum tear: LIMIT slide height — only go as high as arms maintain wall contact pain-free. Do NOT force overhead position. Phase 1-2 may only allow partial range."
+    },
+    "purpose": "The full integration exercise for upper crossed syndrome — requires proper function of lower traps, serratus, deep cervical flexors, and external rotators simultaneously.",
+    "whyForYou": "This is the final test for your upper body posture. When you can do 12 full wall angels with everything touching the wall, your upper crossed syndrome is well-managed.",
+    "proTip": "Film yourself from the side. You'll be shocked at how much your head and lower back want to leave the wall. This awareness alone accelerates correction.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Sahrmann S, Movement System Impairment Syndromes",
+    "lastReviewed": "2025-01-01",
+    "tags": ["upper_crossed_syndrome", "nasm_corrective", "posture", "integrate", "scapular_stability", "overhead_prep"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_standing_hip_flexor_str",
+    "name": "Standing Hip Flexor Stretch",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Iliopsoas", "Rectus Femoris"],
+    "secondaryMuscles": ["TFL", "Sartorius"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Standing version is gentler on the knee than kneeling. Good entry point."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "corr_kneeling_hip_flexor_str",
+      "unlockCriteria": "30s hold each side pain-free for 3 sessions",
+      "chainFamily": "lower_crossed_lengthen"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_supine_pelvic_tilt",
+      "injury_knee": "corr_supine_pelvic_tilt",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" }
+    },
+    "emoji": "🧍",
+    "steps": [
+      "Stand in a split stance — right foot forward, left foot about 2 feet behind. Both feet facing forward.",
+      "Tuck your pelvis UNDER (posterior pelvic tilt) — think of scooping your tailbone forward. This is the key.",
+      "Keeping the tuck, shift weight forward onto the front leg until you feel a stretch in the FRONT of the back hip.",
+      "Hold 30 seconds. Keep torso tall. Switch sides."
+    ],
+    "formCues": [
+      "✅ PELVIC TILT is non-negotiable — without it, you stretch nothing",
+      "✅ Keep torso upright and tall — do not lean forward",
+      "✅ Squeeze the back-leg glute to deepen the stretch",
+      "✅ Stretch should be in the FRONT of the hip, not the knee or back"
+    ],
+    "commonMistakes": [
+      "❌ Forgetting the pelvic tuck — the #1 mistake. Without it, the hip flexor stays slack",
+      "❌ Arching the lower back to 'feel' a stretch — this is lumbar extension, not hip flexor stretch",
+      "❌ Leaning the torso forward",
+      "❌ Bouncing in the stretch"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain pelvic tilt position",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Deep diaphragmatic breathing. Long exhales help the hip flexor release." },
+    "injuryNotes": {
+      "lower_back": "The posterior pelvic tilt position is actually PROTECTIVE for your back. Maintain it throughout. If standing aggravates the back, switch to supine pelvic tilt.",
+      "knee": "Front knee stays behind toes. If back knee is uncomfortable, reduce stance width. Switch to supine version if painful.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Lengthens overactive hip flexors (iliopsoas, rectus femoris) — the primary drivers of anterior pelvic tilt in lower crossed syndrome.",
+    "whyForYou": "Sitting all day locks your hip flexors short, pulling your pelvis into anterior tilt and increasing lower back stress. Releasing them protects your surgical site.",
+    "proTip": "Squeeze the glute of the BACK leg hard. Reciprocal inhibition — contracting the glute forces the opposing hip flexor to relax deeper.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Janda V, Muscles in Pathogenesis of Musculoskeletal Disorders",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "lengthen", "hip_flexors", "stretch"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_kneeling_hip_flexor_str",
+    "name": "Kneeling Hip Flexor Stretch",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Iliopsoas", "Rectus Femoris"],
+    "secondaryMuscles": ["TFL", "Sartorius", "Adductors"],
+    "jointsInvolved": ["hip", "knee"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Requires kneeling on back knee. Pad the knee well. Deeper stretch than standing version."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_standing_hip_flexor_str",
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "lower_crossed_lengthen"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": ["deep_knee_flexion"],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_standing_hip_flexor_str",
+      "injury_knee": "corr_standing_hip_flexor_str",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate-deep stretch" }
+    },
+    "emoji": "🧎",
+    "steps": [
+      "Kneel on a mat. Step your right foot forward into a half-kneeling position (right knee at 90 degrees, left knee on the mat).",
+      "Tuck your pelvis UNDER (posterior pelvic tilt). Squeeze the left glute hard.",
+      "Keeping the tuck, shift your hips slightly forward until you feel a deep stretch in the front of the left hip.",
+      "Hold 30 seconds. Breathe deeply. Switch sides."
+    ],
+    "formCues": [
+      "✅ Posterior pelvic tilt is ESSENTIAL — no arch in lower back",
+      "✅ Squeeze the back-side glute to deepen the stretch via reciprocal inhibition",
+      "✅ Front knee stays stacked over ankle — not past toes",
+      "✅ Stay tall through the torso — no leaning"
+    ],
+    "commonMistakes": [
+      "❌ Arching the lower back instead of tucking pelvis — negates the entire stretch",
+      "❌ Dumping forward over the front knee",
+      "❌ Not padding the back knee enough (knee pain distracts from the stretch)",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "LIGHT (20%) — maintain the pelvic tilt position",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Deep diaphragmatic breathing. Exhale slowly to relax deeper into stretch." },
+    "injuryNotes": {
+      "lower_back": "The pelvic tilt protects the back. If kneeling aggravates, use standing version instead.",
+      "knee": "PAD the back knee generously. If left knee (surgical) is on the ground, use a thick cushion or folded towel. If kneeling is painful, use the standing version instead.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Deeper hip flexor lengthening than the standing version — targets the iliopsoas in a position that allows gravity-assisted stretch.",
+    "whyForYou": "The kneeling position allows more stretch depth than standing. Your hip flexors are likely very tight from sitting, and this is the gold-standard position to release them.",
+    "proTip": "To add a quad stretch, reach back and grab the back foot (if pain-free). This adds rectus femoris stretch. Only do this when the basic version is comfortable.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Cook G, Movement",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "lengthen", "hip_flexors", "stretch"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_supine_pelvic_tilt",
+    "name": "Supine Pelvic Tilt",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": ["TVA", "Rectus Abdominis", "Internal Obliques"],
+    "secondaryMuscles": ["Glute Max", "Pelvic Floor"],
+    "jointsInvolved": ["spine", "hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Foundational exercise. Safe for everyone. The first step in retraining pelvic control."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "corr_glute_bridge_march",
+      "unlockCriteria": "15 reps with isolated pelvic control for 3 sessions",
+      "chainFamily": "lower_crossed_activate"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "12-15 (hold 5s each)", "tempo": "2/5/2", "rest": "30s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "12-15 (hold 5s each)", "tempo": "2/5/2", "rest": "30s", "intensity": "Bodyweight" },
+      "3": { "sets": "2-3", "reps": "12-15 (hold 5s each)", "tempo": "2/5/2", "rest": "30s", "intensity": "Bodyweight" }
+    },
+    "emoji": "⬇️",
+    "steps": [
+      "Lie on your back with knees bent, feet flat on the floor hip-width apart, arms at your sides.",
+      "Gently flatten your lower back into the floor by tilting your pelvis posteriorly — imagine scooping your tailbone up toward the ceiling.",
+      "Hold this flattened position for 5 seconds. You should feel your deep abs engage.",
+      "Release slowly. Repeat. Focus on ISOLATING the pelvis — ribs and shoulders should not move."
+    ],
+    "formCues": [
+      "✅ Lower back should press firmly into the floor — no gap",
+      "✅ Move ONLY the pelvis — do not lift hips or curl the ribcage",
+      "✅ Feel the deep lower abdominals engage (below the belly button)",
+      "✅ Keep glutes relaxed initially — this is a TVA exercise first"
+    ],
+    "commonMistakes": [
+      "❌ Using the glutes to lift the hips — this is a bridge, not a pelvic tilt",
+      "❌ Curling the upper body — the ribs should stay still",
+      "❌ Holding breath — breathe normally during the hold",
+      "❌ Moving too fast — the control IS the exercise"
+    ],
+    "coreBracing": "LIGHT-MODERATE (20-30%) — the pelvic tilt IS the bracing exercise",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "4", "pattern": "Exhale as you tilt (flatten back). Breathe normally during hold. Inhale as you release." },
+    "injuryNotes": {
+      "lower_back": "This is one of the safest back exercises. The posterior pelvic tilt position unloads the lumbar spine. If any pain, reduce range of motion.",
+      "knee": "No knee involvement. Feet stay flat on the floor.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Teaches posterior pelvic tilt and TVA activation — the foundational skill for correcting anterior pelvic tilt in lower crossed syndrome.",
+    "whyForYou": "This retrains your pelvis to tilt back to neutral, taking pressure off your surgical site. It is the building block for dead bugs, bridges, and every loaded exercise.",
+    "proTip": "Place your fingers on the bony points at the front of your hips (ASIS). When you tilt correctly, these points should move UP toward the ceiling slightly. This is your self-check.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Richardson C, Therapeutic Exercise for Lumbopelvic Stabilization",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "activate", "tva", "core", "pelvic_control"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "corr_glute_bridge_march",
+    "name": "Glute Bridge March",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "hinge",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Max", "TVA"],
+    "secondaryMuscles": ["Hamstrings", "Internal Obliques", "Multifidus"],
+    "jointsInvolved": ["hip", "spine"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["corr_supine_pelvic_tilt"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Requires ability to hold bridge position and march without pelvic drop."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_supine_pelvic_tilt",
+      "progressTo": "corr_cook_hip_lift",
+      "unlockCriteria": "10 reps each side with level pelvis for 3 sessions",
+      "chainFamily": "lower_crossed_activate"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_supine_pelvic_tilt",
+      "injury_knee": "corr_supine_pelvic_tilt",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-12 each side", "tempo": "2/1/2", "rest": "30-60s", "intensity": "Bodyweight" },
+      "2": { "sets": "3", "reps": "10-15 each side", "tempo": "2/1/2", "rest": "30-60s", "intensity": "Bodyweight" },
+      "3": { "sets": "3", "reps": "12-15 each side", "tempo": "2/1/2", "rest": "30-60s", "intensity": "Bodyweight" }
+    },
+    "emoji": "🌉",
+    "steps": [
+      "Lie on your back, knees bent, feet flat, arms at your sides. Bridge up by pressing hips toward the ceiling — squeeze glutes at top.",
+      "Hold the bridge position. Slowly lift your RIGHT foot off the floor, bringing the knee toward your chest to about 90 degrees — like marching.",
+      "Lower the right foot back down with control. Repeat on the LEFT side. That is one rep.",
+      "Keep hips LEVEL the entire time — no rotation, no dropping on the lifting side."
+    ],
+    "formCues": [
+      "✅ Hips stay LEVEL — place hands on hip bones to feel for rotation",
+      "✅ Squeeze the standing-side glute HARD when the opposite foot lifts",
+      "✅ Core stays braced — no lower back arching",
+      "✅ March slowly and with control — speed = compensation"
+    ],
+    "commonMistakes": [
+      "❌ Hips dropping on the marching side (glute med weakness)",
+      "❌ Rotating pelvis as the leg lifts",
+      "❌ Losing the bridge height — hips sinking during marching",
+      "❌ Using momentum to swing the leg up"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain bridge position while resisting rotation",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Exhale as you lift each foot. Inhale as you lower. Maintain steady breathing rhythm." },
+    "injuryNotes": {
+      "lower_back": "Keep bridge height moderate — do not hyperextend. Focus on glute drive, not back extension. If back pain increases, regress to basic glute bridge.",
+      "knee": "Minimal knee stress. If left knee is uncomfortable in the bridge position, place feet slightly farther from body to reduce flexion angle.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Combines glute activation with pelvic stability challenge — strengthens glutes while training anti-rotation under single-leg demand.",
+    "whyForYou": "Your glutes need to fire while maintaining pelvic stability. This exercise mimics the single-leg demand of walking and running while keeping your back protected.",
+    "proTip": "Place a yoga block or foam roller on your hips. If it falls off, your pelvis is rotating. This is instant biofeedback.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Cook G, Movement",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "activate", "glutes", "pelvic_control", "anti_rotation"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "corr_clamshell",
+    "name": "Clamshell",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Medius", "Glute Minimus"],
+    "secondaryMuscles": ["External Hip Rotators", "Piriformis"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Foundational glute med activation. Safe for nearly everyone."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "corr_side_lying_hip_abd",
+      "unlockCriteria": "15 reps each side with band for 3 sessions",
+      "chainFamily": "lower_crossed_glute_med"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["hip_bursitis"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "12-20 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Bodyweight or light band" },
+      "2": { "sets": "2-3", "reps": "15-20 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Light-medium band" },
+      "3": { "sets": "2-3", "reps": "15-20 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Medium band" }
+    },
+    "emoji": "🐚",
+    "steps": [
+      "Lie on your side with hips and knees bent to about 45 degrees. Stack hips directly on top of each other. Head resting on bottom arm.",
+      "Keep your feet together and squeeze your glute to rotate your top knee open toward the ceiling — like a clamshell opening.",
+      "Hold the open position for 2 seconds. Focus on feeling the contraction in the SIDE of your glute, not the front of your hip.",
+      "Lower slowly with control. Do all reps on one side, then switch."
+    ],
+    "formCues": [
+      "✅ Hips stay stacked — do NOT roll backward to open more",
+      "✅ Feel the burn in the SIDE of the glute (glute medius), not the TFL (front of hip)",
+      "✅ Keep feet glued together — only the knee opens",
+      "✅ Move slowly — the pause at the top is where the magic happens"
+    ],
+    "commonMistakes": [
+      "❌ Rolling the pelvis backward to get more range — this is TFL compensation",
+      "❌ Opening too wide — this recruits piriformis instead of glute med",
+      "❌ Rushing through reps without pausing at the top",
+      "❌ Tensing the hip flexor instead of the glute"
+    ],
+    "coreBracing": "LIGHT (15%) — maintain side-lying spinal neutral",
+    "breathing": { "inhale": "2", "hold": "2", "exhale": "2", "pattern": "Exhale as you open. Hold and breathe at the top. Inhale as you lower." },
+    "injuryNotes": {
+      "lower_back": "Place a pillow between your waist and the mat if lying on your side is uncomfortable. This is a very low-back-friendly exercise.",
+      "knee": "If left knee is uncomfortable in the bent position, reduce hip and knee flexion angle. Place a thin pillow between knees for comfort.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Isolates glute medius activation — the key muscle for hip stability that is chronically underactive in lower crossed syndrome.",
+    "whyForYou": "Weak glute med contributes to knee valgus (which your left knee can't afford) AND hip drop during walking. This is the foundational glute med exercise.",
+    "proTip": "Place your top hand on the side of your glute. You should feel the muscle contracting under your fingers. If you feel the front of your hip instead, you're compensating with TFL — reduce range.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Distefano LJ, Gluteal muscle activation during common therapeutic exercises",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "activate", "glute_med", "hip_stability"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_side_lying_hip_abd",
+    "name": "Side-Lying Hip Abduction",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "isolation",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Medius", "Glute Minimus"],
+    "secondaryMuscles": ["TFL", "Quadratus Lumborum"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 5, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Straight-leg version of glute med work. Targets posterior fibers more than clamshell."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "corr_clamshell",
+      "progressTo": "corr_monster_walk",
+      "unlockCriteria": "15 reps each side with slow tempo pain-free for 3 sessions",
+      "chainFamily": "lower_crossed_glute_med"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["hip_bursitis"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 5, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_clamshell",
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "12-15 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Bodyweight" },
+      "2": { "sets": "2-3", "reps": "15-20 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Bodyweight or ankle weight" },
+      "3": { "sets": "2-3", "reps": "15-20 each side", "tempo": "2/2/2", "rest": "30s", "intensity": "Ankle weight" }
+    },
+    "emoji": "🦵",
+    "steps": [
+      "Lie on your side with bottom knee slightly bent for stability. Top leg straight, aligned with your torso.",
+      "Slightly internally rotate the top leg (point toes slightly toward floor) to bias the glute med posterior fibers.",
+      "Lift the top leg toward the ceiling about 30-40 degrees. Lead with the HEEL, not the toes.",
+      "Hold at top for 2 seconds. Lower slowly. Keep hips stacked — do not roll backward."
+    ],
+    "formCues": [
+      "✅ Lead with the heel and keep toes pointed slightly down (internal rotation bias)",
+      "✅ Lift only to 30-40 degrees — higher recruits TFL over glute med",
+      "✅ Keep hips stacked perfectly — do not roll back",
+      "✅ Maintain a straight line from shoulder to heel"
+    ],
+    "commonMistakes": [
+      "❌ Lifting too high (past 45 degrees) — shifts to TFL and hip flexor",
+      "❌ Rolling pelvis backward to cheat more height",
+      "❌ Pointing toes up — this engages TFL instead of glute med",
+      "❌ Hiking the hip instead of pure abduction"
+    ],
+    "coreBracing": "LIGHT (15%) — maintain side-lying alignment",
+    "breathing": { "inhale": "2", "hold": "2", "exhale": "2", "pattern": "Exhale as you lift. Hold at top. Inhale as you lower." },
+    "injuryNotes": {
+      "lower_back": "Lying on side with support is safe for back. If uncomfortable, place pillow at waist.",
+      "knee": "Straight leg reduces knee stress vs clamshell. If lying on affected side is uncomfortable, do the non-affected side first.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Strengthens glute medius posterior fibers in a straight-leg position — better activation of the anti-valgus portion of the muscle.",
+    "whyForYou": "The posterior fibers of glute med are the anti-knee-cave muscles. Strengthening them directly protects your left knee during squats and lunges.",
+    "proTip": "The internal rotation cue (toes down) is the secret. Research shows this position increases posterior glute med activation by up to 30% compared to neutral.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Boren K, EMG analysis of gluteus medius exercises",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "activate", "glute_med", "hip_stability"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "corr_monster_walk",
+    "name": "Monster Walk (Band)",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "lunge",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Medius", "Glute Max"],
+    "secondaryMuscles": ["TFL", "Quadriceps", "Core"],
+    "jointsInvolved": ["hip", "knee", "ankle"],
+    "equipmentRequired": ["band"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "prerequisites": {
+      "minCompletedSessions": 2,
+      "requiredExercisesMastered": ["corr_clamshell"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Requires standing balance and knee stability. Band placement above knees or at ankles."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "corr_side_lying_hip_abd",
+      "progressTo": "rehab_lateral_band_walk",
+      "unlockCriteria": "10 steps each direction with no knee valgus for 3 sessions",
+      "chainFamily": "lower_crossed_glute_med"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_side_lying_hip_abd",
+      "injury_knee": "corr_clamshell",
+      "injury_shoulder": null,
+      "no_equipment": "corr_side_lying_hip_abd"
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "10 steps each direction", "tempo": "Slow and controlled", "rest": "30-60s", "intensity": "Light band" },
+      "2": { "sets": "2-3", "reps": "12-15 steps each direction", "tempo": "Slow and controlled", "rest": "30-60s", "intensity": "Medium band" },
+      "3": { "sets": "3", "reps": "15 steps each direction", "tempo": "Slow and controlled", "rest": "30-60s", "intensity": "Medium band" }
+    },
+    "emoji": "🧟",
+    "steps": [
+      "Place a resistance band around both legs just above the knees (or at ankles for more challenge). Stand in a quarter-squat position.",
+      "Step forward and OUT at a 45-degree angle with your right foot, maintaining tension on the band.",
+      "Follow with the left foot, also stepping forward and out at 45 degrees. Keep knees pushed out against the band the entire time.",
+      "Take 10 steps forward, then 10 steps backward to return. Maintain the quarter-squat throughout."
+    ],
+    "formCues": [
+      "✅ Keep knees pushed OUT against the band at all times — never let them cave in",
+      "✅ Stay in a quarter-squat — do not stand fully upright between steps",
+      "✅ Step at 45 degrees (forward AND out) — not just forward",
+      "✅ Keep core engaged and torso upright"
+    ],
+    "commonMistakes": [
+      "❌ Knees caving inward (the exact thing this exercise is meant to fix)",
+      "❌ Standing too tall — losing the squat position between steps",
+      "❌ Stepping only forward, not at an angle (reduces glute med demand)",
+      "❌ Rushing — each step should be deliberate"
+    ],
+    "coreBracing": "MODERATE (30%) — maintain quarter-squat posture",
+    "breathing": { "inhale": "2", "hold": "0", "exhale": "2", "pattern": "Breathe naturally. Exhale with each step. Do not hold breath." },
+    "injuryNotes": {
+      "lower_back": "Quarter-squat depth only. Keep spine neutral. If back fatigues, take a brief standing break between sets.",
+      "knee": "Keep knees tracking over 2nd-3rd toe. If left knee pain increases, use a lighter band or regress to clamshell. Watch for valgus.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Integrates glute medius activation into a functional standing/walking pattern — the bridge between isolated exercises and real-world movement.",
+    "whyForYou": "This teaches your glute med to fire WHILE you're moving and bearing weight. This is exactly what needs to happen to protect your left knee during training.",
+    "proTip": "Place the band at your ankles for the most glute med challenge, or above knees for less. Start above knees and progress to ankles over 2-3 weeks.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Cambridge ED et al., Hip and knee muscle activation during banded walks",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "integrate", "glute_med", "hip_stability", "functional"],
+    "abilityLevel": "standing"
+  },
+  {
+    "id": "corr_cook_hip_lift",
+    "name": "Cook Hip Lift",
+    "category": "rehab",
+    "type": "stabilization",
+    "movementPattern": "hinge",
+    "bodyPart": "glutes",
+    "primaryMuscles": ["Glute Max"],
+    "secondaryMuscles": ["Hamstrings", "TVA", "Core"],
+    "jointsInvolved": ["hip", "spine"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "prerequisites": {
+      "minCompletedSessions": 4,
+      "requiredExercisesMastered": ["corr_glute_bridge_march"],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Advanced glute activation using hip flexor inhibition. Requires bridge march competency."
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "corr_glute_bridge_march",
+      "progressTo": "str_sl_glute_bridge",
+      "unlockCriteria": "10 reps each side with no back compensation for 3 sessions",
+      "chainFamily": "lower_crossed_activate"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "yellow",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "corr_glute_bridge_march",
+      "injury_knee": "corr_glute_bridge_march",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2-3", "reps": "8-10 each side", "tempo": "3/2/3", "rest": "30-60s", "intensity": "Bodyweight" },
+      "2": { "sets": "3", "reps": "10-12 each side", "tempo": "2/2/2", "rest": "30-60s", "intensity": "Bodyweight" },
+      "3": { "sets": "3", "reps": "10-12 each side", "tempo": "2/2/2", "rest": "30-60s", "intensity": "Bodyweight" }
+    },
+    "emoji": "🏋️",
+    "steps": [
+      "Lie on your back. Pull your LEFT knee to your chest and hold it there with both hands — this locks the left hip flexor SHORT.",
+      "With the right foot flat on the floor (knee bent), drive through your right heel to bridge your hips up.",
+      "Hold the bridge for 2 seconds at the top. Your left knee stays pulled to chest the entire time.",
+      "Lower slowly. Do all reps on one side, then switch."
+    ],
+    "formCues": [
+      "✅ Hold the non-working knee firmly to your chest — this is the 'Cook' mechanism",
+      "✅ Drive through the HEEL of the working leg, not the toes",
+      "✅ Keep hips level — no rotation or tilting",
+      "✅ Squeeze the working glute HARD at the top"
+    ],
+    "commonMistakes": [
+      "❌ Letting the held knee drift away from chest — negates the hip flexor inhibition",
+      "❌ Hyperextending the back at the top instead of driving with glutes",
+      "❌ Pushing through the toes instead of the heel",
+      "❌ Rotating the pelvis toward the working side"
+    ],
+    "coreBracing": "MODERATE (30-40%) — maintain pelvic control during single-leg bridge",
+    "breathing": { "inhale": "2", "hold": "2", "exhale": "3", "pattern": "Inhale at bottom. Exhale as you bridge up. Hold and breathe. Inhale as you lower." },
+    "injuryNotes": {
+      "lower_back": "The held knee position posteriorly tilts the pelvis, protecting the back. Do not bridge so high that the back hyperextends. If back pain, regress to glute bridge march.",
+      "knee": "If holding the left (surgical) knee to chest is uncomfortable, use a towel around the knee for assist. Working leg knee stress is minimal.",
+      "shoulder": "No shoulder involvement beyond holding the knee."
+    },
+    "purpose": "Advanced glute activation that uses reciprocal inhibition — holding the opposite hip flexor short forces the working-side glute to fully activate without hip flexor compensation.",
+    "whyForYou": "Named after Gray Cook, this is the gold standard for ensuring your glutes fire WITHOUT your hip flexors compensating. This is the final step before loaded hip hinge exercises.",
+    "proTip": "If you can't feel the glute, try this: before bridging, press your heel INTO the floor for 5 seconds (isometric). Then bridge. The pre-activation makes the glute fire hard.",
+    "source": "Cook G, Movement — Functional Movement Systems; NASM CPT 7th Ed",
+    "lastReviewed": "2025-01-01",
+    "tags": ["lower_crossed_syndrome", "nasm_corrective", "posture", "activate", "glutes", "reciprocal_inhibition", "gray_cook"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_hip_ir_er",
+    "name": "Supine Hip IR/ER (Passive ROM)",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Internal Hip Rotators", "External Hip Rotators"],
+    "secondaryMuscles": ["Glute Med", "Piriformis", "Obturator Internus"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Assessment and mobility exercise. Very gentle. Used to restore hip rotation balance."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "rehab_quad_hip_circles",
+      "unlockCriteria": "Full pain-free ROM in both IR and ER for 3 sessions",
+      "chainFamily": "hip_pt_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["hip_impingement"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "10 each direction, each side", "tempo": "3/1/3", "rest": "15s", "intensity": "Passive / bodyweight" },
+      "2": { "sets": "2", "reps": "10 each direction, each side", "tempo": "3/1/3", "rest": "15s", "intensity": "Passive / bodyweight" },
+      "3": { "sets": "2", "reps": "10 each direction, each side", "tempo": "3/1/3", "rest": "15s", "intensity": "Passive / bodyweight" }
+    },
+    "emoji": "🔄",
+    "steps": [
+      "Lie on your back with both knees bent and feet flat on the floor, wider than hip-width apart.",
+      "Let your RIGHT knee drop INWARD toward the midline (internal rotation). Go only as far as comfortable. Return to center.",
+      "Let your RIGHT knee drop OUTWARD away from midline (external rotation). Go only as far as comfortable. Return to center.",
+      "Repeat 10 times each direction on each side. Note any asymmetry between left and right."
+    ],
+    "formCues": [
+      "✅ Keep the foot planted — only the knee moves inward or outward",
+      "✅ Move slowly and within pain-free range ONLY",
+      "✅ Keep pelvis still — motion should come from the hip joint only",
+      "✅ Compare left to right — note any differences in range"
+    ],
+    "commonMistakes": [
+      "❌ Lifting the foot to get more range — defeats the purpose",
+      "❌ Moving the pelvis instead of isolating hip rotation",
+      "❌ Pushing into pain — this is assessment and gentle mobility",
+      "❌ Rushing through the movement"
+    ],
+    "coreBracing": "MINIMAL (10%) — relax and let gravity do the work",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe naturally. Exhale as the knee drops into each direction." },
+    "injuryNotes": {
+      "lower_back": "Supine position is safe for back. Knees bent reduces lumbar stress. If one direction causes back referral, reduce range.",
+      "knee": "If left knee is uncomfortable with rotation, reduce range. Stop if any clicking, catching, or sharp pain.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Assesses and restores hip internal and external rotation ROM — critical for hip health and detecting impingement or asymmetry patterns.",
+    "whyForYou": "Hip rotation balance directly affects your knee and back. Restricted hip IR forces your lumbar spine to compensate during rotation, stressing your surgical site.",
+    "proTip": "Normal IR is about 35-45 degrees, ER is about 40-50 degrees. If one direction is significantly limited, that's your rehab priority.",
+    "source": "ACSM Guidelines for Exercise Testing; Magee DJ, Orthopedic Physical Assessment",
+    "lastReviewed": "2025-01-01",
+    "tags": ["hip_pt", "rehab", "mobility", "hip_rotation", "assessment"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_quad_hip_circles",
+    "name": "Quadruped Hip Circles",
+    "category": "rehab",
+    "type": "mobility",
+    "movementPattern": "mobility",
+    "bodyPart": "hips",
+    "primaryMuscles": ["Hip Rotators", "Glute Med"],
+    "secondaryMuscles": ["Core", "Hip Flexors", "Adductors"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 3, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Requires hands-and-knees position. Gentle hip joint mobilization."
+    },
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "rehab_hip_ir_er",
+      "progressTo": "rehab_fire_hydrant",
+      "unlockCriteria": "10 circles each direction pain-free for 3 sessions",
+      "chainFamily": "hip_pt_chain"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": ["hip_impingement"],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 3, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "rehab_hip_ir_er",
+      "injury_knee": "rehab_hip_ir_er",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "8-10 circles each direction, each side", "tempo": "Slow and controlled", "rest": "15s", "intensity": "Bodyweight" },
+      "2": { "sets": "2", "reps": "10-12 circles each direction, each side", "tempo": "Slow and controlled", "rest": "15s", "intensity": "Bodyweight" },
+      "3": { "sets": "2", "reps": "10-12 circles each direction, each side", "tempo": "Slow and controlled", "rest": "15s", "intensity": "Bodyweight" }
+    },
+    "emoji": "⭕",
+    "steps": [
+      "Start on all fours — hands under shoulders, knees under hips. Maintain a flat, neutral spine.",
+      "Lift your right knee off the floor and draw a smooth circle with the knee — forward, out to the side, back, and around.",
+      "Complete 8-10 circles clockwise, then 8-10 circles counterclockwise.",
+      "Keep the spine completely still — all motion comes from the hip joint. Switch sides."
+    ],
+    "formCues": [
+      "✅ Keep spine STILL — only the hip moves",
+      "✅ Make the circles as large as pain-free range allows",
+      "✅ Move slowly — feel the joint moving through all positions",
+      "✅ Keep weight evenly distributed on the supporting limbs"
+    ],
+    "commonMistakes": [
+      "❌ Shifting the spine side-to-side to make circles bigger",
+      "❌ Rushing through circles without control",
+      "❌ Making circles too small — explore full available range",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "MODERATE (25%) — stabilize spine while hip moves freely",
+    "breathing": { "inhale": "3", "hold": "0", "exhale": "3", "pattern": "Breathe naturally throughout. Do not hold breath during circles." },
+    "injuryNotes": {
+      "lower_back": "Quadruped is generally back-friendly. If wrists are uncomfortable, make fists or use dumbbells as handles. Keep core engaged to protect spine.",
+      "knee": "The supporting knee bears weight. Pad it well. For the circling leg, reduce circle size if knee is uncomfortable. Avoid deep flexion positions.",
+      "shoulder": "No dynamic shoulder involvement. Wrist discomfort can be managed with fists."
+    },
+    "purpose": "Mobilizes the hip joint through its full available range in a safe, unloaded position — identifies and addresses stiffness patterns.",
+    "whyForYou": "Hip joint stiffness transfers load to your lower back. Restoring full hip ROM through circles helps your hips do their job so your back doesn't have to compensate.",
+    "proTip": "Notice where the circle feels 'sticky' or restricted. That's where you need to spend extra time. Do 3-5 extra partial circles focused on that restricted arc.",
+    "source": "ACSM Guidelines; Cook G, Movement — Functional Movement Systems",
+    "lastReviewed": "2025-01-01",
+    "tags": ["hip_pt", "rehab", "mobility", "hip_circles", "joint_mobilization"],
+    "abilityLevel": "any"
+  },
+  {
+    "id": "rehab_hip_ir_stretch",
+    "name": "Side-Lying Hip IR Stretch",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "hips",
+    "primaryMuscles": ["External Hip Rotators", "Piriformis"],
+    "secondaryMuscles": ["Glute Max", "Obturator Externus"],
+    "jointsInvolved": ["hip"],
+    "equipmentRequired": ["mat"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 5, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "For people with limited hip internal rotation. Stretches the external rotators."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "rehab_pigeon_pose",
+      "unlockCriteria": "30s hold pain-free each side for 3 sessions",
+      "chainFamily": "hip_pt_stretch"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 5, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": "rehab_hip_ir_er",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" }
+    },
+    "emoji": "🔀",
+    "steps": [
+      "Lie on your back with both knees bent, feet flat on the floor wider than hip-width.",
+      "Cross your right ankle over your left knee (figure-4 position).",
+      "Gently press your right knee AWAY from you with your right hand — you should feel a stretch deep in your right glute/hip.",
+      "Hold 30 seconds. Breathe deeply. Switch sides."
+    ],
+    "formCues": [
+      "✅ Keep pelvis flat on the floor — do not let it lift",
+      "✅ Apply gentle, steady pressure — no bouncing",
+      "✅ The stretch should be deep in the glute/hip, not in the knee",
+      "✅ Relax the leg being stretched — let gravity and hand do the work"
+    ],
+    "commonMistakes": [
+      "❌ Forcing the knee down aggressively — can strain the hip",
+      "❌ Lifting the pelvis off the floor to get more range",
+      "❌ Tensing the muscles being stretched — consciously relax",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "MINIMAL (10%) — relax completely",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Deep breaths. Long exhales help the rotators release." },
+    "injuryNotes": {
+      "lower_back": "Supine position is safe for back. If figure-4 position causes back referral, place a pillow under the support leg.",
+      "knee": "The crossed ankle puts mild stress on the knee. If left knee is uncomfortable in this position, regress to supine IR/ER with feet on floor.",
+      "shoulder": "No shoulder involvement."
+    },
+    "purpose": "Stretches tight external rotators (including piriformis) to restore hip internal rotation — critical for balanced hip function.",
+    "whyForYou": "Tight external rotators limit your hip IR, forcing your lumbar spine to rotate compensatorily. Releasing them protects your surgical site during rotational movements.",
+    "proTip": "If one side is dramatically tighter, it may indicate piriformis syndrome. Combine with foam rolling the piriformis (exercise 94) for best results.",
+    "source": "ACSM Guidelines; Magee DJ, Orthopedic Physical Assessment",
+    "lastReviewed": "2025-01-01",
+    "tags": ["hip_pt", "rehab", "flexibility", "hip_rotation", "stretch", "piriformis"],
+    "abilityLevel": "supine_only"
+  },
+  {
+    "id": "rehab_it_band_stretch",
+    "name": "Standing IT Band Stretch (Cross-Leg)",
+    "category": "rehab",
+    "type": "flexibility",
+    "movementPattern": "static_stretch",
+    "bodyPart": "hips",
+    "primaryMuscles": ["TFL", "IT Band"],
+    "secondaryMuscles": ["Glute Med", "Vastus Lateralis"],
+    "jointsInvolved": ["hip", "knee"],
+    "equipmentRequired": ["none"],
+    "locationCompatible": ["gym", "home", "outdoor"],
+    "phaseEligibility": [1, 2, 3, 4, 5],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": { "lower_back": 4, "knee": 4, "shoulder": 5 },
+      "painFreeROM": [],
+      "notes": "Standing balance required. Use wall for support if needed. Targets TFL since IT band cannot truly stretch."
+    },
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "",
+      "chainFamily": "hip_pt_stretch"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": { "lower_back": 4, "knee": 4, "shoulder": 5 }
+    },
+    "safetyTier": "green",
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": "rehab_hip_ir_er",
+      "injury_knee": "fr_tfl",
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "phaseParams": {
+      "1": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Gentle stretch" },
+      "2": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" },
+      "3": { "sets": "2", "reps": "2-3 each side (hold 30s)", "tempo": "N/A", "rest": "10s", "intensity": "Moderate stretch" }
+    },
+    "emoji": "🦿",
+    "steps": [
+      "Stand next to a wall for balance support. Cross your right leg BEHIND your left leg.",
+      "Lean your right hip AWAY from the wall (toward the right) while keeping both feet planted.",
+      "Reach your right arm overhead and lean slightly to the LEFT to increase the stretch along the right outer hip.",
+      "Hold 30 seconds. You should feel the stretch along the outer hip and thigh of the back leg. Switch sides."
+    ],
+    "formCues": [
+      "✅ Push the hip of the back leg OUT to the side — this is the stretch driver",
+      "✅ Keep both feet flat on the floor",
+      "✅ Use the wall for balance — focus on form, not balancing",
+      "✅ Stretch should be along the outer hip and thigh, not the knee"
+    ],
+    "commonMistakes": [
+      "❌ Not pushing the hip out far enough — the lateral shift is the stretch",
+      "❌ Bending forward instead of leaning sideways",
+      "❌ Letting the back foot lift off the floor",
+      "❌ Trying to 'stretch' the IT band directly — it's fascia, target the TFL muscle"
+    ],
+    "coreBracing": "MINIMAL (10%) — maintain upright posture",
+    "breathing": { "inhale": "4", "hold": "0", "exhale": "6", "pattern": "Deep breaths. Exhale to lean slightly deeper." },
+    "injuryNotes": {
+      "lower_back": "Keep the lean small. Do not twist. If standing side bends aggravate the back, substitute with foam rolling TFL.",
+      "knee": "The crossing position puts mild lateral stress on the knee. If left knee is uncomfortable, substitute with foam rolling TFL instead.",
+      "shoulder": "Overhead reach is optional. Skip the arm reach if shoulder is uncomfortable."
+    },
+    "purpose": "Targets the TFL and lateral fascial line — the IT band itself is fascia and cannot truly stretch, but the TFL muscle that feeds into it can be lengthened.",
+    "whyForYou": "A tight TFL contributes to IT band friction syndrome and pulls on your knee laterally. Releasing it complements your glute med strengthening work.",
+    "proTip": "Combine with foam rolling the TFL (exercise 97) before this stretch. Roll first, then stretch — inhibit then lengthen, per the NASM corrective model.",
+    "source": "NASM CPT 7th Ed — Corrective Exercise; Fredericson M, IT Band Syndrome in Runners",
+    "lastReviewed": "2025-01-01",
+    "tags": ["hip_pt", "rehab", "flexibility", "it_band", "tfl", "stretch"],
+    "abilityLevel": "standing"
+  }
+]
