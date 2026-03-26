@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import exerciseDB from "./data/exercises.json";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -351,29 +352,52 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
   return illustrations[exerciseId] || <div style={{width:"100%",height:160,borderRadius:14,background:"#0a1628",display:"flex",alignItems:"center",justifyContent:"center",fontSize:48,border:"1px solid #1a2a45"}}>💪</div>;
 }
 
-// ── EXERCISE DATABASE ───────────────────────────────────────────
-const EX={warmup:[
-  {id:"w1",name:"Cat-Cow Flow",emoji:"🐱",location:"Mat",sets:1,reps:"10 each",bodyPart:"Back",breathing:{inhale:3,hold:0,exhale:3},muscles:{primary:["Erector Spinae"],secondary:["TVA","Multifidus"]},equipment:"Mat",difficulty:"Beginner",tempo:"Slow",purpose:"Warms spinal column segment by segment.",whyForYou:"Post-surgical back needs gentle segmental motion.",steps:["All fours — hands under shoulders, knees under hips.","COW: Inhale 3s — drop belly, lift chest and tailbone.","CAT: Exhale 3s — round spine, tuck chin.","Move SLOWLY — one breath per transition."],formCues:["✅ Initiate from pelvis","✅ Elbows unlocked","✅ Equal weight all points"],commonMistakes:["❌ Jerking between positions","❌ Only moving head/hips","❌ Holding breath"],coreBracing:"LIGHT (20%).",injuryNotes:"⚠️ BACK: Sharp pain in cow = reduce range.",proTip:"Close eyes — feel segmental motion better."},
-  {id:"w2",name:"Dead Bug",emoji:"🪲",location:"Mat",sets:2,reps:"8 each side",bodyPart:"Core",breathing:{inhale:2,hold:1,exhale:4},muscles:{primary:["TVA","Rectus Abdominis"],secondary:["Obliques"]},equipment:"Mat",difficulty:"Intermediate",tempo:"2s out, 1s hold, 2s return",purpose:"Anti-extension — most important pattern for surgical site.",whyForYou:"Retrains deconditioned stabilizers.",steps:["Lie flat. Press back INTO floor.","Arms up. Knees to 90°.","SLOWLY extend R arm + L leg. Back stays GLUED.","Exhale 4s. Pause 1s. Return. Switch."],formCues:["✅ Back NEVER leaves floor","✅ Move slowly","✅ 4s exhale"],commonMistakes:["❌ Back arching off floor","❌ Too fast","❌ Holding breath"],coreBracing:"MODERATE (40-50%).",injuryNotes:"⚠️ BACK: If back lifts, BEND extending leg.",proTip:"Towel under lower back for feedback."},
-  {id:"w3",name:"Banded External Rotation",emoji:"🎯",location:"Standing",sets:2,reps:"12 each",bodyPart:"Shoulders",breathing:{inhale:2,hold:0,exhale:2},muscles:{primary:["Infraspinatus","Teres Minor"],secondary:["Post. Deltoid"]},equipment:"Light band",difficulty:"Beginner",tempo:"2s out, 2s return",purpose:"Pre-activates rotator cuff before pressing.",whyForYou:"Left labrum needs RC activation before loading.",steps:["Pin elbow to side at 90°.","Rotate forearm outward ~45°.","Return SLOWLY. Start LEFT side."],formCues:["✅ Elbow PINNED","✅ Wrist neutral"],commonMistakes:["❌ Elbow drifting","❌ Band too heavy"],coreBracing:"LIGHT (20%).",injuryNotes:"⚠️ SHOULDER: Front pinch = reduce range.",proTip:"Pin towel between elbow and ribs."},
-  {id:"w4",name:"Glute Bridge",emoji:"🍑",location:"Mat",sets:2,reps:"15",bodyPart:"Glutes",breathing:{inhale:2,hold:1,exhale:2},muscles:{primary:["Glute Max","Glute Med"],secondary:["Hamstrings","Core"]},equipment:"Mat",difficulty:"Beginner",tempo:"2s up, 1s squeeze, 2s down",purpose:"Activates glutes. When asleep, back compensates.",whyForYou:"Post-surgical = inhibited glutes.",steps:["Knees bent, feet hip-width.","SQUEEZE glutes first — push through HEELS.","Rise to straight line. HOLD 1s.","Lower slowly."],formCues:["✅ Drive through HEELS","✅ Glutes initiate","✅ No hyperextending"],commonMistakes:["❌ Hyperextending","❌ Feel in lower back = STOP"],coreBracing:"MODERATE (30-40%).",injuryNotes:"⚠️ BACK: Back feel = reduce height.",proTip:"Fist between knees turbocharges glutes."},
-  {id:"w5",name:"VMO Wall Sit",emoji:"🦵",location:"Wall",sets:2,reps:"20s hold",bodyPart:"Legs",breathing:{inhale:3,hold:0,exhale:3},muscles:{primary:["VMO","Quadriceps"],secondary:["Glute Med"]},equipment:"Wall",difficulty:"Beginner",tempo:"Static hold",purpose:"Isolates VMO — #1 patellar tracking protector.",whyForYou:"Left VMO weaker after surgery.",steps:["Back flat on wall. Slide to ~45°.","Focus on inner quad. Flex VMO.","Hold 20s. Breathe continuously."],formCues:["✅ Only 45°","✅ Weight through heels"],commonMistakes:["❌ Too deep","❌ Knees caving"],coreBracing:"LIGHT (20%).",injuryNotes:"⚠️ KNEE: Joint pain = too deep.",proTip:"Hand on VMO — feel it contract."},
-],main:[
-  {id:"m1",name:"Trap Bar Deadlift",emoji:"🏋️",location:"Free Weights",sets:4,reps:"6-8",rest:120,intensity:"RPE 7",bodyPart:"Full Body",breathing:{inhale:2,hold:1,exhale:3},muscles:{primary:["Glutes","Hamstrings","Quads"],secondary:["Erectors","Traps","Core"]},equipment:"Trap bar",difficulty:"Intermediate",tempo:"1s up, 3s down",purpose:"King compound. Reduces lumbar shear ~20%.",whyForYou:"Stays within your back's tolerance.",steps:["Step INSIDE. Grab HIGH handles. Flat back.","BRACE. PUSH floor away.","Hips FORWARD to lockout. REBRACE every rep."],formCues:["✅ Flat back","✅ Push floor, don't pull"],commonMistakes:["❌ ROUNDING BACK","❌ Hyperextending"],coreBracing:"MAXIMUM (90-100%).",injuryNotes:"⚠️ BACK: HIGH handles. Tingling = stop.",proTip:"Flat shoes or barefoot."},
-  {id:"m2",name:"Landmine Press",emoji:"💥",location:"Free Weights",sets:3,reps:"10 each",rest:90,intensity:"RPE 7",bodyPart:"Shoulders",breathing:{inhale:2,hold:0,exhale:2},muscles:{primary:["Anterior Delt","Upper Chest"],secondary:["Serratus","Core"]},equipment:"Barbell, landmine",difficulty:"Intermediate",tempo:"2s up, 2s down",purpose:"Safest press for labrum tear.",whyForYou:"Avoids end-range shoulder danger.",steps:["Staggered stance. Hold at shoulder.","BRACE. Press UP along arc.","Protract at top."],formCues:["✅ Elbow 45°","✅ No rotation"],commonMistakes:["❌ Elbow flare","❌ Arching back"],coreBracing:"MOD-HIGH (60-70%).",injuryNotes:"⚠️ SHOULDER: Click/pinch = reduce.",proTip:"'Punching ceiling at angle.'"},
-  {id:"m3",name:"Bulgarian Split Squat",emoji:"🦿",location:"Free Weights",sets:3,reps:"10 each",rest:90,intensity:"RPE 7",bodyPart:"Legs",breathing:{inhale:3,hold:0,exhale:2},muscles:{primary:["Quads (VMO)","Glutes"],secondary:["Hip Stabilizers"]},equipment:"Bench",difficulty:"Intermediate",tempo:"3s down, 2s up",purpose:"Single-leg. Corrects imbalances.",whyForYou:"Forces independent leg work.",steps:["Rear foot on bench. Front positioned.","DESCEND straight down. 3s.","DRIVE through front HEEL."],formCues:["✅ 80% on front","✅ Knee over toes"],commonMistakes:["❌ Knee collapsing inward","❌ Leaning forward"],coreBracing:"MODERATE (40-50%).",injuryNotes:"⚠️ KNEE: Bodyweight first.",proTip:"Hold rack for balance."},
-  {id:"m4",name:"Chest-Supported Row",emoji:"🚣",location:"Machines",sets:3,reps:"10-12",rest:75,intensity:"RPE 7",bodyPart:"Back",breathing:{inhale:2,hold:1,exhale:2},muscles:{primary:["Lats","Rhomboids"],secondary:["Biceps","Rear Delts"]},equipment:"Incline bench + DBs",difficulty:"Beginner",tempo:"2s up, 1s squeeze, 2s down",purpose:"Back thickness, ZERO spinal load.",whyForYou:"Safest row for post-surgical back.",steps:["Face down on incline. Arms hang.","RETRACT blades. PULL elbows to hips.","SQUEEZE 1s. LOWER slowly."],formCues:["✅ Retract then pull","✅ Chest on pad"],commonMistakes:["❌ Biceps pulling","❌ Chest lifting"],coreBracing:"MINIMAL (10-20%).",injuryNotes:"⚠️ BACK: Safest row. ⚠️ SHOULDER: Neutral grip.",proTip:"Elbows to back pockets."},
-  {id:"m5",name:"Pallof Press",emoji:"🔄",location:"Cables",sets:3,reps:"10 each side",rest:60,intensity:"RPE 6",bodyPart:"Core",breathing:{inhale:2,hold:2,exhale:3},muscles:{primary:["Obliques","TVA"],secondary:["Rectus Abdominis"]},equipment:"Cable, D-handle",difficulty:"Intermediate",tempo:"2s press, 2s hold, 2s return",purpose:"Anti-rotation. Rehab as strength.",whyForYou:"Your back needs anti-rotation stability.",steps:["Stand perpendicular to cable.","PRESS straight out. DON'T rotate.","HOLD 2s. Return slowly."],formCues:["✅ SQUARE hips/shoulders","✅ Hold at extension"],commonMistakes:["❌ Any rotation","❌ Holding breath"],coreBracing:"HIGH (70-80%).",injuryNotes:"⚠️ BACK: One of the BEST for you.",proTip:"Progress to half-kneeling."},
-  {id:"m6",name:"Face Pulls",emoji:"🎯",location:"Cables",sets:3,reps:"15",rest:60,intensity:"RPE 6",bodyPart:"Shoulders",breathing:{inhale:2,hold:1,exhale:2},muscles:{primary:["Rear Delts","External Rotators"],secondary:["Rhomboids"]},equipment:"Cable, rope",difficulty:"Beginner",tempo:"2s pull, 1s hold, 2s return",purpose:"Most important shoulder corrective.",whyForYou:"Counterbalances pressing for labrum.",steps:["Cable HIGH. Pull elbows back AND apart to face.","SQUEEZE 1s. Return slowly."],formCues:["✅ Pull TO FACE","✅ Elbows HIGH","✅ Pull rope APART"],commonMistakes:["❌ Pulling to chest","❌ Too heavy"],coreBracing:"LIGHT (20%).",injuryNotes:"⚠️ SHOULDER: This HELPS labrum.",proTip:"'Double bicep pose' at end."},
-],cooldown:[
-  {id:"c1",name:"90/90 Hip Switch",emoji:"🔄",location:"Mat",sets:1,reps:"8 each",bodyPart:"Hips",breathing:{inhale:3,hold:0,exhale:4},muscles:{primary:["Hip Rotators"],secondary:["Glute Med"]},equipment:"Mat",difficulty:"Beginner",tempo:"Slow",purpose:"Restores hip rotation.",whyForYou:"Tight hips = back pain.",steps:["Sit, knees 90°. Let knees fall RIGHT.","Hold one breath. SWITCH LEFT."],formCues:["✅ Sit tall","✅ Move from hips"],commonMistakes:["❌ Rushing"],coreBracing:"NONE.",injuryNotes:"⚠️ KNEE: Widen feet if uncomfortable.",proTip:"Do 2 min every morning."},
-  {id:"c2",name:"Child's Pose + Lat Reach",emoji:"🧘",location:"Mat",sets:1,reps:"30s each side",bodyPart:"Back",breathing:{inhale:4,hold:0,exhale:6},muscles:{primary:["Lats"],secondary:["Erectors"]},equipment:"Mat",difficulty:"Beginner",tempo:"Static",purpose:"Decompresses spine.",whyForYou:"Reverses compression from deadlifts.",steps:["Sit hips BACK. Walk hands forward.","Walk hands RIGHT 30s. LEFT 30s. Center 30s."],formCues:["✅ Hips BACK","✅ Exhale > inhale"],commonMistakes:["❌ Not sitting back"],coreBracing:"ZERO.",injuryNotes:"⚠️ BACK: Best position for you.",proTip:"Your 'reset button.'"},
-  {id:"c3",name:"Hamstring Stretch",emoji:"🦵",location:"Mat",sets:1,reps:"30s each",bodyPart:"Legs",breathing:{inhale:3,hold:0,exhale:5},muscles:{primary:["Hamstrings"],secondary:["Calves"]},equipment:"Mat, strap",difficulty:"Beginner",tempo:"Static",purpose:"Tight hamstrings → back pressure.",whyForYou:"Biggest contributor to post-surgical back pain.",steps:["Lie flat. Lift leg. Strap around foot.","Pull to 6/10 stretch. Hold 30s."],formCues:["✅ Knee straight","✅ Back on floor"],commonMistakes:["❌ Bouncing","❌ Back arching"],coreBracing:"MINIMAL.",injuryNotes:"⚠️ BACK: Tingling = release immediately.",proTip:"Flex foot for nerve glide."},
-]};
-const allEx=[...EX.warmup,...EX.main,...EX.cooldown];
-const wEnd=EX.warmup.length,mEnd=wEnd+EX.main.length;
-const getPhase=i=>i<wEnd?"warmup":i<mEnd?"main":"cooldown";
-const BODY_GROUPS=["All","Back","Core","Shoulders","Legs","Glutes","Hips","Full Body"];
+// ── EXERCISE DATABASE (from JSON) ─────────────────────────────
+// Adapters normalize the 300-exercise JSON schema for existing UI components
+const CURRENT_PHASE = 1;
+const BODY_GROUPS=["All","back","core","shoulders","legs","glutes","hips","full_body","chest","arms","neck","ankles","calves"];
+const CATEGORIES=["All","warmup","main","cooldown","rehab","mobility","mckenzie","cardio","foam_roll"];
+const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
+const ABILITY_LEVELS=["All","any","standing","seated_only","supine_only","wheelchair_accessible","aquatic","bed_bound"];
+
+// Extract phase-appropriate sets/reps/rest/intensity from phaseParams
+function exParams(ex, phase=CURRENT_PHASE) {
+  if (ex._legacy) return { sets: ex.sets||1, reps: ex.reps||"—", rest: ex.rest||0, intensity: ex.intensity||"", tempo: ex.tempo||"" };
+  const p = ex.phaseParams?.[String(phase)] || Object.values(ex.phaseParams||{})[0] || {};
+  return { sets: parseInt(p.sets)||1, reps: p.reps||"—", rest: parseInt(p.rest)||0, intensity: p.intensity||"", tempo: p.tempo||"" };
+}
+
+// Normalize muscles access (new schema uses flat arrays)
+function exMuscles(ex) {
+  return { primary: ex.primaryMuscles || ex.muscles?.primary || [], secondary: ex.secondaryMuscles || ex.muscles?.secondary || [] };
+}
+
+// Normalize injury notes (new schema: object, old: string)
+function exInjuryNotes(ex) {
+  if (typeof ex.injuryNotes === "string") return ex.injuryNotes;
+  const n = ex.injuryNotes || {};
+  return [n.lower_back && `⚠️ BACK: ${n.lower_back}`, n.knee && `⚠️ KNEE: ${n.knee}`, n.shoulder && `⚠️ SHOULDER: ${n.shoulder}`].filter(Boolean).join("\n");
+}
+
+// Normalize location display
+function exLocationLabel(ex) {
+  if (typeof ex.location === "string") return ex.location;
+  return (ex.locationCompatible || []).join(", ") || (ex.equipmentRequired || []).join(", ");
+}
+
+// Build workout exercise list for a given phase and location from the 300-exercise DB
+function buildWorkoutList(phase=1, location="gym") {
+  const warmup = exerciseDB.filter(e => e.category === "warmup" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location)).slice(0, 5);
+  const main = exerciseDB.filter(e => e.category === "main" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location) && e.safetyTier !== "red").slice(0, 6);
+  const cooldown = exerciseDB.filter(e => e.category === "cooldown" && e.phaseEligibility?.includes(phase) && (e.locationCompatible||[]).includes(location)).slice(0, 3);
+  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown] };
+}
+
+// Default workout for backward compat with session flow
+const defaultWorkout = buildWorkoutList(CURRENT_PHASE, "gym");
+const allEx = defaultWorkout.all;
+const wEnd = defaultWorkout.warmup.length, mEnd = wEnd + defaultWorkout.main.length;
+const getPhase = i => i < wEnd ? "warmup" : i < mEnd ? "main" : "cooldown";
 
 const C={bg:"#060b18",bgCard:"#0d1425",bgElevated:"#162040",bgGlass:"rgba(255,255,255,0.04)",border:"rgba(255,255,255,0.08)",text:"#e8ecf4",textMuted:"#7a8ba8",textDim:"#4a5a78",teal:"#00d2c8",tealGlow:"rgba(0,210,200,0.15)",tealDark:"#00a89f",tealBg:"rgba(0,210,200,0.08)",success:"#22c55e",danger:"#ef4444",warning:"#eab308",info:"#3b82f6",infoGlow:"rgba(59,130,246,0.12)",orange:"#f97316",purple:"#a855f7",purpleGlow:"rgba(168,85,247,0.12)"};
 
@@ -396,19 +420,21 @@ function HomeScreen({onStart}){const[si,setSi]=useState(null);return(<div style=
 
 // ── TRAIN PAGE ──────────────────────────────────────────────────
 function TrainScreen({onStart}){
+  const workout = defaultWorkout;
+  const totalEx = workout.all.length;
   return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase 1</div></div>
-    <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>14 Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · Gym</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
-    {[{label:"WARM-UP",exercises:EX.warmup,color:C.info},{label:"MAIN WORK",exercises:EX.main,color:C.teal},{label:"COOLDOWN",exercises:EX.cooldown,color:C.success}].map(section=>(
+    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div></div>
+    <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>{totalEx} Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · Gym · from 300-exercise DB</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
+    {[{label:"WARM-UP",exercises:workout.warmup,color:C.info},{label:"MAIN WORK",exercises:workout.main,color:C.teal},{label:"COOLDOWN",exercises:workout.cooldown,color:C.success}].map(section=>(
       <div key={section.label}>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{width:8,height:8,borderRadius:4,background:section.color}}/><span style={{fontSize:12,fontWeight:700,color:section.color,letterSpacing:2}}>{section.label}</span><span style={{fontSize:11,color:C.textDim}}>· {section.exercises.length} exercises</span></div>
-        {section.exercises.map(ex=>(<Card key={ex.id} style={{padding:12,marginBottom:6}}>
+        {section.exercises.map(ex=>{const p=exParams(ex);const m=exMuscles(ex);return(<Card key={ex.id} style={{padding:12,marginBottom:6}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}>
             <div style={{width:44,height:44,borderRadius:10,background:C.bgElevated,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{ex.emoji}</div>
-            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ex.sets}×{ex.reps} · {ex.location}{ex.intensity?` · ${ex.intensity}`:""}</div></div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:3,maxWidth:90}}>{ex.muscles.primary.slice(0,2).map(m=><span key={m} style={{fontSize:9,color:C.teal,background:C.tealBg,padding:"2px 6px",borderRadius:4}}>{m}</span>)}</div>
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{p.sets}×{p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div></div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:3,maxWidth:90}}>{m.primary.slice(0,2).map(mu=><span key={mu} style={{fontSize:9,color:C.teal,background:C.tealBg,padding:"2px 6px",borderRadius:4}}>{mu}</span>)}</div>
           </div>
-        </Card>))}
+        </Card>);})}
       </div>
     ))}
     <Btn onClick={onStart} icon="⚡" style={{marginTop:8}}>Begin Check-In →</Btn>
@@ -426,10 +452,10 @@ return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{
 {step===4&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧠 Stress level?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:16}}>Shapes coaching tone and volume</div><input type="range" min={1} max={10} value={stress} onChange={e=>setStress(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Calm</span><span style={{fontSize:11,color:C.textDim}}>Overwhelmed</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{stress}</div></div><Card style={{borderColor:C.teal+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>HOW THIS SHAPES TODAY</div>{adapt(stress).map(a=>(<div key={a.l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,color:C.textMuted}}>{a.l}</span><span style={{fontSize:13,color:C.teal,fontWeight:600}}>{a.v}</span></div>))}</Card><Btn onClick={compute} style={{marginTop:16}}>See My Plan →</Btn></div>}<div style={{height:90}}/></div>);}
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
-function ExerciseScreen({exercise,index,total,phase,onDone,onSub}){const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(exercise.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const tr=useRef(null);
+function ExerciseScreen({exercise,index,total,phase,onDone,onSub}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const tr=useRef(null);
 useEffect(()=>{setCs(1);setResting(false);setTimerOn(false);setExp("steps");},[exercise.id]);
 useEffect(()=>{if(timerOn&&tl>0)tr.current=setTimeout(()=>setTl(t=>t-1),1000);else if(timerOn&&tl===0){setTimerOn(false);setResting(false);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
-const handleSet=()=>{if(cs<(exercise.sets||1)){setCs(s=>s+1);if(exercise.rest){setResting(true);setTl(exercise.rest);setTimerOn(true);}}else onDone();};
+const handleSet=()=>{if(cs<(ep.sets||1)){setCs(s=>s+1);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);}}else onDone();};
 const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
 const pc={warmup:C.info,main:C.teal,cooldown:C.success}[phase]||C.teal;
 const Sec=({id,title,icon,color,children})=>{const o=exp===id;return(<div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,borderLeft:`3px solid ${color||pc}`,overflow:"hidden",marginBottom:2}}><div onClick={()=>setExp(o?null:id)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",cursor:"pointer"}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:15}}>{icon}</span><span style={{fontSize:11,fontWeight:700,color:color||pc,letterSpacing:1.5,textTransform:"uppercase"}}>{title}</span></div><span style={{color:C.textDim,fontSize:12,transform:o?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span></div>{o&&<div style={{padding:"0 16px 16px"}}>{children}</div>}</div>);};
@@ -438,54 +464,83 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   <ProgressBar value={index+1} max={total} color={pc} height={4}/>
   {/* INLINE SVG ILLUSTRATION — always loads, always accurate */}
   <ExerciseIllustration exerciseId={exercise.id}/>
-  <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exercise.location} · {exercise.difficulty}</div></div>
-  <div style={{display:"grid",gridTemplateColumns:exercise.intensity?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>
-    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{exercise.sets||1}</div></Card>
-    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{exercise.reps}</div></Card>
-    {exercise.intensity&&<Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:22,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{exercise.intensity}</div></Card>}
+  <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exLocationLabel(exercise)} · {exercise.difficultyLevel?`Level ${exercise.difficultyLevel}`:exercise.difficulty||""}</div></div>
+  <div style={{display:"grid",gridTemplateColumns:ep.intensity?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>
+    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
+    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.reps}</div></Card>
+    {ep.intensity&&<Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:22,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.intensity}</div></Card>}
   </div>
-  <Card style={{padding:14}}><div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:6}}>{exercise.muscles.primary.map(m=><Badge key={m}>{m}</Badge>)}{exercise.muscles.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div><div style={{fontSize:11,color:C.textMuted}}>🔧 {exercise.equipment} · ⏱️ {exercise.tempo}</div></Card>
+  <Card style={{padding:14}}><div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:6}}>{em.primary.map(m=><Badge key={m}>{m}</Badge>)}{em.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div><div style={{fontSize:11,color:C.textMuted}}>🔧 {(exercise.equipmentRequired||[exercise.equipment]).join(", ")} · ⏱️ {ep.tempo||exercise.tempo||""}</div></Card>
   <Card style={{borderLeft:`3px solid ${pc}`}}><div style={{fontSize:12,fontWeight:700,color:pc,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🎯 Why This Exercise</div><p style={{fontSize:13,color:C.textMuted,lineHeight:1.6,margin:0}}>{exercise.purpose}</p>{exercise.whyForYou&&<div style={{background:C.tealBg,borderRadius:10,padding:12,marginTop:10}}><div style={{fontSize:10,fontWeight:700,color:C.teal,textTransform:"uppercase",marginBottom:4}}>Personalized</div><p style={{fontSize:12,color:C.text,margin:0}}>{exercise.whyForYou}</p></div>}</Card>
   <Sec id="steps" title="Step-by-Step" icon="📋" color={C.info}>{exercise.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:12,padding:"10px 0",borderBottom:i<exercise.steps.length-1?`1px solid ${C.border}`:"none"}}><div style={{minWidth:24,height:24,borderRadius:"50%",background:C.infoGlow,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:C.info,flexShrink:0}}>{i+1}</div><p style={{fontSize:13,color:C.text,lineHeight:1.65,margin:0}}>{s}</p></div>))}</Sec>
   <Sec id="form" title="Good Form" icon="✅" color={C.success}>{exercise.formCues.map((c,i)=><div key={i} style={{fontSize:13,color:C.text,padding:"5px 0"}}>{c}</div>)}</Sec>
   <Sec id="mistakes" title="Avoid These" icon="⚠️" color={C.danger}>{exercise.commonMistakes.map((m,i)=><div key={i} style={{fontSize:13,color:C.text,padding:"5px 0"}}>{m}</div>)}</Sec>
   <Sec id="bracing" title="Core Bracing" icon="🛡️" color={C.warning}><p style={{fontSize:13,color:C.text,margin:0}}>{exercise.coreBracing}</p></Sec>
-  <Sec id="injury" title="Injury Notes" icon="🩺" color={C.danger}><p style={{fontSize:13,color:C.text,margin:0}}>{exercise.injuryNotes}</p></Sec>
+  <Sec id="injury" title="Injury Notes" icon="🩺" color={C.danger}>{typeof exercise.injuryNotes==="object"?Object.entries(exercise.injuryNotes).filter(([,v])=>v).map(([k,v])=>(<div key={k} style={{fontSize:13,color:C.text,padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontWeight:700,color:k==="lower_back"?C.danger:k==="knee"?C.warning:C.info}}>⚠️ {k==="lower_back"?"BACK":k.toUpperCase()}:</span> {v}</div>)):<p style={{fontSize:13,color:C.text,margin:0}}>{exercise.injuryNotes}</p>}</Sec>
   <Sec id="tips" title="Pro Tip" icon="💡" color={C.teal}><p style={{fontSize:13,color:C.text,margin:0}}>{exercise.proTip}</p></Sec>
-  {exercise.breathing&&<Card style={{background:C.bgGlass}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>🫁 BREATHING</div><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:exercise.breathing.inhale,c:C.info},...(exercise.breathing.hold?[{l:"Hold",v:exercise.breathing.hold,c:C.warning}]:[]),{l:"Out",v:exercise.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:26,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}s</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div></Card>}
-  {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>REST — HYDRATE 💧</div><div style={{fontSize:48,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><ProgressBar value={tl} max={exercise.rest} color={C.info} height={4}/><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
-  {!resting&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}><Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(exercise.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Substitute</Btn></div>}
+  {exercise.breathing&&<Card style={{background:C.bgGlass}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>🫁 BREATHING</div><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:exercise.breathing.inhale,c:C.info},...(exercise.breathing.hold&&exercise.breathing.hold!=="0"?[{l:"Hold",v:exercise.breathing.hold,c:C.warning}]:[]),{l:"Out",v:exercise.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:26,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}{String(b.v).match(/^\d+$/)?'s':''}</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div>{exercise.breathing.pattern&&<div style={{fontSize:11,color:C.textMuted,textAlign:"center",marginTop:8,fontStyle:"italic"}}>{exercise.breathing.pattern}</div>}</Card>}
+  {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>REST — HYDRATE 💧</div><div style={{fontSize:48,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><ProgressBar value={tl} max={ep.rest} color={C.info} height={4}/><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
+  {!resting&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}><Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Substitute</Btn></div>}
   <div style={{height:90}}/>
 </div>);}
 
-// ── LIBRARY — with body part + phase filters ────────────────────
-function LibraryScreen(){const[filter,setFilter]=useState("All");const[bodyFilter,setBodyFilter]=useState("All");
-  const phaseFiltered=filter==="All"?allEx:filter==="Warm-Up"?EX.warmup:filter==="Main"?EX.main:EX.cooldown;
-  const filtered=bodyFilter==="All"?phaseFiltered:phaseFiltered.filter(e=>e.bodyPart===bodyFilter);
+// ── LIBRARY — 300 exercises with multi-filter ────────────────────
+function LibraryScreen(){
+  const[catFilter,setCatFilter]=useState("All");
+  const[bodyFilter,setBodyFilter]=useState("All");
+  const[moveFilter,setMoveFilter]=useState("All");
+  const[abilityFilter,setAbilityFilter]=useState("All");
+  const[phaseFilter,setPhaseFilter]=useState("All");
+  const[locFilter,setLocFilter]=useState("All");
+  const[search,setSearch]=useState("");
   const[sel,setSel]=useState(null);
-  return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{allEx.length} exercises · Tap for details</div></div>
-    {/* Phase filter */}
-    <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>{["All","Warm-Up","Main","Cooldown"].map(p=>(<button key={p} onClick={()=>setFilter(p)} style={{padding:"7px 14px",borderRadius:20,border:`1px solid ${filter===p?C.teal:C.border}`,background:filter===p?C.tealBg:"transparent",color:filter===p?C.teal:C.textMuted,fontSize:12,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{p}</button>))}</div>
-    {/* Body part filter */}
-    <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>{BODY_GROUPS.map(bg=>(<button key={bg} onClick={()=>setBodyFilter(bg)} style={{padding:"6px 12px",borderRadius:16,border:`1px solid ${bodyFilter===bg?C.purple+"60":C.border}`,background:bodyFilter===bg?C.purpleGlow:"transparent",color:bodyFilter===bg?C.purple:C.textDim,fontSize:11,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{bg}</button>))}</div>
-    <div style={{fontSize:11,color:C.textDim}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</div>
-    {filtered.map(ex=>(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
+  const filtered=useMemo(()=>{
+    let list=exerciseDB;
+    if(catFilter!=="All") list=list.filter(e=>e.category===catFilter);
+    if(bodyFilter!=="All") list=list.filter(e=>e.bodyPart===bodyFilter);
+    if(moveFilter!=="All") list=list.filter(e=>e.movementPattern===moveFilter);
+    if(abilityFilter!=="All") list=list.filter(e=>e.abilityLevel===abilityFilter);
+    if(phaseFilter!=="All") list=list.filter(e=>(e.phaseEligibility||[]).includes(parseInt(phaseFilter)));
+    if(locFilter!=="All") list=list.filter(e=>(e.locationCompatible||[]).includes(locFilter));
+    if(search.trim()) { const q=search.toLowerCase(); list=list.filter(e=>e.name.toLowerCase().includes(q)||(e.tags||[]).some(t=>t.includes(q))); }
+    return list;
+  },[catFilter,bodyFilter,moveFilter,abilityFilter,phaseFilter,locFilter,search]);
+  const FilterRow=({label,items,value,onChange,color=C.teal})=>(<div><div style={{fontSize:10,fontWeight:700,color:C.textDim,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{label}</div><div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:4}}>{items.map(p=>(<button key={p} onClick={()=>onChange(p)} style={{padding:"5px 10px",borderRadius:16,border:`1px solid ${value===p?color+"60":C.border}`,background:value===p?color+"15":"transparent",color:value===p?color:C.textDim,fontSize:10,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{p==="All"?"All":p.replace(/_/g," ")}</button>))}</div></div>);
+  return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
+    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{exerciseDB.length} total · {filtered.length} shown</div></div>
+    <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍 Search exercises or tags..." style={{padding:"10px 14px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontFamily:"inherit",outline:"none"}}/>
+    <FilterRow label="Category" items={CATEGORIES} value={catFilter} onChange={setCatFilter} color={C.teal}/>
+    <FilterRow label="Body Part" items={BODY_GROUPS} value={bodyFilter} onChange={setBodyFilter} color={C.purple}/>
+    <FilterRow label="Movement" items={MOVEMENT_PATTERNS} value={moveFilter} onChange={setMoveFilter} color={C.info}/>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+      <FilterRow label="Phase" items={["All","1","2","3","4","5"]} value={phaseFilter} onChange={setPhaseFilter} color={C.success}/>
+      <FilterRow label="Location" items={["All","gym","home","outdoor"]} value={locFilter} onChange={setLocFilter} color={C.orange}/>
+      <FilterRow label="Ability" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
+    </div>
+    {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
+    {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <div style={{width:44,height:44,borderRadius:10,background:C.bgElevated,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{ex.emoji}</div>
-        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ex.sets}×{ex.reps} · {ex.bodyPart}{ex.intensity?` · ${ex.intensity}`:""}</div></div>
+        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div></div>
+        <Badge color={ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{ex.safetyTier||"—"}</Badge>
       </div>
       {sel===ex.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>
         <ExerciseIllustration exerciseId={ex.id}/>
-        <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10,marginBottom:10}}>{ex.muscles.primary.map(m=><Badge key={m}>{m}</Badge>)}{ex.muscles.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10,marginBottom:10}}>{em2.primary.map(m=><Badge key={m}>{m}</Badge>)}{em2.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>{(ex.tags||[]).slice(0,6).map(t=><span key={t} style={{fontSize:9,color:C.info,background:C.infoGlow,padding:"2px 6px",borderRadius:4}}>#{t}</span>)}</div>
         <p style={{fontSize:13,color:C.textMuted,lineHeight:1.6,margin:"0 0 8px"}}>{ex.purpose}</p>
         {ex.whyForYou&&<div style={{background:C.tealBg,borderRadius:10,padding:10,marginBottom:10}}><div style={{fontSize:10,fontWeight:700,color:C.teal,textTransform:"uppercase",marginBottom:3}}>Personalized</div><p style={{fontSize:12,color:C.text,margin:0}}>{ex.whyForYou}</p></div>}
         <div style={{fontSize:12,fontWeight:700,color:C.info,marginTop:8,marginBottom:4}}>STEPS:</div>
-        {ex.steps.map((s,i)=><div key={i} style={{fontSize:12,color:C.text,padding:"4px 0",paddingLeft:16}}>{i+1}. {s}</div>)}
-        <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:8}}><span style={{fontSize:11,fontWeight:700,color:C.warning}}>CORE: </span><span style={{fontSize:12,color:C.text}}>{ex.coreBracing}</span></div>
-        <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.danger}}>INJURY: </span><span style={{fontSize:12,color:C.text}}>{ex.injuryNotes}</span></div>
+        {(ex.steps||[]).map((s,i)=><div key={i} style={{fontSize:12,color:C.text,padding:"4px 0",paddingLeft:16}}>{i+1}. {s}</div>)}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginTop:8}}>
+          <div style={{background:C.bgGlass,borderRadius:10,padding:10}}><span style={{fontSize:10,fontWeight:700,color:C.success}}>✅ FORM</span>{(ex.formCues||[]).map((c,i)=><div key={i} style={{fontSize:11,color:C.text,padding:"2px 0"}}>{c}</div>)}</div>
+          <div style={{background:C.bgGlass,borderRadius:10,padding:10}}><span style={{fontSize:10,fontWeight:700,color:C.danger}}>❌ AVOID</span>{(ex.commonMistakes||[]).map((m,i)=><div key={i} style={{fontSize:11,color:C.text,padding:"2px 0"}}>{m}</div>)}</div>
+        </div>
+        <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.warning}}>🛡️ CORE: </span><span style={{fontSize:12,color:C.text}}>{ex.coreBracing}</span></div>
+        <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.danger}}>🩺 INJURY: </span>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:11,color:C.text,marginTop:2}}><b>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<span style={{fontSize:12,color:C.text}}>{ex.injuryNotes}</span>}</div>
+        {ex.proTip&&<div style={{background:C.tealBg,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.teal}}>💡 PRO TIP: </span><span style={{fontSize:12,color:C.text}}>{ex.proTip}</span></div>}
       </div>}
-    </Card>))}
+    </Card>);})}
     <div style={{height:90}}/>
   </div>);
 }
