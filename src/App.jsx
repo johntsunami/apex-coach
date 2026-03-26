@@ -5,6 +5,8 @@ import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capE
 import OnboardingFlow, { hasCompletedAssessment, getAssessment } from "./components/Onboarding.jsx";
 import InjuryManager from "./components/InjuryManager.jsx";
 import { getInjuries } from "./utils/injuries.js";
+import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
+import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen } from "./components/AuthScreens.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -482,7 +484,7 @@ function SectionTitle({icon,title,sub}){return(<div style={{marginBottom:12}}><d
 function BottomNav({active,onNav}){const items=[{id:"home",label:"Home",icon:"🏠"},{id:"train",label:"Train",icon:"💪"},{id:"library",label:"Library",icon:"📚"},{id:"tasks",label:"Tasks",icon:"✅"},{id:"coach",label:"Coach",icon:"🤖"}];return(<div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:"rgba(6,11,24,0.97)",borderTop:`1px solid ${C.border}`,display:"flex",justifyContent:"space-around",padding:"8px 0 12px",zIndex:200}}>{items.map(it=>(<button key={it.id} onClick={()=>onNav(it.id)} style={{background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",padding:"4px 12px"}}><span style={{fontSize:20,filter:active===it.id?"none":"brightness(0.5)"}}>{it.icon}</span><span style={{fontSize:10,fontWeight:600,color:active===it.id?C.teal:C.textDim}}>{it.label}</span>{active===it.id&&<div style={{width:4,height:4,borderRadius:2,background:C.teal}}/>}</button>))}</div>);}
 
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,onRetakeAssessment,onEditInjuries}){const[si,setSi]=useState(null);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>APEX</div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {USER.name.toUpperCase()} 👋</div></div><div style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🤖</div></div>
+function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile}){const[si,setSi]=useState(null);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>APEX</div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {userName.toUpperCase()} 👋</div></div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></Card>
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{[{v:String(stats.totalSessions),l:"Days Done"},{v:`${stats.streak} 🔥`,l:"Streak"},{v:String(stats.sessionsThisWeek),l:"This Week",c:C.teal},{v:stats.totalSessions>0?`${Math.min(100,Math.round(stats.streak/7*100))}%`:"—",l:"Consistency",c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:s.v.length>3?28:36,fontWeight:800,color:s.c||C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,textTransform:"uppercase",letterSpacing:1.5}}>{s.l}</div></Card>))}</div>
@@ -892,9 +894,11 @@ function RecapScreen({onFinish,sessionData}){
   return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,textAlign:"center",paddingTop:24}}><div style={{fontSize:72}}>🏆</div><h2 style={{fontSize:32,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>SESSION COMPLETE</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:300}}>Every session makes the next one smarter.{saved?"":" (Data not saved)"}</p><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,width:"100%"}}>{[{l:"Sessions",v:String(stats.totalSessions),c:C.info},{l:"This Week",v:String(stats.sessionsThisWeek),c:C.teal},{l:"Streak",v:`${stats.streak} 🔥`,c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase",marginTop:4}}>{s.l}</div></Card>))}</div>{Object.keys(stats.weeklyVolume||{}).length>0&&<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.purple,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Weekly Volume (sets)</div>{Object.entries(stats.weeklyVolume).map(([m,v])=>(<div key={m} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:12,color:C.textMuted}}>{m.replace(/_/g," ")}</span><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{v}</span></div>))}</Card>}<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Recovery Protocol</div>{["💧 500ml water within the hour","🍗 30-40g protein within 90 min","😴 7-8 hours sleep tonight","🧊 Joint soreness → 10-15min ice","🚶 Light 10-min walk"].map((r,i)=>(<div key={i} style={{fontSize:13,color:C.textMuted,padding:"4px 0"}}>{r}</div>))}</Card><Btn onClick={onFinish} style={{marginTop:8}} icon="🏠">Back to Home</Btn><div style={{height:90}}/></div>);}
 function TasksScreen(){return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TASKS</div><Card style={{textAlign:"center",padding:24}}><div style={{fontSize:48}}>🚧</div><div style={{fontSize:16,fontWeight:700,color:C.text,marginTop:8}}>Coming Soon</div><div style={{fontSize:13,color:C.textMuted,marginTop:4}}>Task board with CTFAR coaching and integrity scoring.</div></Card><div style={{height:90}}/></div>);}
 
-// ── MAIN ────────────────────────────────────────────────────────
-export default function ApexCoach(){
-  const[screen,setScreen]=useState(()=>hasCompletedAssessment()?"home":"onboarding");const[tab,setTab]=useState("home");
+// ── INNER APP (authenticated) ───────────────────────────────────
+function AppInner(){
+  const{user,profile,loading}=useAuth();
+  const[screen,setScreen]=useState("init");const[tab,setTab]=useState("home");
+  const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);
   const[checkInData,setCheckInData]=useState(null);
   const[completedExercises,setCompletedExercises]=useState([]);
@@ -902,6 +906,13 @@ export default function ApexCoach(){
   const[workout,setWorkout]=useState(defaultWorkout);
   const[workoutMode,setWorkoutMode]=useState("guided");
   const[difficulty,setDifficulty]=useState("standard");
+  // Route logic: auth state → screen
+  useEffect(()=>{
+    if(loading)return;
+    if(!user){setScreen("auth");return;}
+    if(profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
+    if(screen==="auth"||screen==="init")setScreen("home");
+  },[user,profile,loading]);
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
@@ -912,12 +923,19 @@ export default function ApexCoach(){
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
   const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:"just_right",difficulty});
   const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");};
-  return(<div style={{fontFamily:"'DM Sans',-apple-system,sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",padding:"20px 16px 40px",boxSizing:"border-box"}}>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
+  // Loading spinner
+  if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
+  return(<>
+    {/* Auth screens (unauthenticated) */}
+    {screen==="auth"&&authView==="landing"&&<LandingPage onSignUp={()=>setAuthView("signup")} onLogIn={()=>setAuthView("login")}/>}
+    {screen==="auth"&&authView==="signup"&&<SignUpScreen onBack={()=>setAuthView("landing")} onSuccess={()=>{setAuthView("landing");setScreen("onboarding");}}/>}
+    {screen==="auth"&&authView==="login"&&<LogInScreen onBack={()=>setAuthView("landing")} onForgot={()=>setAuthView("forgot")} onSuccess={()=>setScreen("home")}/>}
+    {screen==="auth"&&authView==="forgot"&&<ForgotPasswordScreen onBack={()=>setAuthView("login")}/>}
+    {/* App screens (authenticated) */}
     {screen==="onboarding"&&<OnboardingFlow onComplete={()=>{setScreen("home");setTab("home");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
-    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")}/>}
+    {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")}/>}
+    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
@@ -929,6 +947,15 @@ export default function ApexCoach(){
     {screen==="coach"&&<CoachScreen/>}
     {screen==="library"&&<LibraryScreen/>}
     {screen==="tasks"&&<TasksScreen/>}
-    <BottomNav active={tab} onNav={navTo}/>
-  </div>);
+    {screen!=="auth"&&screen!=="profile"&&<BottomNav active={tab} onNav={navTo}/>}
+  </>);
+}
+
+// ── MAIN (wrapped in AuthProvider) ──────────────────────────────
+export default function ApexCoach(){
+  return(<AuthProvider><div style={{fontFamily:"'DM Sans',-apple-system,sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",padding:"20px 16px 40px",boxSizing:"border-box"}}>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
+    <AppInner/>
+  </div></AuthProvider>);
 }
