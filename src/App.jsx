@@ -418,7 +418,57 @@ function trySubstitute(ex, location, phase) {
   return { ...sub, _swappedFor: ex.name, _swapReason: location === "outdoor" ? "outdoor — no gym equipment" : "home — equipment not available" };
 }
 
-function buildWorkoutList(phase=1, location="gym", difficulty="standard") {
+// ── Dynamic session block builder (CEx Continuum) ─────────────
+// Generates warm-up ROM + cooldown stretches from DB based on check-in
+function buildSessionBlocks(phase, location, checkInData, mainExercises) {
+  const soreAreas = (checkInData?.soreness || []);
+  const injuries = getInjuries().filter(i => i.status !== "resolved");
+  const locOk = e => locationFilter(e, location);
+
+  // PHASE A: INHIBIT — foam rolling for sore areas + overactive muscles
+  const foamPool = exerciseDB.filter(e => e.category === "foam_roll" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  const inhibit = [];
+  // Prioritize sore area foam rolls
+  const soreMap = { lowerback: "back", upperback: "back", hips: "hips", lknee: "legs", rknee: "legs", calves: "calves", hamstrings: "legs", lquad: "legs", rquad: "legs", lshoulder: "shoulders", rshoulder: "shoulders" };
+  const soreBps = new Set(soreAreas.map(s => soreMap[s]).filter(Boolean));
+  foamPool.forEach(e => { if (inhibit.length < 5 && soreBps.has(e.bodyPart)) inhibit.push({ ...e, _reason: "Targets sore area — extra attention" }); });
+  // Fill remaining with general foam rolling
+  foamPool.forEach(e => { if (inhibit.length < 3 && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: "General tissue prep" }); });
+
+  // PHASE B: LENGTHEN — mobility + ROM for joints
+  const mobPool = exerciseDB.filter(e => (e.category === "warmup" || e.category === "mobility") && e.type === "mobility" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  const lengthen = [];
+  // Injury-specific mobility
+  injuries.forEach(inj => {
+    const injMob = mobPool.find(e => e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders") && !lengthen.find(x => x.id === e.id));
+    if (injMob && lengthen.length < 5) lengthen.push({ ...injMob, _reason: `${inj.area} — injury-specific mobility` });
+  });
+  // Sore area mobility
+  mobPool.forEach(e => { if (lengthen.length < 5 && soreBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Extra ROM for sore area" }); });
+  // Fill to 3-5 with general mobility
+  mobPool.forEach(e => { if (lengthen.length < 4 && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Dynamic joint prep" }); });
+
+  // PHASE E: COOLDOWN — static stretches for ALL muscles trained
+  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  const trainedBps = new Set((mainExercises || []).map(e => e.bodyPart).filter(Boolean));
+  const cooldownStretches = [];
+  // Stretch every trained muscle
+  stretchPool.forEach(e => { if (trainedBps.has(e.bodyPart) && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "Stretch for trained muscles", _duration: soreAreas.length > 0 && soreBps.has(e.bodyPart) ? "60s (double — sore area)" : "30s" }); });
+  // Extra for injuries
+  injuries.forEach(inj => {
+    const injStr = stretchPool.find(e => e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders") && !cooldownStretches.find(x => x.id === e.id));
+    if (injStr) cooldownStretches.push({ ...injStr, _reason: `${inj.area} — injury recovery stretch`, _duration: "60s (double — injury area)" });
+  });
+  // Fill to minimum 3
+  stretchPool.forEach(e => { if (cooldownStretches.length < 3 && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "General recovery", _duration: "30s" }); });
+
+  // OPTIONAL: Foam rolling add-on
+  const foamAddOn = foamPool.filter(e => !inhibit.find(x => x.id === e.id)).slice(0, 4).map(e => ({ ...e, _reason: "Optional recovery foam rolling" }));
+
+  return { inhibit, lengthen, cooldownStretches, foamAddOn };
+}
+
+function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkInData=null) {
   const weeklyVol = getWeeklyVolume();
   const runningVol = { ...weeklyVol }; // mutable copy for tracking within this session
   const volSwaps = []; // track volume-based substitutions
@@ -468,7 +518,9 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard") {
   const warmup = pick("warmup", 5);
   const main = pick("main", 6);
   const cooldown = pick("cooldown", 3);
-  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location, volSwaps, weeklyVol: runningVol };
+  // Build dynamic session blocks based on check-in + main exercises
+  const blocks = buildSessionBlocks(phase, location, checkInData, main);
+  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location, volSwaps, weeklyVol: runningVol, blocks };
 }
 
 // Default workout for backward compat with session flow
@@ -512,19 +564,46 @@ function TrainScreen({onStart,workout,mode,onModeChange}){
       {[{id:"guided",label:"Guided Mode",icon:"📋",desc:"Step-by-step coaching"},{id:"quick",label:"Quick Mode",icon:"✅",desc:"Checklist — experienced users"}].map(o=>(<button key={o.id} onClick={()=>onModeChange?.(o.id)} style={{flex:1,padding:"10px 8px",borderRadius:10,background:m===o.id?C.tealBg:"transparent",border:m===o.id?`1px solid ${C.teal}30`:"1px solid transparent",cursor:"pointer",textAlign:"center"}}><div style={{fontSize:14}}>{o.icon}</div><div style={{fontSize:11,fontWeight:700,color:m===o.id?C.teal:C.textDim}}>{o.label}</div><div style={{fontSize:9,color:C.textDim}}>{o.desc}</div></button>))}
     </div>
     <Card style={{background:C.tealBg,borderColor:C.teal+"30"}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:16,fontWeight:700,color:C.text}}>{totalEx} Exercises</div><div style={{fontSize:12,color:C.textMuted}}>~45 min · {loc.charAt(0).toUpperCase()+loc.slice(1)}{loc!=="gym"?" (adapted)":""}</div></div><Btn onClick={onStart} size="md" style={{width:"auto",padding:"10px 20px"}}>Start →</Btn></div></Card>
-    {[{label:"WARM-UP",exercises:w.warmup,color:C.info},{label:"MAIN WORK",exercises:w.main,color:C.teal},{label:"COOLDOWN",exercises:w.cooldown,color:C.success}].map(section=>(
-      <div key={section.label}>
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><div style={{width:8,height:8,borderRadius:4,background:section.color}}/><span style={{fontSize:12,fontWeight:700,color:section.color,letterSpacing:2}}>{section.label}</span><span style={{fontSize:11,color:C.textDim}}>· {section.exercises.length} exercises</span></div>
-        {section.exercises.map(ex=>{const p=exParams(ex);const m=exMuscles(ex);return(<Card key={ex.id} style={{padding:12,marginBottom:6}}>
-          <div style={{display:"flex",alignItems:"center",gap:12}}>
-            <div style={{width:44,height:44,borderRadius:10,background:C.bgElevated,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{ex.emoji}</div>
-            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{p.sets}×{p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div></div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:3,maxWidth:90}}>{m.primary.slice(0,2).map(mu=><span key={mu} style={{fontSize:9,color:C.teal,background:C.tealBg,padding:"2px 6px",borderRadius:4}}>{mu}</span>)}</div>
-          </div>
-          {ex._swappedFor&&<div style={{marginTop:6,padding:"6px 10px",background:C.warning+"10",borderRadius:8,borderLeft:`3px solid ${C.warning}`}}><span style={{fontSize:10,color:C.warning,fontWeight:700}}>🔄 SWAPPED</span><span style={{fontSize:10,color:C.textMuted}}> for {ex._swappedFor} — {ex._swapReason}</span></div>}
-        </Card>);})}
-      </div>
-    ))}
+    {/* Dynamic CEx Continuum sections */}
+    {(()=>{
+      const b=w.blocks||{};
+      const ExRow=({ex,reason,duration})=>{const p=exParams(ex);return(<Card key={ex.id} style={{padding:10,marginBottom:4}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <ExerciseImage exercise={ex} size="thumb"/>
+          <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{duration||p.reps} · {(ex.bodyPart||"").replace(/_/g," ")}</div>{reason&&<div style={{fontSize:8,color:C.info}}>{reason}</div>}</div>
+        </div>
+      </Card>);};
+      const sections=[
+        ...(b.inhibit?.length?[{label:"PHASE A: FOAM ROLLING",desc:"Inhibit overactive muscles",exercises:b.inhibit,color:C.orange}]:[]),
+        ...(b.lengthen?.length?[{label:"PHASE B: ROM + MOBILITY",desc:"Dynamic joint prep + injury-specific",exercises:b.lengthen,color:"#8b5cf6"}]:[]),
+        {label:"PHASE C: WARM-UP ACTIVATION",desc:"Prepare movement patterns",exercises:w.warmup,color:C.info},
+        {label:"PHASE D: MAIN WORK",desc:"Compound + isolation training",exercises:w.main,color:C.teal},
+        ...(b.cooldownStretches?.length?[{label:"PHASE E: STRETCH + RECOVERY",desc:"Static stretches for all trained muscles",exercises:b.cooldownStretches,color:C.success}]:[{label:"COOLDOWN",desc:"Recovery stretches",exercises:w.cooldown,color:C.success}]),
+      ];
+      return sections.map(section=>(
+        <div key={section.label}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:8,height:8,borderRadius:4,background:section.color}}/><div><span style={{fontSize:11,fontWeight:700,color:section.color,letterSpacing:1.5}}>{section.label}</span><div style={{fontSize:9,color:C.textDim}}>{section.desc} · {section.exercises.length} exercises</div></div></div>
+          {section.exercises.map(ex=>{const p=exParams(ex);const mu=exMuscles(ex);return(<Card key={ex.id+(ex._reason||"")} style={{padding:10,marginBottom:4}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <ExerciseImage exercise={ex} size="thumb"/>
+              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.info,marginTop:1}}>{ex._reason}</div>}</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:70}}>{mu.primary.slice(0,2).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
+            </div>
+            {ex._swappedFor&&<div style={{marginTop:4,padding:"4px 8px",background:C.warning+"10",borderRadius:6,borderLeft:`2px solid ${C.warning}`}}><span style={{fontSize:9,color:C.warning,fontWeight:700}}>🔄</span><span style={{fontSize:9,color:C.textMuted}}> Swapped for {ex._swappedFor}</span></div>}
+          </Card>);})}
+        </div>
+      ));
+    })()}
+    {/* Optional foam rolling add-on */}
+    {w.blocks?.foamAddOn?.length>0&&<Card style={{padding:14,borderColor:C.orange+"30"}}>
+      <div style={{fontSize:10,fontWeight:700,color:C.orange,letterSpacing:1.5,marginBottom:6}}>OPTIONAL: EXTRA FOAM ROLLING</div>
+      <div style={{fontSize:9,color:C.textMuted,marginBottom:8}}>Tap to add recovery foam rolling to your session</div>
+      {w.blocks.foamAddOn.map(ex=>(<div key={ex.id} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:`1px solid ${C.border}`}}>
+        <ExerciseImage exercise={ex} size="thumb"/>
+        <span style={{fontSize:11,color:C.text,flex:1}}>{ex.name}</span>
+        <span style={{fontSize:9,color:C.textDim}}>30s</span>
+      </div>))}
+    </Card>}
     <Btn onClick={onStart} icon="⚡" style={{marginTop:8}}>Begin Check-In →</Btn>
     <div style={{height:90}}/>
   </div>);
@@ -921,7 +1000,7 @@ function AppInner(){
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
-  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
   const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
