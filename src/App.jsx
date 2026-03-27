@@ -779,15 +779,16 @@ function PlanScreen({checkIn,workout,onGo}){
 }
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
-function ExerciseScreen({exercise,index,total,phase,onDone,onSub}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const tr=useRef(null);
+function ExerciseScreen({exercise,index,total,phase,onDone,onSub,onBack}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const[canUndo,setCanUndo]=useState(false);const tr=useRef(null);
 useEffect(()=>{setCs(1);setResting(false);setTimerOn(false);setTl(ep.rest||0);setExp("steps");},[exercise.id]);
 useEffect(()=>{if(timerOn&&tl>0)tr.current=setTimeout(()=>setTl(t=>t-1),1000);else if(timerOn&&tl===0){setTimerOn(false);setResting(false);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
-const handleSet=()=>{if(cs<(ep.sets||1)){setCs(s=>s+1);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);}}else onDone();};
+const handleSet=()=>{if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);}}else onDone();};
+const undoSet=()=>{if(cs>1&&canUndo){setCs(s=>s-1);setResting(false);setTimerOn(false);setCanUndo(false);}};
 const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
 const pc={warmup:C.info,main:C.teal,cooldown:C.success}[phase]||C.teal;
 const Sec=({id,title,icon,color,children})=>{const o=exp===id;return(<div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,borderLeft:`3px solid ${color||pc}`,overflow:"hidden",marginBottom:2}}><div onClick={()=>setExp(o?null:id)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",cursor:"pointer"}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:15}}>{icon}</span><span style={{fontSize:11,fontWeight:700,color:color||pc,letterSpacing:1.5,textTransform:"uppercase"}}>{title}</span></div><span style={{color:C.textDim,fontSize:12,transform:o?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span></div>{o&&<div style={{padding:"0 16px 16px"}}>{children}</div>}</div>);};
 return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
-  <div style={{display:"flex",justifyContent:"space-between"}}><Badge color={pc}>{phase}</Badge><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span></div>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>{onBack&&<button onClick={onBack} style={{background:"none",border:"none",color:C.textMuted,fontSize:11,cursor:"pointer",padding:"4px 8px"}}>← Back</button>}<Badge color={pc}>{phase}</Badge><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span></div>
   <ProgressBar value={index+1} max={total} color={pc} height={4}/>
   {/* Exercise image — real photo or SVG fallback */}
   {exercise.imageUrl ? <ExerciseImage exercise={exercise} showBoth={true}/> : <ExerciseIllustration exerciseId={exercise.id}/>}
@@ -807,7 +808,7 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   <Sec id="tips" title="Pro Tip" icon="💡" color={C.teal}><p style={{fontSize:13,color:C.text,margin:0}}>{exercise.proTip}</p></Sec>
   {exercise.breathing&&<Card style={{background:C.bgGlass}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>🫁 BREATHING</div><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:exercise.breathing.inhale,c:C.info},...(exercise.breathing.hold&&exercise.breathing.hold!=="0"?[{l:"Hold",v:exercise.breathing.hold,c:C.warning}]:[]),{l:"Out",v:exercise.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:26,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}{String(b.v).match(/^\d+$/)?'s':''}</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div>{exercise.breathing.pattern&&<div style={{fontSize:11,color:C.textMuted,textAlign:"center",marginTop:8,fontStyle:"italic"}}>{exercise.breathing.pattern}</div>}</Card>}
   {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>REST — HYDRATE 💧</div><div style={{fontSize:48,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><ProgressBar value={tl} max={ep.rest} color={C.info} height={4}/><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
-  {!resting&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}><Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Substitute</Btn></div>}
+  {!resting&&<div style={{display:"flex",flexDirection:"column",gap:6,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}><div style={{display:"grid",gridTemplateColumns:canUndo?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>{canUndo&&<Btn variant="ghost" onClick={undoSet} size="sm" icon="↩">Undo</Btn>}<Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Sub</Btn></div></div>}
   <div style={{height:90}}/>
 </div>);}
 
@@ -969,7 +970,65 @@ function QuickModeScreen({workout,onComplete}){
 
 // ── OTHER SCREENS ───────────────────────────────────────────────
 function Mindfulness({onContinue,type}){const b={warmupToMain:{t:"TRANSITION",s:"Warm-up done. 3 deep breaths.",i:"🧘",br:{i:4,h:4,e:6}},mainToCooldown:{t:"DELOAD",s:"Main work done.",i:"🌊",br:{i:4,h:2,e:8}},midSession:{t:"CHECK-IN",s:"Halfway.",i:"💭",br:{i:3,h:3,e:5}}}[type]||{t:"PAUSE",s:"Breathe.",i:"🧘",br:{i:4,h:4,e:6}};return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:24,minHeight:400,textAlign:"center"}}><div style={{fontSize:64}}>{b.i}</div><h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{b.t}</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:280}}>{b.s}</p><Card style={{background:C.bgGlass,width:"100%",maxWidth:300}}><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:b.br.i,c:C.info},{l:"Hold",v:b.br.h,c:C.warning},{l:"Out",v:b.br.e,c:C.success}].map(x=>(<div key={x.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:x.c,fontFamily:"'Bebas Neue',sans-serif"}}>{x.v}s</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{x.l}</div></div>))}</div></Card><Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn><div style={{height:90}}/></div>);}
-function ReflectScreen({onComplete}){const qs=[{id:"d",label:"Difficulty",icon:"📊"},{id:"p",label:"Pain",icon:"⚠️"},{id:"e",label:"Enjoyment",icon:"😊"},{id:"f",label:"Form",icon:"🎯"}];const[r,setR]=useState(()=>{const o={};qs.forEach(q=>o[q.id]=5);return o;});return(<div style={{display:"flex",flexDirection:"column",gap:16}}><h2 style={{fontSize:24,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,margin:0}}>REFLECT</h2><Card>{qs.map(q=>(<div key={q.id} style={{padding:"12px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><span style={{fontSize:13,color:C.text}}>{q.icon} {q.label}</span><span style={{fontSize:14,fontWeight:700,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{r[q.id]}/10</span></div><input type="range" min={1} max={10} value={r[q.id]} onChange={e=>setR(p=>({...p,[q.id]:parseInt(e.target.value)}))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/></div>))}</Card><Btn onClick={()=>onComplete(r)}>Complete Session →</Btn><div style={{height:90}}/></div>);}
+function ReflectScreen({onComplete,exercisesDone}){
+  const qs=[{id:"d",label:"Difficulty",icon:"📊"},{id:"p",label:"Pain",icon:"⚠️"},{id:"e",label:"Enjoyment",icon:"😊"},{id:"f",label:"Form",icon:"🎯"}];
+  const[r,setR]=useState(()=>{const o={};qs.forEach(q=>o[q.id]=5);return o;});
+  const[starred,setStarred]=useState([]);
+  const[flagged,setFlagged]=useState([]);
+  const[painFlags,setPainFlags]=useState([]); // [{exercise_id, body_area, severity}]
+  const[painSelecting,setPainSelecting]=useState(null);
+  const[painArea,setPainArea]=useState("");
+  const[painSev,setPainSev]=useState(3);
+  const[overall,setOverall]=useState("just_right");
+  const[notes,setNotes]=useState("");
+  const exList=useMemo(()=>{
+    const ids=new Set();
+    return(exercisesDone||[]).map(ec=>{if(ids.has(ec.exercise_id))return null;ids.add(ec.exercise_id);return exerciseDB.find(e=>e.id===ec.exercise_id);}).filter(Boolean);
+  },[exercisesDone]);
+  const toggleStar=(id)=>setStarred(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
+  const toggleFlag=(id)=>setFlagged(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id]);
+  const addPainFlag=()=>{if(!painSelecting||!painArea)return;setPainFlags(p=>[...p.filter(x=>x.exercise_id!==painSelecting),{exercise_id:painSelecting,body_area:painArea,severity:painSev}]);setPainSelecting(null);setPainArea("");setPainSev(3);};
+  const handleSubmit=()=>onComplete({...r,starred,flagged,painFlags,overall,notes});
+  return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
+    <h2 style={{fontSize:24,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,margin:0}}>REFLECT</h2>
+    {/* Sliders */}
+    <Card>{qs.map(q=>(<div key={q.id} style={{padding:"10px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}><span style={{fontSize:12,color:C.text}}>{q.icon} {q.label}</span><span style={{fontSize:14,fontWeight:700,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{r[q.id]}/10</span></div><input type="range" min={1} max={10} value={r[q.id]} onChange={e=>setR(p=>({...p,[q.id]:parseInt(e.target.value)}))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/></div>))}</Card>
+    {/* Overall */}
+    <Card><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,marginBottom:8}}>OVERALL SESSION</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
+      {[{v:"too_easy",l:"Too Easy",i:"😴",c:C.info},{v:"just_right",l:"Just Right",i:"👌",c:C.success},{v:"too_hard",l:"Too Hard",i:"😰",c:C.danger}].map(o=>(<button key={o.v} onClick={()=>setOverall(o.v)} style={{padding:"10px 4px",borderRadius:10,textAlign:"center",cursor:"pointer",background:overall===o.v?o.c+"15":"transparent",border:`1px solid ${overall===o.v?o.c:C.border}`,color:overall===o.v?o.c:C.textDim}}><div style={{fontSize:18}}>{o.i}</div><div style={{fontSize:9,fontWeight:700,marginTop:2}}>{o.l}</div></button>))}
+    </div></Card>
+    {/* Starred exercises */}
+    {exList.length>0&&<Card><div style={{fontSize:11,fontWeight:700,color:C.success,letterSpacing:1.5,marginBottom:8}}>EXERCISES I LOVED ⭐ (tap to star)</div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:4}}>{exList.map(ex=>(<button key={ex.id} onClick={()=>toggleStar(ex.id)} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 8px",borderRadius:8,cursor:"pointer",background:starred.includes(ex.id)?C.success+"15":"transparent",border:`1px solid ${starred.includes(ex.id)?C.success:C.border}`}}>
+        <ExerciseImage exercise={ex} size="thumb"/><span style={{fontSize:9,color:starred.includes(ex.id)?C.success:C.textDim}}>{ex.name}</span>{starred.includes(ex.id)&&<span style={{fontSize:10}}>⭐</span>}
+      </button>))}</div>
+    </Card>}
+    {/* Flagged exercises */}
+    {exList.length>0&&<Card><div style={{fontSize:11,fontWeight:700,color:C.warning,letterSpacing:1.5,marginBottom:8}}>DIDN'T LIKE 👎 (tap to flag)</div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:4}}>{exList.map(ex=>(<button key={ex.id} onClick={()=>toggleFlag(ex.id)} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 8px",borderRadius:8,cursor:"pointer",background:flagged.includes(ex.id)?C.warning+"15":"transparent",border:`1px solid ${flagged.includes(ex.id)?C.warning:C.border}`}}>
+        <ExerciseImage exercise={ex} size="thumb"/><span style={{fontSize:9,color:flagged.includes(ex.id)?C.warning:C.textDim}}>{ex.name}</span>{flagged.includes(ex.id)&&<span style={{fontSize:10}}>👎</span>}
+      </button>))}</div>
+    </Card>}
+    {/* Pain-flagged exercises */}
+    {exList.length>0&&<Card style={{borderColor:C.danger+"20"}}><div style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:1.5,marginBottom:8}}>CAUSED PAIN? 🩺 (tap exercise, then specify)</div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:4}}>{exList.map(ex=>{const pf=painFlags.find(p=>p.exercise_id===ex.id);return(<button key={ex.id} onClick={()=>setPainSelecting(ex.id)} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 8px",borderRadius:8,cursor:"pointer",background:pf?C.danger+"15":painSelecting===ex.id?C.danger+"08":"transparent",border:`1px solid ${pf?C.danger:painSelecting===ex.id?C.danger+"60":C.border}`}}>
+        <ExerciseImage exercise={ex} size="thumb"/><span style={{fontSize:9,color:pf?C.danger:C.textDim}}>{ex.name}</span>{pf&&<span style={{fontSize:8,color:C.danger}}>⚠️ {pf.body_area} ({pf.severity})</span>}
+      </button>);})}</div>
+      {painSelecting&&<div style={{marginTop:8,padding:10,background:C.bgElevated,borderRadius:10}}>
+        <div style={{fontSize:10,color:C.text,marginBottom:6}}>Where did <b>{exerciseDB.find(e=>e.id===painSelecting)?.name}</b> cause pain?</div>
+        <input value={painArea} onChange={e=>setPainArea(e.target.value)} placeholder="Body area (e.g., left shoulder, lower back)" style={{width:"100%",padding:"6px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:11,fontFamily:"inherit",outline:"none",marginBottom:6,boxSizing:"border-box"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}><span style={{fontSize:9,color:C.textDim}}>Severity:</span>{[1,2,3,4,5].map(s=>(<button key={s} onClick={()=>setPainSev(s)} style={{width:22,height:22,borderRadius:4,fontSize:10,fontWeight:700,cursor:"pointer",background:painSev===s?(s<=2?C.success:s<=3?C.warning:C.danger)+"20":"transparent",border:`1px solid ${painSev===s?(s<=2?C.success:s<=3?C.warning:C.danger):C.border}`,color:painSev===s?C.text:C.textDim}}>{s}</button>))}</div>
+        <div style={{display:"flex",gap:6}}><Btn onClick={addPainFlag} disabled={!painArea.trim()} size="sm" style={{flex:1}} icon="⚠️">Flag Pain</Btn><Btn variant="ghost" onClick={()=>setPainSelecting(null)} size="sm" style={{flex:1}}>Cancel</Btn></div>
+      </div>}
+    </Card>}
+    {/* Notes */}
+    <Card><div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:1.5,marginBottom:8}}>NOTES (optional)</div>
+      <textarea value={notes} onChange={e=>setNotes(e.target.value)} placeholder="Anything worth noting? Shoulder felt weird, loved the new exercise, etc..." rows={3} style={{width:"100%",padding:"10px 12px",borderRadius:10,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:12,fontFamily:"inherit",outline:"none",resize:"vertical",boxSizing:"border-box"}}/>
+    </Card>
+    <Btn onClick={handleSubmit} icon="🏆" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>COMPLETE SESSION</Btn>
+    <div style={{height:90}}/>
+  </div>);
+}
 function RecapScreen({onFinish,sessionData}){
   const[saved]=useState(()=>{
     if(!sessionData) return null;
@@ -1004,11 +1063,13 @@ function AppInner(){
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
   const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
   const trackExDone=(exercise)=>{const ep2=exParams(exercise);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false}]);};
-  const handleExDone=()=>{trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
+  const handleExDone=()=>{setExHistory(h=>[...h,{idx:exIdx,snapshot:[...completedExercises]}]);trackExDone(wxAll[exIdx]);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
+  const handleExBack=()=>{if(exHistory.length===0)return;const prev=exHistory[exHistory.length-1];setExHistory(h=>h.slice(0,-1));setExIdx(prev.idx);setCompletedExercises(prev.snapshot);setScreen("perform");};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
-  const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:"just_right",difficulty});
-  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");};
+  const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},starred:reflData?.starred||[],flagged:reflData?.flagged||[],painFlagged:reflData?.painFlags||[],notes:reflData?.notes||"",durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:reflData?.overall||"just_right",difficulty});
+  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);};
   // Loading spinner
   if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
   return(<>
@@ -1029,9 +1090,9 @@ function AppInner(){
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
-    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone}/>}
+    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone} onBack={exHistory.length>0?handleExBack:null}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
-    {screen==="reflect"&&<ReflectScreen onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
+    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
     {screen==="coach"&&<CoachScreen/>}
     {screen==="library"&&<LibraryScreen/>}
