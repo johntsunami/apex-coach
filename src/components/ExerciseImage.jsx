@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { getOverrideForExercise, uploadExerciseImage, clearOverride } from "../utils/imageOverrides.js";
 
 // ═══════════════════════════════════════════════════════════════
-// ExerciseImage — two frames: side-by-side (wide) or crossfade (narrow)
+// ExerciseImage — two frames: side-by-side or crossfade + dev image editor
 // ═══════════════════════════════════════════════════════════════
 
 const C = { bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", border: "rgba(255,255,255,0.08)" };
+const isDevMode = () => import.meta.env.DEV && new URLSearchParams(window.location.search).has("dev");
+
+// ── Emoji fallback ────────────────────────────────────────────
 
 function EmojiPlaceholder({ emoji, width = "100%", height = 200 }) {
   return (
@@ -18,6 +22,8 @@ function EmojiPlaceholder({ emoji, width = "100%", height = 200 }) {
     </div>
   );
 }
+
+// ── Crossfade for narrow screens ──────────────────────────────
 
 function Crossfade({ url, url2, name }) {
   const [frame, setFrame] = useState(0);
@@ -46,18 +52,149 @@ function Crossfade({ url, url2, name }) {
   );
 }
 
+// ── Dev-only pencil icon ──────────────────────────────────────
+
+function PencilIcon({ onClick }) {
+  return (
+    <button onClick={(e) => { e.stopPropagation(); onClick(); }}
+      style={{
+        position: "absolute", top: 6, right: 6, width: 28, height: 28, zIndex: 10,
+        borderRadius: "50%", background: "rgba(0,0,0,0.7)", border: "1px solid rgba(255,255,255,0.3)",
+        color: "#fff", fontSize: 14, cursor: "pointer",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+      ✏️
+    </button>
+  );
+}
+
+// ── Image Edit Modal ──────────────────────────────────────────
+
+function ImageEditModal({ exercise, onClose, onUpdated }) {
+  const [uploading, setUploading] = useState(false);
+  const [status, setStatus] = useState(null);
+  const startRef = useRef(null);
+  const endRef = useRef(null);
+  const bothRef = useRef(null);
+
+  const doUpload = async (file, slot) => {
+    if (!file) return;
+    if (file.size > 512000) { setStatus("File too large (max 500KB)"); return; }
+    setUploading(true); setStatus(null);
+    try {
+      await uploadExerciseImage(exercise.id, file, slot);
+      setStatus("Uploaded!");
+      onUpdated();
+    } catch (e) {
+      setStatus("Error: " + e.message);
+    }
+    setUploading(false);
+  };
+
+  const doReset = () => {
+    clearOverride(exercise.id);
+    setStatus("Reset to default");
+    onUpdated();
+  };
+
+  const S = {
+    overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 },
+    card: { background: "#0d1425", border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, width: "100%", maxWidth: 360 },
+    title: { fontSize: 16, fontWeight: 700, color: "#e8ecf4", marginBottom: 4 },
+    sub: { fontSize: 11, color: C.textDim, marginBottom: 16 },
+    btn: (color = C.teal) => ({ width: "100%", padding: "12px 16px", borderRadius: 10, border: `1px solid ${color}40`, background: color + "15", color, fontSize: 13, fontWeight: 600, cursor: uploading ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 8, opacity: uploading ? 0.5 : 1 }),
+    guide: { fontSize: 10, color: C.textDim, lineHeight: 1.6, padding: "10px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 8, marginBottom: 12 },
+    status: { fontSize: 12, fontWeight: 600, color: status?.startsWith("Error") ? "#ef4444" : C.teal, textAlign: "center", marginTop: 8 },
+  };
+
+  return (
+    <div style={S.overlay} onClick={onClose}>
+      <div style={S.card} onClick={e => e.stopPropagation()}>
+        <div style={S.title}>Edit Image: {exercise.name}</div>
+        <div style={S.sub}>{exercise.id}</div>
+
+        <div style={S.guide}>
+          <strong style={{ color: C.teal }}>Image Guidelines</strong><br />
+          Recommended: 400 x 300px (4:3) &middot; Min: 300 x 225px<br />
+          Max file size: 500KB &middot; JPG or WebP preferred<br />
+          Landscape orientation &middot; Plain background<br />
+          Images auto-resized to 400x300 if larger
+        </div>
+
+        {/* Upload same image as both start + end */}
+        <input ref={bothRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
+          onChange={async (e) => {
+            const f = e.target.files[0]; if (!f) return;
+            await doUpload(f, 0);
+            await doUpload(f, 1);
+          }} />
+        <button style={S.btn()} disabled={uploading}
+          onClick={() => bothRef.current?.click()}>
+          📷 Upload Custom Image (both positions)
+        </button>
+
+        {/* Upload start position */}
+        <input ref={startRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
+          onChange={(e) => doUpload(e.target.files[0], 0)} />
+        <button style={S.btn("#3b82f6")} disabled={uploading}
+          onClick={() => startRef.current?.click()}>
+          ① Upload Start Position
+        </button>
+
+        {/* Upload end position */}
+        <input ref={endRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
+          onChange={(e) => doUpload(e.target.files[0], 1)} />
+        <button style={S.btn("#a855f7")} disabled={uploading}
+          onClick={() => endRef.current?.click()}>
+          ② Upload End Position
+        </button>
+
+        {/* Reset */}
+        <button style={S.btn("#ef4444")} disabled={uploading} onClick={doReset}>
+          ↩ Reset to Default
+        </button>
+
+        {/* Cancel */}
+        <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={onClose}>
+          Cancel
+        </button>
+
+        {status && <div style={S.status}>{status}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Main Component
+// ═══════════════════════════════════════════════════════════════
+
 export default function ExerciseImage({ exercise, size = "full", showBoth = false }) {
-  const url = exercise?.gifUrl || exercise?.imageUrl;
-  const url2 = exercise?.imageUrl2;
+  const [showModal, setShowModal] = useState(false);
+  const [rev, setRev] = useState(0); // bump to force re-read overrides
+  const dev = isDevMode();
+
+  // Resolve URLs: override wins, then exercise data
+  const override = getOverrideForExercise(exercise?.id);
+  const url = override?.imageUrl || exercise?.gifUrl || exercise?.imageUrl;
+  const url2 = override?.imageUrl2 || exercise?.imageUrl2;
   const isThumbnail = size === "thumb";
   const hasBoth = url && url2;
 
+  const onUpdated = () => setRev(r => r + 1);
+
   // ── NO URL → emoji fallback ─────────────────────────────
   if (!url) {
-    return <EmojiPlaceholder emoji={exercise?.emoji} width={isThumbnail ? 48 : "100%"} height={isThumbnail ? 48 : 200} />;
+    return (
+      <div style={{ position: "relative" }}>
+        <EmojiPlaceholder emoji={exercise?.emoji} width={isThumbnail ? 48 : "100%"} height={isThumbnail ? 48 : 200} />
+        {dev && !isThumbnail && <PencilIcon onClick={() => setShowModal(true)} />}
+        {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+      </div>
+    );
   }
 
-  // ── THUMBNAIL — tiny img ────────────────────────────────
+  // ── THUMBNAIL — tiny img (no pencil) ────────────────────
   if (isThumbnail) {
     return (
       <img
@@ -75,8 +212,7 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
   // ── TWO IMAGES — side-by-side or crossfade ──────────────
   if (hasBoth) {
     return (
-      <div>
-        {/* Side-by-side for wider screens, crossfade for narrow */}
+      <div style={{ position: "relative" }}>
         <div className="exercise-img-wide" style={{ display: "none" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
             <img src={url} alt="Start" referrerPolicy="no-referrer"
@@ -98,22 +234,28 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
             .exercise-img-narrow{display:none!important}
           }
         `}</style>
+        {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+        {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
       </div>
     );
   }
 
   // ── SINGLE IMAGE ────────────────────────────────────────
   return (
-    <img
-      src={url}
-      alt={exercise?.name || ""}
-      referrerPolicy="no-referrer"
-      style={{
-        width: "100%", maxHeight: 250, objectFit: "contain",
-        borderRadius: 12, background: C.bgCard,
-        border: `1px solid ${C.border}`, display: "block",
-      }}
-    />
+    <div style={{ position: "relative" }}>
+      <img
+        src={url}
+        alt={exercise?.name || ""}
+        referrerPolicy="no-referrer"
+        style={{
+          width: "100%", maxHeight: 250, objectFit: "contain",
+          borderRadius: 12, background: C.bgCard,
+          border: `1px solid ${C.border}`, display: "block",
+        }}
+      />
+      {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+      {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+    </div>
   );
 }
 

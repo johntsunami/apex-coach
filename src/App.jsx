@@ -13,6 +13,7 @@ import { getInjuries } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen } from "./components/AuthScreens.jsx";
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
+import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -1170,6 +1171,7 @@ function TasksScreen(){return(<div style={{display:"flex",flexDirection:"column"
 // ── INNER APP (authenticated) ───────────────────────────────────
 function AppInner(){
   const{user,profile,loading}=useAuth();
+  useEffect(()=>{syncOverridesFromSupabase();},[]);
   const[screen,setScreen]=useState("init");const[tab,setTab]=useState("home");
   const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);

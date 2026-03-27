@@ -23,7 +23,10 @@
       "Bash(node --check src/App.jsx)",
       "Bash(node:*)",
       "Bash(npx vite:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ping:*)"
     ]
   }
 }

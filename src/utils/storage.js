@@ -7,6 +7,7 @@ const KEYS = {
   SESSIONS: "apex_sessions",
   PREFS: "apex_prefs",
   STATS: "apex_stats",
+  IMAGE_OVERRIDES: "apex_image_overrides",
 };
 
 // ── Low-level helpers ──────────────────────────────────────────
