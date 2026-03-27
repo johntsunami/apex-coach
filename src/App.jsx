@@ -6,6 +6,7 @@ import OnboardingFlow, { hasCompletedAssessment, getAssessment } from "./compone
 import InjuryManager from "./components/InjuryManager.jsx";
 import AssessmentSummary from "./components/AssessmentSummary.jsx";
 import ExerciseImage from "./components/ExerciseImage.jsx";
+import ExtraWork from "./components/ExtraWork.jsx";
 import PlanView from "./components/PlanView.jsx";
 import { getInjuries } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
@@ -552,7 +553,7 @@ function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewP
   <div style={{height:90}}/></div>);}
 
 // ── TRAIN PAGE ──────────────────────────────────────────────────
-function TrainScreen({onStart,workout,mode,onModeChange}){
+function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork}){
   const w = workout || defaultWorkout;
   const loc = w.location || "gym";
   const totalEx = w.all.length;
@@ -604,6 +605,8 @@ function TrainScreen({onStart,workout,mode,onModeChange}){
         <span style={{fontSize:9,color:C.textDim}}>30s</span>
       </div>))}
     </Card>}
+    {onExtraWork&&<Btn variant="dark" onClick={onExtraWork} icon="➕" style={{marginTop:8}}>Add Extra Work (McKenzie, Yoga, PT...)</Btn>}
+    {w.addOns?.length>0&&<Card style={{borderColor:C.purple+"30"}}><div style={{fontSize:10,fontWeight:700,color:C.purple,letterSpacing:1.5,marginBottom:6}}>ADD-ONS ({w.addOns.length} exercises · ~{w.addOns.length*3} min)</div>{w.addOns.map(ex=>(<div key={ex.id} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><ExerciseImage exercise={ex} size="thumb"/><span style={{fontSize:11,color:C.text}}>{ex.name}</span></div>))}</Card>}
     <Btn onClick={onStart} icon="⚡" style={{marginTop:8}}>Begin Check-In →</Btn>
     <div style={{height:90}}/>
   </div>);
@@ -1018,10 +1021,11 @@ function AppInner(){
     {screen==="onboarding"&&<OnboardingFlow onComplete={()=>{setScreen("assessment_summary");}}/>}
     {screen==="assessment_summary"&&<AssessmentSummary onContinue={()=>{setScreen("home");setTab("home");}} userName={auth?.profile?.first_name||USER.name}/>}
     {screen==="plan_view"&&<PlanView onClose={()=>setScreen("home")}/>}
+    {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")}/>}
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")}/>}
-    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode}/>}
+    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}

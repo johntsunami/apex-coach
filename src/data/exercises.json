@@ -40082,5 +40082,6272 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_pendulum",
+    "name": "Pendulum Swings (Codman's)",
+    "emoji": "🔄",
+    "bodyPart": "shoulders",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Deltoids"
+    ],
+    "secondaryMuscles": [
+      "Rotator Cuff"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mck_sh_wall_walk",
+      "unlockCriteria": "Pain-free pendulum motion",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Lean forward, supporting yourself with non-affected arm on table.",
+      "Let affected arm hang completely relaxed.",
+      "Gently swing arm in small circles — clockwise 10x, counterclockwise 10x.",
+      "Gravity does the work — NO muscle effort."
+    ],
+    "formCues": [
+      "✅ Arm hangs COMPLETELY relaxed",
+      "✅ Movement from body sway, not shoulder muscles",
+      "✅ Small circles — increase size as tolerated"
+    ],
+    "commonMistakes": [
+      "❌ Using shoulder muscles to swing",
+      "❌ Circles too large too soon",
+      "❌ Not leaning forward enough"
+    ],
+    "coreBracing": "NONE — fully relaxed.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Continuous relaxed breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Lean on table for support.",
+      "knee": "No impact.",
+      "shoulder": "Safest shoulder exercise — zero muscle effort. Post-op safe."
+    },
+    "purpose": "Gravity-assisted shoulder ROM — zero muscle effort.",
+    "whyForYou": "Starting point for shoulder mobility without stressing the labrum.",
+    "proTip": "Use a small weight (1-2 lb) to increase traction if tolerated.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "mobility"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_wall_walk",
+    "name": "Passive Flexion (Wall Walk)",
+    "emoji": "🧱",
+    "bodyPart": "shoulders",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Anterior Deltoid"
+    ],
+    "secondaryMuscles": [
+      "Rotator Cuff"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "wall"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "mck_sh_pendulum",
+      "progressTo": "mck_sh_abduction",
+      "unlockCriteria": "Can walk fingers to overhead without pain",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Face wall. Place fingertips on wall at waist height.",
+      "Walk fingers UP the wall slowly — go as high as tolerated.",
+      "Hold at top for 5s. Walk fingers back down.",
+      "Track your max height — it should improve over days."
+    ],
+    "formCues": [
+      "✅ Face the wall squarely",
+      "✅ Walk fingers — don't swing arm up",
+      "✅ Only go to mild stretch — no pain"
+    ],
+    "commonMistakes": [
+      "❌ Forcing range",
+      "❌ Shrugging shoulder to compensate",
+      "❌ Not tracking progress"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "5",
+      "exhale": "3",
+      "pattern": "Hold and breathe at top"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Progressive flexion ROM. Stop at first sign of pinching."
+    },
+    "purpose": "Wall-assisted shoulder flexion ROM progression.",
+    "whyForYou": "Builds overhead range gradually for your labrum.",
+    "proTip": "Mark your highest point on the wall with tape — visual progress tracker.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "rom"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_abduction",
+    "name": "Passive Abduction (Side Raise ROM)",
+    "emoji": "↔️",
+    "bodyPart": "shoulders",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Medial Deltoid"
+    ],
+    "secondaryMuscles": [
+      "Supraspinatus"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "mck_sh_wall_walk",
+      "progressTo": "mck_sh_assisted_flexion",
+      "unlockCriteria": "Abduction to 90° pain-free",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Stand or sit. Use unaffected arm to assist affected arm out to the side.",
+      "Slowly raise to comfortable limit. Hold 5s.",
+      "Lower slowly with assistance.",
+      "Track your max angle."
+    ],
+    "formCues": [
+      "✅ Assisted movement — other hand helps",
+      "✅ Stop before pain",
+      "✅ Thumb up position protects subacromial space"
+    ],
+    "commonMistakes": [
+      "❌ Going past pain threshold",
+      "❌ Shrugging to compensate",
+      "❌ No assistance (too early for active)"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "5",
+      "exhale": "3",
+      "pattern": "Breathe at top"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Assisted abduction. Stop at any impingement signs."
+    },
+    "purpose": "Progressive abduction ROM with assistance.",
+    "whyForYou": "Builds lateral shoulder range safely.",
+    "proTip": "Slide arm up a wall for guided abduction path.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "rom"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_assisted_flexion",
+    "name": "Active-Assisted Flexion (Towel/Pulley)",
+    "emoji": "🧣",
+    "bodyPart": "shoulders",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Anterior Deltoid",
+      "Biceps"
+    ],
+    "secondaryMuscles": [
+      "Rotator Cuff"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "towel"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "mck_sh_abduction",
+      "progressTo": "mck_sh_er_stretch",
+      "unlockCriteria": "Assisted overhead motion pain-free",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Hold towel over a door-mounted pulley (or use other arm).",
+      "Pull with unaffected arm to lift affected arm overhead.",
+      "Hold at top 5s. Lower controlled.",
+      "Progress to less assistance over time."
+    ],
+    "formCues": [
+      "✅ Unaffected arm does most of the work",
+      "✅ Gradually reduce assistance",
+      "✅ Full breathing at top"
+    ],
+    "commonMistakes": [
+      "❌ Forcing with affected arm too early",
+      "❌ Jerky movements",
+      "❌ Skipping earlier steps"
+    ],
+    "coreBracing": "LIGHT (20%).",
+    "breathing": {
+      "inhale": "3",
+      "hold": "5",
+      "exhale": "3",
+      "pattern": "Hold and breathe"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Active-assisted — transitioning from passive to active. Labrum must tolerate overhead."
+    },
+    "purpose": "Bridge between passive and active overhead ROM.",
+    "whyForYou": "Trains your shoulder to accept overhead load gradually.",
+    "proTip": "A broomstick works as well as a towel for this exercise.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_er_stretch",
+    "name": "External Rotation Stretch",
+    "emoji": "🔄",
+    "bodyPart": "shoulders",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Infraspinatus",
+      "Teres Minor"
+    ],
+    "secondaryMuscles": [
+      "Posterior Deltoid"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "mck_sh_assisted_flexion",
+      "progressTo": "mck_sh_ir_stretch",
+      "unlockCriteria": "Full ER ROM achieved",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Stand in doorway. Elbow at 90°, forearm on frame.",
+      "Rotate body AWAY from arm — stretching external rotators.",
+      "Hold 30s. Breathe into stretch.",
+      "Switch sides."
+    ],
+    "formCues": [
+      "✅ Elbow stays at 90°",
+      "✅ Rotate body, not arm",
+      "✅ 6/10 stretch intensity"
+    ],
+    "commonMistakes": [
+      "❌ Forcing range",
+      "❌ Elbow dropping",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to deepen"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "External rotation stretch. Stop if anterior pain."
+    },
+    "purpose": "Restore external rotation ROM — critical for overhead activities.",
+    "whyForYou": "Your labrum needs full ER ROM for safe pressing.",
+    "proTip": "Doorframe gives consistent stretch angle.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "stretch"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_ir_stretch",
+    "name": "Internal Rotation Stretch (Behind Back)",
+    "emoji": "🔄",
+    "bodyPart": "shoulders",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Subscapularis"
+    ],
+    "secondaryMuscles": [
+      "Anterior Deltoid"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "towel"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 4,
+    "progressionChain": {
+      "level": 6,
+      "regressTo": "mck_sh_er_stretch",
+      "progressTo": "mck_sh_isometric",
+      "unlockCriteria": "Can reach behind back to mid-back",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Hold towel behind back — one hand high, one low.",
+      "Gently pull up with top hand to stretch bottom shoulder into IR.",
+      "Hold 30s. Switch hand positions."
+    ],
+    "formCues": [
+      "✅ Towel bridges the flexibility gap",
+      "✅ Gentle pull only",
+      "✅ Both directions"
+    ],
+    "commonMistakes": [
+      "❌ Yanking the towel",
+      "❌ Only one direction",
+      "❌ Forcing past pain"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to deepen"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Internal rotation behind back. May be limited by labrum — go to comfort only."
+    },
+    "purpose": "Restore internal rotation ROM for functional activities.",
+    "whyForYou": "IR is often the most limited ROM with labrum tears.",
+    "proTip": "Track how far up your back you can reach — measure weekly.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "stretch"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_isometric",
+    "name": "Isometric Strengthening Progression",
+    "emoji": "💪",
+    "bodyPart": "shoulders",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "Rotator Cuff",
+      "Deltoids"
+    ],
+    "secondaryMuscles": [
+      "Biceps",
+      "Triceps"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "wall"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 4,
+    "progressionChain": {
+      "level": 7,
+      "regressTo": "mck_sh_ir_stretch",
+      "progressTo": "mck_sh_active_rom",
+      "unlockCriteria": "All isometric directions pain-free",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Stand next to wall. Push arm into wall in each direction: forward, backward, outward, inward.",
+      "Hold 5s at 50% effort. No visible movement.",
+      "Progress effort from 30% → 50% → 70% over weeks.",
+      "All 4 directions, both arms."
+    ],
+    "formCues": [
+      "✅ No movement — pure isometric",
+      "✅ Start at 30% effort",
+      "✅ All 4 directions"
+    ],
+    "commonMistakes": [
+      "❌ Pushing 100%",
+      "❌ Visible movement",
+      "❌ Skipping directions"
+    ],
+    "coreBracing": "LIGHT (20%).",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Exhale during push"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Isometric = zero motion. Safest strengthening. Progress effort gradually."
+    },
+    "purpose": "Build rotator cuff strength without joint motion.",
+    "whyForYou": "Strengthens the muscles protecting your labrum without stressing it.",
+    "proTip": "Think of each direction as a separate exercise. Master one before adding load.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain",
+      "isometric"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_sh_active_rom",
+    "name": "Active ROM in Pain-Free Range",
+    "emoji": "🤸",
+    "bodyPart": "shoulders",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Deltoids",
+      "Rotator Cuff"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [
+      "shoulder"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 5,
+    "progressionChain": {
+      "level": 8,
+      "regressTo": "mck_sh_isometric",
+      "progressTo": null,
+      "unlockCriteria": "Full active ROM pain-free",
+      "chainFamily": "mckenzie_shoulder_chain"
+    },
+    "steps": [
+      "Standing. Move affected arm through ALL directions under own power.",
+      "Flexion (forward), abduction (side), ER/IR, horizontal adduction.",
+      "Only within PAIN-FREE range.",
+      "Gradually increase range as tolerated."
+    ],
+    "formCues": [
+      "✅ Own muscle power — no assistance",
+      "✅ Pain-free range ONLY",
+      "✅ All directions of motion"
+    ],
+    "commonMistakes": [
+      "❌ Pushing into pain",
+      "❌ Skipping directions",
+      "❌ Moving too fast"
+    ],
+    "coreBracing": "LIGHT (20%).",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "2",
+      "pattern": "Continuous breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "Final McKenzie shoulder step. Full active ROM = goal achieved."
+    },
+    "purpose": "Full active shoulder ROM — final step in McKenzie shoulder protocol.",
+    "whyForYou": "When you can do this pain-free, your shoulder mobility is restored.",
+    "proTip": "Film yourself from the front and side — compare ROM between sides.",
+    "tags": [
+      "mckenzie_shoulder",
+      "rehab",
+      "shoulder",
+      "mckenzie_shoulder_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_seated_ext",
+    "name": "Seated Knee Extension (Passive)",
+    "emoji": "🦵",
+    "bodyPart": "legs",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [],
+    "jointsInvolved": [
+      "knee"
+    ],
+    "equipmentRequired": [
+      "bench"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mck_kn_prone_flex",
+      "unlockCriteria": "Full passive extension",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Sit on chair. Place heel on opposite chair/surface.",
+      "Let gravity straighten the knee — no pushing.",
+      "Hold 2 min. Breathe and relax."
+    ],
+    "formCues": [
+      "✅ Gravity does the work",
+      "✅ Fully relax quad",
+      "✅ Track extension angle"
+    ],
+    "commonMistakes": [
+      "❌ Pushing knee down",
+      "❌ Not holding long enough"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Relaxed breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Seated — no concern.",
+      "knee": "Passive extension. Safe post-op.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Restore full knee extension passively.",
+    "whyForYou": "Full extension is critical for your left knee recovery.",
+    "proTip": "Place a small towel roll under the ankle (not knee) for best position.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_prone_flex",
+    "name": "Prone Knee Flexion (Heel to Buttock)",
+    "emoji": "🦵",
+    "bodyPart": "legs",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Quadriceps stretch"
+    ],
+    "jointsInvolved": [
+      "knee"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "mck_kn_seated_ext",
+      "progressTo": "mck_kn_standing_ext",
+      "unlockCriteria": "Heel reaches within 6 inches of buttock",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Lie face down. Bend affected knee — bring heel toward buttock.",
+      "Use a strap around ankle to assist if needed.",
+      "Hold 30s at comfortable limit. Release."
+    ],
+    "formCues": [
+      "✅ Hip stays on ground",
+      "✅ Strap assists gently",
+      "✅ Go to stretch, not pain"
+    ],
+    "commonMistakes": [
+      "❌ Lifting hip",
+      "❌ Forcing with strap"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to flex deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Prone — no concern.",
+      "knee": "Passive flexion. Track angle weekly.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Restore knee flexion ROM progressively.",
+    "whyForYou": "Your left knee needs flexion ROM for squatting and daily activities.",
+    "proTip": "Measure the gap between heel and buttock — track weekly improvement.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_standing_ext",
+    "name": "Standing Knee Extension (Step-Up Based)",
+    "emoji": "⬆️",
+    "bodyPart": "legs",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Quadriceps",
+      "VMO"
+    ],
+    "secondaryMuscles": [
+      "Glutes"
+    ],
+    "jointsInvolved": [
+      "knee"
+    ],
+    "equipmentRequired": [
+      "box"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "mck_kn_prone_flex",
+      "progressTo": "mck_kn_tke",
+      "unlockCriteria": "Full step-up with knee lockout",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Stand on low step with affected leg.",
+      "Slowly straighten the knee — lock out fully.",
+      "Control the descent."
+    ],
+    "formCues": [
+      "✅ Full lockout at top",
+      "✅ VMO squeeze at extension",
+      "✅ Controlled descent"
+    ],
+    "commonMistakes": [
+      "❌ Not fully extending",
+      "❌ Using momentum"
+    ],
+    "coreBracing": "LIGHT (20%).",
+    "breathing": {
+      "inhale": "2",
+      "hold": "1",
+      "exhale": "2",
+      "pattern": "Exhale on extension"
+    },
+    "injuryNotes": {
+      "lower_back": "Low load.",
+      "knee": "Weight-bearing extension. Progress from low step.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Weight-bearing knee extension progression.",
+    "whyForYou": "Bridges passive ROM to functional strength.",
+    "proTip": "Start with a 2-inch step. Increase height weekly.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_tke",
+    "name": "Terminal Knee Extension with Band",
+    "emoji": "🦵",
+    "bodyPart": "legs",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "VMO"
+    ],
+    "secondaryMuscles": [
+      "Quadriceps"
+    ],
+    "jointsInvolved": [
+      "knee"
+    ],
+    "equipmentRequired": [
+      "band"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "mck_kn_standing_ext",
+      "progressTo": "mck_kn_flex_load",
+      "unlockCriteria": "15 reps with full lockout",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Band behind knee. Face anchor point.",
+      "Start with slight knee bend (~20°).",
+      "Extend fully against band. Squeeze VMO."
+    ],
+    "formCues": [
+      "✅ Focus on last 20° of extension",
+      "✅ VMO squeeze at lockout",
+      "✅ Slow controlled"
+    ],
+    "commonMistakes": [
+      "❌ Band too heavy",
+      "❌ Not reaching full extension"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "1",
+      "exhale": "2",
+      "pattern": "Exhale on extension"
+    },
+    "injuryNotes": {
+      "lower_back": "Standing — no concern.",
+      "knee": "Terminal extension targets VMO specifically.",
+      "shoulder": "No impact."
+    },
+    "purpose": "VMO-specific strengthening in the most critical range.",
+    "whyForYou": "VMO is your knee's #1 protector. This targets it directly.",
+    "proTip": "Place hand on VMO — feel it pop at full extension.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain",
+      "vmo"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_flex_load",
+    "name": "Knee Flexion Loading",
+    "emoji": "🦵",
+    "bodyPart": "legs",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Glutes"
+    ],
+    "jointsInvolved": [
+      "knee"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "weekMinimum": 5,
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "mck_kn_tke",
+      "progressTo": "mck_kn_squat_prog",
+      "unlockCriteria": "Full ROM flexion under body weight",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Wall sit at increasing depth over weeks.",
+      "Start at 45° — progress to 90° as tolerated.",
+      "Hold 20s. Track depth weekly."
+    ],
+    "formCues": [
+      "✅ Back flat on wall",
+      "✅ Progress depth slowly",
+      "✅ Pain = too deep"
+    ],
+    "commonMistakes": [
+      "❌ Going too deep too fast",
+      "❌ Knees past toes excessively"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Continuous breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Wall supported.",
+      "knee": "Progressive flexion loading. Respect pain limits.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Progressive weight-bearing knee flexion.",
+    "whyForYou": "Builds toward squat depth with your left knee.",
+    "proTip": "Track angle with phone camera — measure weekly.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_kn_squat_prog",
+    "name": "Squat Progression (Partial → Full)",
+    "emoji": "🏋️",
+    "bodyPart": "legs",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "knee",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "weekMinimum": 6,
+    "progressionChain": {
+      "level": 6,
+      "regressTo": "mck_kn_flex_load",
+      "progressTo": null,
+      "unlockCriteria": "Full depth squat pain-free",
+      "chainFamily": "mckenzie_knee_chain"
+    },
+    "steps": [
+      "Start with partial squat to comfortable depth.",
+      "Progress deeper each week.",
+      "Goal: full depth squat with perfect tracking."
+    ],
+    "formCues": [
+      "✅ Knees track over toes",
+      "✅ Depth to comfort",
+      "✅ Controlled descent and ascent"
+    ],
+    "commonMistakes": [
+      "❌ Valgus collapse",
+      "❌ Forcing depth"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "2",
+      "pattern": "Inhale down, exhale up"
+    },
+    "injuryNotes": {
+      "lower_back": "Keep upright.",
+      "knee": "Final McKenzie knee step. Full squat is the goal.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Final McKenzie knee step — full functional squat.",
+    "whyForYou": "When you can full squat pain-free, your knee rehab is complete.",
+    "proTip": "Goblet squat position helps maintain upright torso.",
+    "tags": [
+      "mckenzie_knee",
+      "rehab",
+      "knee",
+      "mckenzie_knee_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_flexion",
+    "name": "Supine Hip Flexion (Knee to Chest)",
+    "emoji": "🤱",
+    "bodyPart": "hips",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Hip Flexors"
+    ],
+    "secondaryMuscles": [
+      "Glutes stretch"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mck_hip_rotation",
+      "unlockCriteria": "Full flexion pain-free",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Lie on back. Pull one knee to chest.",
+      "Hold 30s. Hands behind knee.",
+      "Switch sides."
+    ],
+    "formCues": [
+      "✅ Hands behind knee",
+      "✅ Back stays flat",
+      "✅ 6/10 stretch"
+    ],
+    "commonMistakes": [
+      "❌ Pulling on shin",
+      "❌ Back arching"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to pull deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Flexion — safe for most backs.",
+      "knee": "Hands behind knee, not on shin.",
+      "shoulder": "No impact."
+    },
+    "purpose": "McKenzie Hip Step 1 — basic hip flexion ROM.",
+    "whyForYou": "Foundation for hip mobility restoration.",
+    "proTip": "Compare sides — the tighter side needs more time.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_rotation",
+    "name": "Supine Hip Rotation (IR/ER)",
+    "emoji": "🔄",
+    "bodyPart": "hips",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Hip Rotators"
+    ],
+    "secondaryMuscles": [
+      "Glute Med"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "mck_hip_flexion",
+      "progressTo": "mck_hip_ext_prone",
+      "unlockCriteria": "Equal IR/ER both sides",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Lie on back, knee bent to 90°.",
+      "Let knee fall INWARD (IR) — hold 15s.",
+      "Let knee fall OUTWARD (ER) — hold 15s.",
+      "Compare sides."
+    ],
+    "formCues": [
+      "✅ Pelvis stays level",
+      "✅ Both directions",
+      "✅ Compare sides"
+    ],
+    "commonMistakes": [
+      "❌ Pelvis rolling",
+      "❌ Only one direction"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Exhale into rotation"
+    },
+    "injuryNotes": {
+      "lower_back": "Supine — safe.",
+      "knee": "Knee at 90°.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Assess and restore hip rotation symmetry.",
+    "whyForYou": "Rotation asymmetry forces your back to compensate.",
+    "proTip": "The restricted direction needs 2x the time.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_ext_prone",
+    "name": "Prone Hip Extension",
+    "emoji": "🍑",
+    "bodyPart": "hips",
+    "movementPattern": "hinge",
+    "primaryMuscles": [
+      "Glute Max"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "mck_hip_rotation",
+      "progressTo": "mck_hip_flexor_str",
+      "unlockCriteria": "Full hip extension without back compensation",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Lie face down. Squeeze one glute.",
+      "Lift that leg 3-4 inches off ground.",
+      "Hold 3s. Lower slowly.",
+      "10 reps each side."
+    ],
+    "formCues": [
+      "✅ Glute fires FIRST",
+      "✅ Small lift — 3-4 inches",
+      "✅ No back arching"
+    ],
+    "commonMistakes": [
+      "❌ Back arching",
+      "❌ Lifting too high",
+      "❌ Hamstring dominant"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "3",
+      "exhale": "2",
+      "pattern": "Hold at top"
+    },
+    "injuryNotes": {
+      "lower_back": "Small ROM protects back. No arching.",
+      "knee": "No impact.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Glute activation in hip extension pattern.",
+    "whyForYou": "Teaches glutes to fire before back compensates.",
+    "proTip": "Place hand on glute — feel it fire before the leg lifts.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_flexor_str",
+    "name": "Standing Hip Flexion Stretch",
+    "emoji": "🏃",
+    "bodyPart": "hips",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Iliopsoas"
+    ],
+    "secondaryMuscles": [
+      "Rectus Femoris"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "mck_hip_ext_prone",
+      "progressTo": "mck_hip_abd",
+      "unlockCriteria": "30s hold both sides without back arching",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Staggered stance. Back leg straight, front knee bent.",
+      "Tuck pelvis under FIRST. Then lean forward.",
+      "Feel stretch in back hip. Hold 30s."
+    ],
+    "formCues": [
+      "✅ Pelvic tuck first",
+      "✅ Lean forward from hips",
+      "✅ 6/10 stretch"
+    ],
+    "commonMistakes": [
+      "❌ Arching back",
+      "❌ No pelvic tuck"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to lean deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Pelvic tuck protects back.",
+      "knee": "Front knee bent comfortably.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Hip flexor length restoration — sitting shortens these.",
+    "whyForYou": "Tight hip flexors tilt your pelvis and stress your back.",
+    "proTip": "The pelvic tuck is EVERYTHING — without it you're stretching quads, not hip flexors.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain",
+      "stretch"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_abd",
+    "name": "Hip Abduction (Side-Lying)",
+    "emoji": "↔️",
+    "bodyPart": "hips",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "Glute Med"
+    ],
+    "secondaryMuscles": [
+      "TFL"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "mck_hip_flexor_str",
+      "progressTo": "mck_hip_add_str",
+      "unlockCriteria": "15 reps pain-free each side",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Side-lying. Bottom leg bent. Top leg straight.",
+      "Lift top leg 30° — lead with heel.",
+      "Hold 2s. Lower slowly."
+    ],
+    "formCues": [
+      "✅ Lead with HEEL",
+      "✅ Body stays stacked",
+      "✅ Only 30° lift"
+    ],
+    "commonMistakes": [
+      "❌ Rolling back",
+      "❌ Lifting too high",
+      "❌ Leading with toe"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "2",
+      "exhale": "2",
+      "pattern": "Exhale on lift"
+    },
+    "injuryNotes": {
+      "lower_back": "Side-lying — no concern.",
+      "knee": "No impact.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Glute med isolation for hip stability.",
+    "whyForYou": "Glute med protects your knee and stabilizes your pelvis.",
+    "proTip": "If you feel the front of the hip, you're rolling back.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_add_str",
+    "name": "Hip Adduction Stretch",
+    "emoji": "🦵",
+    "bodyPart": "hips",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Adductors"
+    ],
+    "secondaryMuscles": [
+      "Gracilis"
+    ],
+    "jointsInvolved": [
+      "hip"
+    ],
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 6,
+      "regressTo": "mck_hip_abd",
+      "progressTo": "mck_hip_functional",
+      "unlockCriteria": "Comfortable butterfly stretch 30s",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Seated butterfly — soles together, knees out.",
+      "Gently press knees toward floor with elbows.",
+      "Hold 30s."
+    ],
+    "formCues": [
+      "✅ Sit tall",
+      "✅ Elbows press gently",
+      "✅ 6/10 stretch"
+    ],
+    "commonMistakes": [
+      "❌ Bouncing knees",
+      "❌ Slouching"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to deepen"
+    },
+    "injuryNotes": {
+      "lower_back": "Sit on block if can't sit tall.",
+      "knee": "No forced flexion.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Adductor flexibility for hip health.",
+    "whyForYou": "Tight adductors contribute to knee valgus.",
+    "proTip": "Sit on a yoga block if you can't keep spine upright.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain",
+      "stretch"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_hip_functional",
+    "name": "Functional Hip Loading Progression",
+    "emoji": "🏋️",
+    "bodyPart": "hips",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Glutes",
+      "Hip Stabilizers"
+    ],
+    "secondaryMuscles": [
+      "Quadriceps",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 4,
+    "progressionChain": {
+      "level": 7,
+      "regressTo": "mck_hip_add_str",
+      "progressTo": null,
+      "unlockCriteria": "Single-leg activities pain-free",
+      "chainFamily": "mckenzie_hip_chain"
+    },
+    "steps": [
+      "Progress: bilateral squat → split squat → single-leg balance → step-ups.",
+      "Each level must be pain-free before progressing.",
+      "Track which level you're at."
+    ],
+    "formCues": [
+      "✅ Master each level before progressing",
+      "✅ Both sides equal",
+      "✅ Quality over depth"
+    ],
+    "commonMistakes": [
+      "❌ Skipping levels",
+      "❌ Ignoring side differences"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "2",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {
+      "lower_back": "Progressive — respect limits.",
+      "knee": "Progressive — respect limits.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Final McKenzie hip step — functional loading.",
+    "whyForYou": "When single-leg activities are pain-free, hip rehab is complete.",
+    "proTip": "Film yourself from the front — watch for hip drop on single-leg work.",
+    "tags": [
+      "mckenzie_hip",
+      "rehab",
+      "hips",
+      "mckenzie_hip_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_dorsi",
+    "name": "Ankle Dorsiflexion Mobilization",
+    "emoji": "🦶",
+    "bodyPart": "ankles",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Tibialis Anterior",
+      "Soleus"
+    ],
+    "secondaryMuscles": [
+      "Gastrocnemius"
+    ],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "wall"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 1,
+      "regressTo": null,
+      "progressTo": "mck_ank_plantar",
+      "unlockCriteria": "Knee touches wall from 4 inches",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Face wall. Front foot 4 inches from wall.",
+      "Rock knee forward — try to touch wall. Heel stays DOWN.",
+      "10 reps each side."
+    ],
+    "formCues": [
+      "✅ Heel stays on ground",
+      "✅ Knee tracks over 2nd toe",
+      "✅ Rhythmic rocking"
+    ],
+    "commonMistakes": [
+      "❌ Heel lifting",
+      "❌ Knee collapsing in"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "2",
+      "pattern": "Continuous"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "Knee tracks straight.",
+      "shoulder": "No impact."
+    },
+    "purpose": "McKenzie Ankle Step 1 — dorsiflexion ROM.",
+    "whyForYou": "Better ankle mobility = safer squats.",
+    "proTip": "Measure distance from wall — track weekly.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_plantar",
+    "name": "Ankle Plantarflexion Stretch",
+    "emoji": "🦶",
+    "bodyPart": "ankles",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Tibialis Anterior stretch"
+    ],
+    "secondaryMuscles": [],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 2,
+      "regressTo": "mck_ank_dorsi",
+      "progressTo": "mck_ank_inversion",
+      "unlockCriteria": "Full point without pain",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Sit with legs extended. Point toes fully.",
+      "Hold 15s. Pull toes back. Repeat.",
+      "Progress to kneeling sit-back for deeper stretch."
+    ],
+    "formCues": [
+      "✅ Full point",
+      "✅ Feel stretch on shin front",
+      "✅ Both feet equally"
+    ],
+    "commonMistakes": [
+      "❌ Cramping = ease off",
+      "❌ Only one foot"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Exhale to point deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Seated — no concern.",
+      "knee": "Kneeling version requires knee flexion tolerance.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Plantarflexion ROM restoration.",
+    "whyForYou": "Full ankle ROM in both directions prevents compensations.",
+    "proTip": "If seated is easy, try kneeling sit-back for deeper stretch.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain",
+      "stretch"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_inversion",
+    "name": "Ankle Inversion/Eversion ROM",
+    "emoji": "🔄",
+    "bodyPart": "ankles",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Peroneals",
+      "Tibialis Posterior"
+    ],
+    "secondaryMuscles": [],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 3,
+      "regressTo": "mck_ank_plantar",
+      "progressTo": "mck_ank_toe",
+      "unlockCriteria": "Equal ROM both directions",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Seated. Rotate foot INWARD (inversion) — hold 5s.",
+      "Rotate foot OUTWARD (eversion) — hold 5s.",
+      "10 reps each direction."
+    ],
+    "formCues": [
+      "✅ Movement from ankle only",
+      "✅ Both directions equally",
+      "✅ Compare sides"
+    ],
+    "commonMistakes": [
+      "❌ Moving whole leg",
+      "❌ Only one direction"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "2",
+      "pattern": "Continuous"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Frontal plane ankle ROM.",
+    "whyForYou": "Inversion/eversion stability prevents ankle sprains.",
+    "proTip": "Weak eversion is the most common ankle instability cause.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_toe",
+    "name": "Toe Flexion/Extension ROM",
+    "emoji": "🦶",
+    "bodyPart": "ankles",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Intrinsic Foot Muscles"
+    ],
+    "secondaryMuscles": [
+      "Flexor Digitorum"
+    ],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "progressionChain": {
+      "level": 4,
+      "regressTo": "mck_ank_inversion",
+      "progressTo": "mck_ank_eccentric",
+      "unlockCriteria": "Independent toe control",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Barefoot. Lift all toes up. Lower.",
+      "Spread toes apart. Bring together.",
+      "Lift big toe only, then little toes only."
+    ],
+    "formCues": [
+      "✅ Barefoot on flat surface",
+      "✅ Try to control each toe independently",
+      "✅ Takes practice — don't give up"
+    ],
+    "commonMistakes": [
+      "❌ Using whole foot",
+      "❌ Giving up too quickly"
+    ],
+    "coreBracing": "NONE.",
+    "breathing": {
+      "inhale": "Natural",
+      "hold": "0",
+      "exhale": "Natural",
+      "pattern": "Normal breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "No impact.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Foot intrinsic control and arch function.",
+    "whyForYou": "Strong foot intrinsics improve your foundation for everything.",
+    "proTip": "Most people can't do this at first. 2 weeks of practice changes it.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain",
+      "foot"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_eccentric",
+    "name": "Calf Eccentric Lowering",
+    "emoji": "⬇️",
+    "bodyPart": "calves",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "Gastrocnemius",
+      "Soleus"
+    ],
+    "secondaryMuscles": [
+      "Achilles Tendon"
+    ],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "box"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "progressionChain": {
+      "level": 5,
+      "regressTo": "mck_ank_toe",
+      "progressTo": "mck_ank_balance",
+      "unlockCriteria": "3x15 controlled eccentrics",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Stand on step edge — both feet rise up.",
+      "Shift to ONE foot. Lower that heel SLOWLY below step — 3s.",
+      "Use both feet to push back up. Repeat."
+    ],
+    "formCues": [
+      "✅ Slow 3s eccentric",
+      "✅ Both feet up, one foot down",
+      "✅ Full range below step"
+    ],
+    "commonMistakes": [
+      "❌ Dropping too fast",
+      "❌ Not going below step"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "1",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Exhale during slow drop"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "Bent-knee version targets soleus. Straight knee = gastroc.",
+      "shoulder": "Hold rail for balance."
+    },
+    "purpose": "Eccentric calf strengthening — gold standard for tendon health.",
+    "whyForYou": "Builds tendon resilience for all lower body work.",
+    "proTip": "Mild discomfort OK per Alfredson protocol. Sharp pain = stop.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "calves",
+      "mckenzie_ankle_chain",
+      "eccentric"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_balance",
+    "name": "Single-Leg Balance Progression",
+    "emoji": "🦩",
+    "bodyPart": "ankles",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "Ankle Stabilizers",
+      "Peroneals"
+    ],
+    "secondaryMuscles": [
+      "Glute Med"
+    ],
+    "jointsInvolved": [
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "progressionChain": {
+      "level": 6,
+      "regressTo": "mck_ank_eccentric",
+      "progressTo": "mck_ank_functional",
+      "unlockCriteria": "30s each leg eyes closed",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Single-leg stand — eyes open 30s.",
+      "Progress: eyes closed → unstable surface → reaching.",
+      "Track hold times."
+    ],
+    "formCues": [
+      "✅ Near wall for safety",
+      "✅ Soft knee",
+      "✅ Progress when stable"
+    ],
+    "commonMistakes": [
+      "❌ Locked knee",
+      "❌ No safety support"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Continuous calm"
+    },
+    "injuryNotes": {
+      "lower_back": "No concern.",
+      "knee": "Soft knee bend.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Ankle proprioception and stability progression.",
+    "whyForYou": "Balance is the foundation for all athletic movement.",
+    "proTip": "Eyes closed is 2x harder — that's the real test.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain",
+      "balance"
+    ]
+  },
+  {
+    "category": "rehab",
+    "type": "rehab",
+    "safetyTier": "green",
+    "abilityLevel": "any",
+    "source": "McKenzie MDT",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "10 reps or 30s hold",
+        "tempo": "Slow controlled",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "id": "mck_ank_functional",
+    "name": "Functional Ankle Loading",
+    "emoji": "🏃",
+    "bodyPart": "ankles",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Calves",
+      "Ankle Stabilizers"
+    ],
+    "secondaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "jointsInvolved": [
+      "ankle",
+      "knee"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "weekMinimum": 4,
+    "progressionChain": {
+      "level": 7,
+      "regressTo": "mck_ank_balance",
+      "progressTo": null,
+      "unlockCriteria": "Pain-free jogging and direction changes",
+      "chainFamily": "mckenzie_ankle_chain"
+    },
+    "steps": [
+      "Progress: walking → fast walking → light jogging → direction changes.",
+      "Each level pain-free before progressing.",
+      "Add sport-specific movements last."
+    ],
+    "formCues": [
+      "✅ Pain-free at each level",
+      "✅ Both ankles equally",
+      "✅ Sport-specific last"
+    ],
+    "commonMistakes": [
+      "❌ Returning to sport too fast",
+      "❌ Ignoring mild pain"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "Natural",
+      "hold": "0",
+      "exhale": "Natural",
+      "pattern": "Natural with activity"
+    },
+    "injuryNotes": {
+      "lower_back": "Progressive loading.",
+      "knee": "Progressive loading.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Final McKenzie ankle step — return to full function.",
+    "whyForYou": "When you can jog and change direction pain-free, ankle rehab is complete.",
+    "proTip": "Sport-specific drills are the LAST thing to add, not the first.",
+    "tags": [
+      "mckenzie_ankle",
+      "rehab",
+      "ankles",
+      "mckenzie_ankle_chain"
+    ]
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_child_pose",
+    "name": "Child's Pose",
+    "emoji": "🧒",
+    "bodyPart": "back",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Erector Spinae",
+      "Lats"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Shoulders"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Kneel, sit hips back toward heels.",
+      "Walk hands forward, forehead to floor.",
+      "Breathe into lower back — 5 deep breaths."
+    ],
+    "formCues": [
+      "✅ Hips toward heels",
+      "✅ Forehead rests on floor",
+      "✅ Arms extended or at sides"
+    ],
+    "commonMistakes": [
+      "❌ Not sitting back",
+      "❌ Holding breath"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "4",
+      "hold": "0",
+      "exhale": "6",
+      "pattern": "Belly breathing into lower back"
+    },
+    "injuryNotes": {
+      "lower_back": "One of the BEST positions for decompression.",
+      "knee": "Rolled towel behind knees if uncomfortable.",
+      "shoulder": "Arms at sides if overhead bothers shoulder."
+    },
+    "purpose": "Spinal decompression and parasympathetic activation.",
+    "whyForYou": "Your back's reset button. Use daily.",
+    "proTip": "This is a resting pose — stay as long as you want.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "back",
+      "stretch",
+      "decompression"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_cat_cow",
+    "name": "Cat-Cow Flow (Yoga)",
+    "emoji": "🐱",
+    "bodyPart": "back",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Erector Spinae"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Multifidus"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "All fours. Cow: inhale, drop belly, lift chest.",
+      "Cat: exhale, round spine, tuck chin.",
+      "Flow with breath — one transition per breath."
+    ],
+    "formCues": [
+      "✅ Initiate from pelvis",
+      "✅ One breath per transition",
+      "✅ Feel each vertebra"
+    ],
+    "commonMistakes": [
+      "❌ Jerking between positions",
+      "❌ Only moving head"
+    ],
+    "coreBracing": "LIGHT (20%).",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Inhale to cow, exhale to cat"
+    },
+    "injuryNotes": {
+      "lower_back": "Gentle segmental motion. Reduce range if sharp pain.",
+      "knee": "Pad knees.",
+      "shoulder": "Fists if wrists hurt."
+    },
+    "purpose": "Spinal segmental mobility with breath.",
+    "whyForYou": "Warms every vertebral segment before training.",
+    "proTip": "Close eyes — feel the wave through your spine.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "back",
+      "mobility",
+      "spine"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_supine_twist",
+    "name": "Supine Twist",
+    "emoji": "🌀",
+    "bodyPart": "back",
+    "movementPattern": "rotation",
+    "primaryMuscles": [
+      "Obliques",
+      "Thoracic Rotators"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Piriformis"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie on back. Knees to chest.",
+      "Let both knees fall to one side.",
+      "Arms in T. Look opposite direction. Hold 30s.",
+      "Switch sides."
+    ],
+    "formCues": [
+      "✅ Opposite shoulder stays down",
+      "✅ Knees together",
+      "✅ Let gravity do the work"
+    ],
+    "commonMistakes": [
+      "❌ Forcing knees to floor",
+      "❌ Shoulder lifting"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "4",
+      "hold": "0",
+      "exhale": "6",
+      "pattern": "Exhale to sink deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Gentle supported rotation. Stop if sharp pain.",
+      "knee": "Pillow between knees.",
+      "shoulder": "T position — bend elbow if shoulder limited."
+    },
+    "purpose": "Gentle thoracic rotation and spinal release.",
+    "whyForYou": "End-of-session spinal release. Safe and effective.",
+    "proTip": "5 slow breaths each side. This is medicine.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "back",
+      "rotation"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_legs_wall",
+    "name": "Legs Up the Wall",
+    "emoji": "🦵",
+    "bodyPart": "legs",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Calves",
+      "Lower Back"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Sit sideways against wall. Swing legs up.",
+      "Scoot hips to wall. Legs straight up.",
+      "Arms at sides or on belly. Breathe. 3-5 min."
+    ],
+    "formCues": [
+      "✅ Hips close to wall",
+      "✅ Legs straight (slight bend OK)",
+      "✅ Completely relaxed"
+    ],
+    "commonMistakes": [
+      "❌ Hips too far from wall",
+      "❌ Not staying long enough"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "4",
+      "hold": "0",
+      "exhale": "6",
+      "pattern": "Slow diaphragmatic"
+    },
+    "injuryNotes": {
+      "lower_back": "Decompresses lumbar. Excellent for back.",
+      "knee": "Straight legs — slight bend if needed.",
+      "shoulder": "Arms wherever comfortable."
+    },
+    "purpose": "Circulation, gentle hamstring stretch, parasympathetic activation.",
+    "whyForYou": "The single best restorative pose. Try it daily.",
+    "proTip": "Set a timer for 5 min. Close your eyes. This changes everything.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "legs",
+      "restorative"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "legs"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_seated_fold",
+    "name": "Seated Forward Fold",
+    "emoji": "🙇",
+    "bodyPart": "back",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Erector Spinae"
+    ],
+    "secondaryMuscles": [
+      "Calves"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Sit with legs extended. Sit tall first.",
+      "Hinge from hips — fold forward.",
+      "Hold wherever you reach. 30s."
+    ],
+    "formCues": [
+      "✅ Hinge from HIPS",
+      "✅ Don't round to reach further",
+      "✅ 6/10 stretch"
+    ],
+    "commonMistakes": [
+      "❌ Rounding back aggressively",
+      "❌ Bouncing"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to fold deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Hinge from hips. Stop if back pain.",
+      "knee": "Slight bend OK.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Posterior chain stretch and calming.",
+    "whyForYou": "Calming pose. Stretches hamstrings without back risk when done correctly.",
+    "proTip": "Bend knees slightly if hamstrings are tight. The hip hinge matters more than reaching toes.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "back",
+      "hamstrings"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_bridge",
+    "name": "Bridge Pose",
+    "emoji": "🌉",
+    "bodyPart": "glutes",
+    "movementPattern": "hinge",
+    "primaryMuscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hip Flexors stretch"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie on back. Knees bent, feet hip-width.",
+      "Press through heels. Lift hips.",
+      "Hold at top — squeeze glutes. 30s."
+    ],
+    "formCues": [
+      "✅ Drive through heels",
+      "✅ Squeeze glutes at top",
+      "✅ No hyperextending"
+    ],
+    "commonMistakes": [
+      "❌ Hyperextending back",
+      "❌ Pushing through toes"
+    ],
+    "coreBracing": "MODERATE (30%).",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Breathe at top"
+    },
+    "injuryNotes": {
+      "lower_back": "No hyperextension. Glutes should drive, not back.",
+      "knee": "Adjust foot position for comfort.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Gentle glute activation + hip flexor opening.",
+    "whyForYou": "Opens hip flexors that tighten from sitting.",
+    "proTip": "Place a block between knees to activate glute med simultaneously.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "glutes",
+      "hips"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_reclined_butterfly",
+    "name": "Reclined Butterfly",
+    "emoji": "🦋",
+    "bodyPart": "hips",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Adductors",
+      "Hip External Rotators"
+    ],
+    "secondaryMuscles": [
+      "Groin"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie on back. Soles together, knees fall open.",
+      "Arms at sides. Breathe. 2-3 min.",
+      "Blocks under knees if too intense."
+    ],
+    "formCues": [
+      "✅ Let gravity open hips",
+      "✅ Support knees if needed",
+      "✅ Completely relaxed"
+    ],
+    "commonMistakes": [
+      "❌ Forcing knees down",
+      "❌ Not using props"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "4",
+      "hold": "0",
+      "exhale": "6",
+      "pattern": "Slow belly breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Supine — supported.",
+      "knee": "Props under knees.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Passive hip opener and groin stretch.",
+    "whyForYou": "Opens hips without any effort. Restorative.",
+    "proTip": "Props make this sustainable for longer holds. Don't tough it out — use blocks.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "hips",
+      "restorative"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_savasana",
+    "name": "Corpse Pose (Savasana)",
+    "emoji": "😌",
+    "bodyPart": "full_body",
+    "movementPattern": "breathing",
+    "primaryMuscles": [
+      "Diaphragm"
+    ],
+    "secondaryMuscles": [
+      "Parasympathetic NS"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie flat. Arms at sides, palms up.",
+      "Close eyes. Scan body — release tension.",
+      "Breathe naturally. Stay 3-5 min."
+    ],
+    "formCues": [
+      "✅ Palms UP",
+      "✅ Feet fall naturally open",
+      "✅ Jaw relaxed, tongue off roof"
+    ],
+    "commonMistakes": [
+      "❌ Skipping this pose",
+      "❌ Not staying long enough"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "Natural",
+      "hold": "0",
+      "exhale": "Natural",
+      "pattern": "Natural uncontrolled breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Bolster under knees if needed.",
+      "knee": "No impact.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Full body relaxation and nervous system reset.",
+    "whyForYou": "The most important pose. Integration of everything you just did.",
+    "proTip": "This is NOT optional. It's where the benefits integrate. Stay 5 min.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "full_body",
+      "restorative",
+      "breathing"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_knees_chest",
+    "name": "Knees to Chest",
+    "emoji": "🤱",
+    "bodyPart": "back",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Lower Back",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Hips"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie on back. Pull both knees to chest.",
+      "Wrap arms around shins.",
+      "Rock gently side to side. 30s."
+    ],
+    "formCues": [
+      "✅ Head stays on floor",
+      "✅ Gentle rocking OK",
+      "✅ Pull with arms, not abs"
+    ],
+    "commonMistakes": [
+      "❌ Straining neck up",
+      "❌ Pulling too aggressively"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to pull closer"
+    },
+    "injuryNotes": {
+      "lower_back": "Gentle lumbar flexion. Good for most backs.",
+      "knee": "Hands behind knees if knee is sensitive.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Lower back relief and gentle hip flexion.",
+    "whyForYou": "Quick back relief pose. Do anytime your back feels tight.",
+    "proTip": "The gentle rocking massages the sacrum and SI joint.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "back",
+      "relief"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_thread_needle",
+    "name": "Thread the Needle",
+    "emoji": "🪡",
+    "bodyPart": "shoulders",
+    "movementPattern": "rotation",
+    "primaryMuscles": [
+      "Thoracic Rotators",
+      "Rhomboids"
+    ],
+    "secondaryMuscles": [
+      "Posterior Deltoid"
+    ],
+    "difficultyLevel": 1,
+    "weekMinimum": 1,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "All fours. Thread right arm under left — shoulder to floor.",
+      "Hold 5 breaths. Open right arm to ceiling.",
+      "Return. Repeat other side."
+    ],
+    "formCues": [
+      "✅ Hips stay over knees",
+      "✅ Feel thoracic rotation",
+      "✅ Both thread and open phases"
+    ],
+    "commonMistakes": [
+      "❌ Hips shifting back",
+      "❌ Only threading, not opening"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Exhale to thread, inhale to open"
+    },
+    "injuryNotes": {
+      "lower_back": "Thoracic rotation — protects lumbar.",
+      "knee": "Pad knees.",
+      "shoulder": "Reduce depth if shoulder catches."
+    },
+    "purpose": "Thoracic rotation + shoulder stretch.",
+    "whyForYou": "Opens your thoracic spine so your lumbar doesn't have to rotate.",
+    "proTip": "The OPEN phase (arm to ceiling) is as important as the thread.",
+    "tags": [
+      "yoga",
+      "beginner",
+      "shoulders",
+      "thoracic",
+      "rotation"
+    ],
+    "_yogaLevel": "beginner",
+    "_yogaTarget": "shoulders"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 4,
+        "knee": 4,
+        "shoulder": 3
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_down_dog",
+    "name": "Downward Dog",
+    "emoji": "🐕",
+    "bodyPart": "full_body",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Calves",
+      "Lats"
+    ],
+    "secondaryMuscles": [
+      "Shoulders",
+      "Core"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "From plank, push hips UP and BACK.",
+      "Hands shoulder-width, feet hip-width.",
+      "Press heels toward floor. Hold 30s."
+    ],
+    "formCues": [
+      "✅ Straight spine — bend knees if needed",
+      "✅ Push floor away",
+      "✅ Ears between biceps"
+    ],
+    "commonMistakes": [
+      "❌ Rounding upper back",
+      "❌ Locked knees with rounded back"
+    ],
+    "coreBracing": "MODERATE (30%).",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Continuous breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Bend knees to keep spine straight.",
+      "knee": "Soft knee bend.",
+      "shoulder": "Weight-bearing — shoulder severity ≤3."
+    },
+    "purpose": "Full posterior chain stretch + shoulder stability.",
+    "whyForYou": "The most complete single stretch. Works everything.",
+    "proTip": "Bend your knees as much as needed — straight spine matters more than straight legs.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "full_body",
+      "stretch"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_warrior1",
+    "name": "Warrior I",
+    "emoji": "⚔️",
+    "bodyPart": "hips",
+    "movementPattern": "lunge",
+    "primaryMuscles": [
+      "Hip Flexors",
+      "Quads"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Shoulders"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Step one foot back. Front knee at 90°.",
+      "Back foot angled 45°. Square hips forward.",
+      "Arms overhead. Hold 30s each side."
+    ],
+    "formCues": [
+      "✅ Front knee over ankle",
+      "✅ Hips square forward",
+      "✅ Ribs down — no arching"
+    ],
+    "commonMistakes": [
+      "❌ Knee past toes",
+      "❌ Back foot flat causing hip rotation"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Continuous with effort"
+    },
+    "injuryNotes": {
+      "lower_back": "Keep ribs down — no arching.",
+      "knee": "Front knee at 90° max.",
+      "shoulder": "Arms overhead — severity ≤3."
+    },
+    "purpose": "Hip flexor stretch + balance + leg endurance.",
+    "whyForYou": "Functional lunge position with hip flexor opening.",
+    "proTip": "The back hip flexor is where the stretch should be.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "hips",
+      "balance",
+      "lunge"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_warrior2",
+    "name": "Warrior II",
+    "emoji": "⚔️",
+    "bodyPart": "hips",
+    "movementPattern": "lunge",
+    "primaryMuscles": [
+      "Quads",
+      "Hip Abductors"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Shoulders"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Wide stance. Front foot forward, back foot perpendicular.",
+      "Front knee bends to 90°.",
+      "Arms wide at shoulder height. Gaze over front hand. Hold 30s."
+    ],
+    "formCues": [
+      "✅ Front knee over ankle",
+      "✅ Shoulders over hips",
+      "✅ Arms active — reaching"
+    ],
+    "commonMistakes": [
+      "❌ Leaning forward",
+      "❌ Knee collapsing in"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Steady breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Neutral spine.",
+      "knee": "Front knee tracks over toes.",
+      "shoulder": "Arms at shoulder height — manageable for most."
+    },
+    "purpose": "Hip opener + leg endurance + focus.",
+    "whyForYou": "Builds leg endurance and hip stability in open position.",
+    "proTip": "Sink lower for more challenge. Rise up when fatigued.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "hips",
+      "legs",
+      "balance"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_triangle",
+    "name": "Triangle Pose",
+    "emoji": "🔺",
+    "bodyPart": "full_body",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Obliques",
+      "Hamstrings",
+      "IT Band"
+    ],
+    "secondaryMuscles": [
+      "Adductors",
+      "Intercostals"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Wide stance like Warrior II but front leg straight.",
+      "Hinge at hip — reach front hand to shin/floor.",
+      "Top arm reaches to ceiling. Hold 30s."
+    ],
+    "formCues": [
+      "✅ Hinge at hip, not waist",
+      "✅ Both sides of torso long",
+      "✅ Stack shoulders"
+    ],
+    "commonMistakes": [
+      "❌ Rounding to reach floor",
+      "❌ Collapsing chest"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "4",
+      "pattern": "Breathe into top side"
+    },
+    "injuryNotes": {
+      "lower_back": "Hinge from hip — no spinal rounding.",
+      "knee": "Front leg straight but not locked.",
+      "shoulder": "Top arm up — modify if limited."
+    },
+    "purpose": "Lateral chain stretch — obliques, IT band, intercostals.",
+    "whyForYou": "Stretches the lateral line that rarely gets attention.",
+    "proTip": "Use a block under bottom hand — makes the pose accessible and safe.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "full_body",
+      "lateral"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [
+        "hip_labral_tear"
+      ],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 3,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_pigeon_mod",
+    "name": "Pigeon Pose (Modified with Props)",
+    "emoji": "🐦",
+    "bodyPart": "hips",
+    "movementPattern": "static_stretch",
+    "primaryMuscles": [
+      "Piriformis",
+      "Glute Med",
+      "Hip ER"
+    ],
+    "secondaryMuscles": [
+      "Hip Flexors"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "From all fours, slide right knee forward.",
+      "Back leg extends straight. Block under front hip.",
+      "Fold forward as tolerated. Hold 60s each side."
+    ],
+    "formCues": [
+      "✅ Block under hip for support",
+      "✅ Hips stay square",
+      "✅ Fold only as deep as comfortable"
+    ],
+    "commonMistakes": [
+      "❌ No block (hip drops)",
+      "❌ Forcing depth"
+    ],
+    "coreBracing": "ZERO.",
+    "breathing": {
+      "inhale": "4",
+      "hold": "0",
+      "exhale": "6",
+      "pattern": "Long exhales to release"
+    },
+    "injuryNotes": {
+      "lower_back": "Fold only within comfort.",
+      "knee": "Front shin angle adjustable. Stop if knee pain.",
+      "shoulder": "No impact."
+    },
+    "purpose": "Deep hip external rotation stretch — modified for safety.",
+    "whyForYou": "Opens the deep hip rotators that compress nerves when tight.",
+    "proTip": "ALWAYS use a block. It keeps hips level and makes the pose sustainable.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "hips",
+      "hip_opener"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_low_lunge",
+    "name": "Low Lunge",
+    "emoji": "🏃",
+    "bodyPart": "hips",
+    "movementPattern": "lunge",
+    "primaryMuscles": [
+      "Iliopsoas",
+      "Rectus Femoris"
+    ],
+    "secondaryMuscles": [
+      "Quads"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Step one foot forward into deep lunge. Back knee on floor.",
+      "Sink hips down and forward.",
+      "Arms overhead or on front knee. Hold 30s."
+    ],
+    "formCues": [
+      "✅ Hips sink forward and down",
+      "✅ Back knee padded",
+      "✅ Upright torso"
+    ],
+    "commonMistakes": [
+      "❌ Leaning forward",
+      "❌ Back knee on hard surface"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "5",
+      "pattern": "Exhale to sink deeper"
+    },
+    "injuryNotes": {
+      "lower_back": "Keep torso upright.",
+      "knee": "Back knee padded. Front knee over ankle.",
+      "shoulder": "Arms overhead optional."
+    },
+    "purpose": "Deep hip flexor stretch.",
+    "whyForYou": "Opens the hip flexors shortened by sitting all day.",
+    "proTip": "Add a gentle backbend at the top for extra hip flexor + ab stretch.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "hips",
+      "hip_flexor"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "hips"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_cobra",
+    "name": "Cobra Pose",
+    "emoji": "🐍",
+    "bodyPart": "back",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Erector Spinae"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Shoulders"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 2,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie face down. Hands under shoulders.",
+      "Press up — lift chest. Keep hips on floor.",
+      "Hold 15-30s. Lower slowly."
+    ],
+    "formCues": [
+      "✅ Hips stay on floor",
+      "✅ Elbows slightly bent",
+      "✅ Shoulders away from ears"
+    ],
+    "commonMistakes": [
+      "❌ Lifting hips",
+      "❌ Locking elbows"
+    ],
+    "coreBracing": "LIGHT.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "5",
+      "exhale": "3",
+      "pattern": "Inhale to lift, hold, exhale to lower"
+    },
+    "injuryNotes": {
+      "lower_back": "Similar to McKenzie press-up. Gentle extension.",
+      "knee": "No impact.",
+      "shoulder": "Moderate load. Severity ≤3."
+    },
+    "purpose": "Gentle spinal extension — similar to McKenzie press-up.",
+    "whyForYou": "Extension opens the front of the body and benefits disc health.",
+    "proTip": "Baby cobra (elbows bent) before full cobra. Always.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "back",
+      "extension"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_chair",
+    "name": "Chair Pose",
+    "emoji": "🪑",
+    "bodyPart": "legs",
+    "movementPattern": "squat",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Ankles"
+    ],
+    "difficultyLevel": 2,
+    "weekMinimum": 3,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Stand feet together. Sit hips back — like sitting in a chair.",
+      "Arms overhead or at heart. Hold 30s.",
+      "Weight in heels. Knees over toes."
+    ],
+    "formCues": [
+      "✅ Weight in heels",
+      "✅ Chest lifted",
+      "✅ Knees don't pass toes"
+    ],
+    "commonMistakes": [
+      "❌ Leaning forward",
+      "❌ Knees caving in"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Steady breathing with effort"
+    },
+    "injuryNotes": {
+      "lower_back": "Sit back — don't arch.",
+      "knee": "Depth limited by comfort.",
+      "shoulder": "Arms overhead optional."
+    },
+    "purpose": "Quad endurance + ankle mobility in a static hold.",
+    "whyForYou": "Builds the leg endurance your sports demand.",
+    "proTip": "The deeper you go, the harder it gets. Find YOUR depth.",
+    "tags": [
+      "yoga",
+      "intermediate",
+      "legs",
+      "squat",
+      "endurance"
+    ],
+    "_yogaLevel": "intermediate",
+    "_yogaTarget": "legs"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "red",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [
+        "labrum_tear_acute",
+        "rotator_cuff_tear_acute"
+      ],
+      "conditions": [],
+      "movements_to_avoid": [
+        "end_range_shoulder"
+      ],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 5,
+        "shoulder": 2
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 16,
+      "requiredExercisesMastered": [
+        "stab_plank"
+      ],
+      "requiredCapabilities": [
+        "core_stability_intermediate"
+      ],
+      "minPhase": 2,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 5,
+        "shoulder": 2
+      },
+      "painFreeROM": [],
+      "notes": "Phase 2+, shoulder ≤2"
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_crow",
+    "name": "Crow Pose",
+    "emoji": "🐦",
+    "bodyPart": "arms",
+    "movementPattern": "push",
+    "primaryMuscles": [
+      "Triceps",
+      "Core",
+      "Hip Flexors"
+    ],
+    "secondaryMuscles": [
+      "Shoulders",
+      "Wrists"
+    ],
+    "difficultyLevel": 4,
+    "weekMinimum": 12,
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Squat. Place hands on floor shoulder-width.",
+      "Lean forward. Place knees on backs of upper arms.",
+      "Shift weight forward — feet lift off floor. Hold."
+    ],
+    "formCues": [
+      "✅ Gaze forward, not down",
+      "✅ Round upper back",
+      "✅ Engage core deeply"
+    ],
+    "commonMistakes": [
+      "❌ Looking at floor (face plant)",
+      "❌ Not rounding enough"
+    ],
+    "coreBracing": "MAXIMUM.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "3",
+      "exhale": "2",
+      "pattern": "Hold breath initially, then breathe"
+    },
+    "injuryNotes": {
+      "lower_back": "Core must be strong.",
+      "knee": "Knees on arms — no direct stress.",
+      "shoulder": "Full weight on wrists/shoulders. Severity ≤2."
+    },
+    "purpose": "Upper body strength + core + balance integration.",
+    "whyForYou": "An advanced milestone. Requires significant core and arm strength.",
+    "proTip": "Place a pillow in front of your face. Removes the fear of falling.",
+    "tags": [
+      "yoga",
+      "advanced",
+      "arms",
+      "core",
+      "balance"
+    ],
+    "_yogaLevel": "advanced",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "red",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [
+        "disc_herniation_acute",
+        "spondylolisthesis"
+      ],
+      "conditions": [
+        "spinal_stenosis"
+      ],
+      "movements_to_avoid": [
+        "axial_loading_heavy"
+      ],
+      "severity_gate": {
+        "lower_back": 1,
+        "knee": 4,
+        "shoulder": 1
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 20,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 2,
+      "maxInjurySeverity": {
+        "lower_back": 1,
+        "knee": 4,
+        "shoulder": 1
+      },
+      "painFreeROM": [
+        "shoulder_flexion_180"
+      ],
+      "notes": "Back severity must be ≤1"
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_wheel",
+    "name": "Wheel Pose (Full Backbend)",
+    "emoji": "🎡",
+    "bodyPart": "back",
+    "movementPattern": "mobility",
+    "primaryMuscles": [
+      "Erector Spinae",
+      "Glutes",
+      "Shoulders"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hip Flexors stretch"
+    ],
+    "difficultyLevel": 4,
+    "weekMinimum": 16,
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Lie on back. Hands by ears, fingers toward shoulders.",
+      "Press up into full backbend.",
+      "Hold 15-30s. Lower slowly."
+    ],
+    "formCues": [
+      "✅ Press through hands AND feet",
+      "✅ Straighten arms",
+      "✅ Push chest through arms"
+    ],
+    "commonMistakes": [
+      "❌ Elbows flaring",
+      "❌ Not enough arm strength"
+    ],
+    "coreBracing": "HIGH.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "5",
+      "exhale": "3",
+      "pattern": "Breathe at top"
+    },
+    "injuryNotes": {
+      "lower_back": "BLOCKED if back severity ≥2. Full spinal extension.",
+      "knee": "Weight-bearing through legs.",
+      "shoulder": "Full overhead. Severity ≤1."
+    },
+    "purpose": "Full spinal extension — extreme mobility.",
+    "whyForYou": "An advanced flexibility goal. Currently blocked by back severity.",
+    "proTip": "Bridge pose first. Then bridge with head on floor. THEN wheel.",
+    "tags": [
+      "yoga",
+      "advanced",
+      "back",
+      "extension",
+      "flexibility"
+    ],
+    "_yogaLevel": "advanced",
+    "_yogaTarget": "back"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "red",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [
+        "labrum_tear_acute"
+      ],
+      "conditions": [
+        "cervical_disc_issues"
+      ],
+      "movements_to_avoid": [
+        "end_range_shoulder"
+      ],
+      "severity_gate": {
+        "lower_back": 2,
+        "knee": 5,
+        "shoulder": 1
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 20,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 2,
+        "knee": 5,
+        "shoulder": 1
+      },
+      "painFreeROM": [],
+      "notes": "BLOCKED if neck/shoulder issues"
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_headstand_prep",
+    "name": "Headstand Prep (Wall Only)",
+    "emoji": "🤸",
+    "bodyPart": "full_body",
+    "movementPattern": "push",
+    "primaryMuscles": [
+      "Core",
+      "Shoulders",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Neck",
+      "Back"
+    ],
+    "difficultyLevel": 4,
+    "weekMinimum": 16,
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Forearms on floor, interlace fingers. Head in hands.",
+      "Walk feet in. Lift one leg at a time against wall.",
+      "Hold with wall support. Build toward freestanding."
+    ],
+    "formCues": [
+      "✅ Wall for safety",
+      "✅ Most weight on forearms, NOT head",
+      "✅ Core engaged throughout"
+    ],
+    "commonMistakes": [
+      "❌ Weight on head (dangerous)",
+      "❌ No wall (fall risk)"
+    ],
+    "coreBracing": "MAXIMUM.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Steady breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Inversion — no compression.",
+      "knee": "No impact.",
+      "shoulder": "Full overhead load. BLOCKED if neck or shoulder issues."
+    },
+    "purpose": "Inversion + core + shoulder stability.",
+    "whyForYou": "Advanced goal. Requires neck and shoulder health.",
+    "proTip": "90% of weight on forearms. Head is just a balance point, not a weight-bearing surface.",
+    "tags": [
+      "yoga",
+      "advanced",
+      "full_body",
+      "inversion"
+    ],
+    "_yogaLevel": "advanced",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "yellow",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_dancer",
+    "name": "Dancer's Pose",
+    "emoji": "💃",
+    "bodyPart": "full_body",
+    "movementPattern": "isolation",
+    "primaryMuscles": [
+      "Quads",
+      "Hip Flexors",
+      "Shoulders"
+    ],
+    "secondaryMuscles": [
+      "Balance",
+      "Core"
+    ],
+    "difficultyLevel": 3,
+    "weekMinimum": 8,
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "Stand on one leg. Grab opposite ankle behind you.",
+      "Lean forward slightly. Kick foot into hand.",
+      "Reach forward arm. Hold 15-30s."
+    ],
+    "formCues": [
+      "✅ Kick into hand — creates the arch",
+      "✅ Forward arm for balance",
+      "✅ Gaze at fixed point"
+    ],
+    "commonMistakes": [
+      "❌ Not kicking into hand",
+      "❌ Losing balance focus"
+    ],
+    "coreBracing": "MODERATE.",
+    "breathing": {
+      "inhale": "3",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Steady breathing for balance"
+    },
+    "injuryNotes": {
+      "lower_back": "Slight extension — manageable.",
+      "knee": "Requires knee flexion.",
+      "shoulder": "One arm overhead."
+    },
+    "purpose": "Balance + quad stretch + shoulder flexibility integration.",
+    "whyForYou": "Beautiful integration of balance, flexibility, and control.",
+    "proTip": "Start with hand against wall for balance support.",
+    "tags": [
+      "yoga",
+      "advanced",
+      "full_body",
+      "balance"
+    ],
+    "_yogaLevel": "advanced",
+    "_yogaTarget": "full_body"
+  },
+  {
+    "category": "cooldown",
+    "type": "flexibility",
+    "safetyTier": "green",
+    "source": "Yoga Alliance, Evidence-based yoga therapy",
+    "lastReviewed": "2025-01-01",
+    "phaseParams": {
+      "1": {
+        "sets": "1",
+        "reps": "30-60s hold",
+        "tempo": "Static hold",
+        "rest": "0s",
+        "intensity": "RPE 2-3"
+      }
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 5,
+        "shoulder": 3
+      }
+    },
+    "prerequisites": {
+      "minCompletedSessions": 0,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 1,
+      "maxInjurySeverity": {
+        "lower_back": 5,
+        "knee": 5,
+        "shoulder": 5
+      },
+      "painFreeROM": [],
+      "notes": ""
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null,
+      "injury_lower_back": null,
+      "injury_knee": null,
+      "injury_shoulder": null,
+      "no_equipment": null
+    },
+    "imageUrl": null,
+    "imageUrl2": null,
+    "equipmentRequired": [
+      "mat"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "jointsInvolved": [
+      "spine",
+      "hip"
+    ],
+    "id": "yoga_side_plank",
+    "name": "Side Plank Pose",
+    "emoji": "📐",
+    "bodyPart": "core",
+    "movementPattern": "anti_flexion",
+    "primaryMuscles": [
+      "Obliques",
+      "Shoulders"
+    ],
+    "secondaryMuscles": [
+      "Glute Med",
+      "Core"
+    ],
+    "difficultyLevel": 3,
+    "weekMinimum": 6,
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "steps": [
+      "From plank, rotate to one side.",
+      "Stack feet or stagger. Top arm to ceiling.",
+      "Hold 15-30s each side."
+    ],
+    "formCues": [
+      "✅ Hips stay stacked",
+      "✅ Top arm reaches UP",
+      "✅ Don't let hips sag"
+    ],
+    "commonMistakes": [
+      "❌ Hips dropping",
+      "❌ Not stacking shoulders"
+    ],
+    "coreBracing": "HIGH.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "3",
+      "pattern": "Continuous breathing"
+    },
+    "injuryNotes": {
+      "lower_back": "Lateral core challenge.",
+      "knee": "Stagger feet for easier balance.",
+      "shoulder": "Full load on bottom shoulder. Severity ≤3."
+    },
+    "purpose": "Oblique strength + shoulder stability in yoga context.",
+    "whyForYou": "Combines lateral core work with shoulder stability.",
+    "proTip": "Bottom knee on floor is the regression. Build up.",
+    "tags": [
+      "yoga",
+      "advanced",
+      "core",
+      "shoulders"
+    ],
+    "_yogaLevel": "advanced",
+    "_yogaTarget": "core"
   }
 ]
