@@ -15,6 +15,8 @@ import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileSc
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";
+import { verifyAndFix, runAllChecks } from "./utils/safetyVerification.js";
+import { ALL_TEST_PROFILES } from "./utils/testProfiles.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -553,6 +555,9 @@ function DebugPanel({onClose}){
   const[ls,setLs]=useState(null);
   const[errors,setErrors]=useState([]);
   const[imgLoading,setImgLoading]=useState(false);
+  const[safetyAudit,setSafetyAudit]=useState(null);
+  const[qaResults,setQaResults]=useState(null);
+  const[qaRunning,setQaRunning]=useState(false);
 
   useEffect(()=>{
     setLs(getLocalStorageStats());
@@ -565,7 +570,7 @@ function DebugPanel({onClose}){
   const runImageCheck=()=>{setImgLoading(true);checkExerciseImages(exerciseDB).then(r=>{setImgStatus(r);setImgLoading(false);});};
   const runEngineTest=()=>{setEngineStatus(testWorkoutEngine(buildWorkoutList));};
 
-  const tabs=[{id:"images",label:"Images"},{id:"db",label:"DB"},{id:"engine",label:"Engine"},{id:"supa",label:"Supabase"},{id:"storage",label:"Storage"},{id:"errors",label:"Errors"}];
+  const tabs=[{id:"images",label:"Images"},{id:"db",label:"DB"},{id:"engine",label:"Engine"},{id:"safety",label:"Safety"},{id:"supa",label:"Supabase"},{id:"storage",label:"Storage"},{id:"errors",label:"Errors"}];
   const S={panel:{background:C.bg,border:`2px solid ${C.teal}40`,borderRadius:16,padding:16,marginBottom:16},
     tabRow:{display:"flex",gap:4,marginBottom:12,flexWrap:"wrap"},
     tab:(active)=>({padding:"4px 10px",borderRadius:8,fontSize:10,fontWeight:700,cursor:"pointer",border:`1px solid ${active?C.teal:C.border}`,background:active?C.teal+"20":"transparent",color:active?C.teal:C.textDim}),
@@ -609,6 +614,51 @@ function DebugPanel({onClose}){
       {tab==="engine"&&<div>
         <button onClick={runEngineTest} style={S.btn}>Test Workout Engine</button>
         {engineStatus&&<div style={{marginTop:10}}>{engineStatus.map((r,i)=><div key={i} style={S.row}><span style={S.label}>{r.scenario}</span><span style={{color:r.status==="ok"?C.success:C.danger,fontSize:10}}>{r.status==="ok"?`W${r.warmup} M${r.main} C${r.cooldown} = ${r.total}`:r.error}</span></div>)}</div>}
+      </div>}
+
+      {tab==="safety"&&<div>
+        <div style={{display:"flex",gap:6,marginBottom:10}}>
+          <button onClick={()=>{const w=buildWorkoutList(CURRENT_PHASE,"gym");const rpt=runAllChecks(w);setSafetyAudit(rpt);}} style={S.btn}>Run Safety Audit</button>
+          <button onClick={()=>{setQaRunning(true);const results=ALL_TEST_PROFILES.map(p=>{const w=buildWorkoutList(p.phase||1,"gym");const rpt=runAllChecks(w,p);return{name:p.name,passed:rpt.passed,failed:rpt.failed,total:rpt.totalChecks,blocked:rpt.blocked,issues:rpt.allIssues.length,corrections:rpt.allCorrections.length,checks:rpt.checks};});setQaResults(results);setQaRunning(false);}} disabled={qaRunning} style={{...S.btn,borderColor:C.purple,color:C.purple}}>{qaRunning?"Running...":"Run QA Tests (5 profiles)"}</button>
+        </div>
+        {safetyAudit&&<div>
+          <div style={{display:"flex",gap:16,marginBottom:8}}>
+            <div><span style={S.stat(C.success)}>{safetyAudit.passed}</span><div style={{fontSize:9,color:C.textDim}}>Passed</div></div>
+            <div><span style={S.stat(safetyAudit.failed>0?C.danger:C.success)}>{safetyAudit.failed}</span><div style={{fontSize:9,color:C.textDim}}>Failed</div></div>
+            <div><span style={S.stat(C.warning)}>{safetyAudit.allCorrections.length}</span><div style={{fontSize:9,color:C.textDim}}>Fixes</div></div>
+            <div><span style={S.stat(C.info)}>{safetyAudit.totalChecks}</span><div style={{fontSize:9,color:C.textDim}}>Total</div></div>
+          </div>
+          <div style={{maxHeight:200,overflow:"auto"}}>
+            {safetyAudit.checks.map(c=><div key={c.id} style={{...S.row,gap:4}}>
+              <span style={{fontSize:12,minWidth:16}}>{c.passed?"✅":"❌"}</span>
+              <span style={{fontSize:10,color:c.passed?C.success:C.danger,flex:1}}>{c.id}. {c.name}</span>
+              <span style={{fontSize:9,color:C.textDim}}>{c.issueCount>0?`${c.issueCount} issues`:""}</span>
+            </div>)}
+          </div>
+          {safetyAudit.allIssues.length>0&&<div style={{marginTop:8}}>
+            <div style={{fontSize:10,fontWeight:700,color:C.danger,marginBottom:4}}>Issues ({safetyAudit.allIssues.length})</div>
+            <div style={{maxHeight:120,overflow:"auto"}}>{safetyAudit.allIssues.slice(0,15).map((iss,i)=><div key={i} style={{fontSize:9,color:iss.severity==="critical"?C.danger:iss.severity==="warning"?C.warning:C.textMuted,padding:"2px 0",borderBottom:`1px solid ${C.border}`}}>
+              <span style={{fontWeight:700}}>[{iss.severity}]</span> {iss.exercise?`${iss.exercise}: `:"" }{iss.msg}
+            </div>)}</div>
+          </div>}
+        </div>}
+        {qaResults&&<div style={{marginTop:10}}>
+          <div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:1,marginBottom:6}}>QA TEST RESULTS — {qaResults.length} PROFILES</div>
+          {qaResults.map((r,i)=><div key={i} style={{padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:2}}>
+              <span style={{fontSize:10,fontWeight:600,color:C.text}}>{r.name}</span>
+              <Badge color={r.failed===0?C.success:C.danger}>{r.passed}/{r.total}</Badge>
+            </div>
+            {r.failed>0&&<div style={{fontSize:9,color:C.textDim}}>{r.issues} issues · {r.corrections} corrections{r.blocked?" · BLOCKED":""}</div>}
+            {r.failed>0&&r.checks.filter(c=>!c.passed).map(c=><div key={c.id} style={{fontSize:8,color:C.warning,paddingLeft:8}}>❌ {c.name}: {c.issues[0]?.msg?.substring(0,80)||"failed"}</div>)}
+          </div>)}
+          <div style={{marginTop:6,padding:6,background:qaResults.every(r=>r.failed===0)?C.success+"10":C.warning+"10",borderRadius:6}}>
+            <div style={{fontSize:10,fontWeight:700,color:qaResults.every(r=>r.failed===0)?C.success:C.warning}}>
+              {qaResults.every(r=>r.failed===0)?"ALL 5 PROFILES PASS ALL 12 CHECKS ✓":`${qaResults.filter(r=>r.failed>0).length} profile(s) have flagged checks`}
+            </div>
+          </div>
+        </div>}
+        {!safetyAudit&&!qaResults&&<div style={{fontSize:11,color:C.textDim}}>Run Safety Audit to check current plan, or QA Tests to verify all 5 test profiles.</div>}
       </div>}
 
       {tab==="supa"&&<div>
@@ -724,7 +774,7 @@ return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{
 {step===4&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧠 Stress level?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:16}}>Shapes coaching tone and volume</div><input type="range" min={1} max={10} value={stress} onChange={e=>setStress(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Calm</span><span style={{fontSize:11,color:C.textDim}}>Overwhelmed</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{stress}</div></div><Card style={{borderColor:C.teal+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>HOW THIS SHAPES TODAY</div>{adapt(stress).map(a=>(<div key={a.l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,color:C.textMuted}}>{a.l}</span><span style={{fontSize:13,color:C.teal,fontWeight:600}}>{a.v}</span></div>))}</Card><Btn onClick={compute} style={{marginTop:16}}>See My Plan →</Btn></div>}<div style={{height:90}}/></div>);}
 
 // ── PLAN SCREEN (Transparency Report) ─────────────────────────
-function PlanScreen({checkIn,workout,onGo}){
+function PlanScreen({checkIn,workout,onGo,safetyReport}){
   const[diff,setDiff]=useState("standard");
   const rtt=checkIn?.readiness||50, ctp=checkIn?.capacity||50;
   const safetyLevel=rtt>=70?"CLEAR":rtt>=50?"CAUTION":rtt>=30?"RESTRICTED":"STOP";
@@ -816,6 +866,28 @@ function PlanScreen({checkIn,workout,onGo}){
         </div>
       ))}
     </Card>);})()}
+    {/* Safety Verification Badge */}
+    {safetyReport&&<Card style={{borderColor:safetyReport.failed===0?C.success+"40":C.warning+"40",background:safetyReport.failed===0?C.success+"06":C.warning+"06"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <span style={{fontSize:18}}>{safetyReport.failed===0?"🛡️":"⚠️"}</span>
+          <div>
+            <div style={{fontSize:12,fontWeight:700,color:safetyReport.failed===0?C.success:C.warning}}>
+              {safetyReport.failed===0?"SAFETY VERIFIED ✓":`${safetyReport.failed} CHECK${safetyReport.failed>1?"S":""} FLAGGED`}
+            </div>
+            <div style={{fontSize:9,color:C.textDim}}>{safetyReport.passed}/{safetyReport.totalChecks} checks passed · {safetyReport.allCorrections.length} auto-corrections applied</div>
+          </div>
+        </div>
+        <Badge color={safetyReport.failed===0?C.success:C.warning}>{safetyReport.passed}/{safetyReport.totalChecks}</Badge>
+      </div>
+      {safetyReport.allCorrections.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:8}}>
+        <div style={{fontSize:9,fontWeight:700,color:C.textDim,marginBottom:4}}>AUTO-CORRECTIONS</div>
+        {safetyReport.allCorrections.slice(0,5).map((c,i)=><div key={i} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>
+          {c.action==="substitute"?`🔄 ${c.removedName} → ${c.replacementName}`:c.action==="remove"?`❌ Removed ${c.removedName}`:c.action==="add_exercise"?`➕ Added ${c.exerciseName}`:c.action==="modify_intensity"?`⚙️ ${c.exerciseName}: ${c.modification}`:c.reason} — {c.reason}
+        </div>)}
+        {safetyReport.allCorrections.length>5&&<div style={{fontSize:8,color:C.textDim}}>+{safetyReport.allCorrections.length-5} more</div>}
+      </div>}
+    </Card>}
     {/* Excluded exercises */}
     {excluded.length>0&&<Card style={{borderColor:C.danger+"20"}}>
       <div style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>EXCLUDED ({excluded.length}+ exercises)</div>
@@ -1197,7 +1269,8 @@ function AppInner(){
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="coach")setScreen("coach");},[]);
-  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);setWorkout(w);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
+  const[safetyReport,setSafetyReport]=useState(null);
+  const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
   const trackExDone=(exercise,setData)=>{const ep2=exParams(exercise);const sets=setData?.sets||[{set_number:1,reps_done:parseInt(String(ep2.reps).replace(/[^0-9]/g,''))||12,load:null,rpe:null,pain:false,quality:"good"}];const bestLoad=Math.max(...sets.map(s=>s.load||0),0);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:sets.length,sets,reps_done:ep2.reps||"—",load:bestLoad||null,pain_during:sets.some(s=>s.pain)}]);};
   const handleExDone=(setData)=>{setExHistory(h=>[...h,{idx:exIdx,snapshot:[...completedExercises]}]);trackExDone(wxAll[exIdx],setData);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
@@ -1231,7 +1304,7 @@ function AppInner(){
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
-    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
+    {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} safetyReport={safetyReport} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
     {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone} onBack={exHistory.length>0?handleExBack:null}/>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
