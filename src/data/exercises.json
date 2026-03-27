@@ -125,8 +125,8 @@
       "calves"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf-SMR/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "fr_it_band",
@@ -1039,8 +1039,8 @@
       "stabilization"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Plank/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Plank/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stab_bird_dog",
@@ -1171,8 +1171,8 @@
       "stabilization"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bird_Dog/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bird_Dog/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stab_mcgill_curl_up",
@@ -1825,8 +1825,8 @@
       "beginner"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ball_Squat/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ball_Squat/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_glute_bridge",
@@ -1962,8 +1962,8 @@
       "compound"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/1.jpg"
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg"
   },
   {
     "id": "str_sl_glute_bridge",
@@ -2239,8 +2239,8 @@
       "posterior_chain"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift_With_Dumbbells/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift_With_Dumbbells/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_trap_bar_dl_high",
@@ -2682,8 +2682,8 @@
       "nasm_phase1"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_incline_push_up",
@@ -3664,8 +3664,8 @@
       "back_safe"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Row/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Row/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_sa_db_row",
@@ -4508,8 +4508,8 @@
       "unilateral"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Squat/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Squat/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_bss_loaded",
@@ -4654,8 +4654,8 @@
       "strength"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Squat/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Squat/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "str_front_squat",
@@ -8704,8 +8704,8 @@
       "isolation"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Raises/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Raises/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "rehab_step_down_low",
@@ -10674,8 +10674,8 @@
       "static_stretch"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/All_Fours_Quad_Stretch_And_target_Hamstring/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/All_Fours_Quad_Stretch_And_target_Hamstring/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_hip_flexor",
@@ -11190,8 +11190,8 @@
       "upper_crossed_syndrome"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back-Loss_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back-Loss_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_piriformis",
@@ -11320,8 +11320,8 @@
       "static_stretch"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Piriformis_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Piriformis_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_quad",
@@ -11449,8 +11449,8 @@
       "static_stretch"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Quad_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Quad_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_cross_body_shoulder",
@@ -12228,8 +12228,8 @@
       "hamstrings"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstrings-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstrings-SMR/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "fr_glutes",
@@ -15023,8 +15023,8 @@
       "anti_rotation"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/1.jpg"
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg"
   },
   {
     "id": "corr_clamshell",
@@ -15170,8 +15170,8 @@
       "hip_stability"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Clam/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Clam/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "corr_side_lying_hip_abd",
@@ -15317,8 +15317,8 @@
       "hip_stability"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lying_Clam/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lying_Clam/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "corr_monster_walk",
@@ -16594,8 +16594,8 @@
       "activation"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Fire_Hydrant/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Fire_Hydrant/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "rehab_lateral_band_walk",
@@ -20264,8 +20264,8 @@
       "dynamic"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bear_Crawl_Shoulder_Tap/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bear_Crawl_Shoulder_Tap/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "func_turkish_getup",
@@ -20803,8 +20803,8 @@
       "static_stretch"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_glute",
@@ -20931,8 +20931,8 @@
       "static_stretch"
     ],
     "abilityLevel": "seated_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Piriformis_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Piriformis_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_chest_behind_back",
@@ -21443,8 +21443,8 @@
       "static_stretch"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck_Stretch/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "stretch_standing_calf",
@@ -23252,8 +23252,8 @@
       "wheelchair_accessible"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Jab_Cross/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Jab_Cross/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "seated_chair_dips",
@@ -24284,8 +24284,8 @@
       "wheelchair_accessible"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Adduction/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Adduction/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "seated_captains_lift",
@@ -25427,8 +25427,8 @@
       "activation"
     ],
     "abilityLevel": "bed_bound",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Glute_Bridge/1.jpg"
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg"
   },
   {
     "id": "aqua_walking",
@@ -26486,8 +26486,8 @@
       "hip_hinge_chain"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Sumo_Deadlift_High_Pull/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Sumo_Deadlift_High_Pull/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "kb_swing",
@@ -26777,8 +26777,8 @@
       "integration"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Turkish_Get-Up_(Kettlebell)/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Turkish_Get-Up_(Kettlebell)/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "kb_sa_press",
@@ -28253,8 +28253,8 @@
       "legs"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring_Curl/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring_Curl/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "trx_face_pull",
@@ -29066,8 +29066,8 @@
       "home_friendly"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lat_Pull-Down/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lat_Pull-Down/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "band_tricep_pushdown",
@@ -30615,8 +30615,8 @@
       "legs"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Walking_Lunge/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Walking_Lunge/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "dyn_high_knees",
@@ -30749,8 +30749,8 @@
       "full_body"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/High_Knee_Jog/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/High_Knee_Jog/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "dyn_butt_kicks",
@@ -30883,8 +30883,8 @@
       "quadriceps"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Kicks/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Kicks/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "dyn_lateral_shuffle",
@@ -31674,8 +31674,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_(Multiple_Response)/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_(Multiple_Response)/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "agil_reaction_ball",
@@ -33376,8 +33376,8 @@
       "low_impact"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Jab_Cross/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Jab_Cross/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "cond_affected_arm_rom",
@@ -36580,8 +36580,8 @@
       "explosive"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_(Multiple_Response)/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_(Multiple_Response)/1.jpg"
+    "imageUrl": null,
+    "imageUrl2": null
   },
   {
     "id": "sport_med_ball_slam",

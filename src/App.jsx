@@ -790,8 +790,8 @@ const Sec=({id,title,icon,color,children})=>{const o=exp===id;return(<div style=
 return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>{onBack&&<button onClick={onBack} style={{background:"none",border:"none",color:C.textMuted,fontSize:11,cursor:"pointer",padding:"4px 8px"}}>← Back</button>}<Badge color={pc}>{phase}</Badge><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span></div>
   <ProgressBar value={index+1} max={total} color={pc} height={4}/>
-  {/* Exercise image — real photo or SVG fallback */}
-  {exercise.imageUrl ? <ExerciseImage exercise={exercise} showBoth={true}/> : <ExerciseIllustration exerciseId={exercise.id}/>}
+  {/* Exercise image — always use ExerciseImage (real photo or SVG fallback) */}
+  <ExerciseImage exercise={exercise} showBoth={true}/>
   <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exLocationLabel(exercise)} · {exercise.difficultyLevel?`Level ${exercise.difficultyLevel}`:exercise.difficulty||""}</div></div>
   <div style={{display:"grid",gridTemplateColumns:ep.intensity?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>
     <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
@@ -944,7 +944,7 @@ function QuickModeScreen({workout,onComplete}){
           {/* Expanded detail view */}
           {isExp&&<div style={{padding:"0 14px 14px",borderTop:`1px solid ${C.border}`}}>
             {/* SVG Illustration — CLAUDE.md Rule 3: always visible when expanded */}
-            <div style={{marginTop:10}}>{ex.imageUrl?<ExerciseImage exercise={ex} showBoth={true}/>:<ExerciseIllustration exerciseId={ex.id}/>}</div>
+            <div style={{marginTop:10}}><ExerciseImage exercise={ex} showBoth={true}/></div>
             {/* Muscles */}
             <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:8}}>{em2.primary.map(mu=><Badge key={mu}>{mu}</Badge>)}{em2.secondary.slice(0,2).map(mu=><Badge key={mu} color={C.textDim}>{mu}</Badge>)}</div>
             {/* Key form cues */}
