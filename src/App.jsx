@@ -5,6 +5,7 @@ import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capE
 import OnboardingFlow, { hasCompletedAssessment, getAssessment } from "./components/Onboarding.jsx";
 import InjuryManager from "./components/InjuryManager.jsx";
 import AssessmentSummary from "./components/AssessmentSummary.jsx";
+import ExerciseImage from "./components/ExerciseImage.jsx";
 import PlanView from "./components/PlanView.jsx";
 import { getInjuries } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
@@ -706,8 +707,8 @@ const Sec=({id,title,icon,color,children})=>{const o=exp===id;return(<div style=
 return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   <div style={{display:"flex",justifyContent:"space-between"}}><Badge color={pc}>{phase}</Badge><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span></div>
   <ProgressBar value={index+1} max={total} color={pc} height={4}/>
-  {/* INLINE SVG ILLUSTRATION — always loads, always accurate */}
-  <ExerciseIllustration exerciseId={exercise.id}/>
+  {/* Exercise image — real photo or SVG fallback */}
+  {exercise.imageUrl ? <ExerciseImage exercise={exercise} showBoth={true}/> : <ExerciseIllustration exerciseId={exercise.id}/>}
   <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exLocationLabel(exercise)} · {exercise.difficultyLevel?`Level ${exercise.difficultyLevel}`:exercise.difficulty||""}</div></div>
   <div style={{display:"grid",gridTemplateColumns:ep.intensity?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>
     <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
@@ -764,12 +765,12 @@ function LibraryScreen(){
     {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
     {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
-        <div style={{width:44,height:44,borderRadius:10,background:C.bgElevated,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{ex.emoji}</div>
+        <ExerciseImage exercise={ex} size="thumb"/>
         <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div></div>
         <Badge color={ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{ex.safetyTier||"—"}</Badge>
       </div>
       {sel===ex.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>
-        <ExerciseIllustration exerciseId={ex.id}/>
+        <ExerciseImage exercise={ex} showBoth={true}/>
         <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10,marginBottom:10}}>{em2.primary.map(m=><Badge key={m}>{m}</Badge>)}{em2.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:10}}>{(ex.tags||[]).slice(0,6).map(t=><span key={t} style={{fontSize:9,color:C.info,background:C.infoGlow,padding:"2px 6px",borderRadius:4}}>#{t}</span>)}</div>
         <p style={{fontSize:13,color:C.textMuted,lineHeight:1.6,margin:"0 0 8px"}}>{ex.purpose}</p>
@@ -860,7 +861,7 @@ function QuickModeScreen({workout,onComplete}){
           {/* Expanded detail view */}
           {isExp&&<div style={{padding:"0 14px 14px",borderTop:`1px solid ${C.border}`}}>
             {/* SVG Illustration — CLAUDE.md Rule 3: always visible when expanded */}
-            <div style={{marginTop:10}}><ExerciseIllustration exerciseId={ex.id}/></div>
+            <div style={{marginTop:10}}>{ex.imageUrl?<ExerciseImage exercise={ex} showBoth={true}/>:<ExerciseIllustration exerciseId={ex.id}/>}</div>
             {/* Muscles */}
             <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:8}}>{em2.primary.map(mu=><Badge key={mu}>{mu}</Badge>)}{em2.secondary.slice(0,2).map(mu=><Badge key={mu} color={C.textDim}>{mu}</Badge>)}</div>
             {/* Key form cues */}
