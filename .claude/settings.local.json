@@ -5,7 +5,25 @@
       "Bash(gh repo:*)",
       "Bash(schtasks:*)",
       "Bash(node -e \":*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(vercel --version)",
+      "Bash(npm list:*)",
+      "Bash(vercel login:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://apex-coach-pbbkl5h1p-johntsunamis-projects.vercel.app/\")",
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(grep -o 'MISSING' dist/assets/*.js)",
+      "Bash(node scripts/map_images.js)",
+      "Bash(mv scripts/map_images.js scripts/map_images.cjs)",
+      "Bash(node scripts/map_images.cjs)",
+      "Bash(node -e \"console.log\\(require\\(''./src/data/exercises.json''\\).length\\)\")",
+      "Bash(node scripts/add_mckenzie_yoga.cjs)",
+      "Bash(node scripts/add_yoga.cjs)",
+      "Bash(node scripts/remap_all_images.cjs)",
+      "Bash(node --check src/App.jsx)",
+      "Bash(node:*)",
+      "Bash(npx vite:*)",
+      "Bash(git add:*)"
     ]
   }
 }

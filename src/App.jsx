@@ -12,6 +12,7 @@ import PlanView from "./components/PlanView.jsx";
 import { getInjuries } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen } from "./components/AuthScreens.jsx";
+import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -540,8 +541,105 @@ function Btn({children,onClick,disabled,style,variant="teal",size="lg",icon}){co
 function SectionTitle({icon,title,sub}){return(<div style={{marginBottom:12}}><div style={{display:"flex",alignItems:"center",gap:8}}>{icon&&<span style={{fontSize:18}}>{icon}</span>}<span style={{fontSize:16,fontWeight:700,color:C.text}}>{title}</span></div>{sub&&<div style={{fontSize:12,color:C.textMuted,marginTop:2,marginLeft:icon?26:0}}>{sub}</div>}</div>);}
 function BottomNav({active,onNav}){const items=[{id:"home",label:"Home",icon:"🏠"},{id:"train",label:"Train",icon:"💪"},{id:"library",label:"Library",icon:"📚"},{id:"tasks",label:"Tasks",icon:"✅"},{id:"coach",label:"Coach",icon:"🤖"}];return(<div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:"rgba(6,11,24,0.97)",borderTop:`1px solid ${C.border}`,display:"flex",justifyContent:"space-around",padding:"8px 0 12px",zIndex:200}}>{items.map(it=>(<button key={it.id} onClick={()=>onNav(it.id)} style={{background:"none",border:"none",display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",padding:"4px 12px"}}><span style={{fontSize:20,filter:active===it.id?"none":"brightness(0.5)"}}>{it.icon}</span><span style={{fontSize:10,fontWeight:600,color:active===it.id?C.teal:C.textDim}}>{it.label}</span>{active===it.id&&<div style={{width:4,height:4,borderRadius:2,background:C.teal}}/>}</button>))}</div>);}
 
+// ── DEBUG PANEL (tap APEX 5x to reveal) ─────────────────────────
+function DebugPanel({onClose}){
+  const[tab,setTab]=useState("images");
+  const[imgStatus,setImgStatus]=useState(null);
+  const[dbStatus,setDbStatus]=useState(null);
+  const[engineStatus,setEngineStatus]=useState(null);
+  const[supa,setSupa]=useState(null);
+  const[ls,setLs]=useState(null);
+  const[errors,setErrors]=useState([]);
+  const[imgLoading,setImgLoading]=useState(false);
+
+  useEffect(()=>{
+    setLs(getLocalStorageStats());
+    setErrors(getErrorLog());
+    checkSupabaseConnection().then(setSupa);
+    const dbResult=validateExerciseDB(exerciseDB);
+    setDbStatus(dbResult);
+  },[]);
+
+  const runImageCheck=()=>{setImgLoading(true);checkExerciseImages(exerciseDB).then(r=>{setImgStatus(r);setImgLoading(false);});};
+  const runEngineTest=()=>{setEngineStatus(testWorkoutEngine(buildWorkoutList));};
+
+  const tabs=[{id:"images",label:"Images"},{id:"db",label:"DB"},{id:"engine",label:"Engine"},{id:"supa",label:"Supabase"},{id:"storage",label:"Storage"},{id:"errors",label:"Errors"}];
+  const S={panel:{background:C.bg,border:`2px solid ${C.teal}40`,borderRadius:16,padding:16,marginBottom:16},
+    tabRow:{display:"flex",gap:4,marginBottom:12,flexWrap:"wrap"},
+    tab:(active)=>({padding:"4px 10px",borderRadius:8,fontSize:10,fontWeight:700,cursor:"pointer",border:`1px solid ${active?C.teal:C.border}`,background:active?C.teal+"20":"transparent",color:active?C.teal:C.textDim}),
+    row:{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`,fontSize:11},
+    label:{color:C.textMuted},val:{color:C.text,fontWeight:600},
+    btn:{padding:"6px 12px",borderRadius:8,border:`1px solid ${C.teal}`,background:C.teal+"15",color:C.teal,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"},
+    stat:(color)=>({fontSize:24,fontWeight:800,color,fontFamily:"'Bebas Neue',sans-serif"}),
+  };
+  return(
+    <div style={S.panel}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <div style={{fontSize:14,fontWeight:700,color:C.teal,letterSpacing:2}}>DEBUG PANEL</div>
+        <button onClick={onClose} style={{background:"none",border:"none",color:C.textDim,fontSize:18,cursor:"pointer"}}>x</button>
+      </div>
+      <div style={S.tabRow}>{tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={S.tab(tab===t.id)}>{t.label}</button>)}</div>
+
+      {tab==="images"&&<div>
+        <button onClick={runImageCheck} disabled={imgLoading} style={S.btn}>{imgLoading?"Checking...":"Run Image Check"}</button>
+        {imgStatus&&<div style={{marginTop:10}}>
+          <div style={{display:"flex",gap:16,marginBottom:8}}>
+            <div><span style={S.stat(C.success)}>{imgStatus.working.length}</span><div style={{fontSize:9,color:C.textDim}}>Working</div></div>
+            <div><span style={S.stat(C.danger)}>{imgStatus.broken.length}</span><div style={{fontSize:9,color:C.textDim}}>Broken</div></div>
+            <div><span style={S.stat(C.warning)}>{imgStatus.missing.length}</span><div style={{fontSize:9,color:C.textDim}}>No URL</div></div>
+            <div><span style={S.stat(C.textMuted)}>{imgStatus.total}</span><div style={{fontSize:9,color:C.textDim}}>Total</div></div>
+          </div>
+          {imgStatus.broken.length>0&&<div style={{maxHeight:120,overflow:"auto"}}>{imgStatus.broken.map(b=><div key={b.id} style={S.row}><span style={S.label}>{b.name}</span><span style={{color:C.danger,fontSize:10}}>{b.error}</span></div>)}</div>}
+        </div>}
+      </div>}
+
+      {tab==="db"&&<div>
+        {dbStatus&&<div>
+          <div style={{display:"flex",gap:16,marginBottom:8}}>
+            <div><span style={S.stat(C.danger)}>{dbStatus.errors}</span><div style={{fontSize:9,color:C.textDim}}>Errors</div></div>
+            <div><span style={S.stat(C.warning)}>{dbStatus.warnings}</span><div style={{fontSize:9,color:C.textDim}}>Warnings</div></div>
+            <div><span style={S.stat(C.teal)}>{dbStatus.total}</span><div style={{fontSize:9,color:C.textDim}}>Exercises</div></div>
+          </div>
+          {dbStatus.issues.length>0&&<div style={{maxHeight:200,overflow:"auto"}}>{dbStatus.issues.slice(0,30).map((iss,i)=><div key={i} style={S.row}><span style={{color:iss.severity==="error"?C.danger:C.warning,fontSize:10,minWidth:40}}>{iss.severity}</span><span style={{color:C.textDim,fontSize:10}}>{iss.id}: {iss.msg}</span></div>)}</div>}
+        </div>}
+      </div>}
+
+      {tab==="engine"&&<div>
+        <button onClick={runEngineTest} style={S.btn}>Test Workout Engine</button>
+        {engineStatus&&<div style={{marginTop:10}}>{engineStatus.map((r,i)=><div key={i} style={S.row}><span style={S.label}>{r.scenario}</span><span style={{color:r.status==="ok"?C.success:C.danger,fontSize:10}}>{r.status==="ok"?`W${r.warmup} M${r.main} C${r.cooldown} = ${r.total}`:r.error}</span></div>)}</div>}
+      </div>}
+
+      {tab==="supa"&&<div>
+        {supa?<div>
+          {[{l:"Status",v:supa.status,c:supa.status==="connected"?C.success:C.danger},{l:"Latency",v:supa.latency||"—"},{l:"Session",v:supa.hasSession?"Active":"None"},{l:"User",v:supa.user||supa.msg||"—"}].map(r=><div key={r.l} style={S.row}><span style={S.label}>{r.l}</span><span style={{...S.val,color:r.c||C.text}}>{r.v}</span></div>)}
+        </div>:<div style={{fontSize:11,color:C.textDim}}>Checking...</div>}
+      </div>}
+
+      {tab==="storage"&&<div>
+        {ls&&<div>
+          <div style={{display:"flex",gap:16,marginBottom:8}}>
+            <div><span style={S.stat(C.teal)}>{ls.totalItems}</span><div style={{fontSize:9,color:C.textDim}}>Keys</div></div>
+            <div><span style={S.stat(C.info)}>{ls.totalKB}</span><div style={{fontSize:9,color:C.textDim}}>Used</div></div>
+          </div>
+          <div style={{maxHeight:150,overflow:"auto"}}>{ls.items.map(it=><div key={it.key} style={S.row}><span style={S.label}>{it.key}</span><span style={S.val}>{it.sizeKB}</span></div>)}</div>
+        </div>}
+      </div>}
+
+      {tab==="errors"&&<div>
+        {errors.length===0?<div style={{fontSize:11,color:C.textDim}}>No errors logged</div>:<div>
+          <button onClick={()=>{clearErrorLog();setErrors([]);}} style={{...S.btn,borderColor:C.danger,color:C.danger,marginBottom:8}}>Clear Log</button>
+          <div style={{maxHeight:200,overflow:"auto"}}>{errors.map((e,i)=><div key={i} style={{...S.row,flexDirection:"column",gap:2}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{color:C.danger,fontSize:10}}>{e.context||"unknown"}</span><span style={{color:C.textDim,fontSize:9}}>{new Date(e.ts).toLocaleTimeString()}</span></div><span style={{fontSize:10,color:C.textMuted}}>{e.msg}</span></div>)}</div>
+        </div>}
+      </div>}
+
+      <div style={{marginTop:12,fontSize:9,color:C.textDim,textAlign:"center"}}>APEX Coach v13 | {exerciseDB.length} exercises | {import.meta.env.MODE}</div>
+    </div>
+  );
+}
+
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary}){const[si,setSi]=useState(null);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>APEX</div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {userName.toUpperCase()} 👋</div></div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {userName.toUpperCase()} 👋</div></div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+  {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></Card>
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{onViewPlan&&<Card onClick={onViewPlan} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📋</span><div style={{fontSize:11,fontWeight:700,color:C.info,marginTop:4}}>View Full Plan</div><div style={{fontSize:9,color:C.textDim}}>12-month roadmap</div></Card>}{onViewSummary&&<Card onClick={onViewSummary} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📊</span><div style={{fontSize:11,fontWeight:700,color:C.purple,marginTop:4}}>My Assessment</div><div style={{fontSize:9,color:C.textDim}}>Review profile</div></Card>}</div>
@@ -1081,13 +1179,15 @@ function AppInner(){
   const[workout,setWorkout]=useState(defaultWorkout);
   const[workoutMode,setWorkoutMode]=useState("guided");
   const[difficulty,setDifficulty]=useState("standard");
+  // Dev bypass: add ?dev to URL to skip auth (dev mode only)
+  const devBypass=import.meta.env.DEV&&new URLSearchParams(window.location.search).has("dev");
   // Route logic: auth state → screen
   useEffect(()=>{
-    if(loading)return;
-    if(!user){setScreen("auth");return;}
-    if(profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
+    if(loading&&!devBypass)return;
+    if(!user&&!devBypass){setScreen("auth");return;}
+    if(!devBypass&&profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
     if(screen==="auth"||screen==="init")setScreen("home");
-  },[user,profile,loading]);
+  },[user,profile,loading,devBypass]);
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
