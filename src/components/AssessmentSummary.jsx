@@ -4,6 +4,7 @@ import compensationsDB from "../data/compensations.json";
 import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { buildWorkoutList } from "../utils/workoutHelpers.js";
+import { generateProtocols, saveLocalProtocols } from "./PTSystem.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // Post-Assessment Summary — comprehensive profile review
@@ -189,6 +190,149 @@ export default function AssessmentSummary({ onContinue, userName }) {
           <div style={{ fontSize: 9, fontWeight: 700, color: C.warning, marginBottom: 4 }}>FAVORITE EXERCISE PROGRESSIONS</div>
           {favRegressions.map((fr, i) => <div key={i} style={{ fontSize: 9, color: C.textMuted, padding: "2px 0" }}>You favorited <b style={{ color: C.text }}>{fr.name}</b> — starting with {fr.regress} first. Estimated unlock: Week {fr.estimateWeek}</div>)}
         </div>}
+      </Card>
+
+      {/* Section 6: 6-Week Block Expectations */}
+      <Card>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 12 }}>WHAT TO EXPECT — 6-WEEK BLOCKS</div>
+        {[
+          { weeks: "1-2", title: "Neural Adaptation", color: C.info, items: [
+            "Your body is learning new movement patterns",
+            "Expect: slight soreness, improving form, building mind-muscle connection",
+            "Sets are intentionally low (1-2 per exercise) — protects your joints while nervous system adapts",
+            "Strength gains: 10-15% from neural efficiency alone (not muscle growth yet)",
+          ]},
+          { weeks: "3-4", title: "Foundation Building", color: C.teal, items: [
+            "Movement quality improving — exercises feel more natural",
+            "Volume increases to 2-3 sets — connective tissue ready",
+            "Less soreness between sessions, better balance, improved confidence",
+            "Stabilizer muscles engaging properly now",
+          ]},
+          { weeks: "5-6", title: "Phase 1 Completion", color: C.success, items: [
+            "Testing readiness for Phase 2",
+            "Core endurance: hold plank 30+ seconds",
+            "Hip hinge: proper form with bodyweight → light load",
+            "Balance: single-leg stance 20+ seconds",
+            "Pain levels: stable or improved vs Week 1",
+          ]},
+        ].map(block => (
+          <div key={block.weeks} style={{ marginBottom: 10, padding: 10, background: block.color + "08", borderRadius: 10, border: `1px solid ${block.color}15` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: block.color }}>Week {block.weeks}: {block.title}</span>
+            </div>
+            {block.items.map((item, i) => (
+              <div key={i} style={{ fontSize: 10, color: C.textMuted, padding: "2px 0", paddingLeft: 8 }}>· {item}</div>
+            ))}
+          </div>
+        ))}
+        <div style={{ fontSize: 9, color: C.textDim, fontStyle: "italic" }}>Beyond Week 6: Phase 2 (Strength) introduces progressive loading, Phase 3 (Hypertrophy) targets size goals.</div>
+      </Card>
+
+      {/* Section 7: PT Protocol Details */}
+      {(() => {
+        const ptProtocols = assessment?.conditions?.length ? generateProtocols(assessment) : [];
+        if (!ptProtocols.length) return null;
+        // Save protocols for later use
+        saveLocalProtocols(ptProtocols);
+        const FREQ_LABELS = { acute: "3-6× per day · 5-10 min", subacute: "2-3× per day · 10-15 min", chronic: "1-2× per day · 15-20 min", chronic_persistent: "1× per day · 15-20 min" };
+        const TYPE_LABELS = { mckenzie_extension: "McKenzie Extension Protocol", williams_flexion: "Williams Flexion Protocol", neutral_stabilization: "Neutral Stabilization (McGill Big 3)", joint_rom: "Joint ROM Recovery", joint_strengthening: "Joint Strengthening", shoulder_rehab: "Shoulder Rehabilitation", general: "General Rehabilitation" };
+        return (
+          <Card style={{ borderColor: C.purple + "20" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: 2, marginBottom: 12 }}>YOUR PHYSICAL THERAPY PLAN</div>
+            {ptProtocols.map((proto, i) => {
+              const tl = proto.timeline;
+              const onset = tl?.onset || "chronic";
+              return (
+                <div key={i} style={{ marginBottom: i < ptProtocols.length - 1 ? 14 : 0, paddingBottom: i < ptProtocols.length - 1 ? 14 : 0, borderBottom: i < ptProtocols.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 2 }}>{proto.protocol_name}</div>
+                  <Badge color={C.purple}>{TYPE_LABELS[proto.protocol_type] || proto.protocol_type}</Badge>
+                  <div style={{ marginTop: 8 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                      <div style={{ padding: 8, background: C.bgElevated, borderRadius: 8, textAlign: "center" }}>
+                        <div style={{ fontSize: 14, fontWeight: 800, color: C.purple }}>{proto.frequency_per_day}×/day</div>
+                        <div style={{ fontSize: 8, color: C.textDim }}>FREQUENCY</div>
+                      </div>
+                      <div style={{ padding: 8, background: C.bgElevated, borderRadius: 8, textAlign: "center" }}>
+                        <div style={{ fontSize: 14, fontWeight: 800, color: C.teal }}>{proto.session_duration_minutes}min</div>
+                        <div style={{ fontSize: 8, color: C.textDim }}>PER SESSION</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 10, color: C.textMuted, marginTop: 6 }}>
+                    Schedule: {FREQ_LABELS[onset] || "2× per day"} · {onset === "acute" ? "Gentle intensity — pain should not increase" : onset === "subacute" ? "Moderate — mild discomfort OK" : "Progressive — challenging but controlled"}
+                  </div>
+                  {/* Phase timeline */}
+                  <div style={{ marginTop: 8 }}>
+                    {[
+                      { w: "1-4", n: "Pain Management", g: "Pain ≤4/10, exercises tolerated" },
+                      { w: "5-8", n: "Stability Foundation", g: "Hold positions 30s+, pain-free exercise" },
+                      { w: "9-12", n: "Functional Loading", g: "Daily activities pain-free" },
+                      { w: "13-24", n: "Progressive Strengthening", g: "Return to full training" },
+                    ].map((ph, pi) => (
+                      <div key={pi} style={{ display: "flex", gap: 6, padding: "3px 0" }}>
+                        <span style={{ fontSize: 9, color: pi === 0 ? C.purple : C.textDim, fontWeight: pi === 0 ? 700 : 400, minWidth: 50 }}>Wk {ph.w}</span>
+                        <span style={{ fontSize: 9, color: pi === 0 ? C.text : C.textDim }}>{ph.n} — {ph.g}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Directional preference note */}
+                  {proto.directional_preference && (
+                    <div style={{ marginTop: 6, padding: 6, background: C.info + "08", borderRadius: 6 }}>
+                      <div style={{ fontSize: 9, color: C.info }}>
+                        {proto.directional_preference.extension === "better" ? "Extension-biased: McKenzie press-ups and standing extensions as primary PT exercises." :
+                         proto.directional_preference.flexion === "better" ? "Flexion-biased: Williams flexion exercises (knee-to-chest, pelvic tilts) as primary PT exercises." :
+                         "Neutral: McGill Big 3 (curl-up, side plank, bird dog) as primary PT protocol."}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <div style={{ fontSize: 9, color: C.textDim, marginTop: 8, fontStyle: "italic" }}>PT sessions run independently from main workouts. Reminders appear on your Home screen.</div>
+          </Card>
+        );
+      })()}
+
+      {/* Section 8: Functional Goals */}
+      {(() => {
+        const fl = assessment?.functionalLimitations || {};
+        const limited = Object.entries(fl).filter(([, v]) => v !== "easy");
+        if (!limited.length) return null;
+        const labels = { sit_30: "Sit for 30+ minutes", stand_30: "Stand for 30+ minutes", walk_15: "Walk for 15+ minutes", climb_stairs: "Climb stairs", lift_overhead: "Lift objects overhead", reach_behind: "Reach behind back", get_up_floor: "Get up from floor", sleep_through: "Sleep through the night", drive_30: "Drive for 30+ minutes", exercise_moderate: "Exercise at moderate intensity" };
+        return (
+          <Card style={{ borderColor: C.info + "20" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 10 }}>YOUR FUNCTIONAL GOALS</div>
+            <div style={{ fontSize: 10, color: C.textMuted, marginBottom: 8 }}>These limitations become measurable targets. Reassessed every 4 weeks.</div>
+            {limited.map(([key, val]) => (
+              <div key={key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
+                <div>
+                  <div style={{ fontSize: 11, color: C.text }}>{labels[key] || key}</div>
+                  <div style={{ fontSize: 9, color: C.textDim }}>Current: {val === "cannot" ? "Cannot do" : "With difficulty"} → Goal: Can do easily</div>
+                </div>
+                <Badge color={val === "cannot" ? C.danger : C.warning}>{val === "cannot" ? "CANNOT" : "DIFFICULT"}</Badge>
+              </div>
+            ))}
+            <div style={{ fontSize: 9, color: C.textDim, marginTop: 6, fontStyle: "italic" }}>Your PT protocol and training program work together to improve each of these.</div>
+          </Card>
+        );
+      })()}
+
+      {/* Section 9: How We Verify This Plan */}
+      <Card style={{ borderColor: C.success + "20" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.success, letterSpacing: 2, marginBottom: 10 }}>HOW WE VERIFY THIS PLAN</div>
+        {[
+          { icon: "📊", text: `Every exercise selected from a database of ${exerciseDB.length} evidence-based movements` },
+          { icon: "🛡️", text: `Each exercise checked against your ${activeInjuries.length} active condition${activeInjuries.length !== 1 ? "s" : ""} — ${Object.values(blocked).reduce((s, v) => s + v, 0)} exercises blocked for safety` },
+          { icon: "🔬", text: "Compensatory muscle work auto-calculated from your movement screen" },
+          { icon: "📚", text: "Plan follows evidence-based exercise science protocols, McKenzie Method guidelines, and current PT research" },
+          { icon: "🔄", text: "Plan recalculates daily based on your feedback, pain levels, and progress" },
+          { icon: "⚠️", text: "If anything feels wrong — tell the coach. The app adapts immediately." },
+        ].map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: 8, padding: "5px 0" }}>
+            <span style={{ fontSize: 12, flexShrink: 0 }}>{item.icon}</span>
+            <span style={{ fontSize: 10, color: C.textMuted }}>{item.text}</span>
+          </div>
+        ))}
       </Card>
 
       {/* CTA */}

@@ -14,6 +14,7 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen } from "./components/AuthScreens.jsx";
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
+import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -639,7 +640,7 @@ function DebugPanel({onClose}){
 }
 
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {userName.toUpperCase()} 👋</div></div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>GOOD MORNING, {userName.toUpperCase()} 👋</div></div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></Card>
@@ -649,6 +650,7 @@ function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewP
   <div><SectionTitle icon="🗓️" title="Your Plan"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:"Phase 1",s:"Foundation",a:true},{n:"Phase 2",s:"Strength",a:false},{n:"Phase 3",s:"Hypertrophy",a:false}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:14,borderColor:p.a?C.teal+"40":C.border,background:p.a?C.tealBg:C.bgCard}}><div style={{fontSize:14,fontWeight:700,color:p.a?C.text:C.textDim}}>{p.n}</div><div style={{fontSize:11,color:p.a?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div></div>
   <div><SectionTitle icon="📋" title="Daily Minimums"/><Card>{[{i:"👟",l:"Steps",v:"4,200 / 8,000",p:52},{i:"🫀",l:"Cardio",v:"0 MIN",p:0},{i:"🧘",l:"Stretching",v:"0 MIN",p:0}].map(d=>(<div key={d.l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span>{d.i}</span><span style={{fontSize:14,color:C.text,fontWeight:600}}>{d.l}</span><span style={{fontSize:12,color:C.textMuted}}>— {d.v}</span></div><Badge color={d.p>0?C.teal:C.orange}>{d.p>0?`${d.p}%`:d.v.split(" ")[0]}</Badge></div>))}</Card></div>
   <div><SectionTitle icon="🩺" title="Active Injury Protocols" sub="Tap to expand · Edit to manage"/>{dynamicInjuries.map(inj=>(<Card key={inj.id} onClick={()=>setSi(si===inj.id?null:inj.id)} style={{marginBottom:8,cursor:"pointer",borderColor:inj.tempFlag?C.warning+"60":C.border}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{inj.area}</div><div style={{fontSize:12,color:C.textDim}}>{inj.type}{inj.notes?` — ${inj.notes}`:""}</div>{inj.tempFlag&&<div style={{fontSize:10,color:C.warning,marginTop:2}}>⚡ {inj.tempFlag}</div>}</div><Badge color={inj.severity<=2?C.warning:C.danger}>SEV {inj.severity}/5</Badge></div>{si===inj.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>{(inj.protocols||[]).map((p,i)=><div key={i} style={{display:"flex",gap:8,padding:"5px 0"}}><span style={{color:C.teal}}>▸</span><span style={{fontSize:13,color:C.textMuted}}>{p}</span></div>)}</div>}</Card>))}{onEditInjuries&&<button onClick={onEditInjuries} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textMuted,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit",marginTop:4}}>✏️ Edit Injuries & Conditions</button>}</div>
+  <PTProgressCard onStartSession={(p)=>{onPTSession?.(p);}} onViewProgress={onPTProgress}/>
   {onRetakeAssessment&&<div style={{marginTop:8}}><button onClick={onRetakeAssessment} style={{background:"none",border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textDim,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit"}}>⚙️ Retake Assessment</button></div>}
   <div style={{height:90}}/></div>);}
 
@@ -1181,6 +1183,7 @@ function AppInner(){
   const[workout,setWorkout]=useState(defaultWorkout);
   const[workoutMode,setWorkoutMode]=useState("guided");
   const[difficulty,setDifficulty]=useState("standard");
+  const[ptProtocol,setPtProtocol]=useState(null); // active PT protocol for mini-session
   // Dev bypass: add ?dev to URL to skip auth (dev mode only)
   const devBypass=import.meta.env.DEV&&new URLSearchParams(window.location.search).has("dev");
   // Route logic: auth state → screen
@@ -1211,13 +1214,21 @@ function AppInner(){
     {screen==="auth"&&authView==="login"&&<LogInScreen onBack={()=>setAuthView("landing")} onForgot={()=>setAuthView("forgot")} onSuccess={()=>setScreen("home")}/>}
     {screen==="auth"&&authView==="forgot"&&<ForgotPasswordScreen onBack={()=>setAuthView("login")}/>}
     {/* App screens (authenticated) */}
-    {screen==="onboarding"&&<OnboardingFlow onComplete={()=>{setScreen("assessment_summary");}}/>}
+    {screen==="onboarding"&&<OnboardingFlow onComplete={(data)=>{
+      // Save clinical assessment + generate PT protocols
+      if(data&&user){
+        saveAssessmentToSupabase(user.id,data).catch(()=>{});
+        const protocols=generateProtocols(data);
+        if(protocols.length){saveLocalProtocols(protocols);saveProtocolsToSupabase(user.id,protocols).catch(()=>{});}
+      }
+      setScreen("assessment_summary");
+    }}/>}
     {screen==="assessment_summary"&&<AssessmentSummary onContinue={()=>{setScreen("home");setTab("home");}} userName={auth?.profile?.first_name||USER.name}/>}
     {screen==="plan_view"&&<PlanView onClose={()=>setScreen("home")}/>}
     {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")}/>}
-    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")}/>}
+    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
@@ -1229,6 +1240,8 @@ function AppInner(){
     {screen==="coach"&&<CoachScreen/>}
     {screen==="library"&&<LibraryScreen/>}
     {screen==="tasks"&&<TasksScreen/>}
+    {screen==="pt_session"&&ptProtocol&&<PTMiniSession protocol={ptProtocol} onComplete={()=>{setScreen("home");setTab("home");setPtProtocol(null);}} onClose={()=>{setScreen("home");setTab("home");setPtProtocol(null);}}/>}
+    {screen==="pt_progress"&&<PTProgressPage onClose={()=>{setScreen("home");setTab("home");}} onStartSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}}/>}
     {screen!=="auth"&&screen!=="profile"&&<BottomNav active={tab} onNav={navTo}/>}
   </>);
 }
