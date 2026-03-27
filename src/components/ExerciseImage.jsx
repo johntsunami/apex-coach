@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ═══════════════════════════════════════════════════════════════
-// ExerciseImage — shows real photo or programmatic SVG fallback
-// ALWAYS renders a visual — never just an emoji
+// ExerciseImage — animated crossfade between start/end positions,
+// static photo fallback, or programmatic SVG diagram
 // ═══════════════════════════════════════════════════════════════
 
-const C = { bg: "#060b18", bgCard: "#0a1628", teal: "#00d2c8", tealDim: "#00d2c840", textDim: "#4a5a78", text: "#e8ecf4", border: "rgba(255,255,255,0.08)", danger: "#ef4444" };
+const C = { bg: "#060b18", bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", text: "#e8ecf4", border: "rgba(255,255,255,0.08)" };
 
-// SVG stick figure positions based on movement pattern
 const SVG_POSITIONS = {
   push: { body: "M50 25 L50 55 L30 80 M50 55 L70 80 M50 35 L25 50 M50 35 L75 45", label: "PUSH" },
   pull: { body: "M50 25 L50 55 L30 80 M50 55 L70 80 M50 35 L30 20 M50 35 L70 20", label: "PULL" },
@@ -30,8 +29,6 @@ function FallbackSVG({ exercise, width = "100%", height = 160 }) {
   const pattern = exercise?.movementPattern || "isolation";
   const pos = SVG_POSITIONS[pattern] || SVG_POSITIONS.isolation;
   const bp = (exercise?.bodyPart || "").replace(/_/g, " ");
-  const name = exercise?.name || "";
-
   return (
     <svg viewBox="0 0 100 100" style={{ width, height, display: "block", borderRadius: 14, border: `1px solid ${C.border}` }}>
       <rect width="100" height="100" rx="8" fill={C.bgCard} />
@@ -44,7 +41,6 @@ function FallbackSVG({ exercise, width = "100%", height = 160 }) {
   );
 }
 
-// Shimmer loading animation
 function LoadingSkeleton({ width, height, isThumbnail }) {
   return (
     <div style={{
@@ -56,19 +52,48 @@ function LoadingSkeleton({ width, height, isThumbnail }) {
       border: `1px solid ${C.border}`,
       display: "flex", alignItems: "center", justifyContent: "center",
     }}>
-      <style>{`@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }`}</style>
+      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes crossfade{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}`}</style>
       <span style={{ fontSize: isThumbnail ? 14 : 24, opacity: 0.3 }}>{isThumbnail ? "📷" : "Loading..."}</span>
     </div>
   );
 }
 
-export default function ExerciseImage({ exercise, size = "full", showBoth = false }) {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
+// Animated crossfade between two images (simulates exercise movement)
+function AnimatedExercise({ url, url2, name, height }) {
+  const [loaded1, setLoaded1] = useState(false);
   const [loaded2, setLoaded2] = useState(false);
+  const [error1, setError1] = useState(false);
   const [error2, setError2] = useState(false);
+  const bothLoaded = loaded1 && loaded2 && !error2;
+  const imgStyle = { width: "100%", height, objectFit: "cover", borderRadius: 14, border: `1px solid ${C.border}` };
 
-  const url = exercise?.imageUrl;
+  return (
+    <div style={{ position: "relative", width: "100%", height }}>
+      {/* Loading skeleton */}
+      {!loaded1 && <LoadingSkeleton width="100%" height={height} />}
+
+      {/* Animated: crossfade between frame 0 and frame 1 */}
+      {bothLoaded ? (
+        <div style={{ position: "relative", width: "100%", height }}>
+          <img src={url} alt={name + " — start"} style={{ ...imgStyle, position: "absolute", top: 0, left: 0, animation: "crossfade 2.4s ease-in-out infinite" }} />
+          <img src={url2} alt={name + " — end"} style={{ ...imgStyle, position: "absolute", top: 0, left: 0, animation: "crossfade 2.4s ease-in-out infinite", animationDelay: "1.2s" }} />
+          <div style={{ position: "absolute", bottom: 6, right: 8, background: "rgba(0,0,0,0.6)", borderRadius: 6, padding: "2px 6px", fontSize: 8, color: C.teal, fontWeight: 700 }}>ANIMATED</div>
+        </div>
+      ) : loaded1 ? (
+        <img src={url} alt={name} style={{ ...imgStyle, display: "block" }} />
+      ) : null}
+
+      {/* Preload second image silently */}
+      <img src={url} alt="" loading="lazy" crossOrigin="anonymous" onLoad={() => setLoaded1(true)} onError={() => setError1(true)} style={{ display: "none" }} />
+      {url2 && <img src={url2} alt="" loading="lazy" crossOrigin="anonymous" onLoad={() => setLoaded2(true)} onError={() => setError2(true)} style={{ display: "none" }} />}
+    </div>
+  );
+}
+
+export default function ExerciseImage({ exercise, size = "full", showBoth = false }) {
+  const [error, setError] = useState(false);
+
+  const url = exercise?.gifUrl || exercise?.imageUrl;
   const url2 = exercise?.imageUrl2;
   const isThumbnail = size === "thumb";
   const w = isThumbnail ? 48 : "100%";
@@ -79,60 +104,79 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
     return <FallbackSVG exercise={exercise} width={w} height={isThumbnail ? 48 : 160} />;
   }
 
+  // Thumbnail: static image only
+  if (isThumbnail) {
+    return <ThumbImage url={url} exercise={exercise} onError={() => setError(true)} />;
+  }
+
+  // Full size: animated crossfade if two images available, or static
+  if (url2 && !showBoth) {
+    return <AnimatedExercise url={url} url2={url2} name={exercise?.name || ""} height={h} />;
+  }
+
+  // showBoth = true: side-by-side static (for library detail)
+  if (showBoth && url2) {
+    return <SideBySide url={url} url2={url2} exercise={exercise} height={160} onError={() => setError(true)} />;
+  }
+
+  // Single animated frame
+  if (url2) {
+    return <AnimatedExercise url={url} url2={url2} name={exercise?.name || ""} height={h} />;
+  }
+
+  // Single static image
+  return <SingleImage url={url} exercise={exercise} height={h} onError={() => setError(true)} />;
+}
+
+function ThumbImage({ url, exercise, onError }) {
+  const [loaded, setLoaded] = useState(false);
+  const [err, setErr] = useState(false);
+  if (err) return <FallbackSVG exercise={exercise} width={48} height={48} />;
   return (
-    <div style={{ width: isThumbnail ? 48 : "100%", position: "relative" }}>
-      {/* Loading skeleton — shown while image loads */}
-      {!loaded && <LoadingSkeleton width={w} height={h} isThumbnail={isThumbnail} />}
+    <div style={{ width: 48, height: 48, flexShrink: 0 }}>
+      {!loaded && <div style={{ width: 48, height: 48, borderRadius: 8, background: C.bgCard, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 14, opacity: 0.3 }}>📷</span></div>}
+      <img src={url} alt={exercise?.name || ""} loading="lazy" crossOrigin="anonymous"
+        onLoad={() => setLoaded(true)} onError={() => { setErr(true); onError?.(); }}
+        style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 8, display: loaded ? "block" : "none", border: `1px solid ${C.border}` }} />
+    </div>
+  );
+}
 
-      {/* Image(s) */}
-      <div style={{
-        display: showBoth && url2 && !error2 && loaded ? "grid" : "block",
-        gridTemplateColumns: "1fr 1fr", gap: 4
-      }}>
-        <img
-          src={url}
-          alt={exercise?.name || "Exercise demonstration"}
-          loading="lazy"
-          crossOrigin="anonymous"
-          onLoad={() => setLoaded(true)}
-          onError={() => setError(true)}
-          style={{
-            width: showBoth && url2 && loaded ? "100%" : w,
-            height: isThumbnail ? 48 : showBoth && loaded ? 160 : h,
-            objectFit: "cover",
-            borderRadius: isThumbnail ? 8 : 14,
-            display: loaded ? "block" : "none",
-            border: `1px solid ${C.border}`,
-          }}
-        />
-        {/* Second image (end position) — only when showBoth and first image loaded */}
-        {showBoth && url2 && !error2 && loaded && (
-          <img
-            src={url2}
-            alt={`${exercise?.name || "Exercise"} — end position`}
-            loading="lazy"
-            crossOrigin="anonymous"
-            onLoad={() => setLoaded2(true)}
-            onError={() => setError2(true)}
-            style={{
-              width: "100%",
-              height: 160,
-              objectFit: "cover",
-              borderRadius: 14,
-              display: loaded2 ? "block" : "none",
-              border: `1px solid ${C.border}`,
-            }}
-          />
-        )}
+function SingleImage({ url, exercise, height, onError }) {
+  const [loaded, setLoaded] = useState(false);
+  const [err, setErr] = useState(false);
+  if (err) return <FallbackSVG exercise={exercise} width="100%" height={height} />;
+  return (
+    <div style={{ width: "100%" }}>
+      {!loaded && <LoadingSkeleton width="100%" height={height} />}
+      <img src={url} alt={exercise?.name || ""} loading="lazy" crossOrigin="anonymous"
+        onLoad={() => setLoaded(true)} onError={() => { setErr(true); onError?.(); }}
+        style={{ width: "100%", height, objectFit: "cover", borderRadius: 14, display: loaded ? "block" : "none", border: `1px solid ${C.border}` }} />
+    </div>
+  );
+}
+
+function SideBySide({ url, url2, exercise, height, onError }) {
+  const [l1, setL1] = useState(false);
+  const [l2, setL2] = useState(false);
+  const [e1, setE1] = useState(false);
+  const [e2, setE2] = useState(false);
+  if (e1) return <FallbackSVG exercise={exercise} width="100%" height={height} />;
+  return (
+    <div>
+      {!l1 && <LoadingSkeleton width="100%" height={height} />}
+      <div style={{ display: l1 ? "grid" : "none", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+        <img src={url} alt={exercise?.name + " — start"} loading="lazy" crossOrigin="anonymous"
+          onLoad={() => setL1(true)} onError={() => { setE1(true); onError?.(); }}
+          style={{ width: "100%", height, objectFit: "cover", borderRadius: 14, border: `1px solid ${C.border}` }} />
+        {!e2 && <img src={url2} alt={exercise?.name + " — end"} loading="lazy" crossOrigin="anonymous"
+          onLoad={() => setL2(true)} onError={() => setE2(true)}
+          style={{ width: "100%", height, objectFit: "cover", borderRadius: 14, display: l2 ? "block" : "none", border: `1px solid ${C.border}` }} />}
       </div>
-
-      {/* Position labels when showing both */}
-      {showBoth && url2 && loaded && loaded2 && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, marginTop: 2 }}>
-          <div style={{ textAlign: "center", fontSize: 8, color: C.textDim }}>Start Position</div>
-          <div style={{ textAlign: "center", fontSize: 8, color: C.textDim }}>End Position</div>
-        </div>
-      )}
+      {l1 && l2 && <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, marginTop: 2 }}>
+        <div style={{ textAlign: "center", fontSize: 8, color: C.textDim }}>Start Position</div>
+        <div style={{ textAlign: "center", fontSize: 8, color: C.textDim }}>End Position</div>
+      </div>}
     </div>
   );
 }
