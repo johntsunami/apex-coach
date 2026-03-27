@@ -17,6 +17,7 @@ import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";
 import { verifyAndFix, runAllChecks } from "./utils/safetyVerification.js";
 import { ALL_TEST_PROFILES } from "./utils/testProfiles.js";
+import { buildRoadmap, checkReadiness, getAllFavoriteRoadmaps, checkAutoAdvancements, getUnlockNotifications, markNotificationsSeen, prioritizeFavorites, recordExerciseCompletion, getProgressPercent } from "./utils/progressionRoadmap.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -523,8 +524,29 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     return result;
   };
   const warmup = pick("warmup", 5);
-  const main = pick("main", 6);
+  let main = pick("main", 6);
   const cooldown = pick("cooldown", 3);
+
+  // Prioritize favorited exercises — include ready ones, regress unready ones
+  const assessment = getAssessment();
+  const favs = assessment?.preferences?.favorites || [];
+  if (favs.length > 0) {
+    const mainIds = new Set(main.map(e => e.id));
+    const { additions, notes } = prioritizeFavorites({ main }, favs, phase);
+    for (const add of additions) {
+      if (!mainIds.has(add.id) && main.length < 8) {
+        // Volume check before adding
+        const bp = add.bodyPart || "other";
+        const addSets = parseInt(add.phaseParams?.[String(phase)]?.sets) || 1;
+        if ((runningVol[bp] || 0) + addSets <= (getVolumeLimit(phase).max || 12)) {
+          main.push(add);
+          mainIds.add(add.id);
+          runningVol[bp] = (runningVol[bp] || 0) + addSets;
+        }
+      }
+    }
+  }
+
   // Build dynamic session blocks based on check-in + main exercises
   const blocks = buildSessionBlocks(phase, location, checkInData, main);
   return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location, volSwaps, weeklyVol: runningVol, blocks };
@@ -701,6 +723,10 @@ function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewP
   <div><SectionTitle icon="📋" title="Daily Minimums"/><Card>{[{i:"👟",l:"Steps",v:"4,200 / 8,000",p:52},{i:"🫀",l:"Cardio",v:"0 MIN",p:0},{i:"🧘",l:"Stretching",v:"0 MIN",p:0}].map(d=>(<div key={d.l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span>{d.i}</span><span style={{fontSize:14,color:C.text,fontWeight:600}}>{d.l}</span><span style={{fontSize:12,color:C.textMuted}}>— {d.v}</span></div><Badge color={d.p>0?C.teal:C.orange}>{d.p>0?`${d.p}%`:d.v.split(" ")[0]}</Badge></div>))}</Card></div>
   <div><SectionTitle icon="🩺" title="Active Injury Protocols" sub="Tap to expand · Edit to manage"/>{dynamicInjuries.map(inj=>(<Card key={inj.id} onClick={()=>setSi(si===inj.id?null:inj.id)} style={{marginBottom:8,cursor:"pointer",borderColor:inj.tempFlag?C.warning+"60":C.border}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{inj.area}</div><div style={{fontSize:12,color:C.textDim}}>{inj.type}{inj.notes?` — ${inj.notes}`:""}</div>{inj.tempFlag&&<div style={{fontSize:10,color:C.warning,marginTop:2}}>⚡ {inj.tempFlag}</div>}</div><Badge color={inj.severity<=2?C.warning:C.danger}>SEV {inj.severity}/5</Badge></div>{si===inj.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>{(inj.protocols||[]).map((p,i)=><div key={i} style={{display:"flex",gap:8,padding:"5px 0"}}><span style={{color:C.teal}}>▸</span><span style={{fontSize:13,color:C.textMuted}}>{p}</span></div>)}</div>}</Card>))}{onEditInjuries&&<button onClick={onEditInjuries} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textMuted,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit",marginTop:4}}>✏️ Edit Injuries & Conditions</button>}</div>
   <PTProgressCard onStartSession={(p)=>{onPTSession?.(p);}} onViewProgress={onPTProgress}/>
+  {/* Unlock notifications */}
+  {(()=>{const notifs=getUnlockNotifications().filter(n=>!n.seen);if(!notifs.length)return null;return(<Card style={{borderColor:C.success+"40",background:C.success+"08"}}><div style={{fontSize:11,fontWeight:700,color:C.success,letterSpacing:2,marginBottom:6}}>EXERCISE UNLOCKED!</div>{notifs.map((n,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}><span style={{fontSize:16}}>🏆</span><div style={{flex:1}}><div style={{fontSize:12,fontWeight:600,color:C.text}}>{n.unlockedName}</div><div style={{fontSize:9,color:C.textMuted}}>{n.msg||`Unlocked from ${n.fromName}`}</div></div></div>)}<button onClick={()=>{markNotificationsSeen();}} style={{background:"none",border:`1px solid ${C.success}30`,borderRadius:8,padding:"6px 12px",color:C.success,fontSize:10,fontWeight:700,cursor:"pointer",width:"100%",marginTop:6,fontFamily:"inherit"}}>Got it!</button></Card>);})()}
+  {/* Favorite progression roadmaps */}
+  {(()=>{const assessment=getAssessment();const favs=assessment?.preferences?.favorites||[];const roadmaps=getAllFavoriteRoadmaps(favs);if(!roadmaps.length)return null;return(<div><SectionTitle icon="🎯" title="Building Toward Your Goals" sub="Progress on favorited exercises"/>{roadmaps.slice(0,3).map(rm=><div key={rm.target.id} style={{marginBottom:8}}><ProgressionRoadmapCard targetId={rm.target.id} compact={false}/></div>)}</div>);})()}
   {onRetakeAssessment&&<div style={{marginTop:8}}><button onClick={onRetakeAssessment} style={{background:"none",border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textDim,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit"}}>⚙️ Retake Assessment</button></div>}
   <div style={{height:90}}/></div>);}
 
@@ -743,6 +769,7 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork}){
               <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:70}}>{mu.primary.slice(0,2).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
             </div>
             {ex._swappedFor&&<div style={{marginTop:4,padding:"4px 8px",background:C.warning+"10",borderRadius:6,borderLeft:`2px solid ${C.warning}`}}><span style={{fontSize:9,color:C.warning,fontWeight:700}}>🔄</span><span style={{fontSize:9,color:C.textMuted}}> Swapped for {ex._swappedFor}</span></div>}
+            {ex._buildingTowardId&&<div style={{marginTop:4,padding:"4px 8px",background:C.purple+"10",borderRadius:6,borderLeft:`2px solid ${C.purple}`}}><span style={{fontSize:9,color:C.purple,fontWeight:700}}>🎯 {getProgressPercent(ex._buildingTowardId)}%</span><span style={{fontSize:9,color:C.textMuted}}> toward {ex._buildingToward}</span></div>}
           </Card>);})}
         </div>
       ));
@@ -1016,6 +1043,54 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
 </div>);}
 
 // ── LIBRARY — 300 exercises with multi-filter ────────────────────
+// ── PROGRESSION ROADMAP CARD ─────────────────────────────────
+function ProgressionRoadmapCard({targetId,compact=false}){
+  const roadmap=useMemo(()=>buildRoadmap(targetId),[targetId]);
+  if(!roadmap||!roadmap.steps.length)return null;
+  const{target,steps,progressPercent,currentStep,unlocked}=roadmap;
+  if(unlocked&&compact)return null; // Don't show in compact mode if already unlocked
+  return(<Card style={{borderColor:C.purple+"30",background:unlocked?C.success+"06":C.bgCard}}>
+    {!compact&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+      <div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:2}}>PROGRESSION ROADMAP</div>
+      <Badge color={unlocked?C.success:C.purple}>{unlocked?"UNLOCKED":progressPercent+"%"}</Badge>
+    </div>}
+    {!compact&&<ProgressBar value={progressPercent} max={100} color={C.purple} height={4}/>}
+    <div style={{marginTop:compact?0:10}}>
+      {steps.map((s,i)=>{
+        const isLast=i===steps.length-1;
+        return(<div key={s.exercise.id} style={{display:"flex",gap:10,padding:compact?"4px 0":"6px 0",opacity:s.isLocked?0.45:1}}>
+          {/* Step indicator */}
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:24,flexShrink:0}}>
+            <div style={{width:20,height:20,borderRadius:"50%",background:s.isMastered?C.success:s.isCurrent?C.purple:s.isTarget?C.teal+"20":C.bgElevated,border:`2px solid ${s.isMastered?C.success:s.isCurrent?C.purple:s.isTarget?C.teal:C.border}`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <span style={{fontSize:8,fontWeight:800,color:s.isMastered||s.isCurrent?"#fff":C.textDim}}>{s.isMastered?"✓":s.isTarget&&s.isLocked?"🔒":s.stepNumber}</span>
+            </div>
+            {!isLast&&<div style={{width:2,height:compact?12:18,background:s.isMastered?C.success:C.border,marginTop:2}}/>}
+          </div>
+          {/* Exercise info */}
+          <div style={{flex:1,paddingBottom:isLast?0:compact?2:4}}>
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <ExerciseImage exercise={s.exercise} size="thumb"/>
+              <div style={{flex:1}}>
+                <div style={{fontSize:compact?10:12,fontWeight:s.isCurrent||s.isTarget?700:400,color:s.isMastered?C.success:s.isCurrent?C.text:s.isTarget?C.teal:C.textDim}}>{s.exercise.name}</div>
+                {s.isCurrent&&!compact&&<div style={{fontSize:9,color:C.purple,fontWeight:700,marginTop:1}}>← CURRENT · {s.painFreeCount}/{s.painFreeNeeded} pain-free</div>}
+                {s.isMastered&&!compact&&<div style={{fontSize:9,color:C.success}}>Mastered ✓</div>}
+                {s.isTarget&&s.isLocked&&!compact&&<div style={{fontSize:9,color:C.textDim}}>{s.readiness.reasons[0]||s.unlockCriteria}</div>}
+                {s.isTarget&&!s.isLocked&&!compact&&<div style={{fontSize:9,color:C.teal,fontWeight:700}}>Ready to use!</div>}
+              </div>
+              {s.isCurrent&&<Badge color={C.purple}>NOW</Badge>}
+              {s.isTarget&&<Badge color={s.isLocked?C.textDim:C.teal}>{s.isLocked?"GOAL":"READY"}</Badge>}
+            </div>
+          </div>
+        </div>);
+      })}
+    </div>
+    {currentStep&&!compact&&<div style={{marginTop:8,padding:8,background:C.purple+"08",borderRadius:8}}>
+      <div style={{fontSize:10,color:C.purple}}>Building toward <b>{target.name}</b> — currently working <b>{currentStep.exercise.name}</b></div>
+      <div style={{fontSize:9,color:C.textDim,marginTop:2}}>Next: {currentStep.unlockCriteria}</div>
+    </div>}
+  </Card>);
+}
+
 function LibraryScreen(){
   const[catFilter,setCatFilter]=useState("All");
   const[bodyFilter,setBodyFilter]=useState("All");
@@ -1070,6 +1145,8 @@ function LibraryScreen(){
         <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.warning}}>🛡️ CORE: </span><span style={{fontSize:12,color:C.text}}>{ex.coreBracing}</span></div>
         <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.danger}}>🩺 INJURY: </span>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:11,color:C.text,marginTop:2}}><b>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<span style={{fontSize:12,color:C.text}}>{ex.injuryNotes}</span>}</div>
         {ex.proTip&&<div style={{background:C.tealBg,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.teal}}>💡 PRO TIP: </span><span style={{fontSize:12,color:C.text}}>{ex.proTip}</span></div>}
+        {/* Progression roadmap for this exercise */}
+        {ex.progressionChain?.chainFamily&&<div style={{marginTop:8}}><ProgressionRoadmapCard targetId={ex.id}/></div>}
       </div>}
     </Card>);})}
     <div style={{height:90}}/>
@@ -1272,12 +1349,12 @@ function AppInner(){
   const[safetyReport,setSafetyReport]=useState(null);
   const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);setSessionStart(Date.now());setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);};
   const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
-  const trackExDone=(exercise,setData)=>{const ep2=exParams(exercise);const sets=setData?.sets||[{set_number:1,reps_done:parseInt(String(ep2.reps).replace(/[^0-9]/g,''))||12,load:null,rpe:null,pain:false,quality:"good"}];const bestLoad=Math.max(...sets.map(s=>s.load||0),0);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:sets.length,sets,reps_done:ep2.reps||"—",load:bestLoad||null,pain_during:sets.some(s=>s.pain)}]);};
+  const trackExDone=(exercise,setData)=>{const ep2=exParams(exercise);const sets=setData?.sets||[{set_number:1,reps_done:parseInt(String(ep2.reps).replace(/[^0-9]/g,''))||12,load:null,rpe:null,pain:false,quality:"good"}];const bestLoad=Math.max(...sets.map(s=>s.load||0),0);const painDuring=sets.some(s=>s.pain);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:sets.length,sets,reps_done:ep2.reps||"—",load:bestLoad||null,pain_during:painDuring}]);recordExerciseCompletion(exercise.id,!painDuring);};
   const handleExDone=(setData)=>{setExHistory(h=>[...h,{idx:exIdx,snapshot:[...completedExercises]}]);trackExDone(wxAll[exIdx],setData);const n=exIdx+1;if(n>=wxAll.length){setScreen("reflect");return;}if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const handleExBack=()=>{if(exHistory.length===0)return;const prev=exHistory[exHistory.length-1];setExHistory(h=>h.slice(0,-1));setExIdx(prev.idx);setCompletedExercises(prev.snapshot);setScreen("perform");};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
   const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},starred:reflData?.starred||[],flagged:reflData?.flagged||[],painFlagged:reflData?.painFlags||[],notes:reflData?.notes||"",durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:reflData?.overall||"just_right",difficulty});
-  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);};
+  const reset=()=>{setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);};
   // Loading spinner
   if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
   return(<>
