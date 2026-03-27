@@ -171,7 +171,7 @@ export function ForgotPasswordScreen({ onBack }) {
 }
 
 // ── Profile / Settings ────────────────────────────────────────
-export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries }) {
+export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan }) {
   const { user, profile, signOut } = useAuth();
 
   return (
@@ -186,7 +186,9 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries }) {
         </div>
         <div style={{ fontSize: 10, color: C.textDim, marginTop: 10 }}>Account created: {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "—"}</div>
       </div>
-      {onRetakeAssessment && <Btn variant="dark" onClick={onRetakeAssessment} icon="📋">Retake Assessment</Btn>}
+      {onViewSummary && <Btn variant="dark" onClick={onViewSummary} icon="📊">Review My Assessment Summary</Btn>}
+      {onViewPlan && <Btn variant="dark" onClick={onViewPlan} icon="📋">View 12-Month Plan</Btn>}
+      {onRetakeAssessment && <Btn variant="dark" onClick={onRetakeAssessment} icon="🔄">Retake Assessment</Btn>}
       {onEditInjuries && <Btn variant="dark" onClick={onEditInjuries} icon="🩺">Edit Injuries & Conditions</Btn>}
       <Btn variant="dark" onClick={async () => { await signOut(); onClose(); }} icon="🚪" style={{ color: C.danger, borderColor: C.danger + "30" }}>Log Out</Btn>
       <Btn variant="ghost" onClick={onClose}>← Back to Home</Btn>
