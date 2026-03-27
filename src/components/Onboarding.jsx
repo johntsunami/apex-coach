@@ -29,8 +29,8 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=6})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2,transition:"width 0.4s ease"}}/></div>;
 
 const CONDITION_CATEGORIES = [
-  {id:"spinal",label:"Spine & Back",icon:"🔙"},
-  {id:"joint",label:"Joints (Knee, Shoulder, Hip, etc.)",icon:"🦴"},
+  {id:"spinal",label:"Spine & Back",icon:"🔙",locations:["Upper Back","Mid Back","Lower Back","Tailbone","Left Side","Right Side"]},
+  {id:"joint",label:"Joints (Knee, Shoulder, Hip, etc.)",icon:"🦴",locations:["Left Knee","Right Knee","Left Shoulder","Right Shoulder","Left Hip","Right Hip","Left Ankle","Right Ankle","Left Elbow","Right Elbow","Left Wrist","Right Wrist"]},
   {id:"systemic",label:"Autoimmune & Systemic",icon:"🧬"},
   {id:"neurological",label:"Neurological",icon:"🧠"},
   {id:"cardiopulmonary",label:"Heart & Lungs",icon:"🫀"},
@@ -39,6 +39,15 @@ const CONDITION_CATEGORIES = [
   {id:"pregnancy",label:"Pregnancy & Postpartum",icon:"🤰"},
   {id:"age_related",label:"Age-Related",icon:"👴"},
   {id:"amputation",label:"Amputation / Limb Difference",icon:"🦿"},
+];
+
+const CONDITION_TYPES = ["Chronic Pain","Acute Injury","Post-Surgical","Managing"];
+
+const MENTAL_HEALTH_CONDITIONS = [
+  "Depression","Generalized Anxiety","Social Anxiety","Panic Disorder","PTSD","ADHD","OCD",
+  "Bipolar Disorder","Insomnia","Chronic Stress","Burnout","Grief","Eating Disorder (in recovery)",
+  "Substance Recovery","Seasonal Affective Disorder","Agoraphobia","Body Dysmorphia",
+  "Anger Management","Chronic Fatigue","Autism Spectrum",
 ];
 
 const COMPENSATIONS = [
@@ -61,11 +70,17 @@ const MUSCLE_GROUPS = [
   {id:"core",label:"Core",icon:"⚫"},
 ];
 
+const GOAL_OPTIONS = [
+  {v:"size",l:"Size",c:"#a855f7"},{v:"strength",l:"Strength",c:"#00d2c8"},{v:"endurance",l:"Endurance",c:"#3b82f6"},
+  {v:"injury_prevention",l:"Injury Prev",c:"#eab308"},{v:"maintain",l:"Maintain",c:"#7a8ba8"},
+];
+
 const COMPENSATORY_LOGIC = {
-  chest: { add: ["shoulders","back"], reason: "Chest growth requires rear delt + rotator cuff work to prevent shoulder impingement" },
-  back: { add: ["core"], reason: "Back strength requires core stability to protect the spine under load" },
-  shoulders: { add: ["back"], reason: "Shoulder development requires upper back balance (2:1 pull-to-push ratio)" },
-  legs: { add: ["glutes","core"], reason: "Leg strength requires glute activation and core stability for safe movement" },
+  chest: { triggers:["size","strength"], add: ["shoulders","back"], reason: "Chest growth requires rear delt + rotator cuff work to prevent shoulder impingement" },
+  back: { triggers:["size","strength"], add: ["core"], reason: "Back strength requires core stability to protect the spine under load" },
+  shoulders: { triggers:["size","strength"], add: ["back"], reason: "Shoulder development requires upper back balance (2:1 pull-to-push ratio)" },
+  legs: { triggers:["size","strength","endurance"], add: ["glutes","core"], reason: "Leg work requires glute activation and core stability for safe movement" },
+  glutes: { triggers:["size","strength"], add: ["core","legs"], reason: "Glute development requires hip stabilizer and hamstring balance" },
 };
 
 const PARQ_QUESTIONS = [
@@ -90,7 +105,31 @@ const HOME_EQUIPMENT_OPTIONS = [
   {id:"none",label:"None — bodyweight only"},
 ];
 
-const SPORTS = ["BJJ","Surfing","Muay Thai","Snowboarding","Hiking","Running","Swimming","None"];
+const SPORTS = ["BJJ","Surfing","Muay Thai","Snowboarding","Hiking","Running","Swimming","Cycling","Rock Climbing","Yoga","CrossFit","None"];
+
+// 40 most common exercises — mapped to closest DB IDs
+const FAVORITE_GRID = [
+  {name:"Bench Press",emoji:"🏋️",dbId:"str_db_bench_press"},{name:"Squat",emoji:"🏋️",dbId:"str_bw_squat"},
+  {name:"Deadlift",emoji:"🏋️",dbId:"str_trap_bar_dl_high"},{name:"Pull-Ups",emoji:"🤸",dbId:"outdoor_playground_pullup"},
+  {name:"Push-Ups",emoji:"💪",dbId:"str_floor_push_up"},{name:"Lunges",emoji:"🦿",dbId:"dyn_walking_lunges"},
+  {name:"Shoulder Press",emoji:"🏋️",dbId:"seated_shoulder_press"},{name:"Bicep Curls",emoji:"💪",dbId:"iso_bicep_curl"},
+  {name:"Tricep Dips",emoji:"🪑",dbId:"seated_chair_dips"},{name:"Lat Pulldown",emoji:"🔽",dbId:"band_lat_pulldown"},
+  {name:"Rows",emoji:"🚣",dbId:"str_chest_supported_row"},{name:"Plank",emoji:"🧱",dbId:"stab_plank"},
+  {name:"Leg Press",emoji:"🦵",dbId:"rehab_sl_leg_press"},{name:"Calf Raises",emoji:"🦶",dbId:"iso_calf_raise"},
+  {name:"Face Pulls",emoji:"🎯",dbId:"iso_face_pulls"},{name:"Romanian Deadlift",emoji:"🔽",dbId:"str_db_rdl"},
+  {name:"Bulgarian Split Squat",emoji:"🦿",dbId:"str_bss_bw"},{name:"Goblet Squat",emoji:"🏆",dbId:"str_goblet_squat"},
+  {name:"Hip Thrust",emoji:"🍑",dbId:"band_hip_thrust"},{name:"Glute Bridge",emoji:"🍑",dbId:"str_glute_bridge"},
+  {name:"Farmer Carry",emoji:"🧑‍🌾",dbId:"func_farmer_carry_bilateral"},{name:"KB Swing",emoji:"🔔",dbId:"kb_swing"},
+  {name:"Box Jump",emoji:"📦",dbId:"sport_box_jump"},{name:"Battle Ropes",emoji:"🪢",dbId:"sport_battle_ropes"},
+  {name:"Med Ball Slam",emoji:"⚡",dbId:"sport_med_ball_slam"},{name:"Turkish Get-Up",emoji:"🏋️",dbId:"kb_turkish_getup"},
+  {name:"Ab Wheel",emoji:"🎡",dbId:"core_ab_wheel"},{name:"Cable Fly",emoji:"🦅",dbId:"band_chest_press"},
+  {name:"Lateral Raise",emoji:"🤷",dbId:"iso_lateral_raise"},{name:"Front Raise",emoji:"💪",dbId:"iso_lateral_raise"},
+  {name:"Hammer Curl",emoji:"💪",dbId:"iso_bicep_curl"},{name:"Skull Crusher",emoji:"💀",dbId:"iso_tricep_pushdown"},
+  {name:"Leg Curl",emoji:"🦵",dbId:"band_hamstring_curl"},{name:"Leg Extension",emoji:"🦵",dbId:"seated_leg_ext"},
+  {name:"Step-Ups",emoji:"⬆️",dbId:"outdoor_bench_stepup"},{name:"Walking Lunges",emoji:"🚶",dbId:"dyn_walking_lunges"},
+  {name:"Incline Bench",emoji:"📐",dbId:"str_incline_push_up"},{name:"Dips",emoji:"🪑",dbId:"seated_chair_dips"},
+  {name:"Chin-Ups",emoji:"🤸",dbId:"outdoor_playground_pullup"},{name:"Barbell Row",emoji:"🚣",dbId:"str_inverted_row"},
+];
 
 // ═══════════════════════════════════════════════════════════════
 
@@ -101,9 +140,9 @@ export default function OnboardingFlow({ onComplete }) {
   const [conditions, setConditions] = useState([]); // [{conditionId, severity}]
   const [condCatOpen, setCondCatOpen] = useState(null);
   const [compensations, setCompensations] = useState({}); // {comp_id: true/false}
-  const [rom, setRom] = useState({ shoulders: "full", hips: "full", ankles: "full" });
-  const [goals, setGoals] = useState({}); // {muscle: "size"|"strength"|"maintain"|"none"}
-  const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], sports: [] });
+  const [rom, setRom] = useState({ neck:"full", thoracic:"full", lumbar:"full", shoulders:"full", elbows:"full", wrists:"full", hips:"full", knee_left:"full", knee_right:"full", ankles:"full", feet:"full" });
+  const [goals, setGoals] = useState({}); // {muscle: ["size","injury_prevention",...]}
+  const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], sports: [], customSport: "" });
   const [search, setSearch] = useState("");
 
   const anyParqYes = parq.some(a => a === true);
@@ -121,11 +160,12 @@ export default function OnboardingFlow({ onComplete }) {
 
   const startingPhase = fitnessLevel === "beginner" ? 1 : fitnessLevel === "intermediate" ? 1 : 2;
 
-  // Compensatory muscle additions
+  // Compensatory muscle additions (multi-select aware)
   const compensatoryAdds = useMemo(() => {
     const adds = [];
-    Object.entries(goals).forEach(([muscle, goal]) => {
-      if ((goal === "size" || goal === "strength") && COMPENSATORY_LOGIC[muscle]) {
+    Object.entries(goals).forEach(([muscle, goalArr]) => {
+      const ga = Array.isArray(goalArr) ? goalArr : [goalArr];
+      if (COMPENSATORY_LOGIC[muscle] && ga.some(g => (COMPENSATORY_LOGIC[muscle].triggers||[]).includes(g))) {
         const cl = COMPENSATORY_LOGIC[muscle];
         cl.add.forEach(a => {
           if (!adds.find(x => x.muscle === a && x.trigger === muscle)) {
@@ -199,9 +239,11 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 1: CONDITIONS ───────────────────────────── */}
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 11, color: C.textMuted }}>Select any active conditions. Tap a category to expand.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 11, color: C.textMuted }}>Select any active conditions. Specify location and type.</div></div>
         {CONDITION_CATEGORIES.map(cat => {
-          const catConds = conditionsDB.filter(c => c.category === cat.id);
+          const catConds = cat.id === "mental_health"
+            ? [...conditionsDB.filter(c => c.category === cat.id), ...MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }))]
+            : conditionsDB.filter(c => c.category === cat.id);
           const isOpen = condCatOpen === cat.id;
           const selectedInCat = conditions.filter(c => catConds.find(x => x.id === c.conditionId));
           return (
@@ -212,27 +254,55 @@ export default function OnboardingFlow({ onComplete }) {
                 <span style={{ color: C.textDim, fontSize: 11, transform: isOpen ? "rotate(90deg)" : "rotate(0)", transition: "transform 0.2s" }}>▸</span>
               </div>
               {isOpen && <div style={{ padding: "0 16px 14px" }}>
+                {/* Chronic Pain quick-select for physical categories */}
+                {cat.locations && <div style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}`, marginBottom: 4 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: C.orange, marginBottom: 6 }}>QUICK: General chronic pain in this area?</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                    {cat.locations.map(loc => {
+                      const qid = "chronic_" + cat.id + "_" + loc.toLowerCase().replace(/\s/g, "_");
+                      const qsel = conditions.find(c => c.conditionId === qid);
+                      return <button key={loc} onClick={() => {
+                        if (qsel) setConditions(p => p.filter(c => c.conditionId !== qid));
+                        else setConditions(p => [...p, { conditionId: qid, name: "Chronic Pain — " + loc, severity: 2, bodyArea: loc, condType: "Chronic Pain", category: cat.id }]);
+                      }} style={{ padding: "4px 8px", borderRadius: 6, fontSize: 9, cursor: "pointer", background: qsel ? C.orange + "20" : "transparent", border: `1px solid ${qsel ? C.orange : C.border}`, color: qsel ? C.orange : C.textDim }}>{qsel ? "✓ " : ""}{loc}</button>;
+                    })}
+                  </div>
+                </div>}
                 {catConds.map(cond => {
                   const sel = conditions.find(c => c.conditionId === cond.id);
                   return (
-                    <div key={cond.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <button onClick={() => {
-                          if (sel) setConditions(p => p.filter(c => c.conditionId !== cond.id));
-                          else setConditions(p => [...p, { conditionId: cond.id, name: cond.name, severity: 2 }]);
-                        }} style={{ background: "none", border: "none", fontSize: 12, color: sel ? C.teal : C.textMuted, cursor: "pointer", textAlign: "left" }}>
-                          {sel ? "✅ " : "○ "}{cond.name}
-                        </button>
-                      </div>
-                      {sel && <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, paddingLeft: 20 }}>
-                        <span style={{ fontSize: 10, color: C.textDim }}>Severity:</span>
-                        {[1, 2, 3, 4, 5].map(s => (
-                          <button key={s} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, severity: s } : c))}
-                            style={{ width: 26, height: 26, borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer",
-                              background: sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) + "20" : "transparent",
-                              border: `1px solid ${sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) : C.border}`,
-                              color: sel.severity === s ? C.text : C.textDim }}>{s}</button>
-                        ))}
+                    <div key={cond.id} style={{ padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
+                      <button onClick={() => {
+                        if (sel) setConditions(p => p.filter(c => c.conditionId !== cond.id));
+                        else setConditions(p => [...p, { conditionId: cond.id, name: cond.name, severity: 2, bodyArea: "", condType: "", category: cat.id }]);
+                      }} style={{ background: "none", border: "none", fontSize: 12, color: sel ? C.teal : C.textMuted, cursor: "pointer", textAlign: "left" }}>
+                        {sel ? "✅ " : "○ "}{cond.name}
+                      </button>
+                      {sel && <div style={{ paddingLeft: 20, marginTop: 4 }}>
+                        {/* Location sub-select */}
+                        {cat.locations && <div style={{ marginBottom: 6 }}>
+                          <span style={{ fontSize: 9, color: C.textDim }}>Location: </span>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 2 }}>
+                            {cat.locations.map(loc => <button key={loc} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, bodyArea: loc } : c))}
+                              style={{ padding: "2px 6px", borderRadius: 4, fontSize: 8, cursor: "pointer", background: sel.bodyArea === loc ? C.tealBg : "transparent", border: `1px solid ${sel.bodyArea === loc ? C.teal : C.border}`, color: sel.bodyArea === loc ? C.teal : C.textDim }}>{loc}</button>)}
+                          </div>
+                        </div>}
+                        {/* Condition type */}
+                        <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
+                          {CONDITION_TYPES.map(ct => <button key={ct} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, condType: ct } : c))}
+                            style={{ padding: "3px 6px", borderRadius: 4, fontSize: 8, cursor: "pointer", background: sel.condType === ct ? C.info + "20" : "transparent", border: `1px solid ${sel.condType === ct ? C.info : C.border}`, color: sel.condType === ct ? C.info : C.textDim }}>{ct}</button>)}
+                        </div>
+                        {/* Severity */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ fontSize: 9, color: C.textDim }}>Severity:</span>
+                          {[1, 2, 3, 4, 5].map(s => (
+                            <button key={s} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, severity: s } : c))}
+                              style={{ width: 22, height: 22, borderRadius: 4, fontSize: 10, fontWeight: 700, cursor: "pointer",
+                                background: sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) + "20" : "transparent",
+                                border: `1px solid ${sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) : C.border}`,
+                                color: sel.severity === s ? C.text : C.textDim }}>{s}</button>
+                          ))}
+                        </div>
                       </div>}
                     </div>
                   );
@@ -269,19 +339,28 @@ export default function OnboardingFlow({ onComplete }) {
         <Btn onClick={next}>Next — ROM Assessment →</Btn>
       </div>}
 
-      {/* ── SCREEN 3: ROM SELF-ASSESSMENT ───────────────────── */}
-      {screen === 3 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 11, color: C.textMuted }}>Rate your mobility for each joint.</div></div>
-        {[{ id: "shoulders", label: "Shoulders", desc: "Can you reach both arms fully overhead?", icon: "🤸" },
-          { id: "hips", label: "Hips", desc: "Can you sit in a deep squat comfortably?", icon: "🧘" },
-          { id: "ankles", label: "Ankles", desc: "Can you touch your knee to the wall 4 inches from your foot?", icon: "🦶" }
+      {/* ── SCREEN 3: ROM SELF-ASSESSMENT (FULL BODY) ─────── */}
+      {screen === 3 && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 11, color: C.textMuted }}>Rate mobility for each joint. Limited/Painful areas get adapted exercises.</div></div>
+        {[
+          { id:"neck", label:"Neck", desc:"Can you look fully up, down, left, right?", icon:"😐" },
+          { id:"thoracic", label:"Thoracic Spine", desc:"Can you rotate your upper back while hips stay still?", icon:"🔄" },
+          { id:"lumbar", label:"Lumbar Spine", desc:"Can you bend forward and touch your toes?", icon:"🙇" },
+          { id:"shoulders", label:"Shoulders", desc:"Can you reach both arms fully overhead?", icon:"🤸" },
+          { id:"elbows", label:"Elbows", desc:"Can you fully straighten and bend both elbows?", icon:"💪" },
+          { id:"wrists", label:"Wrists", desc:"Can you bend wrists fully forward and back?", icon:"🤲" },
+          { id:"hips", label:"Hips", desc:"Can you sit in a deep squat comfortably?", icon:"🧘" },
+          { id:"knee_left", label:"Left Knee", desc:"Can you fully bend and straighten without pain?", icon:"🦵" },
+          { id:"knee_right", label:"Right Knee", desc:"Same — right side", icon:"🦵" },
+          { id:"ankles", label:"Ankles", desc:"Can you touch knee to wall 4 inches from foot?", icon:"🦶" },
+          { id:"feet", label:"Toes / Feet", desc:"Can you pull toes up toward shin (dorsiflexion)?", icon:"🦶" },
         ].map(joint => (
-          <Card key={joint.id}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}><span style={{ fontSize: 20 }}>{joint.icon}</span><div><div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 10, color: C.textMuted }}>{joint.desc}</div></div></div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {[{ v: "full", l: "Full ROM", c: C.success }, { v: "limited", l: "Limited", c: C.warning }, { v: "painful", l: "Painful", c: C.danger }].map(opt => (
+          <Card key={joint.id} style={{ padding: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{joint.icon}</span><div><div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 9, color: C.textDim }}>{joint.desc}</div></div></div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
+              {[{ v:"full", l:"Full", c:C.success }, { v:"limited", l:"Limited", c:C.warning }, { v:"painful", l:"Painful", c:C.danger }].map(opt => (
                 <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: opt.v }))}
-                  style={{ padding: "10px 6px", borderRadius: 10, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                  style={{ padding: "8px 4px", borderRadius: 8, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer",
                     background: rom[joint.id] === opt.v ? opt.c + "15" : "transparent",
                     border: `1px solid ${rom[joint.id] === opt.v ? opt.c : C.border}`,
                     color: rom[joint.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
@@ -289,26 +368,33 @@ export default function OnboardingFlow({ onComplete }) {
             </div>
           </Card>
         ))}
+        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 10, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} joint{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
         <Btn onClick={next}>Next — Goals →</Btn>
       </div>}
 
-      {/* ── SCREEN 4: GOALS ────────────────────────────────── */}
+      {/* ── SCREEN 4: GOALS (MULTI-SELECT) ────────────────── */}
       {screen === 4 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR GOALS</div><div style={{ fontSize: 11, color: C.textMuted }}>What do you want for each muscle group?</div></div>
-        {MUSCLE_GROUPS.map(mg => (
-          <Card key={mg.id}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{mg.icon}</span><span style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{mg.label}</span></div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6 }}>
-              {[{ v: "size", l: "Size", c: C.purple }, { v: "strength", l: "Strength", c: C.teal }, { v: "maintain", l: "Maintain", c: C.info }, { v: "none", l: "No pref", c: C.textDim }].map(opt => (
-                <button key={opt.v} onClick={() => setGoals(p => ({ ...p, [mg.id]: opt.v }))}
-                  style={{ padding: "8px 4px", borderRadius: 8, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer",
-                    background: goals[mg.id] === opt.v ? opt.c + "15" : "transparent",
-                    border: `1px solid ${goals[mg.id] === opt.v ? opt.c + "60" : C.border}`,
-                    color: goals[mg.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
-              ))}
-            </div>
-          </Card>
-        ))}
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR GOALS</div><div style={{ fontSize: 11, color: C.textMuted }}>Select ALL that apply per muscle group. Multiple goals OK.</div></div>
+        {MUSCLE_GROUPS.map(mg => {
+          const sel = Array.isArray(goals[mg.id]) ? goals[mg.id] : [];
+          return (
+            <Card key={mg.id}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{mg.icon}</span><span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{mg.label}</span>{sel.length > 0 && <Badge color={C.teal}>{sel.length}</Badge>}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                {GOAL_OPTIONS.map(opt => {
+                  const active = sel.includes(opt.v);
+                  return <button key={opt.v} onClick={() => setGoals(p => {
+                    const cur = Array.isArray(p[mg.id]) ? p[mg.id] : [];
+                    return { ...p, [mg.id]: active ? cur.filter(x => x !== opt.v) : [...cur, opt.v] };
+                  })} style={{ padding: "6px 10px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer",
+                    background: active ? opt.c + "20" : "transparent",
+                    border: `1px solid ${active ? opt.c + "60" : C.border}`,
+                    color: active ? opt.c : C.textDim }}>{active ? "✓ " : ""}{opt.l}</button>;
+                })}
+              </div>
+            </Card>
+          );
+        })}
         {compensatoryAdds.length > 0 && <Card style={{ borderColor: C.info + "30", background: C.info + "08" }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 8 }}>AUTO-ADDED COMPENSATORY WORK</div>
           {compensatoryAdds.map((a, i) => (
@@ -367,7 +453,7 @@ export default function OnboardingFlow({ onComplete }) {
             })}
           </div>
         </Card>
-        {/* Sports */}
+        {/* Sports + custom */}
         <Card>
           <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Sport interests</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -382,26 +468,45 @@ export default function OnboardingFlow({ onComplete }) {
               );
             })}
           </div>
+          <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+            <input value={prefs.customSport} onChange={e => setPrefs(p => ({ ...p, customSport: e.target.value }))} placeholder="Other sport..."
+              style={{ flex: 1, padding: "6px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+            {prefs.customSport.trim() && <button onClick={() => { if (prefs.customSport.trim() && !prefs.sports.includes(prefs.customSport.trim())) setPrefs(p => ({ ...p, sports: [...p.sports, p.customSport.trim()], customSport: "" })); }}
+              style={{ padding: "6px 10px", borderRadius: 8, background: C.tealBg, border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 10, fontWeight: 700, cursor: "pointer" }}>+ Add</button>}
+          </div>
         </Card>
-        {/* Favorite exercises (searchable) */}
+        {/* Favorite exercises — curated grid + search */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Favorite exercises (optional)</div>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search exercises..."
-            style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 12, fontFamily: "inherit", outline: "none", marginBottom: 8, boxSizing: "border-box" }} />
-          {search.trim().length >= 2 && <div style={{ maxHeight: 160, overflowY: "auto" }}>
-            {exerciseDB.filter(e => e.name.toLowerCase().includes(search.toLowerCase())).slice(0, 8).map(e => {
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 4 }}>Favorite exercises</div>
+          <div style={{ fontSize: 9, color: C.textMuted, marginBottom: 10 }}>Tap to select. Grayed = building toward it (injury/phase gate).</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 5 }}>
+            {FAVORITE_GRID.map(fe => {
+              const fav = prefs.favorites.includes(fe.dbId);
+              const dbEx = exerciseDB.find(e => e.id === fe.dbId);
+              const blocked = dbEx && (dbEx.safetyTier === "red" || !(dbEx.phaseEligibility || []).includes(1));
+              return <button key={fe.dbId+fe.name} onClick={() => setPrefs(p => ({ ...p, favorites: fav ? p.favorites.filter(x => x !== fe.dbId) : [...p.favorites, fe.dbId] }))}
+                style={{ padding: "8px 2px", borderRadius: 8, textAlign: "center", cursor: "pointer", opacity: blocked && !fav ? 0.4 : 1,
+                  background: fav ? C.tealBg : "transparent", border: `1px solid ${fav ? C.teal + "60" : C.border}`, position: "relative" }}>
+                <div style={{ fontSize: 16 }}>{fe.emoji}</div>
+                <div style={{ fontSize: 8, color: fav ? C.teal : C.text, fontWeight: fav ? 700 : 400, marginTop: 2, lineHeight: 1.2 }}>{fe.name}</div>
+                {blocked && !fav && <div style={{ fontSize: 7, color: C.orange, marginTop: 1 }}>Building →</div>}
+                {fav && <div style={{ position: "absolute", top: 2, right: 2, fontSize: 8 }}>⭐</div>}
+              </button>;
+            })}
+          </div>
+          {/* Advanced search */}
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search all 300 exercises..."
+            style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", marginTop: 10, boxSizing: "border-box" }} />
+          {search.trim().length >= 2 && <div style={{ maxHeight: 120, overflowY: "auto", marginTop: 4 }}>
+            {exerciseDB.filter(e => e.name.toLowerCase().includes(search.toLowerCase())).slice(0, 6).map(e => {
               const fav = prefs.favorites.includes(e.id);
-              return (
-                <div key={e.id} onClick={() => setPrefs(p => ({ ...p, favorites: fav ? p.favorites.filter(x => x !== e.id) : [...p.favorites, e.id] }))}
-                  style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", cursor: "pointer", borderBottom: `1px solid ${C.border}` }}>
-                  <span style={{ fontSize: 14 }}>{e.emoji}</span>
-                  <span style={{ fontSize: 11, color: fav ? C.teal : C.text, flex: 1 }}>{e.name}</span>
-                  {fav && <span style={{ fontSize: 10, color: C.teal }}>⭐</span>}
-                </div>
-              );
+              return <div key={e.id} onClick={() => setPrefs(p => ({ ...p, favorites: fav ? p.favorites.filter(x => x !== e.id) : [...p.favorites, e.id] }))}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", cursor: "pointer", borderBottom: `1px solid ${C.border}` }}>
+                <span style={{ fontSize: 12 }}>{e.emoji}</span><span style={{ fontSize: 10, color: fav ? C.teal : C.text, flex: 1 }}>{e.name}</span>{fav && <span style={{ fontSize: 8 }}>⭐</span>}
+              </div>;
             })}
           </div>}
-          {prefs.favorites.length > 0 && <div style={{ fontSize: 10, color: C.teal, marginTop: 4 }}>{prefs.favorites.length} favorited</div>}
+          {prefs.favorites.length > 0 && <div style={{ fontSize: 10, color: C.teal, marginTop: 6 }}>{prefs.favorites.length} exercise{prefs.favorites.length !== 1 ? "s" : ""} favorited</div>}
         </Card>
         <Btn onClick={next}>Next — Summary →</Btn>
       </div>}
@@ -460,12 +565,13 @@ export default function OnboardingFlow({ onComplete }) {
         {/* Goals + compensatory */}
         <Card>
           <div style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: 1.5, marginBottom: 6 }}>GOALS</div>
-          {Object.entries(goals).filter(([, v]) => v && v !== "none").map(([m, g]) => (
-            <div key={m} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}>
+          {Object.entries(goals).filter(([, v]) => (Array.isArray(v) ? v.length > 0 : v && v !== "none")).map(([m, g]) => {
+            const ga = Array.isArray(g) ? g : [g];
+            return <div key={m} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0" }}>
               <span style={{ fontSize: 11, color: C.text }}>{m.charAt(0).toUpperCase() + m.slice(1)}</span>
-              <Badge color={g === "size" ? C.purple : g === "strength" ? C.teal : C.info}>{g}</Badge>
-            </div>
-          ))}
+              <div style={{ display: "flex", gap: 3 }}>{ga.map(gg => <Badge key={gg} color={gg === "size" ? C.purple : gg === "strength" ? C.teal : gg === "injury_prevention" ? C.warning : C.info}>{gg.replace("_"," ")}</Badge>)}</div>
+            </div>;
+          })}
           {compensatoryAdds.length > 0 && <div style={{ marginTop: 8, padding: 8, background: C.info + "08", borderRadius: 8 }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: C.info, marginBottom: 4 }}>COMPENSATORY ADDITIONS</div>
             {compensatoryAdds.map((a, i) => <div key={i} style={{ fontSize: 9, color: C.textMuted }}>{a.muscle} ← {a.reason}</div>)}
