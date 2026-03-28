@@ -176,6 +176,9 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
   const [showFreshConfirm, setShowFreshConfirm] = useState(false);
   const [freshInput, setFreshInput] = useState("");
   const [showCondHistory, setShowCondHistory] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteInput, setDeleteInput] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   // Condition history from localStorage
   let condHistory = [];
@@ -303,6 +306,81 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
 
       <Btn variant="dark" onClick={async () => { await signOut(); onClose(); }} icon="🚪" style={{ color: C.danger, borderColor: C.danger + "30" }}>Log Out</Btn>
       <Btn variant="ghost" onClick={onClose}>← Back to Home</Btn>
+
+      {/* Delete account link — small, hard to accidentally tap */}
+      <div style={{ textAlign: "center", marginTop: 16, paddingTop: 16, borderTop: `1px solid ${C.border}` }}>
+        <button onClick={() => setShowDeleteConfirm(true)} style={{
+          background: "none", border: "none", color: C.danger, fontSize: 10,
+          cursor: "pointer", fontFamily: "inherit", opacity: 0.5,
+        }}>Delete my account permanently</button>
+      </div>
+
+      {/* ═══ DELETE ACCOUNT CONFIRMATION ═══ */}
+      {showDeleteConfirm && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.92)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }} onClick={() => { if (!deleting) { setShowDeleteConfirm(false); setDeleteInput(""); } }}>
+          <div style={{ background: C.bg, border: `1px solid ${C.danger}60`, borderRadius: 20, padding: 24, maxWidth: 380, width: "100%" }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontSize: 20, fontWeight: 800, color: C.danger, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2, marginBottom: 8 }}>DELETE ACCOUNT</div>
+            <div style={{ fontSize: 12, color: C.text, lineHeight: 1.6, marginBottom: 8 }}>
+              This permanently deletes your account and <b>ALL</b> data including workout history, exercise progress, strength records, PT session logs, streaks, and your profile.
+            </div>
+            <div style={{ fontSize: 12, color: C.text, lineHeight: 1.6, marginBottom: 8 }}>
+              You will be logged out and <b>cannot recover this account</b>.
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: C.danger, marginBottom: 12 }}>This cannot be undone.</div>
+            <div style={{ fontSize: 10, color: C.textDim, marginBottom: 8 }}>Type <b>DELETE</b> to confirm:</div>
+            <input value={deleteInput} onChange={e => setDeleteInput(e.target.value)} placeholder="Type DELETE" disabled={deleting} style={{
+              width: "100%", padding: "10px 14px", borderRadius: 10, background: C.bgElevated,
+              border: `1px solid ${deleteInput === "DELETE" ? C.danger : C.border}`, color: C.text,
+              fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box", marginBottom: 12,
+              textAlign: "center", fontWeight: 700, letterSpacing: 3,
+            }} />
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={() => { setShowDeleteConfirm(false); setDeleteInput(""); }} disabled={deleting} style={{
+                flex: 1, padding: "12px", borderRadius: 12, background: C.bgElevated,
+                border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600,
+                cursor: "pointer", fontFamily: "inherit",
+              }}>Cancel</button>
+              <button onClick={async () => {
+                if (deleteInput !== "DELETE" || deleting) return;
+                setDeleting(true);
+                try {
+                  // Import supabase dynamically to avoid circular deps
+                  const { supabase } = await import("../utils/supabase.js");
+                  const uid = user?.id;
+                  if (uid) {
+                    // Delete all user data from every table
+                    const tables = ["sessions","session_reflections","user_exercise_progress","user_conditions","user_compensations","user_goals","user_equipment","user_rom","user_preferences","capability_tags","weekly_volume","pt_protocols","pt_sessions","pt_reminders","exercise_swaps","overtraining_assessments","cardio_sessions","vo2_tests","exercise_image_overrides","exercise_youtube_overrides","reassessment_logs"];
+                    for (const t of tables) {
+                      await supabase.from(t).delete().eq("user_id", uid).catch(() => {});
+                    }
+                    // Delete profile row
+                    await supabase.from("profiles").delete().eq("id", uid).catch(() => {});
+                  }
+                  // Clear all localStorage
+                  const lsKeys = Object.keys(localStorage).filter(k => k.startsWith("apex_"));
+                  lsKeys.forEach(k => localStorage.removeItem(k));
+                  localStorage.removeItem("apex_assessment");
+                  // Sign out
+                  await signOut();
+                } catch (e) {
+                  console.error("Account deletion error:", e);
+                }
+                setDeleting(false);
+                setShowDeleteConfirm(false);
+                onClose();
+              }} disabled={deleteInput !== "DELETE" || deleting} style={{
+                flex: 1, padding: "12px", borderRadius: 12,
+                background: deleteInput === "DELETE" && !deleting ? C.danger : C.bgElevated,
+                border: `1px solid ${deleteInput === "DELETE" ? C.danger : C.border}`,
+                color: deleteInput === "DELETE" && !deleting ? "#fff" : C.textDim,
+                fontSize: 13, fontWeight: 700, cursor: deleteInput === "DELETE" && !deleting ? "pointer" : "not-allowed",
+                fontFamily: "inherit", opacity: deleteInput === "DELETE" && !deleting ? 1 : 0.4,
+              }}>{deleting ? "Deleting..." : "Delete Forever"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div style={{ height: 90 }} />
     </div>
   );
