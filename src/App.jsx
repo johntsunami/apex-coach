@@ -21,6 +21,7 @@ import { buildRoadmap, checkReadiness, getAllFavoriteRoadmaps, checkAutoAdvancem
 import SwapModal from "./components/ExerciseSwap.jsx";
 import { CardioFitnessCard, VO2TestModal, CardioLogModal, HRZonesCard } from "./components/CardioTracker.jsx";
 import { getCardioPrescription, getHRSettings } from "./utils/cardio.js";
+import ProgressDashboard from "./components/ProgressDashboard.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -727,6 +728,7 @@ function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewP
   <CardioFitnessCard phase={CURRENT_PHASE} onTestFitness={()=>setShowVO2Test(true)} onLogCardio={()=>setShowCardioLog(true)} key={cardioRev}/>
   {showVO2Test&&<VO2TestModal onClose={()=>setShowVO2Test(false)} onSaved={()=>setCardioRev(r=>r+1)}/>}
   {showCardioLog&&<CardioLogModal onClose={()=>setShowCardioLog(false)} onSaved={()=>setCardioRev(r=>r+1)}/>}
+  <ProgressDashboard phase={CURRENT_PHASE}/>
   <div><SectionTitle icon="🩺" title="Active Injury Protocols" sub="Tap to expand · Edit to manage"/>{dynamicInjuries.map(inj=>(<Card key={inj.id} onClick={()=>setSi(si===inj.id?null:inj.id)} style={{marginBottom:8,cursor:"pointer",borderColor:inj.tempFlag?C.warning+"60":C.border}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{inj.area}</div><div style={{fontSize:12,color:C.textDim}}>{inj.type}{inj.notes?` — ${inj.notes}`:""}</div>{inj.tempFlag&&<div style={{fontSize:10,color:C.warning,marginTop:2}}>⚡ {inj.tempFlag}</div>}</div><Badge color={inj.severity<=2?C.warning:C.danger}>SEV {inj.severity}/5</Badge></div>{si===inj.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>{(inj.protocols||[]).map((p,i)=><div key={i} style={{display:"flex",gap:8,padding:"5px 0"}}><span style={{color:C.teal}}>▸</span><span style={{fontSize:13,color:C.textMuted}}>{p}</span></div>)}</div>}</Card>))}{onEditInjuries&&<button onClick={onEditInjuries} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textMuted,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit",marginTop:4}}>✏️ Edit Injuries & Conditions</button>}</div>
   <PTProgressCard onStartSession={(p)=>{onPTSession?.(p);}} onViewProgress={onPTProgress}/>
   {/* Unlock notifications */}
