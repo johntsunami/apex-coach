@@ -26,7 +26,15 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(grep:*)",
+      "Bash(xargs wc:*)",
+      "Bash(find /c/Users/johnc/Desktop/personal_trainer_app/src -type f \\\\\\(-name *.json -o -name *Exercise* -o -name *exercise* \\\\\\))",
+      "Bash(find /c/Users/johnc/Desktop/personal_trainer_app/src/components -type f -name *.jsx -o -name *.tsx)",
+      "WebSearch",
+      "WebFetch(domain:www.nasm.org)",
+      "WebFetch(domain:blog.supersetapp.com)",
+      "WebFetch(domain:www.youtube.com)"
     ]
   }
 }

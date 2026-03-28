@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { getOverrideForExercise, uploadExerciseImage, clearOverride } from "../utils/imageOverrides.js";
+import YouTubePlayer, { VideoMapperModal, getVideoOverride, getNasmSlug } from "./YouTubePlayer.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // ExerciseImage — two frames: side-by-side or crossfade + dev image editor
+//                + YouTube video toggle + NASM exercise library link
 // ═══════════════════════════════════════════════════════════════
 
-const C = { bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", border: "rgba(255,255,255,0.08)" };
+const C = { bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", textMuted: "#8b95a7", border: "rgba(255,255,255,0.08)", info: "#3b82f6" };
 const isDevMode = () => import.meta.env.DEV && new URLSearchParams(window.location.search).has("dev");
+const getMediaPref = () => { try { return localStorage.getItem("apex_media_pref") || "images"; } catch { return "images"; } };
+const setMediaPref = (v) => { try { localStorage.setItem("apex_media_pref", v); } catch {} };
 
 // ── Emoji fallback ────────────────────────────────────────────
 
@@ -165,14 +169,68 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
   );
 }
 
+// ── Media toggle buttons (video / images) ───────────────────
+
+function MediaToggle({ showVideo, onToggle, hasVideo, dev, onVideoEdit }) {
+  if (!hasVideo && !dev) return null;
+  const btnStyle = (active) => ({
+    padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 600,
+    cursor: "pointer", fontFamily: "inherit", border: `1px solid ${active ? C.info + "60" : C.border}`,
+    background: active ? C.info + "15" : "transparent", color: active ? C.info : C.textDim,
+    display: "flex", alignItems: "center", gap: 4,
+  });
+  return (
+    <div style={{ display: "flex", gap: 6, marginBottom: 8, alignItems: "center" }}>
+      {hasVideo && <button onClick={() => onToggle("video")} style={btnStyle(showVideo)}>▶ Video</button>}
+      <button onClick={() => onToggle("images")} style={btnStyle(!showVideo)}>🖼 Images</button>
+      {dev && <button onClick={(e) => { e.stopPropagation(); onVideoEdit(); }} style={{
+        marginLeft: "auto", width: 26, height: 26, borderRadius: "50%",
+        background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.2)",
+        color: "#fff", fontSize: 12, cursor: "pointer",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>🎬</button>}
+    </div>
+  );
+}
+
+// ── NASM Exercise Library link ──────────────────────────────
+
+function NasmLink({ name }) {
+  const slug = getNasmSlug(name);
+  if (!slug) return null;
+  return (
+    <div style={{ marginTop: 6, textAlign: "center" }}>
+      <a
+        href={`https://www.nasm.org/exercise-library/${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ fontSize: 10, color: C.teal, textDecoration: "none", opacity: 0.7 }}
+      >
+        Learn More at NASM →
+      </a>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════
 // Main Component
 // ═══════════════════════════════════════════════════════════════
 
 export default function ExerciseImage({ exercise, size = "full", showBoth = false }) {
   const [showModal, setShowModal] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const [rev, setRev] = useState(0); // bump to force re-read overrides
+  const [videoRev, setVideoRev] = useState(0);
   const dev = isDevMode();
+
+  // Video mode preference (persists across sessions)
+  const [showVideo, setShowVideo] = useState(() => getMediaPref() === "video");
+  const toggleMedia = (mode) => { setShowVideo(mode === "video"); setMediaPref(mode); };
+
+  // Resolve video ID: localStorage override wins, then exercise data
+  const videoOverride = getVideoOverride(exercise?.id);
+  const videoId = videoOverride || exercise?.youtubeVideoId || null;
+  const hasVideo = !!videoId;
 
   // Resolve URLs: override wins, then exercise data
   const override = getOverrideForExercise(exercise?.id);
@@ -185,11 +243,23 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
 
   // ── NO URL → emoji fallback ─────────────────────────────
   if (!url) {
+    if (isThumbnail) {
+      return <EmojiPlaceholder emoji={exercise?.emoji} width={48} height={48} />;
+    }
     return (
-      <div style={{ position: "relative" }}>
-        <EmojiPlaceholder emoji={exercise?.emoji} width={isThumbnail ? 48 : "100%"} height={isThumbnail ? 48 : 200} />
-        {dev && !isThumbnail && <PencilIcon onClick={() => setShowModal(true)} />}
+      <div>
+        <MediaToggle showVideo={showVideo} onToggle={toggleMedia} hasVideo={hasVideo} dev={dev} onVideoEdit={() => setShowVideoModal(true)} />
+        {hasVideo && showVideo ? (
+          <YouTubePlayer videoId={videoId} title={exercise?.name} />
+        ) : (
+          <div style={{ position: "relative" }}>
+            <EmojiPlaceholder emoji={exercise?.emoji} width="100%" height={200} />
+            {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+          </div>
+        )}
+        <NasmLink name={exercise?.name} />
         {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+        {showVideoModal && <VideoMapperModal exercise={exercise} onClose={() => setShowVideoModal(false)} onSaved={() => { setVideoRev(r => r + 1); setShowVideoModal(false); }} />}
       </div>
     );
   }
@@ -212,49 +282,67 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
   // ── TWO IMAGES — side-by-side or crossfade ──────────────
   if (hasBoth) {
     return (
-      <div style={{ position: "relative" }}>
-        <div className="exercise-img-wide" style={{ display: "none" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-            <img src={url} alt="Start" referrerPolicy="no-referrer"
-              style={{ width: "100%", height: 180, objectFit: "contain", borderRadius: 12, background: C.bgCard, border: `1px solid ${C.border}` }} />
-            <img src={url2} alt="End" referrerPolicy="no-referrer"
-              style={{ width: "100%", height: 180, objectFit: "contain", borderRadius: 12, background: C.bgCard, border: `1px solid ${C.border}` }} />
+      <div>
+        <MediaToggle showVideo={showVideo} onToggle={toggleMedia} hasVideo={hasVideo} dev={dev} onVideoEdit={() => setShowVideoModal(true)} />
+        {hasVideo && showVideo ? (
+          <YouTubePlayer videoId={videoId} title={exercise?.name} />
+        ) : (
+          <div style={{ position: "relative" }}>
+            <div className="exercise-img-wide" style={{ display: "none" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                <img src={url} alt="Start" referrerPolicy="no-referrer"
+                  style={{ width: "100%", height: 180, objectFit: "contain", borderRadius: 12, background: C.bgCard, border: `1px solid ${C.border}` }} />
+                <img src={url2} alt="End" referrerPolicy="no-referrer"
+                  style={{ width: "100%", height: 180, objectFit: "contain", borderRadius: 12, background: C.bgCard, border: `1px solid ${C.border}` }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 3 }}>
+                <div style={{ textAlign: "center", fontSize: 9, color: C.teal, fontWeight: 700, letterSpacing: 1 }}>START</div>
+                <div style={{ textAlign: "center", fontSize: 9, color: C.teal, fontWeight: 700, letterSpacing: 1 }}>END</div>
+              </div>
+            </div>
+            <div className="exercise-img-narrow">
+              <Crossfade url={url} url2={url2} name={exercise?.name || ""} />
+            </div>
+            <style>{`
+              @media(min-width:400px){
+                .exercise-img-wide{display:block!important}
+                .exercise-img-narrow{display:none!important}
+              }
+            `}</style>
+            {dev && <PencilIcon onClick={() => setShowModal(true)} />}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginTop: 3 }}>
-            <div style={{ textAlign: "center", fontSize: 9, color: C.teal, fontWeight: 700, letterSpacing: 1 }}>START</div>
-            <div style={{ textAlign: "center", fontSize: 9, color: C.teal, fontWeight: 700, letterSpacing: 1 }}>END</div>
-          </div>
-        </div>
-        <div className="exercise-img-narrow">
-          <Crossfade url={url} url2={url2} name={exercise?.name || ""} />
-        </div>
-        <style>{`
-          @media(min-width:400px){
-            .exercise-img-wide{display:block!important}
-            .exercise-img-narrow{display:none!important}
-          }
-        `}</style>
-        {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+        )}
+        <NasmLink name={exercise?.name} />
         {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+        {showVideoModal && <VideoMapperModal exercise={exercise} onClose={() => setShowVideoModal(false)} onSaved={() => { setVideoRev(r => r + 1); setShowVideoModal(false); }} />}
       </div>
     );
   }
 
   // ── SINGLE IMAGE ────────────────────────────────────────
   return (
-    <div style={{ position: "relative" }}>
-      <img
-        src={url}
-        alt={exercise?.name || ""}
-        referrerPolicy="no-referrer"
-        style={{
-          width: "100%", maxHeight: 250, objectFit: "contain",
-          borderRadius: 12, background: C.bgCard,
-          border: `1px solid ${C.border}`, display: "block",
-        }}
-      />
-      {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+    <div>
+      <MediaToggle showVideo={showVideo} onToggle={toggleMedia} hasVideo={hasVideo} dev={dev} onVideoEdit={() => setShowVideoModal(true)} />
+      {hasVideo && showVideo ? (
+        <YouTubePlayer videoId={videoId} title={exercise?.name} />
+      ) : (
+        <div style={{ position: "relative" }}>
+          <img
+            src={url}
+            alt={exercise?.name || ""}
+            referrerPolicy="no-referrer"
+            style={{
+              width: "100%", maxHeight: 250, objectFit: "contain",
+              borderRadius: 12, background: C.bgCard,
+              border: `1px solid ${C.border}`, display: "block",
+            }}
+          />
+          {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+        </div>
+      )}
+      <NasmLink name={exercise?.name} />
       {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+      {showVideoModal && <VideoMapperModal exercise={exercise} onClose={() => setShowVideoModal(false)} onSaved={() => { setVideoRev(r => r + 1); setShowVideoModal(false); }} />}
     </div>
   );
 }
