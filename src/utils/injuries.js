@@ -167,12 +167,45 @@ function conditionToGateKey(condCategory) {
   return map[condCategory] || "other";
 }
 
+// ── Resolve (heal) a condition — moves to history, doesn't delete ──
+
+function resolveInjury(id) {
+  const injuries = getInjuries();
+  const idx = injuries.findIndex(i => i.id === id);
+  if (idx < 0) return injuries;
+  injuries[idx].status = "resolved";
+  injuries[idx].resolvedAt = new Date().toISOString();
+  saveInjuries(injuries);
+  _logChange("updated", injuries[idx], { status: "resolved" });
+  return injuries;
+}
+
+function reactivateInjury(id, severity) {
+  const injuries = getInjuries();
+  const idx = injuries.findIndex(i => i.id === id);
+  if (idx < 0) return injuries;
+  injuries[idx].status = "active";
+  injuries[idx].severity = severity || injuries[idx].severity;
+  injuries[idx].reactivatedAt = new Date().toISOString();
+  delete injuries[idx].resolvedAt;
+  saveInjuries(injuries);
+  _logChange("updated", injuries[idx], { status: "active" });
+  return injuries;
+}
+
+function getResolvedConditions() {
+  return getInjuries().filter(i => i.status === "resolved");
+}
+
 export {
   getInjuries,
   saveInjuries,
   addInjury,
   updateInjury,
   removeInjury,
+  resolveInjury,
+  reactivateInjury,
+  getResolvedConditions,
   setTempFlag,
   clearTempFlags,
   computeContraindications,

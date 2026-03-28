@@ -1,10 +1,84 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ═══ APEX Coach Design System ═══ */
+:root {
+  --bg: #060b18;
+  --bg-card: #0d1425;
+  --bg-elevated: #162040;
+  --border: rgba(255,255,255,0.08);
+  --text: #e8ecf4;
+  --text-muted: #7a8ba8;
+  --text-dim: #4a5a78;
+  --teal: #00d2c8;
+  --teal-bg: rgba(0,210,200,0.08);
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #eab308;
+  --info: #3b82f6;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-  background: #060b18;
-  color: #e8ecf4;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
+
+/* ── Touch targets ── */
+button, [role="button"] { min-height: 44px; }
+button { transition: transform 150ms ease, opacity 150ms ease; }
+button:active:not(:disabled) { transform: scale(0.97); }
+
+/* ── Animations ── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-80px) rotate(360deg); opacity: 0; } }
+@keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 8px rgba(0,210,200,0.2); } 50% { box-shadow: 0 0 20px rgba(0,210,200,0.4); } }
+
+.fade-in { animation: fadeIn 200ms ease-out; }
+.slide-up { animation: slideUp 300ms ease-out; }
+
+/* ── Stagger children ── */
+.stagger > * { animation: fadeIn 200ms ease-out both; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; }
+.stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; }
+.stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(6) { animation-delay: 250ms; }
+.stagger > *:nth-child(7) { animation-delay: 300ms; }
+.stagger > *:nth-child(8) { animation-delay: 350ms; }
+.stagger > *:nth-child(n+9) { animation-delay: 400ms; }
+
+/* ── Progress bar animation ── */
+.progress-fill { transition: width 500ms ease-out; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ── Input styling ── */
+input[type="range"] { -webkit-appearance: none; appearance: none; background: var(--border); height: 6px; border-radius: 3px; cursor: pointer; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--teal); cursor: pointer; }
+
+/* ── Confetti burst ── */
+.confetti-container { position: fixed; top: 50%; left: 50%; pointer-events: none; z-index: 999; }
+.confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confetti 1s ease-out forwards; }
+
+/* ── Skeleton shimmer ── */
+.skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-elevated) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-sm); }
+
+/* ── Safe area for bottom nav ── */
+.safe-bottom { padding-bottom: 90px !important; }

@@ -171,12 +171,21 @@ export function ForgotPasswordScreen({ onBack }) {
 }
 
 // ── Profile / Settings ────────────────────────────────────────
-export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan }) {
+export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan, onStartFresh }) {
   const { user, profile, signOut } = useAuth();
+  const [showFreshConfirm, setShowFreshConfirm] = useState(false);
+  const [freshInput, setFreshInput] = useState("");
+  const [showCondHistory, setShowCondHistory] = useState(false);
+
+  // Condition history from localStorage
+  let condHistory = [];
+  try { condHistory = JSON.parse(localStorage.getItem("apex_injury_history") || "[]"); } catch {}
+  const resolvedEntries = condHistory.filter(h => h.action === "updated" && h.details?.status === "resolved");
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div style={{ fontSize: 24, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>PROFILE</div>
+      <div style={{ fontSize: 24, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>SETTINGS</div>
+      {/* User card */}
       <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 16, padding: 18 }}>
         <div style={{ fontSize: 20, fontWeight: 800, color: C.text }}>{profile?.first_name || "User"}</div>
         <div style={{ fontSize: 12, color: C.textDim, marginTop: 4 }}>{user?.email}</div>
@@ -186,12 +195,115 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
         </div>
         <div style={{ fontSize: 10, color: C.textDim, marginTop: 10 }}>Account created: {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "—"}</div>
       </div>
-      {onViewSummary && <Btn variant="dark" onClick={onViewSummary} icon="📊">Review My Assessment Summary</Btn>}
+
+      {/* Quick actions */}
+      {onViewSummary && <Btn variant="dark" onClick={onViewSummary} icon="📊">Review My Assessment</Btn>}
       {onViewPlan && <Btn variant="dark" onClick={onViewPlan} icon="📋">View 12-Month Plan</Btn>}
-      {onRetakeAssessment && <Btn variant="dark" onClick={onRetakeAssessment} icon="🔄">Retake Assessment</Btn>}
-      {onEditInjuries && <Btn variant="dark" onClick={onEditInjuries} icon="🩺">Edit Injuries & Conditions</Btn>}
+
+      {/* ═══ THREE UPDATE OPTIONS ═══ */}
+      <div style={{ marginTop: 4 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.textDim, letterSpacing: 2, marginBottom: 8 }}>UPDATE YOUR PLAN</div>
+
+        {/* OPTION 1: Update Conditions (Primary — teal) */}
+        {onEditInjuries && <div style={{ marginBottom: 8 }}>
+          <button onClick={onEditInjuries} style={{
+            width: "100%", padding: "16px 20px", borderRadius: 14, cursor: "pointer", fontFamily: "inherit",
+            background: `linear-gradient(135deg, ${C.teal}, ${C.teal}dd)`, color: "#000", border: "none",
+            display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 14,
+          }}>
+            <span style={{ fontSize: 18 }}>🩺</span>
+            <div style={{ textAlign: "left" }}>
+              <div>Update My Conditions</div>
+              <div style={{ fontSize: 10, fontWeight: 400, opacity: 0.7 }}>Add, heal, or adjust injury severity. Quick update — no full reassessment.</div>
+            </div>
+          </button>
+        </div>}
+
+        {/* OPTION 2: Retake Full Assessment (Secondary — outlined) */}
+        {onRetakeAssessment && <div style={{ marginBottom: 8 }}>
+          <button onClick={onRetakeAssessment} style={{
+            width: "100%", padding: "14px 20px", borderRadius: 14, cursor: "pointer", fontFamily: "inherit",
+            background: "transparent", color: C.teal, border: `1px solid ${C.teal}40`,
+            display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600,
+          }}>
+            <span style={{ fontSize: 16 }}>🔄</span>
+            <div style={{ textAlign: "left" }}>
+              <div>Retake Full Assessment</div>
+              <div style={{ fontSize: 10, fontWeight: 400, color: C.textMuted }}>Update goals, equipment, ROM, medications. History preserved.</div>
+            </div>
+          </button>
+        </div>}
+
+        {/* OPTION 3: Start Fresh (Small text link — red) */}
+        <div style={{ textAlign: "center", marginTop: 4 }}>
+          <button onClick={() => setShowFreshConfirm(true)} style={{
+            background: "none", border: "none", color: C.danger, fontSize: 11,
+            cursor: "pointer", fontFamily: "inherit", opacity: 0.7, textDecoration: "underline",
+          }}>Erase all data and start over</button>
+        </div>
+      </div>
+
+      {/* ═══ CONDITION HISTORY ═══ */}
+      {resolvedEntries.length > 0 && <div>
+        <button onClick={() => setShowCondHistory(!showCondHistory)} style={{
+          width: "100%", padding: "10px 14px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
+          background: C.bgCard, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 11, fontWeight: 600,
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+        }}>
+          <span>📜 Condition History ({resolvedEntries.length} resolved)</span>
+          <span style={{ transform: showCondHistory ? "rotate(90deg)" : "none", transition: "transform 0.2s" }}>▸</span>
+        </button>
+        {showCondHistory && <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderTop: "none", borderRadius: "0 0 12px 12px", padding: 12 }}>
+          {resolvedEntries.map((h, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < resolvedEntries.length - 1 ? `1px solid ${C.border}` : "none" }}>
+              <div>
+                <div style={{ fontSize: 11, color: C.success, fontWeight: 600 }}>{h.area} — Resolved</div>
+                <div style={{ fontSize: 9, color: C.textDim }}>Resolved {new Date(h.date).toLocaleDateString()}</div>
+              </div>
+              <span style={{ fontSize: 9, color: C.success, background: C.success + "15", padding: "2px 6px", borderRadius: 4, alignSelf: "center" }}>✓</span>
+            </div>
+          ))}
+        </div>}
+      </div>}
+
+      {/* ═══ START FRESH CONFIRMATION ═══ */}
+      {showFreshConfirm && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.9)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }} onClick={() => setShowFreshConfirm(false)}>
+          <div style={{ background: C.bg, border: `1px solid ${C.danger}40`, borderRadius: 20, padding: 24, maxWidth: 380, width: "100%" }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontSize: 20, fontWeight: 800, color: C.danger, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2, marginBottom: 8 }}>START FRESH</div>
+            <div style={{ fontSize: 12, color: C.text, lineHeight: 1.6, marginBottom: 12 }}>
+              This will delete <b>ALL</b> your data including workout history, exercise progress, strength records, PT session logs, and streaks. Your account stays but everything else resets to zero.
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: C.danger, marginBottom: 12 }}>This cannot be undone.</div>
+            <div style={{ fontSize: 10, color: C.textDim, marginBottom: 8 }}>Type <b>RESET</b> to confirm:</div>
+            <input value={freshInput} onChange={e => setFreshInput(e.target.value)} placeholder="Type RESET" style={{
+              width: "100%", padding: "10px 14px", borderRadius: 10, background: C.bgElevated,
+              border: `1px solid ${freshInput === "RESET" ? C.danger : C.border}`, color: C.text,
+              fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box", marginBottom: 12,
+              textAlign: "center", fontWeight: 700, letterSpacing: 3,
+            }} />
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={() => { setShowFreshConfirm(false); setFreshInput(""); }} style={{
+                flex: 1, padding: "12px", borderRadius: 12, background: C.bgElevated,
+                border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600,
+                cursor: "pointer", fontFamily: "inherit",
+              }}>Cancel</button>
+              <button onClick={() => { if (freshInput === "RESET" && onStartFresh) { onStartFresh(); setShowFreshConfirm(false); } }} disabled={freshInput !== "RESET"} style={{
+                flex: 1, padding: "12px", borderRadius: 12,
+                background: freshInput === "RESET" ? C.danger : C.bgElevated,
+                border: `1px solid ${freshInput === "RESET" ? C.danger : C.border}`,
+                color: freshInput === "RESET" ? "#fff" : C.textDim,
+                fontSize: 13, fontWeight: 700, cursor: freshInput === "RESET" ? "pointer" : "not-allowed",
+                fontFamily: "inherit", opacity: freshInput === "RESET" ? 1 : 0.4,
+              }}>Erase Everything</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Btn variant="dark" onClick={async () => { await signOut(); onClose(); }} icon="🚪" style={{ color: C.danger, borderColor: C.danger + "30" }}>Log Out</Btn>
       <Btn variant="ghost" onClick={onClose}>← Back to Home</Btn>
+      <div style={{ height: 90 }} />
     </div>
   );
 }

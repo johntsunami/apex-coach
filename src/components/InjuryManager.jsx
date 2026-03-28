@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import conditionsDB from "../data/conditions.json";
 import exerciseDB from "../data/exercises.json";
-import { getInjuries, addInjury, updateInjury, removeInjury, setTempFlag, computeChangelog, conditionToGateKey } from "../utils/injuries.js";
+import { getInjuries, addInjury, updateInjury, removeInjury, resolveInjury, reactivateInjury, setTempFlag, computeChangelog, conditionToGateKey } from "../utils/injuries.js";
 
 // ═══════════════════════════════════════════════════════════════
 // Injury & Condition Manager — add, edit, remove, temp flag
@@ -254,9 +254,11 @@ export default function InjuryManager({ onClose }) {
               <input value={inj.notes || ""} onChange={e => handleUpdate(inj.id, "notes", e.target.value)} placeholder="Notes (flare-up, PT feedback...)"
                 style={{ width: "100%", padding: "8px 12px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", marginBottom: 10, boxSizing: "border-box" }} />
               {/* Actions */}
-              <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ display: "flex", gap: 6 }}>
+                {inj.status !== "resolved" && <button onClick={() => { const updated = resolveInjury(inj.id); setInjuries(updated); }} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.success + "15", border: `1px solid ${C.success}30`, color: C.success, fontSize: 10, fontWeight: 600, cursor: "pointer" }}>✅ Mark Healed</button>}
+                {inj.status === "resolved" && <button onClick={() => { const updated = reactivateInjury(inj.id, inj.severity); setInjuries(updated); }} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.warning + "15", border: `1px solid ${C.warning}30`, color: C.warning, fontSize: 10, fontWeight: 600, cursor: "pointer" }}>↩ Reactivate</button>}
                 <button onClick={() => setTempFlagId(inj.id)} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.warning + "15", border: `1px solid ${C.warning}30`, color: C.warning, fontSize: 10, fontWeight: 600, cursor: "pointer" }}>⚡ Flag Today</button>
-                <button onClick={() => { setRemoveTarget(inj.id); setMode("confirm_remove"); }} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 10, fontWeight: 600, cursor: "pointer" }}>🗑️ Remove</button>
+                <button onClick={() => { setRemoveTarget(inj.id); setMode("confirm_remove"); }} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 10, fontWeight: 600, cursor: "pointer" }}>🗑️</button>
               </div>
             </div>}
           </Card>
