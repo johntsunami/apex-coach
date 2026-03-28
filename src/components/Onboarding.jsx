@@ -136,7 +136,8 @@ const FAVORITE_GRID = [
 // ═══════════════════════════════════════════════════════════════
 
 export default function OnboardingFlow({ onComplete }) {
-  const [screen, setScreen] = useState(0);
+  const [screen, _setScreen] = useState(0);
+  const setScreen = (s) => { _setScreen(s); window.scrollTo(0, 0); };
   const [parq, setParq] = useState(PARQ_QUESTIONS.map(() => null));
   const [parqWarning, setParqWarning] = useState(false);
   const [conditions, setConditions] = useState([]); // [{conditionId, severity}]
@@ -230,18 +231,41 @@ export default function OnboardingFlow({ onComplete }) {
   const next = () => setScreen(s => { let n = s + 1; while (n < totalScreens && shouldSkip(n)) n++; return Math.min(n, totalScreens - 1); });
   const prev = () => setScreen(s => { let n = s - 1; while (n > 0 && shouldSkip(n)) n--; return Math.max(n, 0); });
 
+  // "Why are we asking?" helper
+  const WHY_TEXTS = {
+    0: "The PAR-Q+ is a standard pre-exercise screening used worldwide. It identifies anything that needs medical clearance before you start training.",
+    1: "Each condition has specific exercises to avoid and specific protocols that help. The more accurate you are, the safer and more effective your plan.",
+    5: "Functional limitations help us understand what movements need modification. We adapt every exercise to what YOUR body can do right now.",
+    7: "Some medications affect how your body responds to exercise. Beta-blockers change your heart rate response, blood thinners mean we adjust foam rolling intensity.",
+    8: "Red flags are symptoms that need medical evaluation before exercise. This protects you — not a diagnosis, just a safety gate.",
+    9: "Movement compensations tell us which muscles are overactive or underactive. We use this to build corrective warm-ups specific to your patterns.",
+    10: "Limited range of motion means certain exercises need modification. We adapt every movement to what YOUR body can currently do safely.",
+    11: "Your goals shape exercise selection, volume, and progression speed. We balance what you want with what your body needs right now.",
+    12: "Training frequency, session length, and equipment determine which exercises make it into your plan and how volume is distributed across your week.",
+  };
+  const WhyHelper = ({ screenNum }) => {
+    const [open, setOpen] = useState(false);
+    const text = WHY_TEXTS[screenNum];
+    if (!text) return null;
+    return (<div style={{ marginBottom: 4 }}>
+      <button onClick={() => setOpen(!open)} style={{ background: "none", border: "none", color: C.info, fontSize: 11, cursor: "pointer", fontFamily: "inherit", padding: 0, opacity: 0.8 }}>{open ? "Hide" : "Why are we asking this?"}</button>
+      {open && <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6, padding: "6px 0", marginTop: 4 }}>{text}</div>}
+    </div>);
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+    <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {/* Progress */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>ASSESSMENT {screen + 1}/{totalScreens}</div>
-        {screen > 0 && <button onClick={prev} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer" }}>← Back</button>}
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>STEP {screen + 1} OF {totalScreens}</div>
+        {screen > 0 && <button onClick={prev} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", padding: "8px" }}>← Back</button>}
       </div>
-      <ProgressBar value={screen + 1} max={totalScreens} color={C.teal} height={4} />
+      <ProgressBar value={screen + 1} max={totalScreens} color={C.teal} height={5} />
 
       {/* ── SCREEN 0: PAR-Q+ ──────────────────────────────── */}
       {screen === 0 && <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>WELCOME TO APEX</div><div style={{ fontSize: 12, color: C.textMuted }}>Let's build your profile. First: a quick health screen.</div></div>
+        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>WELCOME TO APEX</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Let's build your profile. First: a quick health screen.</div></div>
+        <WhyHelper screenNum={0} />
         <Card><div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 10 }}>PAR-Q+ HEALTH SCREENING</div>
           {PARQ_QUESTIONS.map((q, i) => (
             <div key={i} style={{ padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
@@ -272,7 +296,9 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 1: CONDITIONS ───────────────────────────── */}
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 11, color: C.textMuted }}>Select any active conditions. Specify location and type.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to unselect.</div></div>
+        <WhyHelper screenNum={1} />
+        {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 11, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
         {CONDITION_CATEGORIES.map(cat => {
           const catConds = cat.id === "mental_health"
             ? [...conditionsDB.filter(c => c.category === cat.id), ...MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }))]
@@ -637,7 +663,8 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 7: MEDICATIONS ───────────────────────────── */}
       {screen === 7 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>MEDICATIONS</div><div style={{ fontSize: 11, color: C.textMuted }}>Some medications affect how we prescribe exercise. Select all that apply.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>MEDICATIONS</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Some medications affect how we prescribe exercise. Select all that apply.</div></div>
+        <WhyHelper screenNum={7} />
         {[
           { id: "bp_meds", label: "Blood pressure medication", icon: "🫀", note: "Affects heart rate response — we won't use HR for intensity" },
           { id: "blood_thinners", label: "Blood thinners", icon: "🩸", note: "Caution with foam rolling — bruising risk" },
@@ -734,7 +761,8 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 10: ROM SELF-ASSESSMENT (was 3) ───────── */}
       {screen === 10 && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 11, color: C.textMuted }}>Rate mobility for each joint. Limited/Painful areas get adapted exercises.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Rate each joint's mobility. Limited or painful areas get adapted exercises.</div></div>
+        <WhyHelper screenNum={10} />
         {[
           { id:"neck", label:"Neck", desc:"Can you look fully up, down, left, right?", icon:"😐" },
           { id:"thoracic", label:"Thoracic Spine", desc:"Can you rotate your upper back while hips stay still?", icon:"🔄" },
@@ -767,7 +795,8 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 11: GOALS (was 4) ─────────────────────── */}
       {screen === 11 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR GOALS</div><div style={{ fontSize: 11, color: C.textMuted }}>Select ALL that apply per muscle group. Multiple goals OK.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR GOALS</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select all that apply per muscle group. Multiple goals OK — tap to toggle.</div></div>
+        <WhyHelper screenNum={11} />
         {MUSCLE_GROUPS.map(mg => {
           const sel = Array.isArray(goals[mg.id]) ? goals[mg.id] : [];
           return (
@@ -801,7 +830,8 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 12: TRAINING PREFERENCES (was 5) ─────── */}
       {screen === 12 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TRAINING PREFERENCES</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TRAINING PREFERENCES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>How do you want to train? We'll build your plan around these choices.</div></div>
+        <WhyHelper screenNum={12} />
         {/* Days per week */}
         <Card>
           <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Days per week available</div>
@@ -910,9 +940,12 @@ export default function OnboardingFlow({ onComplete }) {
 
         {/* Fitness level */}
         <Card glow={C.tealGlow} style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, letterSpacing: 2, marginBottom: 6 }}>DETECTED FITNESS LEVEL</div>
-          <div style={{ fontSize: 36, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{fitnessLevel.toUpperCase()}</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, letterSpacing: 2, marginBottom: 6 }}>STARTING LEVEL</div>
+          <div style={{ fontSize: 36, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{fitnessLevel === "beginner" ? "FOUNDATION" : fitnessLevel === "intermediate" ? "BUILDING" : "PERFORMANCE"}</div>
           <div style={{ fontSize: 12, color: C.textMuted, marginTop: 4 }}>Starting Phase {startingPhase} — {startingPhase === 1 ? "Stabilization Endurance" : "Strength"}</div>
+          <div style={{ fontSize: 10, color: C.textDim, marginTop: 8, padding: "8px 10px", background: C.bgGlass, borderRadius: 8, textAlign: "left", lineHeight: 1.6 }}>
+            Based on: {conditions.length > 0 ? `${conditions.length} active condition${conditions.length > 1 ? "s" : ""}` : "no conditions"} · {detectedComps.length > 0 ? `${detectedComps.length} compensation${detectedComps.length > 1 ? "s" : ""}` : "no compensations"} · {Object.values(rom).filter(v => v !== "full").length} limited ROM areas. This is about protecting you, not ranking you.
+          </div>
         </Card>
 
         {/* PAR-Q */}
@@ -994,6 +1027,11 @@ export default function OnboardingFlow({ onComplete }) {
           <div style={{ fontSize: 10, color: C.textDim, marginTop: 6, fontStyle: "italic" }}>Your plan adapts every session based on check-in data.</div>
         </Card>
 
+        <Card style={{ background: C.bgGlass, padding: 14 }}>
+          <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.7 }}>
+            Your plan is built by our algorithm that cross-references your goals, conditions, ROM, and 300+ exercises through 12 safety checks. Every exercise is verified safe for <b style={{ color: C.text }}>your specific situation</b> before you see it.
+          </div>
+        </Card>
         <Btn onClick={handleComplete} icon="🚀" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3, fontSize: 18 }}>BUILD MY FIRST PLAN</Btn>
       </div>}
 
