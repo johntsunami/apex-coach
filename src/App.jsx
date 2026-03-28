@@ -18,6 +18,7 @@ import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase
 import { verifyAndFix, runAllChecks } from "./utils/safetyVerification.js";
 import { ALL_TEST_PROFILES } from "./utils/testProfiles.js";
 import { buildRoadmap, checkReadiness, getAllFavoriteRoadmaps, checkAutoAdvancements, getUnlockNotifications, markNotificationsSeen, prioritizeFavorites, recordExerciseCompletion, getProgressPercent } from "./utils/progressionRoadmap.js";
+import SwapModal from "./components/ExerciseSwap.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -731,11 +732,13 @@ function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewP
   <div style={{height:90}}/></div>);}
 
 // ── TRAIN PAGE ──────────────────────────────────────────────────
-function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork}){
+function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork,onSwapExercise}){
   const w = workout || defaultWorkout;
   const loc = w.location || "gym";
   const totalEx = w.all.length;
   const m=mode||"guided";
+  const[swapTarget,setSwapTarget]=useState(null);
+  const planIds=useMemo(()=>new Set((w.all||[]).map(e=>e.id)),[w]);
   return(<div style={{display:"flex",flexDirection:"column",gap:16}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div></div>
     {/* Mode toggle */}
@@ -766,7 +769,10 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork}){
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <ExerciseImage exercise={ex} size="thumb"/>
               <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.info,marginTop:1}}>{ex._reason}</div>}</div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:70}}>{mu.primary.slice(0,2).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
+              <div style={{display:"flex",alignItems:"center",gap:4}}>
+                <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:50}}>{mu.primary.slice(0,1).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
+                <button onClick={(e)=>{e.stopPropagation();setSwapTarget(ex);}} style={{width:26,height:26,borderRadius:8,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}} title="Request Alternative">🔄</button>
+              </div>
             </div>
             {ex._swappedFor&&<div style={{marginTop:4,padding:"4px 8px",background:C.warning+"10",borderRadius:6,borderLeft:`2px solid ${C.warning}`}}><span style={{fontSize:9,color:C.warning,fontWeight:700}}>🔄</span><span style={{fontSize:9,color:C.textMuted}}> Swapped for {ex._swappedFor}</span></div>}
             {ex._buildingTowardId&&<div style={{marginTop:4,padding:"4px 8px",background:C.purple+"10",borderRadius:6,borderLeft:`2px solid ${C.purple}`}}><span style={{fontSize:9,color:C.purple,fontWeight:700}}>🎯 {getProgressPercent(ex._buildingTowardId)}%</span><span style={{fontSize:9,color:C.textMuted}}> toward {ex._buildingToward}</span></div>}
@@ -787,6 +793,7 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork}){
     {onExtraWork&&<Btn variant="dark" onClick={onExtraWork} icon="➕" style={{marginTop:8}}>Add Extra Work (McKenzie, Yoga, PT...)</Btn>}
     {w.addOns?.length>0&&<Card style={{borderColor:C.purple+"30"}}><div style={{fontSize:10,fontWeight:700,color:C.purple,letterSpacing:1.5,marginBottom:6}}>ADD-ONS ({w.addOns.length} exercises · ~{w.addOns.length*3} min)</div>{w.addOns.map(ex=>(<div key={ex.id} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><ExerciseImage exercise={ex} size="thumb"/><span style={{fontSize:11,color:C.text}}>{ex.name}</span></div>))}</Card>}
     <Btn onClick={onStart} icon="⚡" style={{marginTop:8}}>Begin Check-In →</Btn>
+    {swapTarget&&<SwapModal exercise={swapTarget} phase={CURRENT_PHASE} location={loc} excludeIds={planIds} onClose={()=>setSwapTarget(null)} onSwap={(alt)=>{setSwapTarget(null);if(onSwapExercise)onSwapExercise(swapTarget,alt);}}/>}
     <div style={{height:90}}/>
   </div>);
 }
@@ -1379,7 +1386,7 @@ function AppInner(){
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")}/>}
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>setScreen("onboarding")} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")}/>}
-    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")}/>}
+    {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")} onSwapExercise={(orig,alt)=>{setWorkout(w=>{const swap={...alt,_swappedFor:orig.name,_swapReason:"User requested alternative"};const newAll=w.all.map(e=>e.id===orig.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===orig.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===orig.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===orig.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===orig.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===orig.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===orig.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});}}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} safetyReport={safetyReport} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}

@@ -4,6 +4,8 @@ import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { getStats } from "../utils/storage.js";
 import { getVolumeSummary, getTrainingWeek } from "../utils/volumeTracker.js";
+import ExerciseImage from "./ExerciseImage.jsx";
+import SwapModal from "./ExerciseSwap.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // Long-Term Plan View — This Week / Monthly / 12-Month / Blocked
@@ -18,6 +20,8 @@ const PHASE = 1; // Current phase
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
+  const [swapTarget, setSwapTarget] = useState(null);
+  const [swaps, setSwaps] = useState({});  // { originalId: replacementExercise }
   const assessment = getAssessment();
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const stats = getStats();
@@ -97,9 +101,22 @@ export default function PlanView({ onClose }) {
               <div style={{ fontSize: 10, color: C.textDim }}>{day.total} exercises · ~{assessment?.preferences?.sessionTime || 45}min</div>
             </div>
             {[{ label: "Inhibit + Lengthen", ex: day.warmup, c: C.info }, { label: "Activate + Integrate", ex: day.main, c: C.teal }, { label: "Cooldown", ex: day.cooldown, c: C.success }].map(sec => (
-              <div key={sec.label} style={{ marginBottom: 4 }}>
-                <div style={{ fontSize: 8, fontWeight: 700, color: sec.c, letterSpacing: 1, marginBottom: 2 }}>{sec.label}</div>
-                <div style={{ fontSize: 10, color: C.textMuted }}>{sec.ex.map(e => e.emoji + " " + e.name).join("  ·  ") || "—"}</div>
+              <div key={sec.label} style={{ marginBottom: 6 }}>
+                <div style={{ fontSize: 8, fontWeight: 700, color: sec.c, letterSpacing: 1, marginBottom: 3 }}>{sec.label}</div>
+                {sec.ex.map(e => {
+                  const display = swaps[e.id] || e;
+                  const wasSwapped = !!swaps[e.id];
+                  return (
+                    <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 0" }}>
+                      <ExerciseImage exercise={display} size="thumb" />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 10, color: C.text, fontWeight: wasSwapped ? 600 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{display.name}</div>
+                        {wasSwapped && <div style={{ fontSize: 8, color: C.warning }}>🔄 was {e.name}</div>}
+                      </div>
+                      <button onClick={() => setSwapTarget(e)} style={{ width: 22, height: 22, borderRadius: 6, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textDim, fontSize: 9, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} title="Swap">🔄</button>
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </Card>
@@ -237,6 +254,17 @@ export default function PlanView({ onClose }) {
         {blockedExercises.length > 30 && <div style={{ fontSize: 10, color: C.textDim, textAlign: "center" }}>+{blockedExercises.length - 30} more — use Library filters to explore</div>}
       </div>}
 
+      {swapTarget && <SwapModal
+        exercise={swapTarget}
+        phase={PHASE}
+        location="gym"
+        excludeIds={new Set(weekPlan.flatMap(d => [...d.warmup, ...d.main, ...d.cooldown].map(e => e.id)))}
+        onClose={() => setSwapTarget(null)}
+        onSwap={(alt) => {
+          setSwaps(prev => ({ ...prev, [swapTarget.id]: { ...alt, _swappedFor: swapTarget.name } }));
+          setSwapTarget(null);
+        }}
+      />}
       <div style={{ height: 90 }} />
     </div>
   );
