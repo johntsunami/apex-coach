@@ -436,7 +436,24 @@ export function PTMiniSession({ protocol, onComplete, onClose }) {
               <Badge color={C.purple}>Exercise {exIdx + 1} of {exercises.length}</Badge>
               <Badge>{protocol?.protocol_type?.replace(/_/g, " ") || "PT"}</Badge>
             </div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1, marginBottom: 12 }}>{currentEx.name}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1, marginBottom: 8 }}>{currentEx.name}</div>
+            {/* Sets / Reps / Tempo */}
+            {(()=>{ const pp = currentEx.phaseParams?.[String(protocol?.current_phase || 1)] || currentEx.phaseParams?.["1"] || {}; return (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 12 }}>
+                <div style={{ textAlign: "center", padding: "8px 4px", background: C.bgElevated, borderRadius: 8 }}>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif" }}>{pp.sets || "1-2"}</div>
+                  <div style={{ fontSize: 10, color: C.textDim, letterSpacing: 1, textTransform: "uppercase" }}>Sets</div>
+                </div>
+                <div style={{ textAlign: "center", padding: "8px 4px", background: C.bgElevated, borderRadius: 8 }}>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{pp.reps || "10-15"}</div>
+                  <div style={{ fontSize: 10, color: C.textDim, letterSpacing: 1, textTransform: "uppercase" }}>Reps</div>
+                </div>
+                <div style={{ textAlign: "center", padding: "8px 4px", background: C.bgElevated, borderRadius: 8 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.textMuted }}>{pp.tempo || "Slow"}</div>
+                  <div style={{ fontSize: 10, color: C.textDim, letterSpacing: 1, textTransform: "uppercase" }}>Tempo</div>
+                </div>
+              </div>
+            ); })()}
             <ExerciseImage exercise={currentEx} size="full" />
             <button onClick={handleExDone} style={{ width: "100%", padding: "12px", borderRadius: 10, marginTop: 10, background: C.success + "15", border: `1px solid ${C.success}40`, color: C.success, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
               ✅ {exIdx + 1 < exercises.length ? "Complete — Next" : "Complete — Rate Pain"}
