@@ -1005,7 +1005,7 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
 }
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
-function ExerciseScreen({exercise,index,total,phase,onDone,onSub,onBack}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const[canUndo,setCanUndo]=useState(false);const tr=useRef(null);
+function ExerciseScreen({exercise,index,total,phase,onDone,onSub,onBack,onEndEarly,onPause}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const[canUndo,setCanUndo]=useState(false);const tr=useRef(null);
 // Per-set tracking
 const defaultReps=parseInt(String(ep.reps).replace(/[^0-9]/g,''))||12;
 const[setLog,setSetLog]=useState([]);
@@ -1023,7 +1023,7 @@ const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
 const pc={warmup:C.info,main:C.teal,cooldown:C.success}[phase]||C.teal;
 const Sec=({id,title,icon,color,children,collapsible})=>{const o=collapsible?exp===id:true;return(<div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,borderLeft:`3px solid ${color||pc}`,overflow:"hidden",marginBottom:2}}><div onClick={collapsible?()=>setExp(o?null:id):undefined} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 16px",cursor:collapsible?"pointer":"default"}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:15}}>{icon}</span><span style={{fontSize:11,fontWeight:700,color:color||pc,letterSpacing:1.5,textTransform:"uppercase"}}>{title}</span></div>{collapsible&&<span style={{color:C.textDim,fontSize:12,transform:o?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>}</div>{o&&<div style={{padding:"0 16px 16px"}}>{children}</div>}</div>);};
 return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
-  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>{onBack&&<button onClick={onBack} style={{background:"none",border:"none",color:C.textMuted,fontSize:11,cursor:"pointer",padding:"4px 8px"}}>← Back</button>}<Badge color={pc}>{phase}</Badge><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span></div>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>{onBack?<button onClick={onBack} style={{background:"none",border:"none",color:C.textMuted,fontSize:11,cursor:"pointer",padding:"4px 8px"}}>← Back</button>:<div/>}<Badge color={pc}>{phase}</Badge><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:12,color:C.textDim}}>{index+1}/{total}</span>{onPause&&<button onClick={onPause} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:6,color:C.textDim,fontSize:10,padding:"4px 8px",cursor:"pointer",minHeight:28}}>⏸</button>}{onEndEarly&&<button onClick={onEndEarly} style={{background:C.bgElevated,border:`1px solid ${C.danger}30`,borderRadius:6,color:C.danger,fontSize:10,padding:"4px 8px",cursor:"pointer",minHeight:28}}>End</button>}</div></div>
   <ProgressBar value={index+1} max={total} color={pc} height={4}/>
   {/* Exercise image — animated crossfade between start/end positions */}
   <ExerciseImage exercise={exercise}/>
@@ -1271,7 +1271,83 @@ function QuickModeScreen({workout,onComplete}){
 }
 
 // ── OTHER SCREENS ───────────────────────────────────────────────
-function Mindfulness({onContinue,type}){const b={warmupToMain:{t:"TRANSITION",s:"Warm-up done. 3 deep breaths.",i:"🧘",br:{i:4,h:4,e:6}},mainToCooldown:{t:"DELOAD",s:"Main work done.",i:"🌊",br:{i:4,h:2,e:8}},midSession:{t:"CHECK-IN",s:"Halfway.",i:"💭",br:{i:3,h:3,e:5}}}[type]||{t:"PAUSE",s:"Breathe.",i:"🧘",br:{i:4,h:4,e:6}};return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:24,minHeight:400,textAlign:"center"}}><div style={{fontSize:64}}>{b.i}</div><h2 style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{b.t}</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:280}}>{b.s}</p><Card style={{background:C.bgGlass,width:"100%",maxWidth:300}}><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:b.br.i,c:C.info},{l:"Hold",v:b.br.h,c:C.warning},{l:"Out",v:b.br.e,c:C.success}].map(x=>(<div key={x.l} style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:x.c,fontFamily:"'Bebas Neue',sans-serif"}}>{x.v}s</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>{x.l}</div></div>))}</div></Card><Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn><div style={{height:90}}/></div>);}
+function Mindfulness({onContinue,type}){
+  const labels={warmupToMain:{t:"TRANSITION",s:"Warm-up done. Time for 3 deep breaths.",i:"🧘"},mainToCooldown:{t:"COOLDOWN TIME",s:"The hard part is done. You earned this.",i:"🌊"},midSession:{t:"HALFWAY CHECK-IN",s:"Pause. Reset. Finish strong.",i:"💭"}}[type]||{t:"BREATHE",s:"Reset your nervous system.",i:"🧘"};
+  const LS="apex_breath_prefs";
+  const saved=(()=>{try{return JSON.parse(localStorage.getItem(LS))||{};}catch{return{};}})();
+  const[inh,setInh]=useState(saved.inh||7);
+  const[hld,setHld]=useState(saved.hld||7);
+  const[exh,setExh]=useState(saved.exh||7);
+  const[phase,setPhase]=useState("idle");// idle|in|hold|out|done
+  const[sec,setSec]=useState(0);
+  const[cycle,setCycle]=useState(0);
+  const[circleScale,setCircleScale]=useState(0.4);
+  const totalCycles=3;
+  const timerRef=useRef(null);
+
+  // Save prefs on change
+  useEffect(()=>{try{localStorage.setItem(LS,JSON.stringify({inh,hld,exh}));}catch{}},[inh,hld,exh]);
+
+  // Auto-start breathing
+  useEffect(()=>{if(phase==="idle"){setPhase("in");setSec(inh);setCycle(0);}},[]);
+
+  // Timer tick
+  useEffect(()=>{
+    if(phase==="done"||phase==="idle")return;
+    timerRef.current=setTimeout(()=>{
+      if(sec>1){setSec(s=>s-1);}
+      else{
+        // Advance phase
+        if(phase==="in"){setPhase("hold");setSec(hld);}
+        else if(phase==="hold"){setPhase("out");setSec(exh);}
+        else if(phase==="out"){
+          const next=cycle+1;
+          if(next>=totalCycles){setPhase("done");}
+          else{setCycle(next);setPhase("in");setSec(inh);}
+        }
+      }
+    },1000);
+    return()=>clearTimeout(timerRef.current);
+  },[phase,sec,cycle,inh,hld,exh]);
+
+  // Circle animation
+  useEffect(()=>{
+    if(phase==="in")setCircleScale(1);
+    else if(phase==="hold")setCircleScale(1);
+    else if(phase==="out")setCircleScale(0.4);
+    else if(phase==="done")setCircleScale(0.6);
+  },[phase]);
+
+  const phaseLabel=phase==="in"?"Breathe In":phase==="hold"?"Hold":phase==="out"?"Breathe Out":phase==="done"?"Done":"";
+  const phaseColor=phase==="in"?C.info:phase==="hold"?C.warning:phase==="out"?C.success:C.teal;
+  const Adj=({label,val,set})=>(<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:10,color:C.textDim,minWidth:36}}>{label}</span><button onClick={()=>set(v=>Math.max(2,v-1))} style={{width:24,height:24,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:12,cursor:"pointer"}}>-</button><span style={{fontSize:14,fontWeight:700,color:C.text,minWidth:20,textAlign:"center"}}>{val}s</span><button onClick={()=>set(v=>Math.min(15,v+1))} style={{width:24,height:24,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:12,cursor:"pointer"}}>+</button></div>);
+
+  return(<div className="fade-in" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20,minHeight:400,textAlign:"center"}}>
+    <div style={{fontSize:48}}>{labels.i}</div>
+    <h2 style={{fontSize:26,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{labels.t}</h2>
+    <p style={{fontSize:14,color:C.textMuted,maxWidth:280}}>{labels.s}</p>
+    {/* Breathing circle */}
+    {phase!=="done"&&<div style={{position:"relative",width:160,height:160,display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div style={{width:140,height:140,borderRadius:"50%",border:`3px solid ${phaseColor}30`,position:"absolute",top:10,left:10}}/>
+      <div style={{width:`${circleScale*140}px`,height:`${circleScale*140}px`,borderRadius:"50%",background:`${phaseColor}15`,border:`2px solid ${phaseColor}`,transition:"all 1s ease-in-out",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}>
+        <div style={{fontSize:28,fontWeight:800,color:phaseColor,fontFamily:"'Bebas Neue',sans-serif"}}>{sec}</div>
+      </div>
+    </div>}
+    {phase!=="done"&&<div style={{fontSize:16,fontWeight:700,color:phaseColor}}>{phaseLabel}...</div>}
+    {phase!=="done"&&<div style={{fontSize:10,color:C.textDim}}>Breath {cycle+1} of {totalCycles}</div>}
+    {/* Timing adjusters */}
+    <Card style={{background:C.bgGlass,width:"100%",maxWidth:300,padding:12}}>
+      <div style={{display:"flex",justifyContent:"space-around"}}>
+        <Adj label="In" val={inh} set={setInh}/>
+        <Adj label="Hold" val={hld} set={setHld}/>
+        <Adj label="Out" val={exh} set={setExh}/>
+      </div>
+    </Card>
+    {phase==="done"&&<div><div style={{fontSize:32,marginBottom:8}}>✨</div><div style={{fontSize:14,color:C.success,fontWeight:600,marginBottom:12}}>3 breaths complete. Ready to go.</div><Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn></div>}
+    {phase!=="done"&&<Btn variant="ghost" onClick={onContinue} style={{maxWidth:300,opacity:0.6}}>Skip →</Btn>}
+    <div style={{height:90}}/>
+  </div>);
+}
 function ReflectScreen({onComplete,exercisesDone}){
   const qs=[{id:"d",label:"Difficulty",icon:"📊"},{id:"p",label:"Pain",icon:"⚠️"},{id:"e",label:"Enjoyment",icon:"😊"},{id:"f",label:"Form",icon:"🎯"}];
   const[r,setR]=useState(()=>{const o={};qs.forEach(q=>o[q.id]=5);return o;});
@@ -1359,6 +1435,8 @@ function AppInner(){
   const[ptProtocol,setPtProtocol]=useState(null); // active PT protocol for mini-session
   const[reassessSnap,setReassessSnap]=useState(null); // pre-reassessment snapshot
   const[reassessDiff,setReassessDiff]=useState(null); // post-reassessment comparison
+  const[showPause,setShowPause]=useState(false);
+  const[showEndConfirm,setShowEndConfirm]=useState(false);
   // Dev bypass: add ?dev to URL to skip auth (dev mode only)
   const devBypass=import.meta.env.DEV&&new URLSearchParams(window.location.search).has("dev");
   // Route logic: auth state → screen
@@ -1368,6 +1446,9 @@ function AppInner(){
     if(!devBypass&&profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
     if(screen==="auth"||screen==="init")setScreen("home");
   },[user,profile,loading,devBypass]);
+  // Check for paused workout on mount
+  const[resumePrompt,setResumePrompt]=useState(null);
+  useEffect(()=>{try{const raw=localStorage.getItem("apex_paused_workout");if(!raw)return;const pw=JSON.parse(raw);const age=(Date.now()-pw.pausedAt)/3600000;if(age>4){localStorage.removeItem("apex_paused_workout");return;}setResumePrompt(pw);}catch{}},[]);
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
@@ -1416,12 +1497,18 @@ function AppInner(){
     {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
+    {/* Resume paused workout prompt */}
+    {resumePrompt&&screen==="home"&&<Card glow={C.tealGlow} style={{margin:"0 0 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Unfinished Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} exercises done · {Math.round((Date.now()-resumePrompt.pausedAt)/60000)} min ago</div></div></div><div style={{display:"flex",gap:8}}><Btn size="sm" onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);localStorage.removeItem("apex_paused_workout");setResumePrompt(null);setScreen("perform");}} style={{flex:2}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}}>Discard</Btn></div></Card>}
     {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")} onSwapExercise={(orig,alt)=>{setWorkout(w=>{const swap={...alt,_swappedFor:orig.name,_swapReason:"User requested alternative"};const newAll=w.all.map(e=>e.id===orig.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===orig.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===orig.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===orig.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===orig.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===orig.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===orig.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});}}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} safetyReport={safetyReport} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
-    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone} onBack={exHistory.length>0?handleExBack:null}/>}
+    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone} onBack={exHistory.length>0?handleExBack:null} onEndEarly={()=>setShowEndConfirm(true)} onPause={()=>setShowPause(true)}/>}
+    {/* End Early confirm */}
+    {showEndConfirm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={()=>setShowEndConfirm(false)}><div style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:20,padding:24,maxWidth:360,width:"100%"}} onClick={e=>e.stopPropagation()}><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,marginBottom:8}}>END SESSION EARLY?</div><div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:16}}>Your {completedExercises.length} completed exercise{completedExercises.length!==1?"s":""} will be saved. Remaining exercises will be logged as skipped.</div><div style={{display:"flex",gap:8}}><button onClick={()=>setShowEndConfirm(false)} style={{flex:1,padding:"12px",borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textMuted,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Keep Going</button><button onClick={()=>{setShowEndConfirm(false);localStorage.removeItem("apex_paused_workout");setScreen("reflect");}} style={{flex:1,padding:"12px",borderRadius:12,background:C.danger,border:"none",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>End & Save</button></div></div></div>}
+    {/* Pause overlay */}
+    {showPause&&<div style={{position:"fixed",inset:0,background:"rgba(6,11,24,0.95)",zIndex:500,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20}}><div style={{fontSize:64}}>⏸️</div><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>WORKOUT PAUSED</div><div style={{fontSize:13,color:C.textMuted}}>Exercise {exIdx+1}/{wxAll.length} · {completedExercises.length} completed</div>{sessionStart&&<div style={{fontSize:12,color:C.textDim}}>{Math.round((Date.now()-sessionStart)/60000)} min elapsed</div>}<Btn onClick={()=>{setShowPause(false);}} style={{maxWidth:300}} icon="▶">Resume Workout</Btn><Btn variant="dark" onClick={()=>{setShowPause(false);setShowEndConfirm(true);}} style={{maxWidth:300}} icon="🛑">End Workout</Btn><button onClick={()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setShowPause(false);setScreen("home");setTab("home");}} style={{background:"none",border:"none",color:C.textDim,fontSize:12,cursor:"pointer",marginTop:8,fontFamily:"inherit"}}>Save & exit — resume later</button></div>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
     {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
