@@ -368,8 +368,10 @@ export function PTMiniSession({ protocol, onComplete, onClose }) {
 
   const handleExDone = () => {
     setCompletedExercises(prev => [...prev, { exercise_id: currentEx.id, name: currentEx.name }]);
+    window.scrollTo(0, 0);
     if (exIdx + 1 < exercises.length) {
       setExIdx(exIdx + 1);
+      setTimer(0);
       setTimerActive(false);
     } else {
       setStep("pain_after");
@@ -436,6 +438,9 @@ export function PTMiniSession({ protocol, onComplete, onClose }) {
             </div>
             <div style={{ fontSize: 20, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1, marginBottom: 12 }}>{currentEx.name}</div>
             <ExerciseImage exercise={currentEx} size="full" />
+            <button onClick={handleExDone} style={{ width: "100%", padding: "12px", borderRadius: 10, marginTop: 10, background: C.success + "15", border: `1px solid ${C.success}40`, color: C.success, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+              ✅ {exIdx + 1 < exercises.length ? "Complete — Next" : "Complete — Rate Pain"}
+            </button>
           </Card>
 
           {/* Instructions */}
@@ -499,9 +504,11 @@ export function PTMiniSession({ protocol, onComplete, onClose }) {
             )}
           </Card>
 
-          <Btn onClick={handleExDone} icon="✅" style={{ fontSize: 14 }}>
-            {exIdx + 1 < exercises.length ? "Done — Next Exercise →" : "Done — Rate Pain →"}
-          </Btn>
+          <div style={{ position: "sticky", bottom: 76, background: "#060b18", padding: "10px 0", zIndex: 50 }}>
+            <Btn onClick={handleExDone} icon="✅" style={{ fontSize: 14 }}>
+              {exIdx + 1 < exercises.length ? "Done — Next Exercise →" : "Done — Rate Pain →"}
+            </Btn>
+          </div>
         </div>
       )}
 
