@@ -1218,6 +1218,7 @@ function LibraryScreen(){
       <FilterRow label="Location" items={["All","gym","home","outdoor"]} value={locFilter} onChange={setLocFilter} color={C.orange}/>
       <FilterRow label="Ability" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
     </div>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 4px"}}><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</span><span style={{fontSize:11,color:C.textDim}}>of {exerciseDB.length} total</span></div>
     {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
     {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
