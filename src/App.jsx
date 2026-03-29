@@ -1459,7 +1459,8 @@ function TasksScreen(){return(<div style={{display:"flex",flexDirection:"column"
 function AppInner(){
   const{user,profile,loading}=useAuth();
   useEffect(()=>{syncOverridesFromSupabase();},[]);
-  const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);},[]);const[tab,setTab]=useState("home");
+  const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding"]);
+  const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);if(!_noRestore.has(s))try{localStorage.setItem("apex_last_screen",s);}catch{}},[]);const _savedTab=(()=>{try{return localStorage.getItem("apex_last_tab")||"home";}catch{return"home";}})();const[tab,_setTab]=useState(_savedTab);const setTab=(t)=>{_setTab(t);try{localStorage.setItem("apex_last_tab",t);}catch{}};
   const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);
   const[checkInData,setCheckInData]=useState(null);
@@ -1480,7 +1481,7 @@ function AppInner(){
     if(loading&&!devBypass)return;
     if(!user&&!devBypass){setScreen("auth");return;}
     if(!devBypass&&profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
-    if(screen==="auth"||screen==="init")setScreen("home");
+    if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
   // Check for paused workout on mount
   const[resumePrompt,setResumePrompt]=useState(null);
