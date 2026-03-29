@@ -125,8 +125,8 @@
       "calves"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Press_On_The_Leg_Press_Machine/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Press_On_The_Leg_Press_Machine/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "6f2LO5EeB0I",
     "methodology": [
       "cpt"
@@ -1877,8 +1877,8 @@
       "beginner"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -7215,8 +7215,8 @@
       "mandatory"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "tIZppe-RB0g",
     "methodology": [
       "rehab"
@@ -8293,8 +8293,8 @@
       "mckenzie_neck_chain"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
@@ -8429,8 +8429,8 @@
       "mckenzie_neck_chain"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
@@ -8828,8 +8828,8 @@
       "isometric"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "IF5eDfb8afM",
     "methodology": [
       "rehab"
@@ -13372,8 +13372,8 @@
       "ankle"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -13632,8 +13632,8 @@
       "plantar_fascia"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -13781,8 +13781,8 @@
       "beginner"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "09kHVqOx1Hs",
     "methodology": [
       "ces"
@@ -14544,8 +14544,8 @@
       "neck"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "U9tijfMcfP8",
     "methodology": [
       "ces"
@@ -18010,8 +18010,8 @@
       "prevention"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
@@ -18676,8 +18676,8 @@
       "hand"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
@@ -19072,8 +19072,8 @@
       "upper_body"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "UY97v4WxrzI",
     "methodology": [
       "rehab"
@@ -19204,8 +19204,8 @@
       "upper_body"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "yZJ1MfKqByY",
     "methodology": [
       "rehab"
@@ -22349,8 +22349,8 @@
       "warmup"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "ZQ-wBehR6Xw",
     "methodology": [
       "cpt"
@@ -22607,8 +22607,8 @@
       "foundation"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "ZQ-wBehR6Xw",
     "methodology": [
       "cpt"
@@ -22868,8 +22868,8 @@
       "band"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "lRo9zZ7EwpM",
     "methodology": [
       "sfs"
@@ -25153,8 +25153,8 @@
       "advanced"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
@@ -28832,8 +28832,8 @@
       "anti_extension"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -29797,8 +29797,8 @@
       "home_friendly"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "_x5m-s8xTf0",
     "methodology": [
       "cpt"
@@ -31948,8 +31948,8 @@
       "agility"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "M5uxEQH5BUM",
     "methodology": [
       "cpt"
@@ -32085,8 +32085,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -32493,8 +32493,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "pes"
@@ -33038,8 +33038,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "pes"
@@ -33170,8 +33170,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -33575,8 +33575,8 @@
       "comprehensive"
     ],
     "abilityLevel": "seated_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "AdlJHaImdtU",
     "methodology": [
       "sfs"
@@ -36007,8 +36007,8 @@
       "pain_free"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -40178,8 +40178,8 @@
       "daily"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "tIZppe-RB0g",
     "methodology": [
       "rehab"
@@ -41011,8 +41011,8 @@
       "pressing_safety"
     ],
     "abilityLevel": "supine_only",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
@@ -41724,8 +41724,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_sh_assisted_flexion",
     "name": "Active-Assisted Flexion (Towel/Pulley)",
     "emoji": "🧣",
@@ -42112,8 +42112,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_sh_isometric",
     "name": "Isometric Strengthening Progression",
     "emoji": "💪",
@@ -42244,8 +42244,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_sh_active_rom",
     "name": "Active ROM in Pain-Free Range",
     "emoji": "🤸",
@@ -42498,8 +42498,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_kn_prone_flex",
     "name": "Prone Knee Flexion (Heel to Buttock)",
     "emoji": "🦵",
@@ -42878,8 +42878,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_kn_flex_load",
     "name": "Knee Flexion Loading",
     "emoji": "🦵",
@@ -43647,8 +43647,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "id": "mck_hip_abd",
     "name": "Hip Abduction (Side-Lying)",
     "emoji": "↔️",
@@ -46538,8 +46538,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "equipmentRequired": [
       "mat"
     ],
@@ -47169,8 +47169,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "equipmentRequired": [
       "mat"
     ],
@@ -47303,8 +47303,8 @@
       "injury_shoulder": null,
       "no_equipment": null
     },
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "equipmentRequired": [
       "mat"
     ],
