@@ -17,16 +17,16 @@ const ProgressBar=({value,max=100,color=C.teal,height=6})=><div style={{width:"1
 // ── PT Exercise mapping by protocol type ────────────────────
 const PT_EXERCISES = {
   mckenzie_extension: {
-    phase1: ["mob_cat_cow", "stab_mcgill_curl_up", "stab_bird_dog"],
-    phase2: ["mob_cat_cow", "stab_mcgill_curl_up", "stab_bird_dog", "stab_plank"],
-    phase3: ["stab_mcgill_curl_up", "stab_bird_dog", "stab_plank", "stab_side_plank"],
-    phase4: ["stab_plank", "stab_side_plank", "stab_dead_bug", "stab_bird_dog"],
+    phase1: ["mck_back_prone_lying", "mck_back_prone_elbows", "stab_mcgill_curl_up", "stab_bird_dog"],
+    phase2: ["mck_back_prone_elbows", "mck_back_press_up", "stab_mcgill_curl_up", "stab_bird_dog", "stab_plank"],
+    phase3: ["mck_back_press_up", "mck_back_ext_standing", "stab_plank", "stab_side_plank", "stab_bird_dog"],
+    phase4: ["mck_back_ext_standing", "stab_plank", "stab_side_plank", "stab_dead_bug", "stab_bird_dog"],
   },
   williams_flexion: {
-    phase1: ["mob_cat_cow", "stab_dead_bug", "stab_mcgill_curl_up"],
-    phase2: ["mob_cat_cow", "stab_dead_bug", "stab_mcgill_curl_up", "stab_bird_dog"],
-    phase3: ["stab_dead_bug", "stab_bird_dog", "stab_plank", "stab_side_plank"],
-    phase4: ["stab_plank", "stab_side_plank", "stab_dead_bug", "stab_bird_dog"],
+    phase1: ["williams_pelvic_tilt", "williams_single_knee_chest", "stab_dead_bug", "mob_cat_cow"],
+    phase2: ["williams_pelvic_tilt", "williams_single_knee_chest", "williams_double_knee_chest", "stab_dead_bug", "stab_bird_dog"],
+    phase3: ["williams_double_knee_chest", "williams_partial_curl", "stab_dead_bug", "stab_plank", "stab_side_plank"],
+    phase4: ["williams_partial_curl", "williams_seated_flexion", "stab_plank", "stab_side_plank", "stab_dead_bug"],
   },
   neutral_stabilization: {
     phase1: ["stab_mcgill_curl_up", "stab_side_plank", "stab_bird_dog"],

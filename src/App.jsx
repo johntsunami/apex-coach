@@ -558,7 +558,21 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
 
   // Build dynamic session blocks based on check-in + main exercises
   const blocks = buildSessionBlocks(phase, location, checkInData, main);
-  return { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown], location, volSwaps, weeklyVol: runningVol, blocks };
+
+  // Enrich exercises with last-used load from session history
+  const sessions = getSessions() || [];
+  const lastLoads = {};
+  for (let i = sessions.length - 1; i >= 0 && Object.keys(lastLoads).length < 50; i--) {
+    for (const ec of (sessions[i].exercises_completed || [])) {
+      if (lastLoads[ec.exercise_id]) continue;
+      const maxLoad = Math.max(0, ...(ec.sets || []).map(s => s.load || 0));
+      if (maxLoad > 0) lastLoads[ec.exercise_id] = maxLoad;
+    }
+  }
+  const enrich = (ex) => lastLoads[ex.id] ? { ...ex, _lastLoad: lastLoads[ex.id] } : ex;
+  const eWarmup = warmup.map(enrich), eMain = main.map(enrich), eCooldown = cooldown.map(enrich);
+
+  return { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks };
 }
 
 // Default workout for backward compat with session flow
