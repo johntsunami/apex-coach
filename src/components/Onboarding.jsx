@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import conditionsDB from "../data/conditions.json";
 import compensationsDB from "../data/compensations.json";
 import exerciseDB from "../data/exercises.json";
+import ExerciseImage from "./ExerciseImage.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX Coach — Onboarding Assessment (14 screens)
@@ -299,18 +300,38 @@ export default function OnboardingFlow({ onComplete }) {
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to unselect.</div></div>
         <WhyHelper screenNum={1} />
         {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 11, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
+        {/* Body region cards — large tappable, one region at a time */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {CONDITION_CATEGORIES.map(cat => {
           const catConds = cat.id === "mental_health"
             ? [...conditionsDB.filter(c => c.category === cat.id), ...MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }))]
             : conditionsDB.filter(c => c.category === cat.id);
           const isOpen = condCatOpen === cat.id;
           const selectedInCat = conditions.filter(c => catConds.find(x => x.id === c.conditionId));
+          if (!isOpen) return (
+            <div key={cat.id} onClick={() => setCondCatOpen(cat.id)} style={{ background: selectedInCat.length > 0 ? C.tealBg : C.bgCard, border: `1px solid ${selectedInCat.length > 0 ? C.teal + "40" : C.border}`, borderRadius: 14, padding: 16, cursor: "pointer", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+              <span style={{ fontSize: 28 }}>{cat.icon}</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{cat.label}</span>
+              {selectedInCat.length > 0 && <Badge color={C.teal}>{selectedInCat.length} selected</Badge>}
+            </div>
+          );
+          return null;
+        })}
+        </div>
+        {/* Expanded region — shows conditions for selected body region */}
+        {CONDITION_CATEGORIES.map(cat => {
+          const catConds = cat.id === "mental_health"
+            ? [...conditionsDB.filter(c => c.category === cat.id), ...MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }))]
+            : conditionsDB.filter(c => c.category === cat.id);
+          const isOpen = condCatOpen === cat.id;
+          const selectedInCat = conditions.filter(c => catConds.find(x => x.id === c.conditionId));
+          if (!isOpen) return null;
           return (
             <Card key={cat.id} style={{ padding: 0, overflow: "hidden" }}>
-              <div onClick={() => setCondCatOpen(isOpen ? null : cat.id)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", cursor: "pointer" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontSize: 16 }}>{cat.icon}</span><span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{cat.label}</span>
-                  {selectedInCat.length > 0 && <Badge color={C.warning}>{selectedInCat.length}</Badge>}</div>
-                <span style={{ color: C.textDim, fontSize: 11, transform: isOpen ? "rotate(90deg)" : "rotate(0)", transition: "transform 0.2s" }}>▸</span>
+              <div onClick={() => setCondCatOpen(null)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", cursor: "pointer", background: C.tealBg }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontSize: 20 }}>{cat.icon}</span><span style={{ fontSize: 15, fontWeight: 700, color: C.teal }}>{cat.label}</span>
+                  {selectedInCat.length > 0 && <Badge color={C.teal}>{selectedInCat.length}</Badge>}</div>
+                <span style={{ color: C.teal, fontSize: 12 }}>✕ Close</span>
               </div>
               {isOpen && <div style={{ padding: "0 16px 14px" }}>
                 {/* Chronic Pain quick-select for physical categories */}
@@ -780,13 +801,15 @@ export default function OnboardingFlow({ onComplete }) {
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{joint.icon}</span><div><div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 9, color: C.textDim }}>{joint.desc}</div></div></div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
               {[{ v:"full", l:"Full", c:C.success }, { v:"limited", l:"Limited", c:C.warning }, { v:"painful", l:"Painful", c:C.danger }].map(opt => (
-                <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: opt.v }))}
-                  style={{ padding: "8px 4px", borderRadius: 8, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: p[joint.id] === opt.v ? "full" : opt.v }))}
+                  style={{ padding: "10px 4px", borderRadius: 8, fontSize: 13, fontWeight: 600, textAlign: "center", cursor: "pointer",
                     background: rom[joint.id] === opt.v ? opt.c + "15" : "transparent",
                     border: `1px solid ${rom[joint.id] === opt.v ? opt.c : C.border}`,
                     color: rom[joint.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
               ))}
             </div>
+            {rom[joint.id] === "painful" && <div style={{ fontSize: 11, color: C.danger, marginTop: 6 }}>→ We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
+            {rom[joint.id] === "limited" && <div style={{ fontSize: 11, color: C.warning, marginTop: 6 }}>→ Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
           </Card>
         ))}
         {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 10, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} joint{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
@@ -900,20 +923,22 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {/* Favorite exercises — curated grid + search */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 4 }}>Favorite exercises</div>
-          <div style={{ fontSize: 9, color: C.textMuted, marginBottom: 10 }}>Tap to select. Grayed = building toward it (injury/phase gate).</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 5 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 4 }}>Favorite Exercises</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 10, lineHeight: 1.5 }}>Select exercises you enjoy or want to work toward. We'll prioritize these in your plan, or build a progression roadmap if you're not ready for them yet.</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
             {FAVORITE_GRID.map(fe => {
               const fav = prefs.favorites.includes(fe.dbId);
               const dbEx = exerciseDB.find(e => e.id === fe.dbId);
               const blocked = dbEx && (dbEx.safetyTier === "red" || !(dbEx.phaseEligibility || []).includes(1));
               return <button key={fe.dbId+fe.name} onClick={() => setPrefs(p => ({ ...p, favorites: fav ? p.favorites.filter(x => x !== fe.dbId) : [...p.favorites, fe.dbId] }))}
-                style={{ padding: "8px 2px", borderRadius: 8, textAlign: "center", cursor: "pointer", opacity: blocked && !fav ? 0.4 : 1,
-                  background: fav ? C.tealBg : "transparent", border: `1px solid ${fav ? C.teal + "60" : C.border}`, position: "relative" }}>
-                <div style={{ fontSize: 16 }}>{fe.emoji}</div>
-                <div style={{ fontSize: 8, color: fav ? C.teal : C.text, fontWeight: fav ? 700 : 400, marginTop: 2, lineHeight: 1.2 }}>{fe.name}</div>
-                {blocked && !fav && <div style={{ fontSize: 7, color: C.orange, marginTop: 1 }}>Building →</div>}
-                {fav && <div style={{ position: "absolute", top: 2, right: 2, fontSize: 8 }}>⭐</div>}
+                style={{ padding: "10px 4px", borderRadius: 10, textAlign: "center", cursor: "pointer",
+                  background: fav ? C.tealBg : blocked ? C.bgGlass : "transparent", border: `1px solid ${fav ? C.teal + "60" : C.border}`, position: "relative" }}>
+                {dbEx && <ExerciseImage exercise={dbEx} size="thumb" />}
+                {!dbEx && <div style={{ fontSize: 20, marginBottom: 2 }}>{fe.emoji}</div>}
+                <div style={{ fontSize: 11, color: fav ? C.teal : C.text, fontWeight: fav ? 700 : 500, marginTop: 4, lineHeight: 1.2 }}>{fe.name}</div>
+                {dbEx && <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>{(dbEx.bodyPart || "").replace(/_/g, " ")}</div>}
+                {blocked && !fav && <span style={{ display: "inline-block", marginTop: 3, fontSize: 9, fontWeight: 700, color: C.purple, background: C.purple + "15", padding: "1px 5px", borderRadius: 4 }}>GOAL</span>}
+                {fav && <div style={{ position: "absolute", top: 3, right: 3, fontSize: 10 }}>⭐</div>}
               </button>;
             })}
           </div>
