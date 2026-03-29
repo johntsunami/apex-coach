@@ -82,3 +82,48 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20p
 
 /* ── Safe area for bottom nav ── */
 .safe-bottom { padding-bottom: 90px !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE TEXT SIZE ENFORCEMENT — Nothing below 14px
+   React inline styles render as font-size: Xpx in the DOM
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Base minimum */
+body { font-size: 16px !important; line-height: 1.5 !important; }
+
+/* Headings */
+h1, h2, h3 { min-height: 0; }
+
+/* Buttons: minimum 16px */
+button { font-size: max(16px, inherit) !important; line-height: 1.4; }
+
+/* Force small inline font-sizes up to readable minimums */
+/* React renders style="font-size: 8px" — attribute selectors match this */
+[style*="font-size: 8px"] { font-size: 14px !important; }
+[style*="font-size: 9px"] { font-size: 14px !important; }
+[style*="font-size:8px"] { font-size: 14px !important; }
+[style*="font-size:9px"] { font-size: 14px !important; }
+[style*="font-size: 10px"] { font-size: 14px !important; }
+[style*="font-size:10px"] { font-size: 14px !important; }
+[style*="font-size: 11px"] { font-size: 15px !important; }
+[style*="font-size:11px"] { font-size: 15px !important; }
+[style*="font-size: 12px"] { font-size: 16px !important; }
+[style*="font-size:12px"] { font-size: 16px !important; }
+[style*="font-size: 13px"] { font-size: 16px !important; }
+[style*="font-size:13px"] { font-size: 16px !important; }
+
+/* ── Mobile-specific: even more aggressive ── */
+@media (max-width: 480px) {
+  [style*="font-size: 8px"] { font-size: 14px !important; }
+  [style*="font-size: 9px"] { font-size: 14px !important; }
+  [style*="font-size: 10px"] { font-size: 15px !important; }
+  [style*="font-size: 11px"] { font-size: 16px !important; }
+  [style*="font-size: 12px"] { font-size: 16px !important; }
+  [style*="font-size: 13px"] { font-size: 17px !important; }
+  [style*="font-size:8px"] { font-size: 14px !important; }
+  [style*="font-size:9px"] { font-size: 14px !important; }
+  [style*="font-size:10px"] { font-size: 15px !important; }
+  [style*="font-size:11px"] { font-size: 16px !important; }
+  [style*="font-size:12px"] { font-size: 16px !important; }
+  [style*="font-size:13px"] { font-size: 17px !important; }
+}
