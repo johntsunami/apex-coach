@@ -486,9 +486,16 @@ export function PTMiniSession({ protocol, onComplete, onClose }) {
                 </button>
               </>
             ) : (
-              <button onClick={() => { setTimer(30); setTimerActive(true); }} style={{ background: "none", border: `1px solid ${C.teal}40`, borderRadius: 8, padding: "8px 16px", color: C.teal, cursor: "pointer", fontSize: 11, fontFamily: "inherit" }}>
-                ⏱ Start 30s Timer
-              </button>
+              <div>
+                <div style={{ fontSize: 11, color: C.textDim, marginBottom: 8 }}>⏱ Start Timer</div>
+                <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
+                  {[{s:30,l:"30s"},{s:60,l:"60s"},{s:90,l:"90s"},{s:120,l:"2 min"}].map(opt => (
+                    <button key={opt.s} onClick={() => { setTimer(opt.s); setTimerActive(true); }} style={{ padding: "10px 14px", borderRadius: 10, background: C.teal + "10", border: `1px solid ${C.teal}40`, color: C.teal, cursor: "pointer", fontSize: 13, fontWeight: 700, fontFamily: "inherit" }}>
+                      {opt.l}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </Card>
 

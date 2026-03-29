@@ -9,8 +9,9 @@ import YouTubePlayer, { VideoMapperModal, getVideoOverride, getNasmSlug } from "
 
 const C = { bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", textMuted: "#8b95a7", border: "rgba(255,255,255,0.08)", info: "#3b82f6" };
 const isDevMode = () => import.meta.env.DEV && new URLSearchParams(window.location.search).has("dev");
-const getMediaPref = () => { try { return localStorage.getItem("apex_media_pref") || "images"; } catch { return "images"; } };
-const setMediaPref = (v) => { try { localStorage.setItem("apex_media_pref", v); } catch {} };
+// Images ALWAYS default — video is opt-in per interaction, not persisted
+const getMediaPref = () => "images";
+const setMediaPref = () => {};
 
 // ── Emoji fallback ────────────────────────────────────────────
 
@@ -208,9 +209,9 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
   const [videoRev, setVideoRev] = useState(0);
   const dev = isDevMode();
 
-  // Video mode preference (persists across sessions)
-  const [showVideo, setShowVideo] = useState(() => getMediaPref() === "video");
-  const toggleMedia = (mode) => { setShowVideo(mode === "video"); setMediaPref(mode); };
+  // Images always default — video is per-exercise opt-in
+  const [showVideo, setShowVideo] = useState(false);
+  const toggleMedia = (mode) => { setShowVideo(mode === "video"); };
 
   // Resolve video ID: localStorage override wins, then exercise data
   const videoOverride = getVideoOverride(exercise?.id);
