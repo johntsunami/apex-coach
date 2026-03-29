@@ -94,15 +94,7 @@ export default function YouTubePlayer({ videoId, title }) {
             }}
           >
             <div style={{ fontSize: 10, color: C.textDim }}>
-              Video:{" "}
-              <a
-                href="https://www.nasm.org/workout-exercise-guidance"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: C.teal, textDecoration: "none" }}
-              >
-                NASM Exercise Library
-              </a>
+              Exercise demonstration video
             </div>
             <button
               onClick={() => setExpanded(false)}

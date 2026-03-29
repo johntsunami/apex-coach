@@ -193,24 +193,9 @@ function MediaToggle({ showVideo, onToggle, hasVideo, dev, onVideoEdit }) {
   );
 }
 
-// ── NASM Exercise Library link ──────────────────────────────
+// ── Exercise link (removed NASM reference) ──────────────────
 
-function NasmLink({ name }) {
-  const slug = getNasmSlug(name);
-  if (!slug) return null;
-  return (
-    <div style={{ marginTop: 6, textAlign: "center" }}>
-      <a
-        href={`https://www.nasm.org/exercise-library/${slug}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ fontSize: 10, color: C.teal, textDecoration: "none", opacity: 0.7 }}
-      >
-        Learn More at NASM →
-      </a>
-    </div>
-  );
-}
+function NasmLink() { return null; }
 
 // ═══════════════════════════════════════════════════════════════
 // Main Component
