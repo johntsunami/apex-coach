@@ -227,23 +227,33 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
 
   const onUpdated = () => setRev(r => r + 1);
 
-  // ── NO URL → emoji fallback ─────────────────────────────
+  // ── NO URL → show video if available, otherwise emoji ────
   if (!url) {
     if (isThumbnail) {
       return <EmojiPlaceholder emoji={exercise?.emoji} width={48} height={48} />;
     }
+    // No image but has video → show video directly (no toggle needed)
+    if (hasVideo) {
+      return (
+        <div>
+          <YouTubePlayer videoId={videoId} title={exercise?.name} />
+          {dev && <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+            <button onClick={() => setShowModal(true)} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, fontSize: 10, padding: "4px 8px", cursor: "pointer" }}>Upload Image</button>
+            <button onClick={() => setShowVideoModal(true)} style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, fontSize: 10, padding: "4px 8px", cursor: "pointer" }}>Edit Video</button>
+          </div>}
+          {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+          {showVideoModal && <VideoMapperModal exercise={exercise} onClose={() => setShowVideoModal(false)} onSaved={() => { setVideoRev(r => r + 1); setShowVideoModal(false); }} />}
+        </div>
+      );
+    }
+    // No image, no video → emoji fallback
     return (
       <div>
-        <MediaToggle showVideo={showVideo} onToggle={toggleMedia} hasVideo={hasVideo} dev={dev} onVideoEdit={() => setShowVideoModal(true)} />
-        {hasVideo && showVideo ? (
-          <YouTubePlayer videoId={videoId} title={exercise?.name} />
-        ) : (
-          <div style={{ position: "relative" }}>
-            <EmojiPlaceholder emoji={exercise?.emoji} width="100%" height={200} />
-            {dev && <PencilIcon onClick={() => setShowModal(true)} />}
-          </div>
-        )}
-        <NasmLink name={exercise?.name} />
+        <div style={{ position: "relative" }}>
+          <EmojiPlaceholder emoji={exercise?.emoji} width="100%" height={200} />
+          {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+        </div>
+        {dev && <button onClick={() => setShowVideoModal(true)} style={{ width: "100%", marginTop: 4, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 6, color: C.textDim, fontSize: 10, padding: "6px", cursor: "pointer", fontFamily: "inherit" }}>Add Video</button>}
         {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
         {showVideoModal && <VideoMapperModal exercise={exercise} onClose={() => setShowVideoModal(false)} onSaved={() => { setVideoRev(r => r + 1); setShowVideoModal(false); }} />}
       </div>
