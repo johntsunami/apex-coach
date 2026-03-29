@@ -1033,8 +1033,18 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
 function ExerciseScreen({exercise,index,total,phase,onDone,onSub,onBack,onEndEarly,onPause}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const[canUndo,setCanUndo]=useState(false);const tr=useRef(null);
+// Determine tracking mode from exercise data
+const WEIGHTED_EQ=new Set(["dumbbell","barbell","trap_bar","cable","kettlebell","machine","plate","ez_bar","weighted"]);
+const exMode=(()=>{
+  const cat=exercise.category||"";const typ=exercise.type||"";const eq=exercise.equipmentRequired||[];
+  if(cat==="foam_roll"||cat==="cooldown"||typ==="foam_roll"||typ==="static_stretch"||typ==="mobility"||cat==="mobility")return"mobility";
+  if(cat==="cardio"||typ==="cardio")return"cardio";
+  if(typ==="isometric"||typ==="breathing"||(ep.reps||"").toString().toLowerCase().includes("s"))return"timed";
+  if(eq.some(e=>WEIGHTED_EQ.has(e)))return"weighted";
+  return"bodyweight";
+})();
 // Per-set tracking
-const defaultReps=parseInt(String(ep.reps).replace(/[^0-9]/g,''))||12;
+const defaultReps=exMode==="timed"?parseInt(String(ep.reps).replace(/[^0-9]/g,''))||30:parseInt(String(ep.reps).replace(/[^0-9]/g,''))||12;
 const[setLog,setSetLog]=useState([]);
 const[curReps,setCurReps]=useState(defaultReps);
 const[curLoad,setCurLoad]=useState(exercise._lastLoad||"");
@@ -1061,22 +1071,53 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Tempo</div><div style={{fontSize:14,fontWeight:700,color:C.textMuted}}>{ep.tempo||exercise.tempo||"—"}</div></Card>
     {ep.intensity&&<Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:20,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.intensity}</div></Card>}
   </div>
-  {/* Per-set tracking inputs */}
+  {/* Per-set tracking inputs — context-aware by exercise type */}
   <Card style={{padding:12}}>
-    <div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:1.5,marginBottom:8}}>SET {cs} TRACKING</div>
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
+    <div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:1.5,marginBottom:8}}>{exMode==="mobility"?"TRACKING":exMode==="cardio"?"CARDIO TRACKING":`SET ${cs} TRACKING`}</div>
+
+    {/* MOBILITY/STRETCH: duration + completed */}
+    {exMode==="mobility"&&<div>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (seconds)</div>
+      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><button onClick={()=>setCurReps(r=>Math.max(5,r-5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:40,textAlign:"center"}}>{curReps}s</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
+    </div>}
+
+    {/* TIMED: duration + effort */}
+    {exMode==="timed"&&<div>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (seconds)</div>
+      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><button onClick={()=>setCurReps(r=>Math.max(5,r-5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:40,textAlign:"center"}}>{curReps}s</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
+    </div>}
+
+    {/* BODYWEIGHT: reps + effort (no weight) */}
+    {exMode==="bodyweight"&&<div style={{marginBottom:8}}>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps</div>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:30,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+1)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
+    </div>}
+
+    {/* WEIGHTED: reps + weight + effort */}
+    {exMode==="weighted"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
       <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps</div><div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:24,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+1)} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div></div>
       <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Weight (lbs)</div><div style={{display:"flex",alignItems:"center",gap:2}}>{[{v:-50,l:"-50"},{v:-5,l:"-5"}].map(b=><button key={b.l} onClick={()=>setCurLoad(l=>String(Math.max(0,(parseFloat(l)||0)+b.v)))} style={{width:30,height:28,borderRadius:4,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{b.l}</button>)}<input value={curLoad} onChange={e=>setCurLoad(e.target.value)} placeholder="—" type="number" style={{flex:1,padding:"6px 4px",borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontFamily:"inherit",outline:"none",textAlign:"center",boxSizing:"border-box",minWidth:0}}/>{[{v:5,l:"+5"},{v:50,l:"+50"}].map(b=><button key={b.l} onClick={()=>setCurLoad(l=>String(Math.max(0,(parseFloat(l)||0)+b.v)))} style={{width:30,height:28,borderRadius:4,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{b.l}</button>)}</div></div>
-    </div>
-    <div style={{display:"flex",gap:6,marginBottom:6}}>
+    </div>}
+
+    {/* CARDIO: duration + distance + effort */}
+    {exMode==="cardio"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
+      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (min)</div><div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-5))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:24,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div></div>
+      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Distance (mi, optional)</div><input value={curLoad} onChange={e=>setCurLoad(e.target.value)} placeholder="—" type="number" step="0.1" style={{width:"100%",padding:"6px 8px",borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontFamily:"inherit",outline:"none",textAlign:"center",boxSizing:"border-box"}}/></div>
+    </div>}
+
+    {/* Effort Level — shown for weighted, bodyweight, timed, cardio (NOT mobility) */}
+    {exMode!=="mobility"&&<div style={{display:"flex",gap:6,marginBottom:6}}>
       <div style={{flex:1}}><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Effort Level 1-10 (optional) <span title="RPE = how hard it felt. 5 = moderate, 7 = challenging, 9 = near max, 10 = absolute limit." style={{cursor:"help",color:C.info,fontWeight:700}}>ⓘ</span></div><div style={{display:"flex",gap:2}}>{[5,6,7,8,9,10].map(v=><button key={v} onClick={()=>setCurRpe(curRpe===v?0:v)} style={{flex:1,padding:"4px 0",borderRadius:4,fontSize:9,fontWeight:700,cursor:"pointer",background:curRpe===v?C.teal+"20":"transparent",border:`1px solid ${curRpe===v?C.teal:C.border}`,color:curRpe===v?C.teal:C.textDim}}>{v}</button>)}</div></div>
-    </div>
-    <div style={{display:"flex",gap:6}}>
+    </div>}
+
+    {/* Pain + Quality — shown for weighted, bodyweight, timed (NOT mobility/cardio) */}
+    {(exMode==="weighted"||exMode==="bodyweight"||exMode==="timed")&&<div style={{display:"flex",gap:6}}>
       <button onClick={()=>setCurPain(!curPain)} style={{flex:1,padding:"6px",borderRadius:6,fontSize:9,fontWeight:600,cursor:"pointer",background:curPain?C.danger+"15":"transparent",border:`1px solid ${curPain?C.danger:C.border}`,color:curPain?C.danger:C.textDim}}>{curPain?"⚠️ Pain":"No Pain"}</button>
       {[{v:"good",l:"Good Form",c:C.success},{v:"struggled",l:"Struggled",c:C.warning},{v:"failed",l:"Failed",c:C.danger}].map(q=><button key={q.v} onClick={()=>setCurQuality(curQuality===q.v?"":q.v)} style={{flex:1,padding:"6px",borderRadius:6,fontSize:8,fontWeight:600,cursor:"pointer",background:curQuality===q.v?q.c+"15":"transparent",border:`1px solid ${curQuality===q.v?q.c:C.border}`,color:curQuality===q.v?q.c:C.textDim}}>{q.l}</button>)}
-    </div>
+    </div>}
+
     {/* Set history */}
-    {setLog.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:6}}>{setLog.map(s=><div key={s.set_number} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>Set {s.set_number}: {s.reps_done} reps{s.load?` × ${s.load} lbs`:""}{s.rpe?` — RPE ${s.rpe}`:""} {s.pain?"⚠️":"✅"} {s.quality==="struggled"?"😤":s.quality==="failed"?"❌":"👍"}</div>)}</div>}
+    {setLog.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:6}}>{setLog.map(s=><div key={s.set_number} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>Set {s.set_number}: {exMode==="timed"||exMode==="mobility"?`${s.reps_done}s`:exMode==="cardio"?`${s.reps_done} min`:`${s.reps_done} reps`}{s.load?exMode==="cardio"?` · ${s.load} mi`:` × ${s.load} lbs`:""}{s.rpe?` — RPE ${s.rpe}`:""} {s.pain?"⚠️":"✅"}</div>)}</div>}
   </Card>
   <Card style={{padding:14}}><div style={{display:"flex",flexWrap:"wrap",gap:4,marginBottom:6}}>{em.primary.map(m=><Badge key={m}>{m}</Badge>)}{em.secondary.map(m=><Badge key={m} color={C.textDim}>{m}</Badge>)}</div><div style={{fontSize:11,color:C.textMuted}}>🔧 {(exercise.equipmentRequired||[exercise.equipment]).join(", ")} · ⏱️ {ep.tempo||exercise.tempo||""}</div></Card>
   <Card style={{borderLeft:`3px solid ${pc}`}}><div style={{fontSize:12,fontWeight:700,color:pc,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🎯 Why This Exercise</div><p style={{fontSize:13,color:C.textMuted,lineHeight:1.6,margin:0}}>{exercise.purpose}</p>{exercise.whyForYou&&<div style={{background:C.tealBg,borderRadius:10,padding:12,marginTop:10}}><div style={{fontSize:10,fontWeight:700,color:C.teal,textTransform:"uppercase",marginBottom:4}}>Personalized</div><p style={{fontSize:12,color:C.text,margin:0}}>{exercise.whyForYou}</p></div>}</Card>
