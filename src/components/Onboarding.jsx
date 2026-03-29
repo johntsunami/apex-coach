@@ -249,8 +249,8 @@ export default function OnboardingFlow({ onComplete }) {
     const text = WHY_TEXTS[screenNum];
     if (!text) return null;
     return (<div style={{ marginBottom: 4 }}>
-      <button onClick={() => setOpen(!open)} style={{ background: "none", border: "none", color: C.info, fontSize: 11, cursor: "pointer", fontFamily: "inherit", padding: 0, opacity: 0.8 }}>{open ? "Hide" : "Why are we asking this?"}</button>
-      {open && <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.6, padding: "6px 0", marginTop: 4 }}>{text}</div>}
+      <button onClick={() => setOpen(!open)} style={{ background: "none", border: "none", color: C.info, fontSize: 15, cursor: "pointer", fontFamily: "inherit", padding: 0, opacity: 0.8 }}>{open ? "Hide" : "Why are we asking this?"}</button>
+      {open && <div style={{ fontSize: 16, color: C.textMuted, lineHeight: 1.6, padding: "6px 0", marginTop: 4 }}>{text}</div>}
     </div>);
   };
 
@@ -258,8 +258,8 @@ export default function OnboardingFlow({ onComplete }) {
     <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {/* Progress */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>STEP {screen + 1} OF {totalScreens}</div>
-        {screen > 0 && <button onClick={prev} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 13, cursor: "pointer", padding: "8px" }}>← Back</button>}
+        <div style={{ fontSize: 15, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>STEP {screen + 1} OF {totalScreens}</div>
+        {screen > 0 && <button onClick={prev} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 16, cursor: "pointer", padding: "8px" }}>← Back</button>}
       </div>
       <ProgressBar value={screen + 1} max={totalScreens} color={C.teal} height={5} />
 
@@ -267,14 +267,14 @@ export default function OnboardingFlow({ onComplete }) {
       {screen === 0 && <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>WELCOME TO APEX</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Let's build your profile. First: a quick health screen.</div></div>
         <WhyHelper screenNum={0} />
-        <Card><div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 10 }}>PAR-Q+ HEALTH SCREENING</div>
+        <Card><div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 10 }}>PAR-Q+ HEALTH SCREENING</div>
           {PARQ_QUESTIONS.map((q, i) => (
             <div key={i} style={{ padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
-              <div style={{ fontSize: 12, color: C.text, marginBottom: 8 }}>{q}</div>
+              <div style={{ fontSize: 16, color: C.text, marginBottom: 8 }}>{q}</div>
               <div style={{ display: "flex", gap: 8 }}>
                 {[true, false].map(v => (
                   <button key={String(v)} onClick={() => setParq(p => { const n = [...p]; n[i] = v; return n; })}
-                    style={{ padding: "6px 16px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+                    style={{ padding: "6px 16px", borderRadius: 8, fontSize: 16, fontWeight: 600, cursor: "pointer",
                       background: parq[i] === v ? (v ? C.danger + "20" : C.success + "20") : "transparent",
                       border: `1px solid ${parq[i] === v ? (v ? C.danger : C.success) : C.border}`,
                       color: parq[i] === v ? (v ? C.danger : C.success) : C.textDim }}>
@@ -286,9 +286,9 @@ export default function OnboardingFlow({ onComplete }) {
           ))}
         </Card>
         {anyParqYes && <Card style={{ borderColor: C.danger + "40", background: C.danger + "08" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: C.danger, marginBottom: 6 }}>⚠️ Medical Clearance Recommended</div>
-          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 10 }}>You answered YES to one or more PAR-Q+ questions. We recommend getting medical clearance before starting an exercise program.</div>
-          <button onClick={() => setParqWarning(true)} style={{ background: "none", border: "none", color: C.warning, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.danger, marginBottom: 6 }}>⚠️ Medical Clearance Recommended</div>
+          <div style={{ fontSize: 15, color: C.textMuted, marginBottom: 10 }}>You answered YES to one or more PAR-Q+ questions. We recommend getting medical clearance before starting an exercise program.</div>
+          <button onClick={() => setParqWarning(true)} style={{ background: "none", border: "none", color: C.warning, fontSize: 16, fontWeight: 600, cursor: "pointer" }}>
             {parqWarning ? "✅ Continuing with caution" : "I understand — continue with caution →"}
           </button>
         </Card>}
@@ -299,7 +299,7 @@ export default function OnboardingFlow({ onComplete }) {
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to unselect.</div></div>
         <WhyHelper screenNum={1} />
-        {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 11, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
+        {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
         {/* Body region cards — large tappable, one region at a time */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {CONDITION_CATEGORIES.map(cat => {
@@ -331,12 +331,12 @@ export default function OnboardingFlow({ onComplete }) {
               <div onClick={() => setCondCatOpen(null)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", cursor: "pointer", background: C.tealBg }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ fontSize: 20 }}>{cat.icon}</span><span style={{ fontSize: 15, fontWeight: 700, color: C.teal }}>{cat.label}</span>
                   {selectedInCat.length > 0 && <Badge color={C.teal}>{selectedInCat.length}</Badge>}</div>
-                <span style={{ color: C.teal, fontSize: 12 }}>✕ Close</span>
+                <span style={{ color: C.teal, fontSize: 14 }}>✕ Close</span>
               </div>
               {isOpen && <div style={{ padding: "0 16px 14px" }}>
                 {/* Chronic Pain quick-select for physical categories */}
                 {cat.locations && <div style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}`, marginBottom: 4 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: C.orange, marginBottom: 6 }}>QUICK: General chronic pain in this area?</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: C.orange, marginBottom: 6 }}>QUICK: General chronic pain in this area?</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                     {cat.locations.map(loc => {
                       const qid = "chronic_" + cat.id + "_" + loc.toLowerCase().replace(/\s/g, "_");
@@ -344,7 +344,7 @@ export default function OnboardingFlow({ onComplete }) {
                       return <button key={loc} onClick={() => {
                         if (qsel) setConditions(p => p.filter(c => c.conditionId !== qid));
                         else setConditions(p => [...p, { conditionId: qid, name: "Chronic Pain — " + loc, severity: 2, bodyArea: loc, condType: "Chronic Pain", category: cat.id }]);
-                      }} style={{ padding: "4px 8px", borderRadius: 6, fontSize: 9, cursor: "pointer", background: qsel ? C.orange + "20" : "transparent", border: `1px solid ${qsel ? C.orange : C.border}`, color: qsel ? C.orange : C.textDim }}>{qsel ? "✓ " : ""}{loc}</button>;
+                      }} style={{ padding: "4px 8px", borderRadius: 6, fontSize: 14, cursor: "pointer", background: qsel ? C.orange + "20" : "transparent", border: `1px solid ${qsel ? C.orange : C.border}`, color: qsel ? C.orange : C.textDim }}>{qsel ? "✓ " : ""}{loc}</button>;
                     })}
                   </div>
                 </div>}
@@ -355,29 +355,29 @@ export default function OnboardingFlow({ onComplete }) {
                       <button onClick={() => {
                         if (sel) setConditions(p => p.filter(c => c.conditionId !== cond.id));
                         else setConditions(p => [...p, { conditionId: cond.id, name: cond.name, severity: 2, bodyArea: "", condType: "", category: cat.id }]);
-                      }} style={{ background: "none", border: "none", fontSize: 12, color: sel ? C.teal : C.textMuted, cursor: "pointer", textAlign: "left" }}>
+                      }} style={{ background: "none", border: "none", fontSize: 16, color: sel ? C.teal : C.textMuted, cursor: "pointer", textAlign: "left" }}>
                         {sel ? "✅ " : "○ "}{cond.name}
                       </button>
                       {sel && <div style={{ paddingLeft: 20, marginTop: 4 }}>
                         {/* Location sub-select */}
                         {cat.locations && <div style={{ marginBottom: 6 }}>
-                          <span style={{ fontSize: 9, color: C.textDim }}>Location: </span>
+                          <span style={{ fontSize: 14, color: C.textDim }}>Location: </span>
                           <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 2 }}>
                             {cat.locations.map(loc => <button key={loc} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, bodyArea: loc } : c))}
-                              style={{ padding: "2px 6px", borderRadius: 4, fontSize: 8, cursor: "pointer", background: sel.bodyArea === loc ? C.tealBg : "transparent", border: `1px solid ${sel.bodyArea === loc ? C.teal : C.border}`, color: sel.bodyArea === loc ? C.teal : C.textDim }}>{loc}</button>)}
+                              style={{ padding: "2px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel.bodyArea === loc ? C.tealBg : "transparent", border: `1px solid ${sel.bodyArea === loc ? C.teal : C.border}`, color: sel.bodyArea === loc ? C.teal : C.textDim }}>{loc}</button>)}
                           </div>
                         </div>}
                         {/* Condition type */}
                         <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
                           {CONDITION_TYPES.map(ct => <button key={ct} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, condType: ct } : c))}
-                            style={{ padding: "3px 6px", borderRadius: 4, fontSize: 8, cursor: "pointer", background: sel.condType === ct ? C.info + "20" : "transparent", border: `1px solid ${sel.condType === ct ? C.info : C.border}`, color: sel.condType === ct ? C.info : C.textDim }}>{ct}</button>)}
+                            style={{ padding: "3px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel.condType === ct ? C.info + "20" : "transparent", border: `1px solid ${sel.condType === ct ? C.info : C.border}`, color: sel.condType === ct ? C.info : C.textDim }}>{ct}</button>)}
                         </div>
                         {/* Severity */}
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <span style={{ fontSize: 9, color: C.textDim }}>Severity:</span>
+                          <span style={{ fontSize: 14, color: C.textDim }}>Severity:</span>
                           {[1, 2, 3, 4, 5].map(s => (
                             <button key={s} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, severity: s } : c))}
-                              style={{ width: 22, height: 22, borderRadius: 4, fontSize: 10, fontWeight: 700, cursor: "pointer",
+                              style={{ width: 22, height: 22, borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: "pointer",
                                 background: sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) + "20" : "transparent",
                                 border: `1px solid ${sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) : C.border}`,
                                 color: sel.severity === s ? C.text : C.textDim }}>{s}</button>
@@ -391,13 +391,13 @@ export default function OnboardingFlow({ onComplete }) {
             </Card>
           );
         })}
-        {conditions.length > 0 && <div style={{ fontSize: 11, color: C.teal }}>{conditions.length} condition{conditions.length !== 1 ? "s" : ""} selected</div>}
+        {conditions.length > 0 && <div style={{ fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length !== 1 ? "s" : ""} selected</div>}
         <Btn onClick={next}>{hasConditions ? "Next — Pain Assessment →" : "Next — Functional Screen →"}</Btn>
       </div>}
 
       {/* ── SCREEN 2: PAIN BEHAVIOR (per condition) ────────── */}
       {screen === 2 && hasConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN BEHAVIOR</div><div style={{ fontSize: 11, color: C.textMuted }}>Tell us about your pain patterns for each condition.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN BEHAVIOR</div><div style={{ fontSize: 15, color: C.textMuted }}>Tell us about your pain patterns for each condition.</div></div>
         {conditions.map(cond => {
           const pb = painBehaviors[cond.conditionId] || {};
           const update = (field, val) => setPainBehaviors(p => ({ ...p, [cond.conditionId]: { ...p[cond.conditionId], [field]: val } }));
@@ -407,51 +407,51 @@ export default function OnboardingFlow({ onComplete }) {
           };
           return (
             <Card key={cond.conditionId}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: C.teal, marginBottom: 10 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.teal, marginBottom: 10 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
               {/* Pain type */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>PAIN TYPE</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>PAIN TYPE</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {["Constant", "Intermittent", "Activity-only", "Rest-only"].map(t => (
-                    <button key={t} onClick={() => update("painType", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 10, cursor: "pointer", background: pb.painType === t ? C.teal + "20" : "transparent", border: `1px solid ${pb.painType === t ? C.teal : C.border}`, color: pb.painType === t ? C.teal : C.textDim }}>{t}</button>
+                    <button key={t} onClick={() => update("painType", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 14, cursor: "pointer", background: pb.painType === t ? C.teal + "20" : "transparent", border: `1px solid ${pb.painType === t ? C.teal : C.border}`, color: pb.painType === t ? C.teal : C.textDim }}>{t}</button>
                   ))}
                 </div>
               </div>
               {/* Worst time */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WORST TIME OF DAY</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WORST TIME OF DAY</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {["Morning", "Midday", "Evening", "Night", "No pattern"].map(t => (
-                    <button key={t} onClick={() => update("worstTime", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 10, cursor: "pointer", background: pb.worstTime === t ? C.warning + "20" : "transparent", border: `1px solid ${pb.worstTime === t ? C.warning : C.border}`, color: pb.worstTime === t ? C.warning : C.textDim }}>{t}</button>
+                    <button key={t} onClick={() => update("worstTime", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 14, cursor: "pointer", background: pb.worstTime === t ? C.warning + "20" : "transparent", border: `1px solid ${pb.worstTime === t ? C.warning : C.border}`, color: pb.worstTime === t ? C.warning : C.textDim }}>{t}</button>
                   ))}
                 </div>
               </div>
               {/* Triggers */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>PAIN TRIGGERS (select all)</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>PAIN TRIGGERS (select all)</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {["Sitting", "Standing", "Walking", "Lifting", "Bending", "Twisting", "Lying down"].map(t => {
                     const sel = (pb.triggers || []).includes(t);
-                    return <button key={t} onClick={() => toggleArr("triggers", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 10, cursor: "pointer", background: sel ? C.danger + "20" : "transparent", border: `1px solid ${sel ? C.danger : C.border}`, color: sel ? C.danger : C.textDim }}>{sel ? "✓ " : ""}{t}</button>;
+                    return <button key={t} onClick={() => toggleArr("triggers", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 14, cursor: "pointer", background: sel ? C.danger + "20" : "transparent", border: `1px solid ${sel ? C.danger : C.border}`, color: sel ? C.danger : C.textDim }}>{sel ? "✓ " : ""}{t}</button>;
                   })}
                 </div>
               </div>
               {/* Relievers */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WHAT HELPS (select all)</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WHAT HELPS (select all)</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {["Rest", "Movement", "Heat", "Ice", "Stretching", "Nothing helps"].map(t => {
                     const sel = (pb.relievers || []).includes(t);
-                    return <button key={t} onClick={() => toggleArr("relievers", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 10, cursor: "pointer", background: sel ? C.success + "20" : "transparent", border: `1px solid ${sel ? C.success : C.border}`, color: sel ? C.success : C.textDim }}>{sel ? "✓ " : ""}{t}</button>;
+                    return <button key={t} onClick={() => toggleArr("relievers", t)} style={{ padding: "5px 10px", borderRadius: 8, fontSize: 14, cursor: "pointer", background: sel ? C.success + "20" : "transparent", border: `1px solid ${sel ? C.success : C.border}`, color: sel ? C.success : C.textDim }}>{sel ? "✓ " : ""}{t}</button>;
                   })}
                 </div>
               </div>
               {/* Trend */}
               <div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>TREND OVER LAST 2 WEEKS</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>TREND OVER LAST 2 WEEKS</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: "better", l: "Getting Better", c: C.success }, { v: "same", l: "Staying Same", c: C.warning }, { v: "worse", l: "Getting Worse", c: C.danger }].map(t => (
-                    <button key={t.v} onClick={() => update("trend", t.v)} style={{ flex: 1, padding: "8px 4px", borderRadius: 8, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pb.trend === t.v ? t.c + "15" : "transparent", border: `1px solid ${pb.trend === t.v ? t.c : C.border}`, color: pb.trend === t.v ? t.c : C.textDim }}>{t.l}</button>
+                    <button key={t.v} onClick={() => update("trend", t.v)} style={{ flex: 1, padding: "8px 4px", borderRadius: 8, fontSize: 14, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pb.trend === t.v ? t.c + "15" : "transparent", border: `1px solid ${pb.trend === t.v ? t.c : C.border}`, color: pb.trend === t.v ? t.c : C.textDim }}>{t.l}</button>
                   ))}
                 </div>
               </div>
@@ -463,41 +463,41 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 3: DIRECTIONAL PREFERENCE (spinal only) ── */}
       {screen === 3 && hasSpinalConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>DIRECTIONAL PREFERENCE</div><div style={{ fontSize: 11, color: C.textMuted }}>Critical for spinal conditions — determines your PT protocol direction.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>DIRECTIONAL PREFERENCE</div><div style={{ fontSize: 15, color: C.textMuted }}>Critical for spinal conditions — determines your PT protocol direction.</div></div>
         <Card style={{ borderColor: C.danger + "30", background: C.danger + "06" }}>
-          <div style={{ fontSize: 11, color: C.danger, fontWeight: 700, marginBottom: 4 }}>⚠️ IMPORTANT</div>
-          <div style={{ fontSize: 10, color: C.textMuted }}>Wrong direction exercises can worsen spinal pain. Answer honestly — this determines whether you get extension-based (McKenzie) or flexion-based (Williams) therapy.</div>
+          <div style={{ fontSize: 15, color: C.danger, fontWeight: 700, marginBottom: 4 }}>⚠️ IMPORTANT</div>
+          <div style={{ fontSize: 14, color: C.textMuted }}>Wrong direction exercises can worsen spinal pain. Answer honestly — this determines whether you get extension-based (McKenzie) or flexion-based (Williams) therapy.</div>
         </Card>
         {conditions.filter(c => c.category === "spinal").map(cond => {
           const dp = directionalPrefs[cond.conditionId] || {};
           const update = (field, val) => setDirectionalPrefs(p => ({ ...p, [cond.conditionId]: { ...p[cond.conditionId], [field]: val } }));
           return (
             <Card key={cond.conditionId}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: C.teal, marginBottom: 12 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.teal, marginBottom: 12 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
               {/* Extension */}
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 11, color: C.text, marginBottom: 6 }}>Does <b>arching your back</b> (backward bending) make pain:</div>
+                <div style={{ fontSize: 15, color: C.text, marginBottom: 6 }}>Does <b>arching your back</b> (backward bending) make pain:</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: "better", l: "Better", c: C.success }, { v: "worse", l: "Worse", c: C.danger }, { v: "no_change", l: "No Change", c: C.textDim }].map(o => (
-                    <button key={o.v} onClick={() => update("extension", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.extension === o.v ? o.c + "15" : "transparent", border: `1px solid ${dp.extension === o.v ? o.c : C.border}`, color: dp.extension === o.v ? o.c : C.textDim }}>{o.l}</button>
+                    <button key={o.v} onClick={() => update("extension", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 15, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.extension === o.v ? o.c + "15" : "transparent", border: `1px solid ${dp.extension === o.v ? o.c : C.border}`, color: dp.extension === o.v ? o.c : C.textDim }}>{o.l}</button>
                   ))}
                 </div>
               </div>
               {/* Flexion */}
               <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 11, color: C.text, marginBottom: 6 }}>Does <b>bending forward</b> (touching toes) make pain:</div>
+                <div style={{ fontSize: 15, color: C.text, marginBottom: 6 }}>Does <b>bending forward</b> (touching toes) make pain:</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: "better", l: "Better", c: C.success }, { v: "worse", l: "Worse", c: C.danger }, { v: "no_change", l: "No Change", c: C.textDim }].map(o => (
-                    <button key={o.v} onClick={() => update("flexion", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.flexion === o.v ? o.c + "15" : "transparent", border: `1px solid ${dp.flexion === o.v ? o.c : C.border}`, color: dp.flexion === o.v ? o.c : C.textDim }}>{o.l}</button>
+                    <button key={o.v} onClick={() => update("flexion", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 15, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.flexion === o.v ? o.c + "15" : "transparent", border: `1px solid ${dp.flexion === o.v ? o.c : C.border}`, color: dp.flexion === o.v ? o.c : C.textDim }}>{o.l}</button>
                   ))}
                 </div>
               </div>
               {/* Centralization */}
               <div style={{ marginBottom: 8 }}>
-                <div style={{ fontSize: 11, color: C.text, marginBottom: 6 }}>Does pain <b>move toward your spine</b> with backward bending? (centralization)</div>
+                <div style={{ fontSize: 15, color: C.text, marginBottom: 6 }}>Does pain <b>move toward your spine</b> with backward bending? (centralization)</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: true, l: "Yes — pain centralizes" }, { v: false, l: "No" }, { v: "unsure", l: "Not sure" }].map(o => (
-                    <button key={String(o.v)} onClick={() => update("centralization", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.centralization === o.v ? C.info + "15" : "transparent", border: `1px solid ${dp.centralization === o.v ? C.info : C.border}`, color: dp.centralization === o.v ? C.info : C.textDim }}>{o.l}</button>
+                    <button key={String(o.v)} onClick={() => update("centralization", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 14, fontWeight: 600, textAlign: "center", cursor: "pointer", background: dp.centralization === o.v ? C.info + "15" : "transparent", border: `1px solid ${dp.centralization === o.v ? C.info : C.border}`, color: dp.centralization === o.v ? C.info : C.textDim }}>{o.l}</button>
                   ))}
                 </div>
               </div>
@@ -506,8 +506,8 @@ export default function OnboardingFlow({ onComplete }) {
                 const proto = dp.extension === "better" ? "McKenzie Extension" : dp.flexion === "better" ? "Williams Flexion" : "Neutral Stabilization";
                 const protoColor = dp.extension === "better" ? C.teal : dp.flexion === "better" ? C.purple : C.info;
                 return <div style={{ marginTop: 8, padding: 10, background: protoColor + "10", borderRadius: 8, border: `1px solid ${protoColor}25` }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: protoColor, letterSpacing: 1 }}>PROTOCOL DIRECTION: {proto.toUpperCase()}</div>
-                  <div style={{ fontSize: 9, color: C.textMuted, marginTop: 4 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: protoColor, letterSpacing: 1 }}>PROTOCOL DIRECTION: {proto.toUpperCase()}</div>
+                  <div style={{ fontSize: 14, color: C.textMuted, marginTop: 4 }}>
                     {dp.extension === "better" ? "Extension helps — indicates disc-related issue. McKenzie press-ups and standing extensions will be your primary PT exercises." :
                      dp.flexion === "better" ? "Flexion helps — indicates stenosis/facet issue. Williams flexion exercises (knee-to-chest, pelvic tilts) will be your primary PT exercises." :
                      "Neither direction clearly helps. Neutral spine stabilization with McGill Big 3 (curl-up, side plank, bird dog) will be your protocol."}
@@ -522,16 +522,16 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 4: PAIN TIMELINE (per condition) ─────────── */}
       {screen === 4 && hasConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN TIMELINE</div><div style={{ fontSize: 11, color: C.textMuted }}>When did each condition start? This determines PT session frequency.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN TIMELINE</div><div style={{ fontSize: 15, color: C.textMuted }}>When did each condition start? This determines PT session frequency.</div></div>
         {conditions.map(cond => {
           const pt = painTimelines[cond.conditionId] || {};
           const update = (field, val) => setPainTimelines(p => ({ ...p, [cond.conditionId]: { ...p[cond.conditionId], [field]: val } }));
           return (
             <Card key={cond.conditionId}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: C.teal, marginBottom: 10 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.teal, marginBottom: 10 }}>{cond.name}{cond.bodyArea ? ` — ${cond.bodyArea}` : ""}</div>
               {/* Onset */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WHEN DID THIS START?</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>WHEN DID THIS START?</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                   {[{ v: "acute", l: "Less than 6 weeks ago", c: C.danger, sub: "ACUTE — gentle, frequent sessions" },
                     { v: "subacute", l: "6-12 weeks ago", c: C.warning, sub: "SUBACUTE — moderate, 2-3x/day" },
@@ -539,42 +539,42 @@ export default function OnboardingFlow({ onComplete }) {
                     { v: "chronic_persistent", l: "1+ year ago", c: C.purple, sub: "CHRONIC PERSISTENT — integrated approach" },
                   ].map(o => (
                     <button key={o.v} onClick={() => update("onset", o.v)} style={{ padding: "10px 12px", borderRadius: 10, textAlign: "left", cursor: "pointer", background: pt.onset === o.v ? o.c + "12" : "transparent", border: `1px solid ${pt.onset === o.v ? o.c : C.border}` }}>
-                      <div style={{ fontSize: 12, fontWeight: 600, color: pt.onset === o.v ? o.c : C.text }}>{o.l}</div>
-                      <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>{o.sub}</div>
+                      <div style={{ fontSize: 16, fontWeight: 600, color: pt.onset === o.v ? o.c : C.text }}>{o.l}</div>
+                      <div style={{ fontSize: 14, color: C.textDim, marginTop: 2 }}>{o.sub}</div>
                     </button>
                   ))}
                 </div>
               </div>
               {/* Injury type */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HOW DID IT START?</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HOW DID IT START?</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: "specific", l: "Specific Injury" }, { v: "gradual", l: "Gradual Onset" }].map(o => (
-                    <button key={o.v} onClick={() => update("injuryType", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pt.injuryType === o.v ? C.teal + "15" : "transparent", border: `1px solid ${pt.injuryType === o.v ? C.teal : C.border}`, color: pt.injuryType === o.v ? C.teal : C.textDim }}>{o.l}</button>
+                    <button key={o.v} onClick={() => update("injuryType", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 15, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pt.injuryType === o.v ? C.teal + "15" : "transparent", border: `1px solid ${pt.injuryType === o.v ? C.teal : C.border}`, color: pt.injuryType === o.v ? C.teal : C.textDim }}>{o.l}</button>
                   ))}
                 </div>
               </div>
               {/* Surgery */}
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HAVE YOU HAD SURGERY FOR THIS?</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HAVE YOU HAD SURGERY FOR THIS?</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   {[{ v: true, l: "Yes" }, { v: false, l: "No" }].map(o => (
-                    <button key={String(o.v)} onClick={() => update("surgery", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pt.surgery === o.v ? C.info + "15" : "transparent", border: `1px solid ${pt.surgery === o.v ? C.info : C.border}`, color: pt.surgery === o.v ? C.info : C.textDim }}>{o.l}</button>
+                    <button key={String(o.v)} onClick={() => update("surgery", o.v)} style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 15, fontWeight: 600, textAlign: "center", cursor: "pointer", background: pt.surgery === o.v ? C.info + "15" : "transparent", border: `1px solid ${pt.surgery === o.v ? C.info : C.border}`, color: pt.surgery === o.v ? C.info : C.textDim }}>{o.l}</button>
                   ))}
                 </div>
               </div>
               {pt.surgery === true && <div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HOW LONG AGO?</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.textDim, marginBottom: 4 }}>HOW LONG AGO?</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {["<3 months", "3-6 months", "6-12 months", "1-2 years", "2+ years"].map(t => (
-                    <button key={t} onClick={() => update("surgeryTimeAgo", t)} style={{ padding: "6px 10px", borderRadius: 8, fontSize: 10, cursor: "pointer", background: pt.surgeryTimeAgo === t ? C.warning + "20" : "transparent", border: `1px solid ${pt.surgeryTimeAgo === t ? C.warning : C.border}`, color: pt.surgeryTimeAgo === t ? C.warning : C.textDim }}>{t}</button>
+                    <button key={t} onClick={() => update("surgeryTimeAgo", t)} style={{ padding: "6px 10px", borderRadius: 8, fontSize: 14, cursor: "pointer", background: pt.surgeryTimeAgo === t ? C.warning + "20" : "transparent", border: `1px solid ${pt.surgeryTimeAgo === t ? C.warning : C.border}`, color: pt.surgeryTimeAgo === t ? C.warning : C.textDim }}>{t}</button>
                   ))}
                 </div>
               </div>}
               {/* Frequency preview */}
               {pt.onset && <div style={{ marginTop: 8, padding: 8, background: C.tealBg, borderRadius: 8, border: `1px solid ${C.teal}20` }}>
-                <div style={{ fontSize: 9, fontWeight: 700, color: C.teal }}>PT SESSION FREQUENCY</div>
-                <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.teal }}>PT SESSION FREQUENCY</div>
+                <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>
                   {pt.onset === "acute" ? "3-6× per day · 5-10 min sessions · Gentle intensity" :
                    pt.onset === "subacute" ? "2-3× per day · 10-15 min sessions · Moderate intensity" :
                    "1-2× per day · 15-20 min sessions · Progressive intensity"}
@@ -588,7 +588,7 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 5: FUNCTIONAL LIMITATIONS ────────────────── */}
       {screen === 5 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>FUNCTIONAL ABILITIES</div><div style={{ fontSize: 11, color: C.textMuted }}>Rate each activity. These become your measurable PT goals — reassessed every 4 weeks.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>FUNCTIONAL ABILITIES</div><div style={{ fontSize: 15, color: C.textMuted }}>Rate each activity. These become your measurable PT goals — reassessed every 4 weeks.</div></div>
         {[
           { id: "sit_30", label: "Sit for 30+ minutes", icon: "🪑" },
           { id: "stand_30", label: "Stand for 30+ minutes", icon: "🧍" },
@@ -604,12 +604,12 @@ export default function OnboardingFlow({ onComplete }) {
           <Card key={item.id} style={{ padding: 14 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 16 }}>{item.icon}</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{item.label}</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.text }}>{item.label}</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
               {[{ v: "easy", l: "Can Do Easily", c: C.success }, { v: "difficulty", l: "With Difficulty", c: C.warning }, { v: "cannot", l: "Cannot Do", c: C.danger }].map(opt => (
                 <button key={opt.v} onClick={() => setFuncLimitations(p => ({ ...p, [item.id]: opt.v }))}
-                  style={{ padding: "8px 4px", borderRadius: 8, fontSize: 10, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                  style={{ padding: "8px 4px", borderRadius: 8, fontSize: 14, fontWeight: 600, textAlign: "center", cursor: "pointer",
                     background: funcLimitations[item.id] === opt.v ? opt.c + "15" : "transparent",
                     border: `1px solid ${funcLimitations[item.id] === opt.v ? opt.c : C.border}`,
                     color: funcLimitations[item.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
@@ -618,7 +618,7 @@ export default function OnboardingFlow({ onComplete }) {
           </Card>
         ))}
         {Object.values(funcLimitations).filter(v => v !== "easy").length > 0 && (
-          <div style={{ fontSize: 10, color: C.info }}>
+          <div style={{ fontSize: 14, color: C.info }}>
             {Object.values(funcLimitations).filter(v => v !== "easy").length} limitation{Object.values(funcLimitations).filter(v => v !== "easy").length !== 1 ? "s" : ""} identified — these become your PT goals.
           </div>
         )}
@@ -627,13 +627,13 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 6: PREVIOUS TREATMENT ────────────────────── */}
       {screen === 6 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TREATMENT HISTORY</div><div style={{ fontSize: 11, color: C.textMuted }}>Previous treatment helps us build on what worked.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TREATMENT HISTORY</div><div style={{ fontSize: 15, color: C.textMuted }}>Previous treatment helps us build on what worked.</div></div>
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Have you seen a physical therapist?</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Have you seen a physical therapist?</div>
           <div style={{ display: "flex", gap: 8 }}>
             {[true, false].map(v => (
               <button key={String(v)} onClick={() => setTreatmentHistory(p => ({ ...p, seenPT: v }))}
-                style={{ flex: 1, padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                style={{ flex: 1, padding: "12px", borderRadius: 10, fontSize: 16, fontWeight: 600, cursor: "pointer",
                   background: treatmentHistory.seenPT === v ? C.teal + "15" : "transparent",
                   border: `1px solid ${treatmentHistory.seenPT === v ? C.teal : C.border}`,
                   color: treatmentHistory.seenPT === v ? C.teal : C.textDim }}>{v ? "Yes" : "No"}</button>
@@ -642,37 +642,37 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {treatmentHistory.seenPT && <>
           <Card>
-            <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 6 }}>What exercises or treatments helped?</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 6 }}>What exercises or treatments helped?</div>
             <textarea value={treatmentHistory.whatHelped} onChange={e => setTreatmentHistory(p => ({ ...p, whatHelped: e.target.value }))} placeholder="e.g., McKenzie press-ups, swimming, heat therapy..."
-              style={{ width: "100%", minHeight: 60, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", resize: "vertical", boxSizing: "border-box" }} />
+              style={{ width: "100%", minHeight: 60, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", resize: "vertical", boxSizing: "border-box" }} />
           </Card>
           <Card>
-            <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 6 }}>What made it worse?</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 6 }}>What made it worse?</div>
             <textarea value={treatmentHistory.whatWorse} onChange={e => setTreatmentHistory(p => ({ ...p, whatWorse: e.target.value }))} placeholder="e.g., deep squats, running, prolonged sitting..."
-              style={{ width: "100%", minHeight: 60, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", resize: "vertical", boxSizing: "border-box" }} />
+              style={{ width: "100%", minHeight: 60, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", resize: "vertical", boxSizing: "border-box" }} />
           </Card>
         </>}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Are you currently seeing a PT?</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Are you currently seeing a PT?</div>
           <div style={{ display: "flex", gap: 8 }}>
             {[true, false].map(v => (
               <button key={String(v)} onClick={() => setTreatmentHistory(p => ({ ...p, currentPT: v }))}
-                style={{ flex: 1, padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                style={{ flex: 1, padding: "12px", borderRadius: 10, fontSize: 16, fontWeight: 600, cursor: "pointer",
                   background: treatmentHistory.currentPT === v ? (v ? C.success : C.info) + "15" : "transparent",
                   border: `1px solid ${treatmentHistory.currentPT === v ? (v ? C.success : C.info) : C.border}`,
                   color: treatmentHistory.currentPT === v ? (v ? C.success : C.info) : C.textDim }}>{v ? "Yes" : "No"}</button>
             ))}
           </div>
           {treatmentHistory.currentPT && <div style={{ marginTop: 8, padding: 8, background: C.success + "08", borderRadius: 8 }}>
-            <div style={{ fontSize: 10, color: C.success }}>Great — the app will complement your PT's plan, not replace it.</div>
+            <div style={{ fontSize: 14, color: C.success }}>Great — the app will complement your PT's plan, not replace it.</div>
           </div>}
         </Card>
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Has a doctor cleared you for exercise?</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Has a doctor cleared you for exercise?</div>
           <div style={{ display: "flex", gap: 6 }}>
             {[{ v: "yes", l: "Yes" }, { v: "no", l: "No" }, { v: "not_asked", l: "Haven't asked" }].map(o => (
               <button key={o.v} onClick={() => setTreatmentHistory(p => ({ ...p, doctorCleared: o.v }))}
-                style={{ flex: 1, padding: "12px 4px", borderRadius: 10, fontSize: 12, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                style={{ flex: 1, padding: "12px 4px", borderRadius: 10, fontSize: 16, fontWeight: 600, textAlign: "center", cursor: "pointer",
                   background: treatmentHistory.doctorCleared === o.v ? C.teal + "15" : "transparent",
                   border: `1px solid ${treatmentHistory.doctorCleared === o.v ? C.teal : C.border}`,
                   color: treatmentHistory.doctorCleared === o.v ? C.teal : C.textDim }}>{o.l}</button>
@@ -706,11 +706,11 @@ export default function OnboardingFlow({ onComplete }) {
               background: sel ? C.warning + "06" : C.bgCard }}>
               <span style={{ fontSize: 20 }}>{med.icon}</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: sel ? C.text : C.textMuted }}>{med.label}</div>
-                {sel && med.note && <div style={{ fontSize: 9, color: C.warning, marginTop: 2 }}>{med.note}</div>}
+                <div style={{ fontSize: 16, fontWeight: 600, color: sel ? C.text : C.textMuted }}>{med.label}</div>
+                {sel && med.note && <div style={{ fontSize: 14, color: C.warning, marginTop: 2 }}>{med.note}</div>}
               </div>
               <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${sel ? C.warning : C.border}`, background: sel ? C.warning : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {sel && <span style={{ color: "#000", fontSize: 12, fontWeight: 800 }}>✓</span>}
+                {sel && <span style={{ color: "#000", fontSize: 16, fontWeight: 800 }}>✓</span>}
               </div>
             </Card>
           );
@@ -720,9 +720,9 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 8: RED FLAG SCREENING ────────────────────── */}
       {screen === 8 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>SAFETY SCREENING</div><div style={{ fontSize: 11, color: C.textMuted }}>These symptoms require medical evaluation. Check any that apply.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>SAFETY SCREENING</div><div style={{ fontSize: 15, color: C.textMuted }}>These symptoms require medical evaluation. Check any that apply.</div></div>
         <Card style={{ borderColor: C.danger + "20" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 10 }}>DO YOU HAVE ANY OF THESE?</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 10 }}>DO YOU HAVE ANY OF THESE?</div>
           {[
             { id: "weight_loss", label: "Unexplained weight loss (10+ lbs without trying)" },
             { id: "night_pain", label: "Pain that wakes you from sleep every night" },
@@ -736,7 +736,7 @@ export default function OnboardingFlow({ onComplete }) {
             return (
               <div key={flag.id} style={{ padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
                 <button onClick={() => setRedFlags(p => sel ? p.filter(x => x !== flag.id) : [...p, flag.id])}
-                  style={{ background: "none", border: "none", fontSize: 12, color: sel ? C.danger : C.textMuted, cursor: "pointer", textAlign: "left", width: "100%", padding: 0 }}>
+                  style={{ background: "none", border: "none", fontSize: 16, color: sel ? C.danger : C.textMuted, cursor: "pointer", textAlign: "left", width: "100%", padding: 0 }}>
                   {sel ? "🔴 " : "○ "}{flag.label}
                 </button>
               </div>
@@ -745,9 +745,9 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {hasRedFlags && <Card style={{ borderColor: C.danger + "60", background: C.danger + "10" }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: C.danger, marginBottom: 6 }}>⚠️ MEDICAL EVALUATION NEEDED</div>
-          <div style={{ fontSize: 12, color: C.text, marginBottom: 10 }}>These symptoms need medical evaluation before starting an exercise program. Please see your doctor first.</div>
-          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 10 }}>If your doctor has already evaluated these symptoms and cleared you, you may continue.</div>
-          <button onClick={() => setRedFlagCleared(true)} style={{ background: "none", border: "none", color: C.warning, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 0 }}>
+          <div style={{ fontSize: 16, color: C.text, marginBottom: 10 }}>These symptoms need medical evaluation before starting an exercise program. Please see your doctor first.</div>
+          <div style={{ fontSize: 15, color: C.textMuted, marginBottom: 10 }}>If your doctor has already evaluated these symptoms and cleared you, you may continue.</div>
+          <button onClick={() => setRedFlagCleared(true)} style={{ background: "none", border: "none", color: C.warning, fontSize: 16, fontWeight: 600, cursor: "pointer", padding: 0 }}>
             {redFlagCleared ? "✅ I confirm medical clearance — continue" : "I have been evaluated and cleared by my doctor →"}
           </button>
         </Card>}
@@ -758,7 +758,7 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 9: MOVEMENT SCREEN (was 2) ────────────────── */}
       {screen === 9 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>MOVEMENT SCREEN</div><div style={{ fontSize: 11, color: C.textMuted }}>Overhead squat assessment — answer honestly.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>MOVEMENT SCREEN</div><div style={{ fontSize: 15, color: C.textMuted }}>Overhead squat assessment — answer honestly.</div></div>
         {COMPENSATIONS.map(comp => (
           <Card key={comp.id} onClick={() => setCompensations(p => ({ ...p, [comp.id]: !p[comp.id] }))}
             style={{ display: "flex", alignItems: "center", gap: 12, padding: 14, cursor: "pointer",
@@ -766,14 +766,14 @@ export default function OnboardingFlow({ onComplete }) {
               background: compensations[comp.id] ? C.warning + "08" : C.bgCard }}>
             <span style={{ fontSize: 24 }}>{comp.icon}</span>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{comp.q}</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.text }}>{comp.q}</div>
               {compensations[comp.id] && (() => {
                 const full = compensationsDB.find(c => c.id === comp.id);
-                return full ? <div style={{ fontSize: 10, color: C.warning, marginTop: 4 }}>Detected: {full.name}. Overactive: {full.overactive.slice(0, 3).join(", ")}</div> : null;
+                return full ? <div style={{ fontSize: 14, color: C.warning, marginTop: 4 }}>Detected: {full.name}. Overactive: {full.overactive.slice(0, 3).join(", ")}</div> : null;
               })()}
             </div>
             <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${compensations[comp.id] ? C.warning : C.border}`, background: compensations[comp.id] ? C.warning : "transparent", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {compensations[comp.id] && <span style={{ color: "#000", fontSize: 12, fontWeight: 800 }}>✓</span>}
+              {compensations[comp.id] && <span style={{ color: "#000", fontSize: 16, fontWeight: 800 }}>✓</span>}
             </div>
           </Card>
         ))}
@@ -798,21 +798,21 @@ export default function OnboardingFlow({ onComplete }) {
           { id:"feet", label:"Toes / Feet", desc:"Can you pull toes up toward shin (dorsiflexion)?", icon:"🦶" },
         ].map(joint => (
           <Card key={joint.id} style={{ padding: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{joint.icon}</span><div><div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 9, color: C.textDim }}>{joint.desc}</div></div></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{joint.icon}</span><div><div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 14, color: C.textDim }}>{joint.desc}</div></div></div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
               {[{ v:"full", l:"Full", c:C.success }, { v:"limited", l:"Limited", c:C.warning }, { v:"painful", l:"Painful", c:C.danger }].map(opt => (
                 <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: p[joint.id] === opt.v ? "full" : opt.v }))}
-                  style={{ padding: "10px 4px", borderRadius: 8, fontSize: 13, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                  style={{ padding: "10px 4px", borderRadius: 8, fontSize: 16, fontWeight: 600, textAlign: "center", cursor: "pointer",
                     background: rom[joint.id] === opt.v ? opt.c + "15" : "transparent",
                     border: `1px solid ${rom[joint.id] === opt.v ? opt.c : C.border}`,
                     color: rom[joint.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
               ))}
             </div>
-            {rom[joint.id] === "painful" && <div style={{ fontSize: 11, color: C.danger, marginTop: 6 }}>→ We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
-            {rom[joint.id] === "limited" && <div style={{ fontSize: 11, color: C.warning, marginTop: 6 }}>→ Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
+            {rom[joint.id] === "painful" && <div style={{ fontSize: 15, color: C.danger, marginTop: 6 }}>→ We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
+            {rom[joint.id] === "limited" && <div style={{ fontSize: 15, color: C.warning, marginTop: 6 }}>→ Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
           </Card>
         ))}
-        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 10, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} joint{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
+        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 14, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} joint{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
         <Btn onClick={next}>Next — Goals →</Btn>
       </div>}
 
@@ -824,14 +824,14 @@ export default function OnboardingFlow({ onComplete }) {
           const sel = Array.isArray(goals[mg.id]) ? goals[mg.id] : [];
           return (
             <Card key={mg.id}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{mg.icon}</span><span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{mg.label}</span>{sel.length > 0 && <Badge color={C.teal}>{sel.length}</Badge>}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{mg.icon}</span><span style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{mg.label}</span>{sel.length > 0 && <Badge color={C.teal}>{sel.length}</Badge>}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                 {GOAL_OPTIONS.map(opt => {
                   const active = sel.includes(opt.v);
                   return <button key={opt.v} onClick={() => setGoals(p => {
                     const cur = Array.isArray(p[mg.id]) ? p[mg.id] : [];
                     return { ...p, [mg.id]: active ? cur.filter(x => x !== opt.v) : [...cur, opt.v] };
-                  })} style={{ padding: "6px 10px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer",
+                  })} style={{ padding: "6px 10px", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer",
                     background: active ? opt.c + "20" : "transparent",
                     border: `1px solid ${active ? opt.c + "60" : C.border}`,
                     color: active ? opt.c : C.textDim }}>{active ? "✓ " : ""}{opt.l}</button>;
@@ -841,9 +841,9 @@ export default function OnboardingFlow({ onComplete }) {
           );
         })}
         {compensatoryAdds.length > 0 && <Card style={{ borderColor: C.info + "30", background: C.info + "08" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 8 }}>AUTO-ADDED COMPENSATORY WORK</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 8 }}>AUTO-ADDED COMPENSATORY WORK</div>
           {compensatoryAdds.map((a, i) => (
-            <div key={i} style={{ fontSize: 11, color: C.text, padding: "4px 0", borderBottom: `1px solid ${C.border}` }}>
+            <div key={i} style={{ fontSize: 15, color: C.text, padding: "4px 0", borderBottom: `1px solid ${C.border}` }}>
               <b style={{ color: C.teal }}>{a.muscle}</b> added because you selected <b>{a.trigger}</b> → {a.reason}
             </div>
           ))}
@@ -857,7 +857,7 @@ export default function OnboardingFlow({ onComplete }) {
         <WhyHelper screenNum={12} />
         {/* Days per week */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Days per week available</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Days per week available</div>
           <div style={{ display: "flex", gap: 8 }}>
             {[2, 3, 4, 5, 6].map(d => (
               <button key={d} onClick={() => setPrefs(p => ({ ...p, daysPerWeek: d }))}
@@ -870,11 +870,11 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {/* Session time */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Session duration (minutes)</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Session duration (minutes)</div>
           <div style={{ display: "flex", gap: 8 }}>
             {[30, 45, 60, 90].map(t => (
               <button key={t} onClick={() => setPrefs(p => ({ ...p, sessionTime: t }))}
-                style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 16, fontWeight: 600, cursor: "pointer",
                   background: prefs.sessionTime === t ? C.tealBg : "transparent",
                   border: `1px solid ${prefs.sessionTime === t ? C.teal : C.border}`,
                   color: prefs.sessionTime === t ? C.teal : C.textDim }}>{t}</button>
@@ -883,7 +883,7 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {/* Home equipment */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Equipment at home</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Equipment at home</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
             {HOME_EQUIPMENT_OPTIONS.map(eq => {
               const sel = prefs.homeEquipment.includes(eq.id);
@@ -891,7 +891,7 @@ export default function OnboardingFlow({ onComplete }) {
                 <button key={eq.id} onClick={() => setPrefs(p => {
                   if (eq.id === "none") return { ...p, homeEquipment: sel ? [] : ["none"] };
                   return { ...p, homeEquipment: sel ? p.homeEquipment.filter(x => x !== eq.id) : [...p.homeEquipment.filter(x => x !== "none"), eq.id] };
-                })} style={{ padding: "8px 10px", borderRadius: 8, fontSize: 11, textAlign: "left", cursor: "pointer",
+                })} style={{ padding: "8px 10px", borderRadius: 8, fontSize: 15, textAlign: "left", cursor: "pointer",
                   background: sel ? C.tealBg : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>
                   {sel ? "✅ " : "○ "}{eq.label}
                 </button>
@@ -901,13 +901,13 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {/* Sports + custom */}
         <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 8 }}>Sport interests</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Sport interests</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {SPORTS.map(s => {
               const sel = prefs.sports.includes(s);
               return (
                 <button key={s} onClick={() => setPrefs(p => ({ ...p, sports: sel ? p.sports.filter(x => x !== s) : [...p.sports, s] }))}
-                  style={{ padding: "6px 12px", borderRadius: 16, fontSize: 11, fontWeight: 600, cursor: "pointer",
+                  style={{ padding: "6px 12px", borderRadius: 16, fontSize: 15, fontWeight: 600, cursor: "pointer",
                     background: sel ? C.purple + "15" : "transparent",
                     border: `1px solid ${sel ? C.purple + "60" : C.border}`,
                     color: sel ? C.purple : C.textDim }}>{sel ? "✓ " : ""}{s}</button>
@@ -916,15 +916,15 @@ export default function OnboardingFlow({ onComplete }) {
           </div>
           <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
             <input value={prefs.customSport} onChange={e => setPrefs(p => ({ ...p, customSport: e.target.value }))} placeholder="Other sport..."
-              style={{ flex: 1, padding: "6px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+              style={{ flex: 1, padding: "6px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
             {prefs.customSport.trim() && <button onClick={() => { if (prefs.customSport.trim() && !prefs.sports.includes(prefs.customSport.trim())) setPrefs(p => ({ ...p, sports: [...p.sports, p.customSport.trim()], customSport: "" })); }}
-              style={{ padding: "6px 10px", borderRadius: 8, background: C.tealBg, border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 10, fontWeight: 700, cursor: "pointer" }}>+ Add</button>}
+              style={{ padding: "6px 10px", borderRadius: 8, background: C.tealBg, border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>+ Add</button>}
           </div>
         </Card>
         {/* Favorite exercises — curated grid + search */}
         <Card>
           <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 4 }}>Favorite Exercises</div>
-          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 10, lineHeight: 1.5 }}>Select exercises you enjoy or want to work toward. We'll prioritize these in your plan, or build a progression roadmap if you're not ready for them yet.</div>
+          <div style={{ fontSize: 16, color: C.textMuted, marginBottom: 10, lineHeight: 1.5 }}>Select exercises you enjoy or want to work toward. We'll prioritize these in your plan, or build a progression roadmap if you're not ready for them yet.</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
             {FAVORITE_GRID.map(fe => {
               const fav = prefs.favorites.includes(fe.dbId);
@@ -935,79 +935,79 @@ export default function OnboardingFlow({ onComplete }) {
                   background: fav ? C.tealBg : blocked ? C.bgGlass : "transparent", border: `1px solid ${fav ? C.teal + "60" : C.border}`, position: "relative" }}>
                 {dbEx && <ExerciseImage exercise={dbEx} size="thumb" />}
                 {!dbEx && <div style={{ fontSize: 20, marginBottom: 2 }}>{fe.emoji}</div>}
-                <div style={{ fontSize: 11, color: fav ? C.teal : C.text, fontWeight: fav ? 700 : 500, marginTop: 4, lineHeight: 1.2 }}>{fe.name}</div>
-                {dbEx && <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>{(dbEx.bodyPart || "").replace(/_/g, " ")}</div>}
-                {blocked && !fav && <span style={{ display: "inline-block", marginTop: 3, fontSize: 9, fontWeight: 700, color: C.purple, background: C.purple + "15", padding: "1px 5px", borderRadius: 4 }}>GOAL</span>}
-                {fav && <div style={{ position: "absolute", top: 3, right: 3, fontSize: 10 }}>⭐</div>}
+                <div style={{ fontSize: 15, color: fav ? C.teal : C.text, fontWeight: fav ? 700 : 500, marginTop: 4, lineHeight: 1.2 }}>{fe.name}</div>
+                {dbEx && <div style={{ fontSize: 14, color: C.textDim, marginTop: 2 }}>{(dbEx.bodyPart || "").replace(/_/g, " ")}</div>}
+                {blocked && !fav && <span style={{ display: "inline-block", marginTop: 3, fontSize: 14, fontWeight: 700, color: C.purple, background: C.purple + "15", padding: "1px 5px", borderRadius: 4 }}>GOAL</span>}
+                {fav && <div style={{ position: "absolute", top: 3, right: 3, fontSize: 14 }}>⭐</div>}
               </button>;
             })}
           </div>
           {/* Advanced search */}
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search all 300 exercises..."
-            style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 11, fontFamily: "inherit", outline: "none", marginTop: 10, boxSizing: "border-box" }} />
+            style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", marginTop: 10, boxSizing: "border-box" }} />
           {search.trim().length >= 2 && <div style={{ maxHeight: 120, overflowY: "auto", marginTop: 4 }}>
             {exerciseDB.filter(e => e.name.toLowerCase().includes(search.toLowerCase())).slice(0, 6).map(e => {
               const fav = prefs.favorites.includes(e.id);
               return <div key={e.id} onClick={() => setPrefs(p => ({ ...p, favorites: fav ? p.favorites.filter(x => x !== e.id) : [...p.favorites, e.id] }))}
                 style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", cursor: "pointer", borderBottom: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 12 }}>{e.emoji}</span><span style={{ fontSize: 10, color: fav ? C.teal : C.text, flex: 1 }}>{e.name}</span>{fav && <span style={{ fontSize: 8 }}>⭐</span>}
+                <span style={{ fontSize: 16 }}>{e.emoji}</span><span style={{ fontSize: 14, color: fav ? C.teal : C.text, flex: 1 }}>{e.name}</span>{fav && <span style={{ fontSize: 14 }}>⭐</span>}
               </div>;
             })}
           </div>}
-          {prefs.favorites.length > 0 && <div style={{ fontSize: 10, color: C.teal, marginTop: 6 }}>{prefs.favorites.length} exercise{prefs.favorites.length !== 1 ? "s" : ""} favorited</div>}
+          {prefs.favorites.length > 0 && <div style={{ fontSize: 14, color: C.teal, marginTop: 6 }}>{prefs.favorites.length} exercise{prefs.favorites.length !== 1 ? "s" : ""} favorited</div>}
         </Card>
         <Btn onClick={next}>Next — Summary →</Btn>
       </div>}
 
       {/* ── SCREEN 13: SUMMARY (was 6) ─────────────────── */}
       {screen === 13 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>YOUR ASSESSMENT</div><div style={{ fontSize: 11, color: C.textMuted }}>Here's what we found. Your first plan is ready.</div></div>
+        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>YOUR ASSESSMENT</div><div style={{ fontSize: 15, color: C.textMuted }}>Here's what we found. Your first plan is ready.</div></div>
 
         {/* Fitness level */}
         <Card glow={C.tealGlow} style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, letterSpacing: 2, marginBottom: 6 }}>STARTING LEVEL</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.teal, letterSpacing: 2, marginBottom: 6 }}>STARTING LEVEL</div>
           <div style={{ fontSize: 36, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{fitnessLevel === "beginner" ? "FOUNDATION" : fitnessLevel === "intermediate" ? "BUILDING" : "PERFORMANCE"}</div>
-          <div style={{ fontSize: 12, color: C.textMuted, marginTop: 4 }}>Starting Phase {startingPhase} — {startingPhase === 1 ? "Stabilization Endurance" : "Strength"}</div>
-          <div style={{ fontSize: 10, color: C.textDim, marginTop: 8, padding: "8px 10px", background: C.bgGlass, borderRadius: 8, textAlign: "left", lineHeight: 1.6 }}>
+          <div style={{ fontSize: 16, color: C.textMuted, marginTop: 4 }}>Starting Phase {startingPhase} — {startingPhase === 1 ? "Stabilization Endurance" : "Strength"}</div>
+          <div style={{ fontSize: 14, color: C.textDim, marginTop: 8, padding: "8px 10px", background: C.bgGlass, borderRadius: 8, textAlign: "left", lineHeight: 1.6 }}>
             Based on: {conditions.length > 0 ? `${conditions.length} active condition${conditions.length > 1 ? "s" : ""}` : "no conditions"} · {detectedComps.length > 0 ? `${detectedComps.length} compensation${detectedComps.length > 1 ? "s" : ""}` : "no compensations"} · {Object.values(rom).filter(v => v !== "full").length} limited ROM areas. This is about protecting you, not ranking you.
           </div>
         </Card>
 
         {/* PAR-Q */}
         {anyParqYes && <Card style={{ borderColor: C.warning + "40" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.warning }}>⚠️ PAR-Q+ FLAGS</div>
-          <div style={{ fontSize: 10, color: C.textMuted, marginTop: 4 }}>You flagged {parq.filter(a => a).length} health concern{parq.filter(a => a).length > 1 ? "s" : ""}. Proceeding with caution — lower intensity, more monitoring.</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.warning }}>⚠️ PAR-Q+ FLAGS</div>
+          <div style={{ fontSize: 14, color: C.textMuted, marginTop: 4 }}>You flagged {parq.filter(a => a).length} health concern{parq.filter(a => a).length > 1 ? "s" : ""}. Proceeding with caution — lower intensity, more monitoring.</div>
         </Card>}
 
         {/* Conditions */}
         {conditions.length > 0 && <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 6 }}>ACTIVE CONDITIONS ({conditions.length})</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 6 }}>ACTIVE CONDITIONS ({conditions.length})</div>
           {conditions.map(c => (
             <div key={c.conditionId} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", borderBottom: `1px solid ${C.border}` }}>
-              <span style={{ fontSize: 11, color: C.text }}>{c.name}</span>
+              <span style={{ fontSize: 15, color: C.text }}>{c.name}</span>
               <Badge color={c.severity <= 2 ? C.success : c.severity <= 3 ? C.warning : C.danger}>Sev {c.severity}</Badge>
             </div>
           ))}
-          <div style={{ fontSize: 9, color: C.textMuted, marginTop: 6 }}>Each condition shapes exercise selection, contraindications, and mandatory protocols.</div>
+          <div style={{ fontSize: 14, color: C.textMuted, marginTop: 6 }}>Each condition shapes exercise selection, contraindications, and mandatory protocols.</div>
         </Card>}
 
         {/* Compensations */}
         {detectedComps.length > 0 && <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.warning, letterSpacing: 1.5, marginBottom: 6 }}>COMPENSATIONS DETECTED ({detectedComps.length})</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.warning, letterSpacing: 1.5, marginBottom: 6 }}>COMPENSATIONS DETECTED ({detectedComps.length})</div>
           {detectedComps.map(c => (
             <div key={c.id} style={{ padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{c.name}</div>
-              <div style={{ fontSize: 9, color: C.textMuted }}>Correction: foam roll {(c.protocol?.inhibit?.exercises || []).length} areas → stretch {(c.protocol?.lengthen?.exercises || []).length} → activate {(c.protocol?.activate?.exercises || []).length} → integrate {(c.protocol?.integrate?.exercises || []).length}</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.text }}>{c.name}</div>
+              <div style={{ fontSize: 14, color: C.textMuted }}>Correction: foam roll {(c.protocol?.inhibit?.exercises || []).length} areas → stretch {(c.protocol?.lengthen?.exercises || []).length} → activate {(c.protocol?.activate?.exercises || []).length} → integrate {(c.protocol?.integrate?.exercises || []).length}</div>
             </div>
           ))}
         </Card>}
 
         {/* ROM */}
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 6 }}>ROM ASSESSMENT</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 6 }}>ROM ASSESSMENT</div>
           {Object.entries(rom).map(([joint, status]) => (
             <div key={joint} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
-              <span style={{ fontSize: 11, color: C.text }}>{joint.charAt(0).toUpperCase() + joint.slice(1)}</span>
+              <span style={{ fontSize: 15, color: C.text }}>{joint.charAt(0).toUpperCase() + joint.slice(1)}</span>
               <Badge color={status === "full" ? C.success : status === "limited" ? C.warning : C.danger}>{status}</Badge>
             </div>
           ))}
@@ -1015,45 +1015,45 @@ export default function OnboardingFlow({ onComplete }) {
 
         {/* Goals + compensatory */}
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: 1.5, marginBottom: 6 }}>GOALS</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.purple, letterSpacing: 1.5, marginBottom: 6 }}>GOALS</div>
           {Object.entries(goals).filter(([, v]) => (Array.isArray(v) ? v.length > 0 : v && v !== "none")).map(([m, g]) => {
             const ga = Array.isArray(g) ? g : [g];
             return <div key={m} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 0" }}>
-              <span style={{ fontSize: 11, color: C.text }}>{m.charAt(0).toUpperCase() + m.slice(1)}</span>
+              <span style={{ fontSize: 15, color: C.text }}>{m.charAt(0).toUpperCase() + m.slice(1)}</span>
               <div style={{ display: "flex", gap: 3 }}>{ga.map(gg => <Badge key={gg} color={gg === "size" ? C.purple : gg === "strength" ? C.teal : gg === "injury_prevention" ? C.warning : C.info}>{gg.replace("_"," ")}</Badge>)}</div>
             </div>;
           })}
           {compensatoryAdds.length > 0 && <div style={{ marginTop: 8, padding: 8, background: C.info + "08", borderRadius: 8 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: C.info, marginBottom: 4 }}>COMPENSATORY ADDITIONS</div>
-            {compensatoryAdds.map((a, i) => <div key={i} style={{ fontSize: 9, color: C.textMuted }}>{a.muscle} ← {a.reason}</div>)}
+            <div style={{ fontSize: 14, fontWeight: 700, color: C.info, marginBottom: 4 }}>COMPENSATORY ADDITIONS</div>
+            {compensatoryAdds.map((a, i) => <div key={i} style={{ fontSize: 14, color: C.textMuted }}>{a.muscle} ← {a.reason}</div>)}
           </div>}
         </Card>
 
         {/* Preferences summary */}
         <Card>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>TRAINING PLAN</div>
-          <div style={{ fontSize: 11, color: C.text }}>{prefs.daysPerWeek} days/week · {prefs.sessionTime} min sessions</div>
-          {prefs.homeEquipment.length > 0 && <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2 }}>Home equipment: {prefs.homeEquipment.join(", ")}</div>}
-          {prefs.sports.length > 0 && <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2 }}>Sports: {prefs.sports.join(", ")}</div>}
-          {prefs.favorites.length > 0 && <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2 }}>{prefs.favorites.length} favorite exercises prioritized</div>}
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>TRAINING PLAN</div>
+          <div style={{ fontSize: 15, color: C.text }}>{prefs.daysPerWeek} days/week · {prefs.sessionTime} min sessions</div>
+          {prefs.homeEquipment.length > 0 && <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>Home equipment: {prefs.homeEquipment.join(", ")}</div>}
+          {prefs.sports.length > 0 && <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>Sports: {prefs.sports.join(", ")}</div>}
+          {prefs.favorites.length > 0 && <div style={{ fontSize: 14, color: C.textMuted, marginTop: 2 }}>{prefs.favorites.length} favorite exercises prioritized</div>}
         </Card>
 
         {/* First week preview */}
         <Card style={{ borderColor: C.teal + "30" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>WEEK 1 PREVIEW</div>
-          <div style={{ fontSize: 11, color: C.textMuted }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>WEEK 1 PREVIEW</div>
+          <div style={{ fontSize: 15, color: C.textMuted }}>
             Phase {startingPhase} · {prefs.daysPerWeek} sessions · 1-2 sets per exercise (neural adaptation)
           </div>
-          <div style={{ fontSize: 10, color: C.textMuted, marginTop: 4 }}>
+          <div style={{ fontSize: 14, color: C.textMuted, marginTop: 4 }}>
             Focus: Movement quality, core activation, injury-safe patterns.
             {detectedComps.length > 0 && ` Corrective warm-ups for ${detectedComps.length} compensation(s).`}
             {conditions.length > 0 && ` Modified for ${conditions.length} condition(s).`}
           </div>
-          <div style={{ fontSize: 10, color: C.textDim, marginTop: 6, fontStyle: "italic" }}>Your plan adapts every session based on check-in data.</div>
+          <div style={{ fontSize: 14, color: C.textDim, marginTop: 6, fontStyle: "italic" }}>Your plan adapts every session based on check-in data.</div>
         </Card>
 
         <Card style={{ background: C.bgGlass, padding: 14 }}>
-          <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.7 }}>
+          <div style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.7 }}>
             Your plan is built by our algorithm that cross-references your goals, conditions, ROM, and 300+ exercises through 12 safety checks. Every exercise is verified safe for <b style={{ color: C.text }}>your specific situation</b> before you see it.
           </div>
         </Card>
