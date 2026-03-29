@@ -16,7 +16,7 @@ const LS_KEY = "apex_overtraining";
 // ═══════════════════════════════════════════════════════════════
 
 function detectSignals() {
-  const sessions = getSessions();
+  const sessions = getSessions() || [];
   if (sessions.length < 2) return { signals: [], severity: 0, level: 0 };
 
   const recent14 = sessions.slice(-14);
@@ -226,7 +226,7 @@ function markDeload() {
 // ═══════════════════════════════════════════════════════════════
 
 function detectReversal() {
-  const sessions = getSessions();
+  const sessions = getSessions() || [];
   if (sessions.length < 4) return null;
 
   const last3 = sessions.slice(-3);

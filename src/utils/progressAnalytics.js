@@ -14,12 +14,13 @@ const exById = Object.fromEntries(exerciseDB.map(e => [e.id, e]));
 // ═══════════════════════════════════════════════════════════════
 
 export function getStrengthMilestones() {
-  const sessions = getSessions();
+  const sessions = getSessions() || [];
   const progressMap = {}; // exerciseId → { first, current, best, loads[] }
 
   for (const s of sessions) {
     for (const ec of (s.exercises_completed || [])) {
       const sets = ec.sets || [];
+      if (sets.length === 0) continue;
       const maxLoad = Math.max(0, ...sets.map(st => st.load || 0));
       if (maxLoad <= 0) continue;
 
@@ -78,8 +79,8 @@ export function getPhaseTimeline(currentPhase = 1) {
 // ═══════════════════════════════════════════════════════════════
 
 export function getConsistencyData() {
-  const sessions = getSessions();
-  const stats = getStats();
+  const sessions = getSessions() || [];
+  const stats = getStats() || {};
   const sessionDates = {};
   for (const s of sessions) {
     const key = s.date.split("T")[0];
@@ -155,7 +156,7 @@ export function getGoalProgress(assessment, currentPhase = 1) {
 // ═══════════════════════════════════════════════════════════════
 
 export function getWeeklySummary() {
-  const sessions = getSessions();
+  const sessions = getSessions() || [];
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
   const recent = sessions.filter(s => new Date(s.date) >= weekAgo);
@@ -224,8 +225,8 @@ export function getWeeklySummary() {
 // ═══════════════════════════════════════════════════════════════
 
 export function getInjuryRecovery() {
-  const injuries = getInjuries().filter(i => i.status !== "resolved");
-  const sessions = getSessions();
+  const injuries = (getInjuries() || []).filter(i => i.status !== "resolved");
+  const sessions = getSessions() || [];
 
   // Get PT sessions from localStorage
   let ptSessions = [];
@@ -262,7 +263,7 @@ export function getInjuryRecovery() {
 // ═══════════════════════════════════════════════════════════════
 
 export function getReadinessTrend() {
-  const sessions = getSessions();
+  const sessions = getSessions() || [];
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const recent = sessions.filter(s => new Date(s.date) >= thirtyDaysAgo && s.readiness);
