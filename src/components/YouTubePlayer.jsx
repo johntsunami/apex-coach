@@ -28,91 +28,48 @@ const C = {
 };
 
 export default function YouTubePlayer({ videoId, title }) {
-  const [expanded, setExpanded] = useState(false);
-
   if (!videoId) return null;
 
   return (
     <div style={{ marginBottom: 8 }}>
-      {!expanded ? (
-        <button
-          onClick={() => setExpanded(true)}
+      <div>
+        <div
           style={{
-            width: "100%",
-            padding: "10px 16px",
-            borderRadius: 10,
-            border: `1px solid ${C.info}40`,
-            background: `${C.info}10`,
-            color: C.info,
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            fontFamily: "inherit",
+            position: "relative",
+            paddingBottom: "56.25%",
+            height: 0,
+            overflow: "hidden",
+            borderRadius: 12,
+            background: C.bgCard,
+            border: `1px solid ${C.border}`,
           }}
         >
-          <span style={{ fontSize: 16 }}>▶</span> Watch Demo Video
-        </button>
-      ) : (
-        <div>
-          <div
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+            title={title || "Exercise Demo"}
             style={{
-              position: "relative",
-              paddingBottom: "56.25%",
-              height: 0,
-              overflow: "hidden",
-              borderRadius: 12,
-              background: C.bgCard,
-              border: `1px solid ${C.border}`,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              border: "none",
             }}
-          >
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}?rel=0`}
-              title={title || "Exercise Demo"}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                border: "none",
-              }}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: 6,
-              padding: "0 2px",
-            }}
-          >
-            <div style={{ fontSize: 10, color: C.textDim }}>
-              Exercise demonstration video
-            </div>
-            <button
-              onClick={() => setExpanded(false)}
-              style={{
-                background: "none",
-                border: "none",
-                color: C.textMuted,
-                fontSize: 10,
-                cursor: "pointer",
-                padding: "2px 6px",
-                fontFamily: "inherit",
-              }}
-            >
-              Hide Video
-            </button>
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+        <div
+          style={{
+            marginTop: 6,
+            padding: "0 2px",
+          }}
+        >
+          <div style={{ fontSize: 10, color: C.textDim }}>
+            Exercise demonstration video
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
