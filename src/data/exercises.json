@@ -127,7 +127,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Press_On_The_Leg_Press_Machine/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Press_On_The_Leg_Press_Machine/1.jpg",
-    "youtubeVideoId": "6f2LO5EeB0I"
+    "youtubeVideoId": "6f2LO5EeB0I",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_it_band",
@@ -257,7 +260,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/1.jpg",
-    "youtubeVideoId": "asigNf1sh-k"
+    "youtubeVideoId": "asigNf1sh-k",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_adductors",
@@ -388,7 +394,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Adductor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Adductor/1.jpg",
-    "youtubeVideoId": "Nqol0T6rKDg"
+    "youtubeVideoId": "Nqol0T6rKDg",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_lats",
@@ -515,7 +524,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Latissimus_Dorsi-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Latissimus_Dorsi-SMR/1.jpg",
-    "youtubeVideoId": "5S2suclGl7o"
+    "youtubeVideoId": "5S2suclGl7o",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_thoracic",
@@ -646,7 +658,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_dead_bug",
@@ -778,7 +793,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/1.jpg",
-    "youtubeVideoId": "bxn9FBrt4-A"
+    "youtubeVideoId": "bxn9FBrt4-A",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_plank",
@@ -915,7 +933,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg",
-    "youtubeVideoId": "mwlp75MS6Rg"
+    "youtubeVideoId": "mwlp75MS6Rg",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_side_plank",
@@ -1048,7 +1069,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Push_Up_to_Side_Plank/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Push_Up_to_Side_Plank/1.jpg",
-    "youtubeVideoId": "44ND4bOB-T0"
+    "youtubeVideoId": "44ND4bOB-T0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_bird_dog",
@@ -1181,7 +1205,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Deltoid_Raise/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Deltoid_Raise/1.jpg",
-    "youtubeVideoId": "ZdAHe9_HeEw"
+    "youtubeVideoId": "ZdAHe9_HeEw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_mcgill_curl_up",
@@ -1309,7 +1336,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg",
-    "youtubeVideoId": "QFLftqPWjoI"
+    "youtubeVideoId": "QFLftqPWjoI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_single_leg",
@@ -1441,7 +1471,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/1.jpg",
-    "youtubeVideoId": "Mo4P9Y_AQt8"
+    "youtubeVideoId": "Mo4P9Y_AQt8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_single_leg_reach",
@@ -1575,7 +1608,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/1.jpg",
-    "youtubeVideoId": "Mo4P9Y_AQt8"
+    "youtubeVideoId": "Mo4P9Y_AQt8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_bosu_squat",
@@ -1710,7 +1746,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stab_ball_squat",
@@ -1840,7 +1879,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_glute_bridge",
@@ -1978,7 +2020,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_sl_glute_bridge",
@@ -2109,7 +2154,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Glute_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Glute_Bridge/1.jpg",
-    "youtubeVideoId": "Z3cY3d3BBo4"
+    "youtubeVideoId": "Z3cY3d3BBo4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_db_rdl",
@@ -2257,7 +2305,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/1.jpg",
-    "youtubeVideoId": "aa57T45iFSE"
+    "youtubeVideoId": "aa57T45iFSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_trap_bar_dl_high",
@@ -2418,7 +2469,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/1.jpg",
-    "youtubeVideoId": "Z6gcRfPNcZo"
+    "youtubeVideoId": "Z6gcRfPNcZo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_trap_bar_dl_low",
@@ -2573,7 +2627,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/1.jpg",
-    "youtubeVideoId": "Z6gcRfPNcZo"
+    "youtubeVideoId": "Z6gcRfPNcZo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_wall_push_up",
@@ -2703,7 +2760,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/1.jpg",
-    "youtubeVideoId": "WDIpL0pjun0"
+    "youtubeVideoId": "WDIpL0pjun0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_incline_push_up",
@@ -2836,7 +2896,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/1.jpg",
-    "youtubeVideoId": "WDIpL0pjun0"
+    "youtubeVideoId": "WDIpL0pjun0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_floor_push_up",
@@ -2983,7 +3046,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": "WDIpL0pjun0"
+    "youtubeVideoId": "WDIpL0pjun0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_landmine_press",
@@ -3131,7 +3197,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Landmine_180s/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Landmine_180s/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_db_floor_press",
@@ -3277,7 +3346,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Floor_Press/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Floor_Press/1.jpg",
-    "youtubeVideoId": "4_QuyfOCI5U"
+    "youtubeVideoId": "4_QuyfOCI5U",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_db_bench_press",
@@ -3426,7 +3498,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/1.jpg",
-    "youtubeVideoId": "4_QuyfOCI5U"
+    "youtubeVideoId": "4_QuyfOCI5U",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_band_pull_apart",
@@ -3555,7 +3630,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/1.jpg",
-    "youtubeVideoId": "qykwviNOIyc"
+    "youtubeVideoId": "qykwviNOIyc",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_chest_supported_row",
@@ -3692,7 +3770,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "DmUX88nWClo"
+    "youtubeVideoId": "DmUX88nWClo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_sa_db_row",
@@ -3835,7 +3916,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/1.jpg",
-    "youtubeVideoId": "DmUX88nWClo"
+    "youtubeVideoId": "DmUX88nWClo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_cable_row",
@@ -3976,7 +4060,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg",
-    "youtubeVideoId": "k0cTJCfxa0Y"
+    "youtubeVideoId": "k0cTJCfxa0Y",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "str_inverted_row",
@@ -4122,7 +4209,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/1.jpg",
-    "youtubeVideoId": "bm0_q9bR_HA"
+    "youtubeVideoId": "bm0_q9bR_HA",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_bw_squat",
@@ -4260,7 +4350,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": "-bJIpOq-LWk"
+    "youtubeVideoId": "-bJIpOq-LWk",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_goblet_squat",
@@ -4403,7 +4496,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/1.jpg",
-    "youtubeVideoId": "nfX7IFK9UNI"
+    "youtubeVideoId": "nfX7IFK9UNI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_bss_bw",
@@ -4542,7 +4638,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": "hbw7hdyOpq0"
+    "youtubeVideoId": "hbw7hdyOpq0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_bss_loaded",
@@ -4689,7 +4788,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/1.jpg",
-    "youtubeVideoId": "hbw7hdyOpq0"
+    "youtubeVideoId": "hbw7hdyOpq0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "str_front_squat",
@@ -4845,7 +4947,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Barbell_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Barbell_Squat/1.jpg",
-    "youtubeVideoId": "-bJIpOq-LWk"
+    "youtubeVideoId": "-bJIpOq-LWk",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_face_pulls",
@@ -4974,7 +5079,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg",
-    "youtubeVideoId": "eTCBSFlCJ_s"
+    "youtubeVideoId": "eTCBSFlCJ_s",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_band_ext_rotation",
@@ -5101,7 +5209,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_bicep_curl",
@@ -5228,7 +5339,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg",
-    "youtubeVideoId": "pQfJR-sSIvA"
+    "youtubeVideoId": "pQfJR-sSIvA",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_tricep_pushdown",
@@ -5352,7 +5466,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/1.jpg",
-    "youtubeVideoId": "vaphPzdnXIg"
+    "youtubeVideoId": "vaphPzdnXIg",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_lateral_raise",
@@ -5487,7 +5604,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg",
-    "youtubeVideoId": "XPPfnSEATJA"
+    "youtubeVideoId": "XPPfnSEATJA",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_calf_raise",
@@ -5616,7 +5736,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg",
-    "youtubeVideoId": "Xz0PPBZO2xc"
+    "youtubeVideoId": "Xz0PPBZO2xc",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "rehab_vmo_wall_sit",
@@ -5745,7 +5868,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "JOe3Z_Zigbc"
+    "youtubeVideoId": "JOe3Z_Zigbc",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_tke",
@@ -5872,7 +5998,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "xdKm8PSX438"
+    "youtubeVideoId": "xdKm8PSX438",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "core_pallof_kneel",
@@ -6001,7 +6130,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/1.jpg",
-    "youtubeVideoId": "f3R99GoYvCs"
+    "youtubeVideoId": "f3R99GoYvCs",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "core_pallof_stand",
@@ -6131,7 +6263,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/1.jpg",
-    "youtubeVideoId": "f3R99GoYvCs"
+    "youtubeVideoId": "f3R99GoYvCs",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "core_pallof_split",
@@ -6261,7 +6396,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/1.jpg",
-    "youtubeVideoId": "f3R99GoYvCs"
+    "youtubeVideoId": "f3R99GoYvCs",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "core_ab_wheel",
@@ -6400,7 +6538,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ab_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ab_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "carry_sa_farmer",
@@ -6534,7 +6675,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/1.jpg",
-    "youtubeVideoId": "YGnS0QVLcyQ"
+    "youtubeVideoId": "YGnS0QVLcyQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "carry_suitcase",
@@ -6669,7 +6813,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/1.jpg",
-    "youtubeVideoId": "YGnS0QVLcyQ"
+    "youtubeVideoId": "YGnS0QVLcyQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "mck_back_prone_lying",
@@ -6798,7 +6945,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg",
-    "youtubeVideoId": "gsgSaCtYbEE"
+    "youtubeVideoId": "gsgSaCtYbEE",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_prone_elbows",
@@ -6930,7 +7080,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg",
-    "youtubeVideoId": "lUQiliVYWUo"
+    "youtubeVideoId": "lUQiliVYWUo",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_press_up",
@@ -7064,7 +7217,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": "tIZppe-RB0g"
+    "youtubeVideoId": "tIZppe-RB0g",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_ext_standing",
@@ -7194,7 +7350,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "V7dSoo7fPuc"
+    "youtubeVideoId": "V7dSoo7fPuc",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_lying_flexion",
@@ -7329,7 +7488,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/1.jpg",
-    "youtubeVideoId": "TAJuOxWoNNQ"
+    "youtubeVideoId": "TAJuOxWoNNQ",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_sitting_flexion",
@@ -7463,7 +7625,11 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/1.jpg",
-    "youtubeVideoId": "KWy01iFhmTY"
+    "youtubeVideoId": "KWy01iFhmTY",
+    "methodology": [
+      "sfs",
+      "rehab"
+    ]
   },
   {
     "id": "mck_back_standing_flexion",
@@ -7596,7 +7762,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "LcLy3yKGZwg"
+    "youtubeVideoId": "LcLy3yKGZwg",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_retraction",
@@ -7723,7 +7892,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "09kHVqOx1Hs"
+    "youtubeVideoId": "09kHVqOx1Hs",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_extension",
@@ -7854,7 +8026,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "RHLz_FA2-FI"
+    "youtubeVideoId": "RHLz_FA2-FI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_ret_ext",
@@ -7986,7 +8161,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "RHLz_FA2-FI"
+    "youtubeVideoId": "RHLz_FA2-FI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_side_bend",
@@ -8117,7 +8295,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_rotation",
@@ -8250,7 +8431,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_flexion",
@@ -8382,7 +8566,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_neck_ret_ext_lying",
@@ -8513,7 +8700,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "RHLz_FA2-FI"
+    "youtubeVideoId": "RHLz_FA2-FI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_quad_set",
@@ -8640,7 +8830,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg",
-    "youtubeVideoId": "IF5eDfb8afM"
+    "youtubeVideoId": "IF5eDfb8afM",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_slr",
@@ -8770,7 +8963,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "LdAD9GNv8FI"
+    "youtubeVideoId": "LdAD9GNv8FI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_step_down_low",
@@ -8910,7 +9106,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/1.jpg",
-    "youtubeVideoId": "rvI7OxBQqS4"
+    "youtubeVideoId": "rvI7OxBQqS4",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_step_down_high",
@@ -9049,7 +9248,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/1.jpg",
-    "youtubeVideoId": "rvI7OxBQqS4"
+    "youtubeVideoId": "rvI7OxBQqS4",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_sl_leg_press",
@@ -9186,7 +9388,11 @@
     "abilityLevel": "seated_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "cDGOn-yfKJA"
+    "youtubeVideoId": "cDGOn-yfKJA",
+    "methodology": [
+      "sfs",
+      "rehab"
+    ]
   },
   {
     "id": "rehab_iso_ext_rotation",
@@ -9313,7 +9519,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_prone_y",
@@ -9448,7 +9657,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/1.jpg",
-    "youtubeVideoId": "dBq5Ls96p4A"
+    "youtubeVideoId": "dBq5Ls96p4A",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_prone_t",
@@ -9581,7 +9793,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/1.jpg",
-    "youtubeVideoId": "dBq5Ls96p4A"
+    "youtubeVideoId": "dBq5Ls96p4A",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_prone_w",
@@ -9715,7 +9930,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Prone_Incline_Curl/1.jpg",
-    "youtubeVideoId": "VZJ0PHuNrYI"
+    "youtubeVideoId": "VZJ0PHuNrYI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_scap_wall_slides",
@@ -9842,7 +10060,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "r0UosMuvtz4"
+    "youtubeVideoId": "r0UosMuvtz4",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mob_cat_cow",
@@ -9969,7 +10190,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/1.jpg",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "mob_90_90_hip",
@@ -10098,7 +10322,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "mob_worlds_greatest",
@@ -10232,7 +10459,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/World_s_Greatest_Stretch/0.jpg",
     "imageUrl2": null,
-    "youtubeVideoId": "I0k6AI6md_8"
+    "youtubeVideoId": "I0k6AI6md_8",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "mob_thoracic_rotation",
@@ -10361,7 +10591,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Crossover/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Crossover/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "mob_ankle_dorsiflexion",
@@ -10490,7 +10723,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
-    "youtubeVideoId": "sTg3s31OfLE"
+    "youtubeVideoId": "sTg3s31OfLE",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "mob_shoulder_pass_through",
@@ -10626,7 +10862,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "stretch_hamstring",
@@ -10755,7 +10994,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "z73l6oZUniQ"
+    "youtubeVideoId": "z73l6oZUniQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_hip_flexor",
@@ -10883,7 +11125,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg",
-    "youtubeVideoId": "UU7Nqd_Dric"
+    "youtubeVideoId": "UU7Nqd_Dric",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_child_pose",
@@ -11013,7 +11258,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg",
-    "youtubeVideoId": "_ZX_zTOBgp8"
+    "youtubeVideoId": "_ZX_zTOBgp8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_pec_doorway",
@@ -11146,7 +11394,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/1.jpg",
-    "youtubeVideoId": "2EeBa3dksnw"
+    "youtubeVideoId": "2EeBa3dksnw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_upper_trap",
@@ -11275,7 +11526,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg",
-    "youtubeVideoId": "RNTlUaKeuXE"
+    "youtubeVideoId": "RNTlUaKeuXE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_piriformis",
@@ -11406,7 +11660,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-g0nuyTHMrI"
+    "youtubeVideoId": "-g0nuyTHMrI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_quad",
@@ -11536,7 +11793,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "UU7Nqd_Dric"
+    "youtubeVideoId": "UU7Nqd_Dric",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_cross_body_shoulder",
@@ -11669,7 +11929,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cross-Body_Crunch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cross-Body_Crunch/1.jpg",
-    "youtubeVideoId": "2EeBa3dksnw"
+    "youtubeVideoId": "2EeBa3dksnw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cardio_walking",
@@ -11801,7 +12064,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cardio_incline_treadmill",
@@ -11932,7 +12198,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cardio_bike",
@@ -12061,7 +12330,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Recumbent_Bike/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Recumbent_Bike/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "fr_quads",
@@ -12191,7 +12463,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quadriceps-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quadriceps-SMR/1.jpg",
-    "youtubeVideoId": "ERTVBjwgPS4"
+    "youtubeVideoId": "ERTVBjwgPS4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_hamstrings",
@@ -12321,7 +12596,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring-SMR/1.jpg",
-    "youtubeVideoId": "_M29fhv3LoI"
+    "youtubeVideoId": "_M29fhv3LoI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_glutes",
@@ -12446,7 +12724,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/1.jpg",
-    "youtubeVideoId": "XS5hY6vBi6g"
+    "youtubeVideoId": "XS5hY6vBi6g",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_piriformis",
@@ -12572,7 +12853,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Piriformis-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Piriformis-SMR/1.jpg",
-    "youtubeVideoId": "XS5hY6vBi6g"
+    "youtubeVideoId": "XS5hY6vBi6g",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_upper_back",
@@ -12701,7 +12985,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_pecs",
@@ -12828,7 +13115,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_tfl",
@@ -12954,7 +13244,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/1.jpg",
-    "youtubeVideoId": "ddd9IvPn8jI"
+    "youtubeVideoId": "ddd9IvPn8jI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_peroneals",
@@ -13081,7 +13374,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_biceps_forearms",
@@ -13209,7 +13505,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "fr_feet",
@@ -13335,7 +13634,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "corr_chin_tuck",
@@ -13481,7 +13783,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "09kHVqOx1Hs"
+    "youtubeVideoId": "09kHVqOx1Hs",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_prone_cobra",
@@ -13632,7 +13937,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg",
-    "youtubeVideoId": "keErJXdp2lE"
+    "youtubeVideoId": "keErJXdp2lE",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_serratus_wall_slide",
@@ -13786,7 +14094,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "r0UosMuvtz4"
+    "youtubeVideoId": "r0UosMuvtz4",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_pec_stretch",
@@ -13938,7 +14249,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/1.jpg",
-    "youtubeVideoId": "2EeBa3dksnw"
+    "youtubeVideoId": "2EeBa3dksnw",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_upper_trap_stretch",
@@ -14084,7 +14398,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg",
-    "youtubeVideoId": "RNTlUaKeuXE"
+    "youtubeVideoId": "RNTlUaKeuXE",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_levator_stretch",
@@ -14229,7 +14546,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": "U9tijfMcfP8"
+    "youtubeVideoId": "U9tijfMcfP8",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_band_pull_apart_hr",
@@ -14380,7 +14700,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/1.jpg",
-    "youtubeVideoId": "qykwviNOIyc"
+    "youtubeVideoId": "qykwviNOIyc",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_wall_angel",
@@ -14540,7 +14863,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "JU38DOT4ctk"
+    "youtubeVideoId": "JU38DOT4ctk",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_standing_hip_flexor_str",
@@ -14686,7 +15012,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg",
-    "youtubeVideoId": "UU7Nqd_Dric"
+    "youtubeVideoId": "UU7Nqd_Dric",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_kneeling_hip_flexor_str",
@@ -14836,7 +15165,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg",
-    "youtubeVideoId": "UU7Nqd_Dric"
+    "youtubeVideoId": "UU7Nqd_Dric",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_supine_pelvic_tilt",
@@ -14985,7 +15317,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_glute_bridge_march",
@@ -15136,7 +15471,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_clamshell",
@@ -15284,7 +15622,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "V_AnVxKPFlY"
+    "youtubeVideoId": "V_AnVxKPFlY",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_side_lying_hip_abd",
@@ -15432,7 +15773,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "xVSwJhJCsgo"
+    "youtubeVideoId": "xVSwJhJCsgo",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_monster_walk",
@@ -15584,7 +15928,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/1.jpg",
-    "youtubeVideoId": "9aLcb5a7390"
+    "youtubeVideoId": "9aLcb5a7390",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "corr_cook_hip_lift",
@@ -15734,7 +16081,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "ces"
+    ]
   },
   {
     "id": "rehab_hip_ir_er",
@@ -15882,7 +16232,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_quad_hip_circles",
@@ -16030,7 +16383,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ccxer2XAv1k"
+    "youtubeVideoId": "ccxer2XAv1k",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_hip_ir_stretch",
@@ -16176,7 +16532,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_it_band_stretch",
@@ -16323,7 +16682,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "wzDoSQ8-GWY"
+    "youtubeVideoId": "wzDoSQ8-GWY",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_pigeon_pose",
@@ -16455,7 +16817,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ComifUu2ECg"
+    "youtubeVideoId": "ComifUu2ECg",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_hip_flexor_march",
@@ -16589,7 +16954,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_fire_hydrant",
@@ -16718,7 +17086,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "3O3G7xn8xmw"
+    "youtubeVideoId": "3O3G7xn8xmw",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_lateral_band_walk",
@@ -16851,7 +17222,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/1.jpg",
-    "youtubeVideoId": "M5uxEQH5BUM"
+    "youtubeVideoId": "M5uxEQH5BUM",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_ankle_alphabet",
@@ -16979,7 +17353,11 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
-    "youtubeVideoId": "sTg3s31OfLE"
+    "youtubeVideoId": "sTg3s31OfLE",
+    "methodology": [
+      "sfs",
+      "rehab"
+    ]
   },
   {
     "id": "rehab_towel_scrunches",
@@ -17105,7 +17483,11 @@
     "abilityLevel": "seated_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs",
+      "rehab"
+    ]
   },
   {
     "id": "rehab_eccentric_calf_drop",
@@ -17236,7 +17618,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg",
-    "youtubeVideoId": "Xz0PPBZO2xc"
+    "youtubeVideoId": "Xz0PPBZO2xc",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_sl_balance_unstable",
@@ -17367,7 +17752,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_toe_yoga",
@@ -17494,7 +17882,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_tib_ant_raise",
@@ -17621,7 +18012,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_wrist_ext_stretch",
@@ -17751,7 +18145,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-06PlhD_aXE"
+    "youtubeVideoId": "-06PlhD_aXE",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_wrist_flex_stretch",
@@ -17881,7 +18278,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-06PlhD_aXE"
+    "youtubeVideoId": "-06PlhD_aXE",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_eccentric_wrist_ext",
@@ -18012,7 +18412,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "dsaOzSfsM24"
+    "youtubeVideoId": "dsaOzSfsM24",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_median_nerve_glide_hand",
@@ -18142,7 +18545,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "yZJ1MfKqByY"
+    "youtubeVideoId": "yZJ1MfKqByY",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_grip_strengthen",
@@ -18272,7 +18678,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "nerve_sciatic_glide",
@@ -18403,7 +18812,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "yZJ1MfKqByY"
+    "youtubeVideoId": "yZJ1MfKqByY",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "nerve_femoral_glide",
@@ -18530,7 +18942,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "GC4QSYDSbJQ"
+    "youtubeVideoId": "GC4QSYDSbJQ",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "nerve_ulnar_glide",
@@ -18659,7 +19074,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": "UY97v4WxrzI"
+    "youtubeVideoId": "UY97v4WxrzI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "nerve_median_glide",
@@ -18788,7 +19206,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": "yZJ1MfKqByY"
+    "youtubeVideoId": "yZJ1MfKqByY",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "williams_pelvic_tilt",
@@ -18920,7 +19341,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "williams_single_knee_chest",
@@ -19053,7 +19477,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "williams_double_knee_chest",
@@ -19188,7 +19615,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "williams_partial_curl",
@@ -19322,7 +19752,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "williams_seated_flexion",
@@ -19456,7 +19889,11 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs",
+      "rehab"
+    ]
   },
   {
     "id": "bal_sl_eyes_closed",
@@ -19590,7 +20027,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/1.jpg",
-    "youtubeVideoId": "Mo4P9Y_AQt8"
+    "youtubeVideoId": "Mo4P9Y_AQt8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_sl_bosu",
@@ -19721,7 +20161,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_sl_hop_stabilize",
@@ -19864,7 +20307,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "bal_tandem_walk",
@@ -19997,7 +20443,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "func_squat_to_stand",
@@ -20138,7 +20587,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": "-bJIpOq-LWk"
+    "youtubeVideoId": "-bJIpOq-LWk",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "func_inchworm",
@@ -20277,7 +20729,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/1.jpg",
-    "youtubeVideoId": "9XVfXR5kvz8"
+    "youtubeVideoId": "9XVfXR5kvz8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "func_bear_crawl",
@@ -20416,7 +20871,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bear_Crawl_Sled_Drags/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bear_Crawl_Sled_Drags/1.jpg",
-    "youtubeVideoId": "x_9Ztpo_t1I"
+    "youtubeVideoId": "x_9Ztpo_t1I",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "func_turkish_getup",
@@ -20564,7 +21022,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Turkish_Get-Up_Squat_style/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Turkish_Get-Up_Squat_style/1.jpg",
-    "youtubeVideoId": "WradwGWo554"
+    "youtubeVideoId": "WradwGWo554",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "func_farmer_carry_bilateral",
@@ -20701,7 +21162,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/1.jpg",
-    "youtubeVideoId": "YGnS0QVLcyQ"
+    "youtubeVideoId": "YGnS0QVLcyQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_lat",
@@ -20828,7 +21292,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Latissimus_Dorsi-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Latissimus_Dorsi-SMR/1.jpg",
-    "youtubeVideoId": "z73l6oZUniQ"
+    "youtubeVideoId": "z73l6oZUniQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_adductor",
@@ -20959,7 +21426,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butterfly/1.jpg",
-    "youtubeVideoId": "5vbljPADsAo"
+    "youtubeVideoId": "5vbljPADsAo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_glute",
@@ -21088,7 +21558,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/1.jpg",
-    "youtubeVideoId": "-g0nuyTHMrI"
+    "youtubeVideoId": "-g0nuyTHMrI",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "stretch_chest_behind_back",
@@ -21219,7 +21692,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_anterior_shoulder",
@@ -21349,7 +21825,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/1.jpg",
-    "youtubeVideoId": "2EeBa3dksnw"
+    "youtubeVideoId": "2EeBa3dksnw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_wrist_flexor",
@@ -21476,7 +21955,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_neck_side_bend",
@@ -21604,7 +22086,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "stretch_standing_calf",
@@ -21734,7 +22219,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Gastrocnemius_Calf_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Gastrocnemius_Calf_Stretch/1.jpg",
-    "youtubeVideoId": "URK3EXjTUP4"
+    "youtubeVideoId": "URK3EXjTUP4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "breath_diaphragmatic",
@@ -21863,7 +22351,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/1.jpg",
-    "youtubeVideoId": "ZQ-wBehR6Xw"
+    "youtubeVideoId": "ZQ-wBehR6Xw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "breath_box",
@@ -21989,7 +22480,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ZQ-wBehR6Xw"
+    "youtubeVideoId": "ZQ-wBehR6Xw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "breath_crocodile",
@@ -22115,7 +22609,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Stomach_Vacuum/1.jpg",
-    "youtubeVideoId": "ZQ-wBehR6Xw"
+    "youtubeVideoId": "ZQ-wBehR6Xw",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "breath_physiological_sigh",
@@ -22239,7 +22736,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "kSZKIupBUuc"
+    "youtubeVideoId": "kSZKIupBUuc",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "seated_chest_press",
@@ -22370,7 +22870,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": "lRo9zZ7EwpM"
+    "youtubeVideoId": "lRo9zZ7EwpM",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_shoulder_press",
@@ -22511,7 +23014,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Press/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Press/1.jpg",
-    "youtubeVideoId": "MMjBnEBnZKM"
+    "youtubeVideoId": "MMjBnEBnZKM",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_lateral_raise",
@@ -22645,7 +23151,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Side_Lateral_Raise/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Side_Lateral_Raise/1.jpg",
-    "youtubeVideoId": "XPPfnSEATJA"
+    "youtubeVideoId": "XPPfnSEATJA",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_row",
@@ -22775,7 +23284,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg",
-    "youtubeVideoId": "k0cTJCfxa0Y"
+    "youtubeVideoId": "k0cTJCfxa0Y",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_bicep_curl",
@@ -22903,7 +23415,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Curl/1.jpg",
-    "youtubeVideoId": "0dT4L6Lsi80"
+    "youtubeVideoId": "0dT4L6Lsi80",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_tricep_ext",
@@ -23034,7 +23549,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "vaphPzdnXIg"
+    "youtubeVideoId": "vaphPzdnXIg",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_band_pull_apart",
@@ -23162,7 +23680,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/1.jpg",
-    "youtubeVideoId": "qykwviNOIyc"
+    "youtubeVideoId": "qykwviNOIyc",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_trunk_rotation",
@@ -23295,7 +23816,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_punches",
@@ -23427,7 +23951,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "lRo9zZ7EwpM"
+    "youtubeVideoId": "lRo9zZ7EwpM",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_chair_dips",
@@ -23566,7 +24093,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg",
-    "youtubeVideoId": "WVeZDBhZwLA"
+    "youtubeVideoId": "WVeZDBhZwLA",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_crunch",
@@ -23696,7 +24226,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg",
-    "youtubeVideoId": "QFLftqPWjoI"
+    "youtubeVideoId": "QFLftqPWjoI",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_oblique_twist",
@@ -23831,7 +24364,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/1.jpg",
-    "youtubeVideoId": "QFLftqPWjoI"
+    "youtubeVideoId": "QFLftqPWjoI",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_leg_ext",
@@ -23956,7 +24492,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg",
-    "youtubeVideoId": "G5iP_YcDQdE"
+    "youtubeVideoId": "G5iP_YcDQdE",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_marching",
@@ -24084,7 +24623,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "hK21mcqjsL0"
+    "youtubeVideoId": "hK21mcqjsL0",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_heel_slides",
@@ -24209,7 +24751,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "XJI-HRJ-gXw"
+    "youtubeVideoId": "XJI-HRJ-gXw",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_ankle_pumps",
@@ -24338,7 +24883,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "F0bY97hdCJU"
+    "youtubeVideoId": "F0bY97hdCJU",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_hip_abd",
@@ -24467,7 +25015,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "seated_captains_lift",
@@ -24604,7 +25155,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_ankle_pumps",
@@ -24730,7 +25284,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "F0bY97hdCJU"
+    "youtubeVideoId": "F0bY97hdCJU",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_heel_slides",
@@ -24857,7 +25414,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "XJI-HRJ-gXw"
+    "youtubeVideoId": "XJI-HRJ-gXw",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_pelvic_tilt",
@@ -24983,7 +25543,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_hip_abd_add",
@@ -25111,7 +25674,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_shoulder_flexion",
@@ -25239,7 +25805,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Rear_Delt_Raise/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Rear_Delt_Raise/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_diaphragmatic",
@@ -25364,7 +25933,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_neck_rotation",
@@ -25493,7 +26065,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "bed_glute_set",
@@ -25619,7 +26194,10 @@
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_walking",
@@ -25749,7 +26327,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ZgxniVfKT4I"
+    "youtubeVideoId": "ZgxniVfKT4I",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_wall_pushup",
@@ -25877,7 +26458,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_jogging",
@@ -26010,7 +26594,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "0E5QDpble1I"
+    "youtubeVideoId": "0E5QDpble1I",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_flutter_kicks",
@@ -26138,7 +26725,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_arm_circles",
@@ -26264,7 +26854,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "aqua_squat",
@@ -26395,7 +26988,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "kb_goblet_squat",
@@ -26538,7 +27134,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/1.jpg",
-    "youtubeVideoId": "-TeEMXoHQPM"
+    "youtubeVideoId": "-TeEMXoHQPM",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_deadlift",
@@ -26686,7 +27285,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "LnIMaf-XOpM"
+    "youtubeVideoId": "LnIMaf-XOpM",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_swing",
@@ -26832,7 +27434,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Kettlebell_Swings/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Kettlebell_Swings/1.jpg",
-    "youtubeVideoId": "YGnS0QVLcyQ"
+    "youtubeVideoId": "YGnS0QVLcyQ",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_turkish_getup",
@@ -26979,7 +27584,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Turkish_Get-Up_Squat_style/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Turkish_Get-Up_Squat_style/1.jpg",
-    "youtubeVideoId": "WradwGWo554"
+    "youtubeVideoId": "WradwGWo554",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_sa_press",
@@ -27119,7 +27727,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Kettlebell_Clean_and_Jerk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Kettlebell_Clean_and_Jerk/1.jpg",
-    "youtubeVideoId": "X-uFqWtjpGI"
+    "youtubeVideoId": "X-uFqWtjpGI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_row",
@@ -27254,7 +27865,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Kettlebell_Row/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Kettlebell_Row/1.jpg",
-    "youtubeVideoId": "NNTpBlHRcA4"
+    "youtubeVideoId": "NNTpBlHRcA4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_halo",
@@ -27390,7 +28004,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Arnold_Press/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Arnold_Press/1.jpg",
-    "youtubeVideoId": "WtqAD5-Re18"
+    "youtubeVideoId": "WtqAD5-Re18",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "kb_farmer_carry",
@@ -27525,7 +28142,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/1.jpg",
-    "youtubeVideoId": "IA2tycCS8DI"
+    "youtubeVideoId": "IA2tycCS8DI",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_row",
@@ -27659,7 +28279,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Row/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Row/1.jpg",
-    "youtubeVideoId": "DmUX88nWClo"
+    "youtubeVideoId": "DmUX88nWClo",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_pushup",
@@ -27795,7 +28418,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Push-Up/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Push-Up/1.jpg",
-    "youtubeVideoId": "WDIpL0pjun0"
+    "youtubeVideoId": "WDIpL0pjun0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_squat",
@@ -27926,7 +28552,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": "-bJIpOq-LWk"
+    "youtubeVideoId": "-bJIpOq-LWk",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_lunge",
@@ -28065,7 +28694,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_pike",
@@ -28202,7 +28834,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_y_raise",
@@ -28337,7 +28972,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Row/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Row/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_hamstring_curl",
@@ -28466,7 +29104,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "G5iP_YcDQdE"
+    "youtubeVideoId": "G5iP_YcDQdE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "trx_face_pull",
@@ -28597,7 +29238,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg",
-    "youtubeVideoId": "eTCBSFlCJ_s"
+    "youtubeVideoId": "eTCBSFlCJ_s",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_overhead_press",
@@ -28737,7 +29381,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/1.jpg",
-    "youtubeVideoId": "MMjBnEBnZKM"
+    "youtubeVideoId": "MMjBnEBnZKM",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_squat",
@@ -28873,7 +29520,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": "fQFhDLUdL3Y"
+    "youtubeVideoId": "fQFhDLUdL3Y",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_deadlift",
@@ -29013,7 +29663,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/1.jpg",
-    "youtubeVideoId": "aa57T45iFSE"
+    "youtubeVideoId": "aa57T45iFSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_chest_press",
@@ -29146,7 +29799,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": "_x5m-s8xTf0"
+    "youtubeVideoId": "_x5m-s8xTf0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_lat_pulldown",
@@ -29285,7 +29941,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "B_VkNQS5YLs"
+    "youtubeVideoId": "B_VkNQS5YLs",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_tricep_pushdown",
@@ -29413,7 +30072,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/1.jpg",
-    "youtubeVideoId": "vaphPzdnXIg"
+    "youtubeVideoId": "vaphPzdnXIg",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_hamstring_curl",
@@ -29540,7 +30202,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/1.jpg",
-    "youtubeVideoId": "G5iP_YcDQdE"
+    "youtubeVideoId": "G5iP_YcDQdE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "band_hip_thrust",
@@ -29669,7 +30334,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/1.jpg",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_wall_push",
@@ -29799,7 +30467,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_squat_hold",
@@ -29931,7 +30602,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_row_hold",
@@ -30061,7 +30735,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_plank_variations",
@@ -30195,7 +30872,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_shoulder_abd",
@@ -30322,7 +31002,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "iso_hip_adduction",
@@ -30451,7 +31134,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_leg_swings",
@@ -30581,7 +31267,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_arm_circles",
@@ -30708,7 +31397,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_walking_lunges",
@@ -30846,7 +31538,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": "UInwcEa5BH4"
+    "youtubeVideoId": "UInwcEa5BH4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_high_knees",
@@ -30981,7 +31676,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "hK21mcqjsL0"
+    "youtubeVideoId": "hK21mcqjsL0",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_butt_kicks",
@@ -31116,7 +31814,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Double_Leg_Butt_Kick/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Double_Leg_Butt_Kick/1.jpg",
-    "youtubeVideoId": "lKhZvT_NkOs"
+    "youtubeVideoId": "lKhZvT_NkOs",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_lateral_shuffle",
@@ -31249,7 +31950,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
-    "youtubeVideoId": "M5uxEQH5BUM"
+    "youtubeVideoId": "M5uxEQH5BUM",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_carioca",
@@ -31383,7 +32087,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "dyn_toy_soldiers",
@@ -31518,7 +32225,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "agil_ladder_quick_feet",
@@ -31651,7 +32361,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "9ZTRUVLjGzI"
+    "youtubeVideoId": "9ZTRUVLjGzI",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "agil_cone_shuffle",
@@ -31782,7 +32495,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "agil_box_drill",
@@ -31913,7 +32629,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "agil_reaction_ball",
@@ -32043,7 +32762,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "agil_sl_hop_stick",
@@ -32183,7 +32905,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "agil_t_drill",
@@ -32315,7 +33040,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_To_Side_Chins/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "grip_plate_pinch",
@@ -32444,7 +33172,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "grip_dead_hang",
@@ -32582,7 +33313,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/1.jpg",
-    "youtubeVideoId": "ShkBXOGK7A8"
+    "youtubeVideoId": "ShkBXOGK7A8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "grip_wrist_roller",
@@ -32711,7 +33445,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "grip_rice_bucket",
@@ -32840,7 +33577,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/1.jpg",
-    "youtubeVideoId": "AdlJHaImdtU"
+    "youtubeVideoId": "AdlJHaImdtU",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "cond_gentle_water_walk",
@@ -32970,7 +33710,10 @@
     "abilityLevel": "aquatic",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ZgxniVfKT4I"
+    "youtubeVideoId": "ZgxniVfKT4I",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_restorative_yoga",
@@ -33098,7 +33841,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_pmr",
@@ -33222,7 +33968,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "ihO02wUzgkc"
+    "youtubeVideoId": "ihO02wUzgkc",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_big_step_walk",
@@ -33356,7 +34105,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_dual_task_walk",
@@ -33490,7 +34242,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_boxing_drills",
@@ -33628,7 +34383,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "cond_affected_arm_rom",
@@ -33760,7 +34518,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "cond_bilateral_arm",
@@ -33897,7 +34658,10 @@
     "abilityLevel": "seated_only",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "cond_sit_to_stand",
@@ -34030,7 +34794,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_pursed_lip",
@@ -34158,7 +34925,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_ub_ergometer",
@@ -34298,7 +35068,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "cond_post_meal_walk",
@@ -34432,7 +35205,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_circuit_training",
@@ -34571,7 +35347,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_modified_plank",
@@ -34702,7 +35481,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_kegels",
@@ -34829,7 +35611,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "NKl8ImI3OVE"
+    "youtubeVideoId": "NKl8ImI3OVE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_clamshell_preg",
@@ -34958,7 +35743,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_joint_rom_cycling",
@@ -35091,7 +35879,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "cond_iso_quad_set",
@@ -35218,7 +36009,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "yoga_seated_cat_cow",
@@ -35349,7 +36143,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "yoga_seated_forward_fold",
@@ -35484,7 +36281,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "yoga_seated_spinal_twist",
@@ -35617,7 +36417,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "yoga_seated_eagle_arms",
@@ -35754,7 +36557,10 @@
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "sfs"
+    ]
   },
   {
     "id": "pf_kegel_holds",
@@ -35881,7 +36687,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "NKl8ImI3OVE"
+    "youtubeVideoId": "NKl8ImI3OVE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "pf_quick_flicks",
@@ -36008,7 +36817,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "RbwyfEj-Oy4"
+    "youtubeVideoId": "RbwyfEj-Oy4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "pf_diaphragm_coord",
@@ -36139,7 +36951,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "NKl8ImI3OVE"
+    "youtubeVideoId": "NKl8ImI3OVE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "tmj_jaw_opening",
@@ -36269,7 +37084,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "SbJZXG4fsd4"
+    "youtubeVideoId": "SbJZXG4fsd4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "tmj_lateral_slides",
@@ -36398,7 +37216,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "lHcXJddxCd8"
+    "youtubeVideoId": "lHcXJddxCd8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "tmj_resisted_opening",
@@ -36530,7 +37351,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "SbJZXG4fsd4"
+    "youtubeVideoId": "SbJZXG4fsd4",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "sport_power_clean",
@@ -36693,7 +37517,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Power_Clean/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Power_Clean/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_box_jump",
@@ -36856,7 +37683,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Box_Jump_Multiple_Response/1.jpg",
-    "youtubeVideoId": "kNIInK_Le8I"
+    "youtubeVideoId": "kNIInK_Le8I",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_med_ball_slam",
@@ -37016,7 +37846,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Medicine_Ball_Chest_Pass/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Medicine_Ball_Chest_Pass/1.jpg",
-    "youtubeVideoId": "6Uuxb4h2N5I"
+    "youtubeVideoId": "6Uuxb4h2N5I",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_med_ball_rot_throw",
@@ -37172,7 +38005,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/1.jpg",
-    "youtubeVideoId": "6Uuxb4h2N5I"
+    "youtubeVideoId": "6Uuxb4h2N5I",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_sled_push",
@@ -37319,7 +38155,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Prowler_Sprint/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Prowler_Sprint/1.jpg",
-    "youtubeVideoId": "yd26RWY5jyQ"
+    "youtubeVideoId": "yd26RWY5jyQ",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_battle_ropes",
@@ -37479,7 +38318,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Battling_Ropes/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Battling_Ropes/1.jpg",
-    "youtubeVideoId": "JusqXDMg1Xk"
+    "youtubeVideoId": "JusqXDMg1Xk",
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_sled_pull",
@@ -37630,7 +38472,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Prowler_Sprint/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Prowler_Sprint/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "pes"
+    ]
   },
   {
     "id": "sport_barbell_hip_thrust",
@@ -37786,7 +38631,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/1.jpg",
-    "youtubeVideoId": "x5RP_0b_QgE"
+    "youtubeVideoId": "x5RP_0b_QgE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_bench_stepup",
@@ -37923,7 +38771,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Step_Ups/1.jpg",
-    "youtubeVideoId": "URHdW9js6DM"
+    "youtubeVideoId": "URHdW9js6DM",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_bench_pushup",
@@ -38055,7 +38906,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_bench_dips",
@@ -38202,7 +39056,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg",
-    "youtubeVideoId": "WVeZDBhZwLA"
+    "youtubeVideoId": "WVeZDBhZwLA",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_hill_sprints",
@@ -38361,7 +39218,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_trail_walking",
@@ -38494,7 +39354,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "outdoor_playground_pullup",
@@ -38646,7 +39509,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/1.jpg",
-    "youtubeVideoId": "9yVGh3XbJ34"
+    "youtubeVideoId": "9yVGh3XbJ34",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "id": "rehab_pendulum_swing",
@@ -38773,7 +39639,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "QF_ubbr_RUE"
+    "youtubeVideoId": "QF_ubbr_RUE",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_scapular_clock",
@@ -38906,7 +39775,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_chin_tuck_band",
@@ -39036,7 +39908,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": "09kHVqOx1Hs"
+    "youtubeVideoId": "09kHVqOx1Hs",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_cervical_snag",
@@ -39169,7 +40044,10 @@
     "abilityLevel": "any",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "mck_prone_press_exhale",
@@ -39302,7 +40180,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": "tIZppe-RB0g"
+    "youtubeVideoId": "tIZppe-RB0g",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_hooklying_march",
@@ -39435,7 +40316,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_pelvic_clock",
@@ -39568,7 +40452,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_tall_kneeling_balance",
@@ -39702,7 +40589,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_eccentric_decline_squat",
@@ -39845,7 +40735,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_spanish_squat",
@@ -39987,7 +40880,10 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_serratus_punch",
@@ -40117,7 +41013,10 @@
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_thoracic_ext_roller",
@@ -40246,7 +41145,10 @@
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "id": "rehab_standing_hip_march",
@@ -40381,7 +41283,10 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -40508,7 +41413,10 @@
       "mckenzie_shoulder_chain",
       "mobility"
     ],
-    "youtubeVideoId": "QF_ubbr_RUE"
+    "youtubeVideoId": "QF_ubbr_RUE",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -40634,7 +41542,10 @@
       "mckenzie_shoulder_chain",
       "rom"
     ],
-    "youtubeVideoId": "V7-M7UONtwI"
+    "youtubeVideoId": "V7-M7UONtwI",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -40761,7 +41672,10 @@
       "mckenzie_shoulder_chain",
       "rom"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -40887,7 +41801,10 @@
       "shoulder",
       "mckenzie_shoulder_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41015,7 +41932,10 @@
       "mckenzie_shoulder_chain",
       "stretch"
     ],
-    "youtubeVideoId": "-YFWrYkJVBs"
+    "youtubeVideoId": "-YFWrYkJVBs",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41140,7 +42060,10 @@
       "mckenzie_shoulder_chain",
       "stretch"
     ],
-    "youtubeVideoId": "-YFWrYkJVBs"
+    "youtubeVideoId": "-YFWrYkJVBs",
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41269,7 +42192,10 @@
       "mckenzie_shoulder_chain",
       "isometric"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41396,7 +42322,10 @@
       "shoulder",
       "mckenzie_shoulder_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41517,7 +42446,10 @@
       "knee",
       "mckenzie_knee_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41640,7 +42572,10 @@
       "knee",
       "mckenzie_knee_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41764,7 +42699,10 @@
       "knee",
       "mckenzie_knee_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -41888,7 +42826,10 @@
       "mckenzie_knee_chain",
       "vmo"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42013,7 +42954,10 @@
       "knee",
       "mckenzie_knee_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42140,7 +43084,10 @@
       "knee",
       "mckenzie_knee_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42264,7 +43211,10 @@
       "hips",
       "mckenzie_hip_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42389,7 +43339,10 @@
       "hips",
       "mckenzie_hip_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42514,7 +43467,10 @@
       "hips",
       "mckenzie_hip_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42639,7 +43595,10 @@
       "mckenzie_hip_chain",
       "stretch"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42763,7 +43722,10 @@
       "hips",
       "mckenzie_hip_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -42888,7 +43850,10 @@
       "mckenzie_hip_chain",
       "stretch"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43015,7 +43980,10 @@
       "hips",
       "mckenzie_hip_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43140,7 +44108,10 @@
       "ankles",
       "mckenzie_ankle_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43263,7 +44234,10 @@
       "mckenzie_ankle_chain",
       "stretch"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43386,7 +44360,10 @@
       "ankles",
       "mckenzie_ankle_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43511,7 +44488,10 @@
       "mckenzie_ankle_chain",
       "foot"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43636,7 +44616,10 @@
       "mckenzie_ankle_chain",
       "eccentric"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43762,7 +44745,10 @@
       "mckenzie_ankle_chain",
       "balance"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "rehab",
@@ -43889,7 +44875,10 @@
       "ankles",
       "mckenzie_ankle_chain"
     ],
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "rehab"
+    ]
   },
   {
     "category": "cooldown",
@@ -44011,7 +45000,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
-    "youtubeVideoId": "_ZX_zTOBgp8"
+    "youtubeVideoId": "_ZX_zTOBgp8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44132,7 +45124,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44254,7 +45249,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44374,7 +45372,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "legs",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44494,7 +45495,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44615,7 +45619,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "SKOMwg1JLrU"
+    "youtubeVideoId": "SKOMwg1JLrU",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44735,7 +45742,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44855,7 +45865,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -44975,7 +45988,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45096,7 +46112,10 @@
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "shoulders",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45218,7 +46237,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": "-atwUG73zSE"
+    "youtubeVideoId": "-atwUG73zSE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45340,7 +46362,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "tFnsJW9L5b8"
+    "youtubeVideoId": "tFnsJW9L5b8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45462,7 +46487,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "tFnsJW9L5b8"
+    "youtubeVideoId": "tFnsJW9L5b8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45584,7 +46612,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": "tFnsJW9L5b8"
+    "youtubeVideoId": "tFnsJW9L5b8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45707,7 +46738,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "ComifUu2ECg"
+    "youtubeVideoId": "ComifUu2ECg",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45827,7 +46861,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
-    "youtubeVideoId": "UU7Nqd_Dric"
+    "youtubeVideoId": "UU7Nqd_Dric",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -45947,7 +46984,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "back",
-    "youtubeVideoId": "keErJXdp2lE"
+    "youtubeVideoId": "keErJXdp2lE",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46069,7 +47109,10 @@
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "legs",
-    "youtubeVideoId": "tFnsJW9L5b8"
+    "youtubeVideoId": "tFnsJW9L5b8",
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46200,7 +47243,10 @@
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46331,7 +47377,10 @@
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "back",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46457,7 +47506,10 @@
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46578,7 +47630,10 @@
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
   },
   {
     "category": "cooldown",
@@ -46699,6 +47754,1726 @@
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "core",
+    "youtubeVideoId": null,
+    "methodology": [
+      "cpt"
+    ]
+  },
+  {
+    "id": "pes_depth_jump",
+    "name": "Depth Jump",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings"
+    ],
+    "jointsInvolved": [
+      "knee",
+      "ankle",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "box"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "safetyTier": "yellow",
+    "emoji": "⬇️",
+    "tags": [
+      "pes",
+      "plyometric",
+      "power",
+      "reactive"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 4,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 4 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 4 + movement competency",
+      "chainFamily": "pes_squat"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": null
+    },
+    "phaseParams": {
+      "4": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_lateral_bound",
+    "name": "Lateral Bound",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "lunge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Glutes",
+      "Quadriceps",
+      "Adductors"
+    ],
+    "secondaryMuscles": [
+      "Calves",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "yellow",
+    "emoji": "↔️",
+    "tags": [
+      "pes",
+      "plyometric",
+      "lateral",
+      "power"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_lunge"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_lateral_bound"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_sprint_interval",
+    "name": "Sprint Intervals (20m)",
+    "category": "cardio",
+    "type": "cardio",
+    "movementPattern": "locomotion",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Hamstrings",
+      "Glutes",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "yellow",
+    "emoji": "🏃",
+    "tags": [
+      "pes",
+      "sprint",
+      "hiit",
+      "conditioning"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_sprint_interval"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_shuttle_run",
+    "name": "Shuttle Run (5-10-5)",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Calves",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hamstrings"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "yellow",
+    "emoji": "🔀",
+    "tags": [
+      "pes",
+      "agility",
+      "saq"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_shuttle_run"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_agil_in_out",
+    "name": "Ladder In-Out",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Calves",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Hip Flexors",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "ankle",
+      "knee",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "agility_ladder"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "safetyTier": "green",
+    "emoji": "🪜",
+    "tags": [
+      "pes",
+      "saq",
+      "ladder",
+      "footwork"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 2,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 2 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 2 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_agil_in_out"
+    },
+    "phaseParams": {
+      "2": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_agil_lateral",
+    "name": "Ladder Lateral Shuffle",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Adductors",
+      "Quadriceps",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "ankle",
+      "knee",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "agility_ladder"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "safetyTier": "green",
+    "emoji": "🪜",
+    "tags": [
+      "pes",
+      "saq",
+      "lateral"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 2,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 2 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 2 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_agil_lateral"
+    },
+    "phaseParams": {
+      "2": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_agil_icky",
+    "name": "Ladder Icky Shuffle",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Calves",
+      "Quadriceps",
+      "Hip Flexors"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Adductors"
+    ],
+    "jointsInvolved": [
+      "ankle",
+      "knee",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "agility_ladder"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "green",
+    "emoji": "🪜",
+    "tags": [
+      "pes",
+      "saq",
+      "ladder"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_agil_icky"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_agil_crossover",
+    "name": "Ladder Crossover",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Adductors",
+      "Abductors",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [
+      "ankle",
+      "knee",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "agility_ladder"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "green",
+    "emoji": "🪜",
+    "tags": [
+      "pes",
+      "saq",
+      "crossover"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_agil_crossover"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_cone_5_10_5",
+    "name": "Pro Agility (5-10-5)",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hamstrings"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "yellow",
+    "emoji": "🔺",
+    "tags": [
+      "pes",
+      "saq",
+      "cone_drill"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_cone_5_10_5"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_cone_l_drill",
+    "name": "L-Drill (Cone)",
+    "category": "main",
+    "type": "agility",
+    "movementPattern": "locomotion",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Core",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "safetyTier": "yellow",
+    "emoji": "🔺",
+    "tags": [
+      "pes",
+      "saq",
+      "cone_drill"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_locomotion"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_cone_l_drill"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "3-5 rounds",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_med_ball_overhead",
+    "name": "Medicine Ball Overhead Throw",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "push",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Shoulders",
+      "Core",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Lats",
+      "Chest"
+    ],
+    "jointsInvolved": [
+      "shoulder",
+      "elbow",
+      "hip"
+    ],
+    "equipmentRequired": [
+      "medicine_ball"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "safetyTier": "yellow",
+    "emoji": "⬆️",
+    "tags": [
+      "pes",
+      "power",
+      "medicine_ball"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_push"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_med_ball_overhead"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_squat_jump",
+    "name": "Squat Jump",
+    "category": "main",
+    "type": "plyometric",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes",
+      "Calves"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Core"
+    ],
+    "jointsInvolved": [
+      "hip",
+      "knee",
+      "ankle"
+    ],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "safetyTier": "yellow",
+    "emoji": "⬆️",
+    "tags": [
+      "pes",
+      "plyometric",
+      "power",
+      "squat"
+    ],
+    "methodology": [
+      "pes"
+    ],
+    "weekMinimum": 0,
+    "prerequisites": {
+      "minCompletedSessions": 8,
+      "requiredExercisesMastered": [],
+      "requiredCapabilities": [],
+      "minPhase": 3,
+      "maxInjurySeverity": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      },
+      "painFreeROM": [],
+      "notes": "Requires Phase 3 foundation"
+    },
+    "progressionChain": {
+      "level": 3,
+      "regressTo": null,
+      "progressTo": null,
+      "unlockCriteria": "Phase 3 + movement competency",
+      "chainFamily": "pes_squat"
+    },
+    "contraindications": {
+      "injuries": [],
+      "conditions": [],
+      "movements_to_avoid": [],
+      "severity_gate": {
+        "lower_back": 3,
+        "knee": 2,
+        "shoulder": 3
+      }
+    },
+    "substitutions": {
+      "home": null,
+      "outdoor": "pes_squat_jump"
+    },
+    "phaseParams": {
+      "3": {
+        "sets": "2-3",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "60s",
+        "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      },
+      "5": {
+        "sets": "3-5",
+        "reps": "5-8",
+        "tempo": "Explosive",
+        "rest": "90s",
+        "intensity": "RPE 8-9"
+      }
+    },
+    "steps": [
+      "Set up in proper starting position",
+      "Execute movement with maximum intent",
+      "Land or decelerate with control",
+      "Reset and repeat"
+    ],
+    "formCues": [
+      "Drive through the ground with full force",
+      "Maintain core bracing throughout",
+      "Land softly with knees tracking toes",
+      "Full hip extension on each rep"
+    ],
+    "commonMistakes": [
+      "Insufficient warm-up before explosive work",
+      "Landing with stiff knees",
+      "Losing core stability on landing",
+      "Too much volume too soon"
+    ],
+    "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
+    "breathing": {
+      "inhale": "2",
+      "hold": "0",
+      "exhale": "1",
+      "pattern": "Exhale on effort, inhale on reset"
+    },
+    "injuryNotes": {
+      "lower_back": "Avoid if acute back pain. Ensure hip hinge competency first.",
+      "knee": "No plyometrics if knee severity 3+. Ensure pain-free jumping.",
+      "shoulder": "Overhead throws contraindicated if shoulder at end-range."
+    },
+    "purpose": "Develops reactive power and sport-specific speed.",
+    "whyForYou": "Part of your Performance Enhancement track.",
+    "proTip": "Quality over quantity. Stop when speed drops.",
+    "source": "NASM PES Methodology",
+    "lastReviewed": "2026-03-29",
+    "abilityLevel": "standing",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": null
   }
 ]

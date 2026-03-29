@@ -26,6 +26,7 @@ import OvertrainingCard from "./components/OvertrainingCard.jsx";
 import { assessOvertraining, applyOvertrainingModifiers } from "./utils/overtrainingDetector.js";
 import { capturePreReassessmentSnapshot, processReassessment } from "./utils/reassessment.js";
 import ReassessmentSummary from "./components/ReassessmentSummary.jsx";
+import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage } from "./utils/programTracks.js";
 import { getGreeting, getSetMessage, getRestTip, getRestTimerMessage, getSkipRestMessage, getRecapHeadline, getWorkoutCompleteMessage, getStreakMessage, getStreakEmoji, getCheckInSummary, checkEasterEgg } from "./utils/personality.js";
 
 // ═══════════════════════════════════════════════════════════════
@@ -554,6 +555,18 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         }
       }
     }
+  }
+
+  // PES superset pairing (Phase 4-5): strength exercise → power exercise
+  if (phase >= 4) {
+    const supersets = [];
+    for (const ex of main) {
+      const power = getPESSuperset(ex, phase);
+      if (power && !main.find(m => m.id === power.id) && !supersets.find(s => s.id === power.id)) {
+        supersets.push(power);
+      }
+    }
+    if (supersets.length > 0) main = [...main, ...supersets.slice(0, 3)];
   }
 
   // Build dynamic session blocks based on check-in + main exercises
@@ -1134,10 +1147,12 @@ function LibraryScreen(){
   const[abilityFilter,setAbilityFilter]=useState("All");
   const[phaseFilter,setPhaseFilter]=useState("All");
   const[locFilter,setLocFilter]=useState("All");
+  const[progFilter,setProgFilter]=useState("All");
   const[search,setSearch]=useState("");
   const[sel,setSel]=useState(null);
   const filtered=useMemo(()=>{
     let list=exerciseDB;
+    if(progFilter!=="All") list=filterByProgram(list,progFilter);
     if(catFilter!=="All") list=list.filter(e=>e.category===catFilter);
     if(bodyFilter!=="All") list=list.filter(e=>e.bodyPart===bodyFilter);
     if(moveFilter!=="All") list=list.filter(e=>e.movementPattern===moveFilter);
@@ -1151,6 +1166,7 @@ function LibraryScreen(){
   return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{exerciseDB.length} total · {filtered.length} shown</div></div>
     <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍 Search exercises or tags..." style={{padding:"10px 14px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontFamily:"inherit",outline:"none"}}/>
+    <FilterRow label="Program" items={PROGRAM_FILTERS.map(p=>p.id)} value={progFilter} onChange={setProgFilter} color={C.purple}/>
     <FilterRow label="Category" items={CATEGORIES} value={catFilter} onChange={setCatFilter} color={C.teal}/>
     <FilterRow label="Body Part" items={BODY_GROUPS} value={bodyFilter} onChange={setBodyFilter} color={C.purple}/>
     <FilterRow label="Movement" items={MOVEMENT_PATTERNS} value={moveFilter} onChange={setMoveFilter} color={C.info}/>
@@ -1181,6 +1197,12 @@ function LibraryScreen(){
         <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.warning}}>🛡️ CORE: </span><span style={{fontSize:12,color:C.text}}>{ex.coreBracing}</span></div>
         <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.danger}}>🩺 INJURY: </span>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:11,color:C.text,marginTop:2}}><b>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<span style={{fontSize:12,color:C.text}}>{ex.injuryNotes}</span>}</div>
         {ex.proTip&&<div style={{background:C.tealBg,borderRadius:10,padding:10,marginTop:6}}><span style={{fontSize:11,fontWeight:700,color:C.teal}}>💡 PRO TIP: </span><span style={{fontSize:12,color:C.text}}>{ex.proTip}</span></div>}
+        {/* Program badges */}
+        {(ex.methodology||[]).length>0&&<div style={{display:"flex",gap:4,flexWrap:"wrap",marginTop:6}}>{(ex.methodology||[]).map(m=><Badge key={m} color={m==="pes"?C.orange:m==="sfs"?C.info:m==="ces"?C.warning:m==="rehab"?C.danger:C.teal}>{m.toUpperCase()}</Badge>)}</div>}
+        {/* Prerequisites */}
+        {ex.prerequisites?.minPhase>1&&<div style={{fontSize:10,color:C.textDim,marginTop:4}}>Requires: Phase {ex.prerequisites.minPhase}+{ex.prerequisites.minCompletedSessions>0?` · ${ex.prerequisites.minCompletedSessions} sessions`:""}</div>}
+        {/* Progresses to */}
+        {ex.progressionChain?.progressTo&&<div style={{fontSize:10,color:C.purple,marginTop:2}}>Progresses to: {exerciseDB.find(e2=>e2.id===ex.progressionChain.progressTo)?.name||ex.progressionChain.progressTo}</div>}
         {/* Progression roadmap for this exercise */}
         {ex.progressionChain?.chainFamily&&<div style={{marginTop:8}}><ProgressionRoadmapCard targetId={ex.id}/></div>}
       </div>}
