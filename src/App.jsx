@@ -808,7 +808,7 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork,onSwapExerci
           {section.exercises.map(ex=>{const p=exParams(ex);const mu=exMuscles(ex);return(<Card key={ex.id+(ex._reason||"")} style={{padding:10,marginBottom:4}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <ExerciseImage exercise={ex} size="thumb"/>
-              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.info,marginTop:1}}>{ex._reason}</div>}</div>
+              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps}{p.tempo?` · ${p.tempo}`:""} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.info,marginTop:1}}>{ex._reason}</div>}</div>
               <div style={{display:"flex",alignItems:"center",gap:4}}>
                 <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:50}}>{mu.primary.slice(0,1).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
                 <button onClick={(e)=>{e.stopPropagation();setSwapTarget(ex);}} style={{width:26,height:26,borderRadius:8,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}} title="Request Alternative">🔄</button>
@@ -1055,10 +1055,11 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   {/* Exercise image — animated crossfade between start/end positions */}
   <ExerciseImage exercise={exercise}/>
   <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exLocationLabel(exercise)} · {exercise.difficultyLevel?`Level ${exercise.difficultyLevel}`:exercise.difficulty||""}</div></div>
-  <div style={{display:"grid",gridTemplateColumns:ep.intensity?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>
-    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
-    <Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.reps}</div></Card>
-    {ep.intensity&&<Card style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:22,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.intensity}</div></Card>}
+  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
+    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
+    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.reps}</div></Card>
+    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Tempo</div><div style={{fontSize:14,fontWeight:700,color:C.textMuted}}>{ep.tempo||exercise.tempo||"—"}</div></Card>
+    {ep.intensity&&<Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:20,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.intensity}</div></Card>}
   </div>
   {/* Per-set tracking inputs */}
   <Card style={{padding:12}}>
@@ -1179,7 +1180,7 @@ function LibraryScreen(){
     {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <ExerciseImage exercise={ex} size="thumb"/>
-        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div></div>
+        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div></div>
         <Badge color={ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{ex.safetyTier||"—"}</Badge>
       </div>
       {sel===ex.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>
@@ -1274,7 +1275,7 @@ function QuickModeScreen({workout,onComplete}){
               <span style={{fontSize:18,flexShrink:0}}>{ex.emoji}</span>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600,color:done?C.textDim:C.text,textDecoration:done?"line-through":"none"}}>{ex.name}</div>
-                <div style={{fontSize:10,color:C.textDim}}>{ep2.sets}×{ep2.reps} · {(ex.bodyPart||"").replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>
+                <div style={{fontSize:10,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {(ex.bodyPart||"").replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>
               </div>
               <span style={{color:C.textDim,fontSize:10,transform:isExp?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>
             </div>
