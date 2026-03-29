@@ -1203,8 +1203,8 @@
       "stabilization"
     ],
     "abilityLevel": "any",
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Deltoid_Raise/0.jpg",
-    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Deltoid_Raise/1.jpg",
+    "imageUrl": null,
+    "imageUrl2": null,
     "youtubeVideoId": "ZdAHe9_HeEw",
     "methodology": [
       "cpt"
