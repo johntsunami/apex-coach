@@ -2,8 +2,8 @@ import { useState } from "react";
 import { supabase } from "../utils/supabase.js";
 
 // ═══════════════════════════════════════════════════════════════
-// YouTubePlayer — expandable YouTube embed for exercise demos
-// Shows "Watch Demo" button → expands to responsive 16:9 iframe
+// YouTubePlayer — auto-loading YouTube embed for exercise demos
+// Video loads immediately in responsive 16:9 iframe — no button
 // ═══════════════════════════════════════════════════════════════
 
 function supabaseSave(exerciseId, vid) {
