@@ -222,3 +222,25 @@ export function getPRMessage(exerciseName, newWeight, oldWeight) {
 export function getFirstTimeMessage(exerciseName) {
   return `First time doing ${exerciseName}! Welcome to the club.`;
 }
+
+// ── 16. SMART TIME FORMATTING ──────────────────────────────
+
+export function formatTimeAgo(timestamp) {
+  if (!timestamp) return "";
+  const ms = Date.now() - (typeof timestamp === "number" ? timestamp : new Date(timestamp).getTime());
+  const mins = Math.round(ms / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  const remMins = mins % 60;
+  if (hrs < 2) return remMins > 0 ? `${hrs} hr ${remMins} min ago` : "1 hr ago";
+  if (hrs < 24) return `${hrs} hours ago`;
+  const days = Math.floor(hrs / 24);
+  if (days === 1) return "Yesterday";
+  return `${days} days ago`;
+}
+
+export function formatDuration(startTimestamp) {
+  if (!startTimestamp) return "";
+  return `${Math.round((Date.now() - startTimestamp) / 60000)} min`;
+}
