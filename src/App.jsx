@@ -3,7 +3,7 @@ import exerciseDB from "./data/exercises.json";
 import { getSessions, saveSession, getStats, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capExerciseParams, getVolumeSummary, getTrainingWeek } from "./utils/volumeTracker.js";
 import { getWorkoutOverloads } from "./utils/overload.js";
-import OnboardingFlow, { hasCompletedAssessment, getAssessment } from "./components/Onboarding.jsx";
+import OnboardingFlow, { hasCompletedAssessment, getAssessment, saveAssessment } from "./components/Onboarding.jsx";
 import InjuryManager from "./components/InjuryManager.jsx";
 import AssessmentSummary from "./components/AssessmentSummary.jsx";
 import ExerciseImage from "./components/ExerciseImage.jsx";
@@ -1732,7 +1732,17 @@ function AppInner(){
   useEffect(()=>{
     if(loading&&!devBypass)return;
     if(!user&&!devBypass){setScreen("auth");return;}
-    if(!devBypass&&profile&&!profile.assessment_completed&&!hasCompletedAssessment()){setScreen("onboarding");return;}
+    // Check assessment completion: Supabase is source of truth, localStorage is cache
+    const supabaseCompleted = profile?.assessment_completed === true;
+    const localCompleted = hasCompletedAssessment();
+    if(!devBypass && !supabaseCompleted && !localCompleted){
+      // Neither Supabase nor localStorage has completed assessment → show onboarding
+      setScreen("onboarding");return;
+    }
+    // If Supabase says completed but localStorage is empty → restore from Supabase
+    if(supabaseCompleted && !localCompleted && profile?.assessment_data){
+      try{ saveAssessment(profile.assessment_data); }catch{}
+    }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
   // Check for paused workout on mount

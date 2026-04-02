@@ -164,13 +164,15 @@ export async function saveProtocolsToSupabase(userId, protocols) {
 
 // ── Save assessment clinical data to Supabase ────────────────
 export async function saveAssessmentToSupabase(userId, assessment) {
-  // Update profiles with new clinical fields
+  // Update profiles with clinical fields AND mark assessment as completed
   await supabase.from("profiles").update({
+    assessment_completed: true,
     functional_limitations: assessment.functionalLimitations || {},
     treatment_history: assessment.treatmentHistory || {},
     medications: assessment.medications || [],
     red_flags: assessment.redFlags || [],
     medical_clearance: assessment.redFlagCleared || false,
+    assessment_data: assessment, // Store full assessment for cross-device restore
   }).eq("id", userId);
 
   // Update each condition with pain behavior, directional pref, timeline
