@@ -303,7 +303,7 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 1: CONDITIONS ───────────────────────────── */}
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to unselect.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to deselect. Select all that apply — there is no limit.</div></div>
         <WhyHelper screenNum={1} />
         {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
         {/* Body region cards — large tappable, one region at a time */}
@@ -824,7 +824,7 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 11: GOALS (was 4) ─────────────────────── */}
       {screen === 11 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR GOALS</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select all that apply per muscle group. Multiple goals OK — tap to toggle.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>GOALS FOR YOUR BODY & FITNESS</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>What do you want to achieve? Select goals for each area of your body. This shapes your entire training plan.</div><div style={{ fontSize: 11, color: C.textDim, marginTop: 4, fontStyle: "italic" }}>Tap to select. Tap again to deselect. Select all that apply.</div></div>
         <WhyHelper screenNum={11} />
         {MUSCLE_GROUPS.map(mg => {
           const sel = Array.isArray(goals[mg.id]) ? goals[mg.id] : [];
@@ -923,6 +923,17 @@ export default function OnboardingFlow({ onComplete }) {
       {screen === 12 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TRAINING PREFERENCES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>How do you want to train? We'll build your plan around these choices.</div></div>
         <WhyHelper screenNum={12} />
+        {/* Current strength level self-assessment (Fix #10) */}
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>Current strength level</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This sets your starting exercise difficulty. You can take a detailed fitness test from the Home screen later.</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+            {[{ v: "never", l: "Never trained" }, { v: "beginner", l: "Beginner" }, { v: "some", l: "Some experience" }, { v: "intermediate", l: "Intermediate" }, { v: "advanced", l: "Advanced" }].map(opt => {
+              const sel = prefs.strengthLevel === opt.v;
+              return <button key={opt.v} onClick={() => setPrefs(p => ({ ...p, strengthLevel: opt.v }))} style={{ padding: "7px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", background: sel ? C.teal + "20" : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>{sel ? "✓ " : ""}{opt.l}</button>;
+            })}
+          </div>
+        </Card>
         {/* Days per week */}
         <Card>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Days per week available</div>
@@ -1023,6 +1034,7 @@ export default function OnboardingFlow({ onComplete }) {
             })}
           </div>}
           {prefs.favorites.length > 0 && <div style={{ fontSize: 14, color: C.teal, marginTop: 6 }}>{prefs.favorites.length} exercise{prefs.favorites.length !== 1 ? "s" : ""} favorited</div>}
+          {prefs.favorites.length > 8 && <div style={{ fontSize: 12, color: "#f97316", marginTop: 4, padding: "8px 10px", background: "#f97316" + "10", borderRadius: 8, lineHeight: 1.5 }}>You've selected {prefs.favorites.length} favorites. We'll rotate them through your workouts to maintain balanced muscle development. Not all favorites will appear in every session — this prevents overtraining one area.</div>}
         </Card>
         <Btn onClick={next}>Next — Summary →</Btn>
       </div>}

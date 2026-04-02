@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./AuthProvider.jsx";
 
 // ═══════════════════════════════════════════════════════════════
@@ -57,6 +57,8 @@ export function SignUpScreen({ onBack, onSuccess }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  // Clear all fields on mount to prevent stale data from previous user
+  useEffect(() => { setFirstName(""); setEmail(""); setPassword(""); setError(null); }, []);
 
   const handleSubmit = async () => {
     setError(null);
@@ -102,6 +104,7 @@ export function LogInScreen({ onBack, onForgot, onSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  useEffect(() => { setEmail(""); setPassword(""); setError(null); }, []);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
