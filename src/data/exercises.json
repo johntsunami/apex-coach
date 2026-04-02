@@ -130,7 +130,8 @@
     "youtubeVideoId": "6f2LO5EeB0I",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_it_band",
@@ -263,7 +264,8 @@
     "youtubeVideoId": "asigNf1sh-k",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_adductors",
@@ -397,7 +399,8 @@
     "youtubeVideoId": "Nqol0T6rKDg",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_lats",
@@ -527,7 +530,8 @@
     "youtubeVideoId": "5S2suclGl7o",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_thoracic",
@@ -661,7 +665,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stab_dead_bug",
@@ -796,7 +801,8 @@
     "youtubeVideoId": "bxn9FBrt4-A",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "stab_plank",
@@ -936,7 +942,8 @@
     "youtubeVideoId": "mwlp75MS6Rg",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "stab_side_plank",
@@ -1072,7 +1079,8 @@
     "youtubeVideoId": "44ND4bOB-T0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "stab_bird_dog",
@@ -1208,7 +1216,8 @@
     "youtubeVideoId": "ZdAHe9_HeEw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "stab_mcgill_curl_up",
@@ -1339,7 +1348,8 @@
     "youtubeVideoId": "QFLftqPWjoI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bal_single_leg",
@@ -1474,7 +1484,8 @@
     "youtubeVideoId": "Mo4P9Y_AQt8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "bal_single_leg_reach",
@@ -1611,7 +1622,8 @@
     "youtubeVideoId": "Mo4P9Y_AQt8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bal_bosu_squat",
@@ -1749,7 +1761,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "stab_ball_squat",
@@ -1882,7 +1895,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_glute_bridge",
@@ -2023,7 +2037,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_sl_glute_bridge",
@@ -2157,7 +2172,8 @@
     "youtubeVideoId": "Z3cY3d3BBo4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_db_rdl",
@@ -2308,7 +2324,8 @@
     "youtubeVideoId": "aa57T45iFSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_trap_bar_dl_high",
@@ -2472,7 +2489,8 @@
     "youtubeVideoId": "Z6gcRfPNcZo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_trap_bar_dl_low",
@@ -2630,7 +2648,8 @@
     "youtubeVideoId": "Z6gcRfPNcZo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_wall_push_up",
@@ -2763,7 +2782,8 @@
     "youtubeVideoId": "WDIpL0pjun0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_incline_push_up",
@@ -2899,7 +2919,8 @@
     "youtubeVideoId": "WDIpL0pjun0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_floor_push_up",
@@ -3049,7 +3070,8 @@
     "youtubeVideoId": "WDIpL0pjun0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_landmine_press",
@@ -3200,7 +3222,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_db_floor_press",
@@ -3349,7 +3372,8 @@
     "youtubeVideoId": "4_QuyfOCI5U",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_db_bench_press",
@@ -3501,7 +3525,8 @@
     "youtubeVideoId": "4_QuyfOCI5U",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_band_pull_apart",
@@ -3633,7 +3658,8 @@
     "youtubeVideoId": "qykwviNOIyc",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_chest_supported_row",
@@ -3773,7 +3799,8 @@
     "youtubeVideoId": "DmUX88nWClo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_sa_db_row",
@@ -3919,7 +3946,8 @@
     "youtubeVideoId": "DmUX88nWClo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_cable_row",
@@ -4063,7 +4091,8 @@
     "youtubeVideoId": "k0cTJCfxa0Y",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_inverted_row",
@@ -4212,7 +4241,8 @@
     "youtubeVideoId": "bm0_q9bR_HA",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_bw_squat",
@@ -4353,7 +4383,8 @@
     "youtubeVideoId": "-bJIpOq-LWk",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_goblet_squat",
@@ -4499,7 +4530,8 @@
     "youtubeVideoId": "nfX7IFK9UNI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_bss_bw",
@@ -4641,7 +4673,8 @@
     "youtubeVideoId": "hbw7hdyOpq0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "str_bss_loaded",
@@ -4791,7 +4824,8 @@
     "youtubeVideoId": "hbw7hdyOpq0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "str_front_squat",
@@ -4950,7 +4984,8 @@
     "youtubeVideoId": "-bJIpOq-LWk",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "iso_face_pulls",
@@ -5082,7 +5117,8 @@
     "youtubeVideoId": "eTCBSFlCJ_s",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "iso_band_ext_rotation",
@@ -5212,7 +5248,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "iso_bicep_curl",
@@ -5342,7 +5379,8 @@
     "youtubeVideoId": "pQfJR-sSIvA",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "iso_tricep_pushdown",
@@ -5469,7 +5507,8 @@
     "youtubeVideoId": "vaphPzdnXIg",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "iso_lateral_raise",
@@ -5607,7 +5646,8 @@
     "youtubeVideoId": "XPPfnSEATJA",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "iso_calf_raise",
@@ -5739,7 +5779,8 @@
     "youtubeVideoId": "Xz0PPBZO2xc",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_vmo_wall_sit",
@@ -5871,7 +5912,8 @@
     "youtubeVideoId": "JOe3Z_Zigbc",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "rehab_tke",
@@ -6001,7 +6043,8 @@
     "youtubeVideoId": "xdKm8PSX438",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "core_pallof_kneel",
@@ -6133,7 +6176,8 @@
     "youtubeVideoId": "f3R99GoYvCs",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "core_pallof_stand",
@@ -6266,7 +6310,8 @@
     "youtubeVideoId": "f3R99GoYvCs",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "core_pallof_split",
@@ -6399,7 +6444,8 @@
     "youtubeVideoId": "f3R99GoYvCs",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "core_ab_wheel",
@@ -6541,7 +6587,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "carry_sa_farmer",
@@ -6678,7 +6725,8 @@
     "youtubeVideoId": "YGnS0QVLcyQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "carry_suitcase",
@@ -6816,7 +6864,8 @@
     "youtubeVideoId": "YGnS0QVLcyQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "mck_back_prone_lying",
@@ -6948,7 +6997,8 @@
     "youtubeVideoId": "gsgSaCtYbEE",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_prone_elbows",
@@ -7083,7 +7133,8 @@
     "youtubeVideoId": "lUQiliVYWUo",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_press_up",
@@ -7220,7 +7271,8 @@
     "youtubeVideoId": "tIZppe-RB0g",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_ext_standing",
@@ -7353,7 +7405,8 @@
     "youtubeVideoId": "V7dSoo7fPuc",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_lying_flexion",
@@ -7491,7 +7544,8 @@
     "youtubeVideoId": "TAJuOxWoNNQ",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_sitting_flexion",
@@ -7629,7 +7683,8 @@
     "methodology": [
       "sfs",
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_back_standing_flexion",
@@ -7765,7 +7820,8 @@
     "youtubeVideoId": "LcLy3yKGZwg",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_retraction",
@@ -7895,7 +7951,8 @@
     "youtubeVideoId": "09kHVqOx1Hs",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_extension",
@@ -8029,7 +8086,8 @@
     "youtubeVideoId": "RHLz_FA2-FI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_ret_ext",
@@ -8164,7 +8222,8 @@
     "youtubeVideoId": "RHLz_FA2-FI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_side_bend",
@@ -8298,7 +8357,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_rotation",
@@ -8434,7 +8494,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_flexion",
@@ -8569,7 +8630,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_neck_ret_ext_lying",
@@ -8703,7 +8765,8 @@
     "youtubeVideoId": "RHLz_FA2-FI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_quad_set",
@@ -8833,7 +8896,8 @@
     "youtubeVideoId": "IF5eDfb8afM",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "rehab_slr",
@@ -8966,7 +9030,8 @@
     "youtubeVideoId": "LdAD9GNv8FI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_step_down_low",
@@ -9109,7 +9174,8 @@
     "youtubeVideoId": "rvI7OxBQqS4",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_step_down_high",
@@ -9251,7 +9317,8 @@
     "youtubeVideoId": "rvI7OxBQqS4",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_sl_leg_press",
@@ -9392,7 +9459,8 @@
     "methodology": [
       "sfs",
       "rehab"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "rehab_iso_ext_rotation",
@@ -9522,7 +9590,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "rehab_prone_y",
@@ -9660,7 +9729,8 @@
     "youtubeVideoId": "dBq5Ls96p4A",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_prone_t",
@@ -9796,7 +9866,8 @@
     "youtubeVideoId": "dBq5Ls96p4A",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_prone_w",
@@ -9933,7 +10004,8 @@
     "youtubeVideoId": "VZJ0PHuNrYI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_scap_wall_slides",
@@ -10063,7 +10135,8 @@
     "youtubeVideoId": "r0UosMuvtz4",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "mob_cat_cow",
@@ -10193,7 +10266,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mob_90_90_hip",
@@ -10325,7 +10399,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mob_worlds_greatest",
@@ -10462,7 +10537,8 @@
     "youtubeVideoId": "I0k6AI6md_8",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mob_thoracic_rotation",
@@ -10594,7 +10670,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mob_ankle_dorsiflexion",
@@ -10726,7 +10803,8 @@
     "youtubeVideoId": "sTg3s31OfLE",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mob_shoulder_pass_through",
@@ -10865,7 +10943,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_hamstring",
@@ -10997,7 +11076,8 @@
     "youtubeVideoId": "z73l6oZUniQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_hip_flexor",
@@ -11128,7 +11208,8 @@
     "youtubeVideoId": "UU7Nqd_Dric",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_child_pose",
@@ -11261,7 +11342,8 @@
     "youtubeVideoId": "_ZX_zTOBgp8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_pec_doorway",
@@ -11397,7 +11479,8 @@
     "youtubeVideoId": "2EeBa3dksnw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_upper_trap",
@@ -11529,7 +11612,8 @@
     "youtubeVideoId": "RNTlUaKeuXE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_piriformis",
@@ -11663,7 +11747,8 @@
     "youtubeVideoId": "-g0nuyTHMrI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_quad",
@@ -11796,7 +11881,8 @@
     "youtubeVideoId": "UU7Nqd_Dric",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_cross_body_shoulder",
@@ -11932,7 +12018,8 @@
     "youtubeVideoId": "2EeBa3dksnw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cardio_walking",
@@ -12067,7 +12154,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cardio_incline_treadmill",
@@ -12201,7 +12289,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cardio_bike",
@@ -12333,7 +12422,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "fr_quads",
@@ -12466,7 +12556,8 @@
     "youtubeVideoId": "ERTVBjwgPS4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_hamstrings",
@@ -12599,7 +12690,8 @@
     "youtubeVideoId": "_M29fhv3LoI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_glutes",
@@ -12727,7 +12819,8 @@
     "youtubeVideoId": "XS5hY6vBi6g",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_piriformis",
@@ -12856,7 +12949,8 @@
     "youtubeVideoId": "XS5hY6vBi6g",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_upper_back",
@@ -12988,7 +13082,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_pecs",
@@ -13118,7 +13213,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_tfl",
@@ -13247,7 +13343,8 @@
     "youtubeVideoId": "ddd9IvPn8jI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_peroneals",
@@ -13377,7 +13474,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_biceps_forearms",
@@ -13508,7 +13606,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "fr_feet",
@@ -13637,7 +13736,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_chin_tuck",
@@ -13786,7 +13886,8 @@
     "youtubeVideoId": "09kHVqOx1Hs",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "corr_prone_cobra",
@@ -13940,7 +14041,8 @@
     "youtubeVideoId": "keErJXdp2lE",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "corr_serratus_wall_slide",
@@ -14097,7 +14199,8 @@
     "youtubeVideoId": "r0UosMuvtz4",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_pec_stretch",
@@ -14252,7 +14355,8 @@
     "youtubeVideoId": "2EeBa3dksnw",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_upper_trap_stretch",
@@ -14401,7 +14505,8 @@
     "youtubeVideoId": "RNTlUaKeuXE",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_levator_stretch",
@@ -14549,7 +14654,8 @@
     "youtubeVideoId": "U9tijfMcfP8",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_band_pull_apart_hr",
@@ -14703,7 +14809,8 @@
     "youtubeVideoId": "qykwviNOIyc",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_wall_angel",
@@ -14866,7 +14973,8 @@
     "youtubeVideoId": "JU38DOT4ctk",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_standing_hip_flexor_str",
@@ -15015,7 +15123,8 @@
     "youtubeVideoId": "UU7Nqd_Dric",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_kneeling_hip_flexor_str",
@@ -15168,7 +15277,8 @@
     "youtubeVideoId": "UU7Nqd_Dric",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "corr_supine_pelvic_tilt",
@@ -15320,7 +15430,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "corr_glute_bridge_march",
@@ -15474,7 +15585,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_clamshell",
@@ -15625,7 +15737,8 @@
     "youtubeVideoId": "V_AnVxKPFlY",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_side_lying_hip_abd",
@@ -15776,7 +15889,8 @@
     "youtubeVideoId": "xVSwJhJCsgo",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_monster_walk",
@@ -15931,7 +16045,8 @@
     "youtubeVideoId": "9aLcb5a7390",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "corr_cook_hip_lift",
@@ -16084,7 +16199,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "ces"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_hip_ir_er",
@@ -16235,7 +16351,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_quad_hip_circles",
@@ -16386,7 +16503,8 @@
     "youtubeVideoId": "ccxer2XAv1k",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_hip_ir_stretch",
@@ -16535,7 +16653,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_it_band_stretch",
@@ -16685,7 +16804,8 @@
     "youtubeVideoId": "wzDoSQ8-GWY",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_pigeon_pose",
@@ -16820,7 +16940,8 @@
     "youtubeVideoId": "ComifUu2ECg",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_hip_flexor_march",
@@ -16957,7 +17078,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_fire_hydrant",
@@ -17089,7 +17211,8 @@
     "youtubeVideoId": "3O3G7xn8xmw",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_lateral_band_walk",
@@ -17225,7 +17348,8 @@
     "youtubeVideoId": "M5uxEQH5BUM",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_ankle_alphabet",
@@ -17357,7 +17481,8 @@
     "methodology": [
       "sfs",
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_towel_scrunches",
@@ -17487,7 +17612,8 @@
     "methodology": [
       "sfs",
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_eccentric_calf_drop",
@@ -17621,7 +17747,8 @@
     "youtubeVideoId": "Xz0PPBZO2xc",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_sl_balance_unstable",
@@ -17755,7 +17882,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "rehab_toe_yoga",
@@ -17885,7 +18013,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_tib_ant_raise",
@@ -18015,7 +18144,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_wrist_ext_stretch",
@@ -18148,7 +18278,8 @@
     "youtubeVideoId": "-06PlhD_aXE",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_wrist_flex_stretch",
@@ -18281,7 +18412,8 @@
     "youtubeVideoId": "-06PlhD_aXE",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_eccentric_wrist_ext",
@@ -18415,7 +18547,8 @@
     "youtubeVideoId": "dsaOzSfsM24",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_median_nerve_glide_hand",
@@ -18548,7 +18681,8 @@
     "youtubeVideoId": "yZJ1MfKqByY",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_grip_strengthen",
@@ -18681,7 +18815,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "nerve_sciatic_glide",
@@ -18815,7 +18950,8 @@
     "youtubeVideoId": "yZJ1MfKqByY",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "nerve_femoral_glide",
@@ -18945,7 +19081,8 @@
     "youtubeVideoId": "GC4QSYDSbJQ",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "nerve_ulnar_glide",
@@ -19077,7 +19214,8 @@
     "youtubeVideoId": "UY97v4WxrzI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "nerve_median_glide",
@@ -19209,7 +19347,8 @@
     "youtubeVideoId": "yZJ1MfKqByY",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "williams_pelvic_tilt",
@@ -19344,7 +19483,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "williams_single_knee_chest",
@@ -19480,7 +19620,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "williams_double_knee_chest",
@@ -19618,7 +19759,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "williams_partial_curl",
@@ -19755,7 +19897,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "williams_seated_flexion",
@@ -19893,7 +20036,8 @@
     "methodology": [
       "sfs",
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "bal_sl_eyes_closed",
@@ -20030,7 +20174,8 @@
     "youtubeVideoId": "Mo4P9Y_AQt8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "bal_sl_bosu",
@@ -20164,7 +20309,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "bal_sl_hop_stabilize",
@@ -20310,7 +20456,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bal_tandem_walk",
@@ -20446,7 +20593,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "func_squat_to_stand",
@@ -20590,7 +20738,8 @@
     "youtubeVideoId": "-bJIpOq-LWk",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "func_inchworm",
@@ -20732,7 +20881,8 @@
     "youtubeVideoId": "9XVfXR5kvz8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "func_bear_crawl",
@@ -20874,7 +21024,8 @@
     "youtubeVideoId": "x_9Ztpo_t1I",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "func_turkish_getup",
@@ -21025,7 +21176,8 @@
     "youtubeVideoId": "WradwGWo554",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "func_farmer_carry_bilateral",
@@ -21165,7 +21317,8 @@
     "youtubeVideoId": "YGnS0QVLcyQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "stretch_lat",
@@ -21295,7 +21448,8 @@
     "youtubeVideoId": "z73l6oZUniQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_adductor",
@@ -21429,7 +21583,8 @@
     "youtubeVideoId": "5vbljPADsAo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_glute",
@@ -21561,7 +21716,8 @@
     "youtubeVideoId": "-g0nuyTHMrI",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_chest_behind_back",
@@ -21695,7 +21851,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_anterior_shoulder",
@@ -21828,7 +21985,8 @@
     "youtubeVideoId": "2EeBa3dksnw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_wrist_flexor",
@@ -21958,7 +22116,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_neck_side_bend",
@@ -22089,7 +22248,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "stretch_standing_calf",
@@ -22222,7 +22382,8 @@
     "youtubeVideoId": "URK3EXjTUP4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "breath_diaphragmatic",
@@ -22354,7 +22515,8 @@
     "youtubeVideoId": "ZQ-wBehR6Xw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "breath_box",
@@ -22483,7 +22645,8 @@
     "youtubeVideoId": "ZQ-wBehR6Xw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "breath_crocodile",
@@ -22612,7 +22775,8 @@
     "youtubeVideoId": "ZQ-wBehR6Xw",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "breath_physiological_sigh",
@@ -22739,7 +22903,8 @@
     "youtubeVideoId": "kSZKIupBUuc",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "seated_chest_press",
@@ -22873,7 +23038,8 @@
     "youtubeVideoId": "lRo9zZ7EwpM",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_shoulder_press",
@@ -23017,7 +23183,8 @@
     "youtubeVideoId": "MMjBnEBnZKM",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "seated_lateral_raise",
@@ -23154,7 +23321,8 @@
     "youtubeVideoId": "XPPfnSEATJA",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "seated_row",
@@ -23287,7 +23455,8 @@
     "youtubeVideoId": "k0cTJCfxa0Y",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_bicep_curl",
@@ -23418,7 +23587,8 @@
     "youtubeVideoId": "0dT4L6Lsi80",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "seated_tricep_ext",
@@ -23552,7 +23722,8 @@
     "youtubeVideoId": "vaphPzdnXIg",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "seated_band_pull_apart",
@@ -23683,7 +23854,8 @@
     "youtubeVideoId": "qykwviNOIyc",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_trunk_rotation",
@@ -23819,7 +23991,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_punches",
@@ -23954,7 +24127,8 @@
     "youtubeVideoId": "lRo9zZ7EwpM",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "seated_chair_dips",
@@ -24096,7 +24270,8 @@
     "youtubeVideoId": "WVeZDBhZwLA",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_crunch",
@@ -24229,7 +24404,8 @@
     "youtubeVideoId": "QFLftqPWjoI",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_oblique_twist",
@@ -24367,7 +24543,8 @@
     "youtubeVideoId": "QFLftqPWjoI",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_leg_ext",
@@ -24495,7 +24672,8 @@
     "youtubeVideoId": "G5iP_YcDQdE",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_marching",
@@ -24626,7 +24804,8 @@
     "youtubeVideoId": "hK21mcqjsL0",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "seated_heel_slides",
@@ -24754,7 +24933,8 @@
     "youtubeVideoId": "XJI-HRJ-gXw",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_ankle_pumps",
@@ -24886,7 +25066,8 @@
     "youtubeVideoId": "F0bY97hdCJU",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_hip_abd",
@@ -25018,7 +25199,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "seated_captains_lift",
@@ -25158,7 +25340,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bed_ankle_pumps",
@@ -25287,7 +25470,8 @@
     "youtubeVideoId": "F0bY97hdCJU",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bed_heel_slides",
@@ -25417,7 +25601,8 @@
     "youtubeVideoId": "XJI-HRJ-gXw",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bed_pelvic_tilt",
@@ -25546,7 +25731,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "bed_hip_abd_add",
@@ -25677,7 +25863,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bed_shoulder_flexion",
@@ -25808,7 +25995,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "bed_diaphragmatic",
@@ -25936,7 +26124,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "bed_neck_rotation",
@@ -26068,7 +26257,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "bed_glute_set",
@@ -26197,7 +26387,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "aqua_walking",
@@ -26330,7 +26521,8 @@
     "youtubeVideoId": "ZgxniVfKT4I",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "aqua_wall_pushup",
@@ -26461,7 +26653,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "aqua_jogging",
@@ -26597,7 +26790,8 @@
     "youtubeVideoId": "0E5QDpble1I",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "aqua_flutter_kicks",
@@ -26728,7 +26922,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "aqua_arm_circles",
@@ -26857,7 +27052,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "aqua_squat",
@@ -26991,7 +27187,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "kb_goblet_squat",
@@ -27137,7 +27334,8 @@
     "youtubeVideoId": "-TeEMXoHQPM",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_deadlift",
@@ -27288,7 +27486,8 @@
     "youtubeVideoId": "LnIMaf-XOpM",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_swing",
@@ -27437,7 +27636,8 @@
     "youtubeVideoId": "YGnS0QVLcyQ",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_turkish_getup",
@@ -27587,7 +27787,8 @@
     "youtubeVideoId": "WradwGWo554",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_sa_press",
@@ -27730,7 +27931,8 @@
     "youtubeVideoId": "X-uFqWtjpGI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_row",
@@ -27868,7 +28070,8 @@
     "youtubeVideoId": "NNTpBlHRcA4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "kb_halo",
@@ -28007,7 +28210,8 @@
     "youtubeVideoId": "WtqAD5-Re18",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "kb_farmer_carry",
@@ -28145,7 +28349,8 @@
     "youtubeVideoId": "IA2tycCS8DI",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "trx_row",
@@ -28282,7 +28487,8 @@
     "youtubeVideoId": "DmUX88nWClo",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_pushup",
@@ -28421,7 +28627,8 @@
     "youtubeVideoId": "WDIpL0pjun0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_squat",
@@ -28555,7 +28762,8 @@
     "youtubeVideoId": "-bJIpOq-LWk",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_lunge",
@@ -28697,7 +28905,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_pike",
@@ -28837,7 +29046,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_y_raise",
@@ -28975,7 +29185,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_hamstring_curl",
@@ -29107,7 +29318,8 @@
     "youtubeVideoId": "G5iP_YcDQdE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "trx_face_pull",
@@ -29241,7 +29453,8 @@
     "youtubeVideoId": "eTCBSFlCJ_s",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_overhead_press",
@@ -29384,7 +29597,8 @@
     "youtubeVideoId": "MMjBnEBnZKM",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_squat",
@@ -29523,7 +29737,8 @@
     "youtubeVideoId": "fQFhDLUdL3Y",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_deadlift",
@@ -29666,7 +29881,8 @@
     "youtubeVideoId": "aa57T45iFSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_chest_press",
@@ -29802,7 +30018,8 @@
     "youtubeVideoId": "_x5m-s8xTf0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_lat_pulldown",
@@ -29944,7 +30161,8 @@
     "youtubeVideoId": "B_VkNQS5YLs",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_tricep_pushdown",
@@ -30075,7 +30293,8 @@
     "youtubeVideoId": "vaphPzdnXIg",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_hamstring_curl",
@@ -30205,7 +30424,8 @@
     "youtubeVideoId": "G5iP_YcDQdE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "band_hip_thrust",
@@ -30337,7 +30557,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "iso_wall_push",
@@ -30470,7 +30691,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "iso_squat_hold",
@@ -30605,7 +30827,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "iso_row_hold",
@@ -30738,7 +30961,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "iso_plank_variations",
@@ -30875,7 +31099,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "iso_shoulder_abd",
@@ -31005,7 +31230,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "iso_hip_adduction",
@@ -31137,7 +31363,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "dyn_leg_swings",
@@ -31270,7 +31497,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "dyn_arm_circles",
@@ -31400,7 +31628,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "dyn_walking_lunges",
@@ -31541,7 +31770,8 @@
     "youtubeVideoId": "UInwcEa5BH4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "dyn_high_knees",
@@ -31679,7 +31909,8 @@
     "youtubeVideoId": "hK21mcqjsL0",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "dyn_butt_kicks",
@@ -31817,7 +32048,8 @@
     "youtubeVideoId": "lKhZvT_NkOs",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "dyn_lateral_shuffle",
@@ -31953,7 +32185,8 @@
     "youtubeVideoId": "M5uxEQH5BUM",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "dyn_carioca",
@@ -32090,7 +32323,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "dyn_toy_soldiers",
@@ -32228,7 +32462,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "agil_ladder_quick_feet",
@@ -32364,7 +32599,8 @@
     "youtubeVideoId": "9ZTRUVLjGzI",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "agil_cone_shuffle",
@@ -32498,7 +32734,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "agil_box_drill",
@@ -32632,7 +32869,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "agil_reaction_ball",
@@ -32765,7 +33003,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "agil_sl_hop_stick",
@@ -32908,7 +33147,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "agil_t_drill",
@@ -33043,7 +33283,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "grip_plate_pinch",
@@ -33175,7 +33416,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "grip_dead_hang",
@@ -33316,7 +33558,8 @@
     "youtubeVideoId": "ShkBXOGK7A8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "grip_wrist_roller",
@@ -33448,7 +33691,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "grip_rice_bucket",
@@ -33580,7 +33824,8 @@
     "youtubeVideoId": "AdlJHaImdtU",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_gentle_water_walk",
@@ -33713,7 +33958,8 @@
     "youtubeVideoId": "ZgxniVfKT4I",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_restorative_yoga",
@@ -33844,7 +34090,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cond_pmr",
@@ -33971,7 +34218,8 @@
     "youtubeVideoId": "ihO02wUzgkc",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cond_big_step_walk",
@@ -34108,7 +34356,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_dual_task_walk",
@@ -34245,7 +34494,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_boxing_drills",
@@ -34386,7 +34636,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_affected_arm_rom",
@@ -34521,7 +34772,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cond_bilateral_arm",
@@ -34661,7 +34913,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_sit_to_stand",
@@ -34797,7 +35050,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_pursed_lip",
@@ -34928,7 +35182,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cond_ub_ergometer",
@@ -35071,7 +35326,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_post_meal_walk",
@@ -35208,7 +35464,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_circuit_training",
@@ -35350,7 +35607,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "cond_modified_plank",
@@ -35484,7 +35742,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "cond_kegels",
@@ -35614,7 +35873,8 @@
     "youtubeVideoId": "NKl8ImI3OVE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_clamshell_preg",
@@ -35746,7 +36006,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "cond_joint_rom_cycling",
@@ -35882,7 +36143,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "cond_iso_quad_set",
@@ -36012,7 +36274,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "yoga_seated_cat_cow",
@@ -36146,7 +36409,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "yoga_seated_forward_fold",
@@ -36284,7 +36548,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "yoga_seated_spinal_twist",
@@ -36420,7 +36685,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "yoga_seated_eagle_arms",
@@ -36560,7 +36826,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "pf_kegel_holds",
@@ -36690,7 +36957,8 @@
     "youtubeVideoId": "NKl8ImI3OVE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "pf_quick_flicks",
@@ -36820,7 +37088,8 @@
     "youtubeVideoId": "RbwyfEj-Oy4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pf_diaphragm_coord",
@@ -36954,7 +37223,8 @@
     "youtubeVideoId": "NKl8ImI3OVE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "tmj_jaw_opening",
@@ -37087,7 +37357,8 @@
     "youtubeVideoId": "SbJZXG4fsd4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "tmj_lateral_slides",
@@ -37219,7 +37490,8 @@
     "youtubeVideoId": "lHcXJddxCd8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "tmj_resisted_opening",
@@ -37354,7 +37626,8 @@
     "youtubeVideoId": "SbJZXG4fsd4",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_power_clean",
@@ -37520,7 +37793,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "sport_box_jump",
@@ -37686,7 +37960,8 @@
     "youtubeVideoId": "kNIInK_Le8I",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_med_ball_slam",
@@ -37849,7 +38124,8 @@
     "youtubeVideoId": "6Uuxb4h2N5I",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_med_ball_rot_throw",
@@ -38008,7 +38284,8 @@
     "youtubeVideoId": "6Uuxb4h2N5I",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_sled_push",
@@ -38158,7 +38435,8 @@
     "youtubeVideoId": "yd26RWY5jyQ",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_battle_ropes",
@@ -38321,7 +38599,8 @@
     "youtubeVideoId": "JusqXDMg1Xk",
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "sport_sled_pull",
@@ -38475,7 +38754,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "pes"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "sport_barbell_hip_thrust",
@@ -38634,7 +38914,8 @@
     "youtubeVideoId": "x5RP_0b_QgE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "outdoor_bench_stepup",
@@ -38774,7 +39055,8 @@
     "youtubeVideoId": "URHdW9js6DM",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "outdoor_bench_pushup",
@@ -38909,7 +39191,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "outdoor_bench_dips",
@@ -39059,7 +39342,8 @@
     "youtubeVideoId": "WVeZDBhZwLA",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "outdoor_hill_sprints",
@@ -39221,7 +39505,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "outdoor_trail_walking",
@@ -39357,7 +39642,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "cardio"
   },
   {
     "id": "outdoor_playground_pullup",
@@ -39512,7 +39798,8 @@
     "youtubeVideoId": "9yVGh3XbJ34",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_pendulum_swing",
@@ -39642,7 +39929,8 @@
     "youtubeVideoId": "QF_ubbr_RUE",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_scapular_clock",
@@ -39778,7 +40066,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "id": "rehab_chin_tuck_band",
@@ -39911,7 +40200,8 @@
     "youtubeVideoId": "09kHVqOx1Hs",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_cervical_snag",
@@ -40047,7 +40337,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "mck_prone_press_exhale",
@@ -40183,7 +40474,8 @@
     "youtubeVideoId": "tIZppe-RB0g",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_hooklying_march",
@@ -40319,7 +40611,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_pelvic_clock",
@@ -40455,7 +40748,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_tall_kneeling_balance",
@@ -40592,7 +40886,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_eccentric_decline_squat",
@@ -40738,7 +41033,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_spanish_squat",
@@ -40883,7 +41179,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "rehab_serratus_punch",
@@ -41016,7 +41313,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "weighted"
   },
   {
     "id": "rehab_thoracic_ext_roller",
@@ -41148,7 +41446,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "rehab_standing_hip_march",
@@ -41286,7 +41585,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "bodyweight_reps"
   },
   {
     "category": "rehab",
@@ -41416,7 +41716,8 @@
     "youtubeVideoId": "QF_ubbr_RUE",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -41545,7 +41846,8 @@
     "youtubeVideoId": "V7-M7UONtwI",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -41675,7 +41977,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -41804,7 +42107,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -41935,7 +42239,8 @@
     "youtubeVideoId": "-YFWrYkJVBs",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "rehab",
@@ -42063,7 +42368,8 @@
     "youtubeVideoId": "-YFWrYkJVBs",
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "rehab",
@@ -42195,7 +42501,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42325,7 +42632,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42449,7 +42757,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42575,7 +42884,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42702,7 +43012,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42829,7 +43140,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -42957,7 +43269,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43087,7 +43400,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43214,7 +43528,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43342,7 +43657,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43470,7 +43786,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43598,7 +43915,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "rehab",
@@ -43725,7 +44043,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -43853,7 +44172,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "rehab",
@@ -43983,7 +44303,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44111,7 +44432,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44237,7 +44559,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "rehab",
@@ -44363,7 +44686,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44491,7 +44815,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44619,7 +44944,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44748,7 +45074,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "rehab",
@@ -44878,7 +45205,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "rehab"
-    ]
+    ],
+    "trackingType": "timed"
   },
   {
     "category": "cooldown",
@@ -45003,7 +45331,8 @@
     "youtubeVideoId": "_ZX_zTOBgp8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45127,7 +45456,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45252,7 +45582,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45375,7 +45706,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45498,7 +45830,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45622,7 +45955,8 @@
     "youtubeVideoId": "SKOMwg1JLrU",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45745,7 +46079,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45868,7 +46203,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -45991,7 +46327,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46115,7 +46452,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46240,7 +46578,8 @@
     "youtubeVideoId": "-atwUG73zSE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46365,7 +46704,8 @@
     "youtubeVideoId": "tFnsJW9L5b8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46490,7 +46830,8 @@
     "youtubeVideoId": "tFnsJW9L5b8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46615,7 +46956,8 @@
     "youtubeVideoId": "tFnsJW9L5b8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46741,7 +47083,8 @@
     "youtubeVideoId": "ComifUu2ECg",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46864,7 +47207,8 @@
     "youtubeVideoId": "UU7Nqd_Dric",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -46987,7 +47331,8 @@
     "youtubeVideoId": "keErJXdp2lE",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47112,7 +47457,8 @@
     "youtubeVideoId": "tFnsJW9L5b8",
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47246,7 +47592,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47380,7 +47727,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47509,7 +47857,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47633,7 +47982,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "category": "cooldown",
@@ -47757,7 +48107,8 @@
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
-    ]
+    ],
+    "trackingType": "none"
   },
   {
     "id": "pes_depth_jump",
@@ -47890,7 +48241,8 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Depth_Jump_Leap/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Depth_Jump_Leap/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_lateral_bound",
@@ -48034,7 +48386,8 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lateral_Bound/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lateral_Bound/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_sprint_interval",
@@ -48178,7 +48531,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "cardio"
   },
   {
     "id": "pes_shuttle_run",
@@ -48320,7 +48674,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_agil_in_out",
@@ -48470,7 +48825,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_agil_lateral",
@@ -48620,7 +48976,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_agil_icky",
@@ -48762,7 +49119,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_agil_crossover",
@@ -48904,7 +49262,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_cone_5_10_5",
@@ -49046,7 +49405,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_cone_l_drill",
@@ -49188,7 +49548,8 @@
     "abilityLevel": "standing",
     "imageUrl": null,
     "imageUrl2": null,
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_med_ball_overhead",
@@ -49330,7 +49691,8 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Two-Arm_Overhead_Throw/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Two-Arm_Overhead_Throw/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   },
   {
     "id": "pes_squat_jump",
@@ -49474,6 +49836,7 @@
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Freehand_Jump_Squat/0.jpg",
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Freehand_Jump_Squat/1.jpg",
-    "youtubeVideoId": null
+    "youtubeVideoId": null,
+    "trackingType": "bodyweight_reps"
   }
 ]

@@ -1138,13 +1138,20 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
 
 // ── EXERCISE SCREEN ─────────────────────────────────────────────
 function ExerciseScreen({exercise,index,total,phase,onDone,onSub,onBack,onEndEarly,onPause}){const ep=exParams(exercise);const em=exMuscles(exercise);const[timerOn,setTimerOn]=useState(false);const[tl,setTl]=useState(ep.rest||0);const[resting,setResting]=useState(false);const[cs,setCs]=useState(1);const[exp,setExp]=useState("steps");const[canUndo,setCanUndo]=useState(false);const tr=useRef(null);
-// Determine tracking mode from exercise data
+// Determine tracking mode — use trackingType from DB, fallback to detection
 const WEIGHTED_EQ=new Set(["dumbbell","barbell","trap_bar","cable","kettlebell","machine","plate","ez_bar","weighted"]);
 const exMode=(()=>{
+  // Prefer trackingType field from exercises.json
+  if(exercise.trackingType==="none")return"none";
+  if(exercise.trackingType==="timed")return"timed";
+  if(exercise.trackingType==="cardio")return"cardio";
+  if(exercise.trackingType==="weighted")return"weighted";
+  if(exercise.trackingType==="bodyweight_reps")return"bodyweight";
+  // Fallback detection for exercises without trackingType (e.g. dynamic cardio exercises)
   const cat=exercise.category||"";const typ=exercise.type||"";const eq=exercise.equipmentRequired||[];
-  if(cat==="foam_roll"||cat==="cooldown"||typ==="foam_roll"||typ==="static_stretch"||typ==="mobility"||cat==="mobility")return"mobility";
+  if(cat==="foam_roll"||cat==="cooldown"||cat==="mobility"||typ==="foam_roll"||typ==="static_stretch"||typ==="mobility"||typ==="breathing")return"none";
   if(cat==="cardio"||typ==="cardio")return"cardio";
-  if(typ==="isometric"||typ==="breathing"||(ep.reps||"").toString().toLowerCase().includes("s"))return"timed";
+  if(typ==="isometric")return"timed";
   if(eq.some(e=>WEIGHTED_EQ.has(e)))return"weighted";
   return"bodyweight";
 })();
@@ -1179,14 +1186,8 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   {/* Step-by-step instructions — shown immediately after sets/reps */}
   <Card style={{padding:14,borderLeft:`3px solid ${C.info}`}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>📋 STEP-BY-STEP</div>{exercise.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:10,padding:"6px 0",borderBottom:i<exercise.steps.length-1?`1px solid ${C.border}`:"none"}}><div style={{minWidth:22,height:22,borderRadius:"50%",background:C.infoGlow,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:C.info,flexShrink:0}}>{i+1}</div><p style={{fontSize:13,color:C.text,lineHeight:1.6,margin:0}}>{s}</p></div>))}</Card>
   {/* Per-set tracking inputs — context-aware by exercise type */}
-  <Card style={{padding:12}}>
-    <div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:1.5,marginBottom:8}}>{exMode==="mobility"?"TRACKING":exMode==="cardio"?"CARDIO TRACKING":`SET ${cs} TRACKING`}</div>
-
-    {/* MOBILITY/STRETCH: duration + completed */}
-    {exMode==="mobility"&&<div>
-      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (seconds)</div>
-      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><button onClick={()=>setCurReps(r=>Math.max(5,r-5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:40,textAlign:"center"}}>{curReps}s</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
-    </div>}
+  {exMode!=="none"&&<Card style={{padding:12}}>
+    <div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:1.5,marginBottom:8}}>{exMode==="cardio"?"CARDIO TRACKING":`SET ${cs} TRACKING`}</div>
 
     {/* TIMED: duration + effort */}
     {exMode==="timed"&&<div>
@@ -1224,8 +1225,8 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     </div>}
 
     {/* Set history */}
-    {setLog.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:6}}>{setLog.map(s=><div key={s.set_number} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>Set {s.set_number}: {exMode==="timed"||exMode==="mobility"?`${s.reps_done}s`:exMode==="cardio"?`${s.reps_done} min`:`${s.reps_done} reps`}{s.load?exMode==="cardio"?` · ${s.load} mi`:` × ${s.load} lbs`:""}{s.rpe?` — RPE ${s.rpe}`:""} {s.pain?"⚠️":"✅"}</div>)}</div>}
-  </Card>
+    {setLog.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:6}}>{setLog.map(s=><div key={s.set_number} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>Set {s.set_number}: {exMode==="timed"?`${s.reps_done}s`:exMode==="cardio"?`${s.reps_done} min`:`${s.reps_done} reps`}{s.load?exMode==="cardio"?` · ${s.load} mi`:` × ${s.load} lbs`:""}{s.rpe?` — RPE ${s.rpe}`:""} {s.pain?"⚠️":"✅"}</div>)}</div>}
+  </Card>}
   {/* Breathing — directly after steps (part of instruction flow) */}
   {exercise.breathing&&<Card style={{background:C.bgGlass,padding:12}}><div style={{fontSize:10,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🫁 BREATHING PATTERN</div><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:exercise.breathing.inhale,c:C.info},...(exercise.breathing.hold&&exercise.breathing.hold!=="0"?[{l:"Hold",v:exercise.breathing.hold,c:C.warning}]:[]),{l:"Out",v:exercise.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:22,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}{String(b.v).match(/^\d+$/)?'s':''}</div><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div>{exercise.breathing.pattern&&<div style={{fontSize:10,color:C.textMuted,textAlign:"center",marginTop:4,fontStyle:"italic"}}>{exercise.breathing.pattern}</div>}</Card>}
   {/* Why this exercise — after breathing */}
@@ -1243,7 +1244,7 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   {/* Muscles + equipment + tempo — bottom metadata */}
   <div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:10,padding:"8px 12px"}}><div style={{display:"flex",flexWrap:"wrap",gap:3,marginBottom:4}}>{em.primary.map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.teal+"12",padding:"2px 6px",borderRadius:4,fontWeight:600}}>{m}</span>)}{em.secondary.map(m=><span key={m} style={{fontSize:8,color:C.textDim,background:C.bgGlass,padding:"2px 6px",borderRadius:4}}>{m}</span>)}</div><div style={{fontSize:9,color:C.textDim}}>🔧 {(exercise.equipmentRequired||[exercise.equipment]).join(", ")} · ⏱️ {ep.tempo||exercise.tempo||""}</div></div>
   {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>{getRestTimerMessage(tl,ep.rest)||"REST — HYDRATE 💧"}</div><div style={{fontSize:48,fontWeight:800,color:tl<=10?C.teal:C.text,fontFamily:"'Bebas Neue',sans-serif",transition:"color 0.3s"}}>{fmt(tl)}</div><ProgressBar value={tl} max={ep.rest} color={tl<=10?C.teal:C.info} height={4}/><div style={{fontSize:10,color:C.textDim,marginTop:8,minHeight:16,fontStyle:"italic"}}>{getRestTip()}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
-  {!resting&&<div style={{display:"flex",flexDirection:"column",gap:6,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}><div style={{display:"grid",gridTemplateColumns:canUndo?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>{canUndo&&<Btn variant="ghost" onClick={undoSet} size="sm" icon="↩">Undo</Btn>}<Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Swap</Btn></div></div>}
+  {!resting&&<div style={{display:"flex",flexDirection:"column",gap:6,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}>{exMode==="none"?<div style={{display:"grid",gridTemplateColumns:"3fr 1fr",gap:8}}><Btn onClick={()=>onDone({sets:[{set_number:1,reps_done:1,load:null,rpe:null,pain:false,quality:"good"}]})} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>COMPLETE</Btn><Btn variant="dark" onClick={onSub} icon="🔄" size="sm">Swap</Btn></div>:<div style={{display:"grid",gridTemplateColumns:canUndo?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>{canUndo&&<Btn variant="ghost" onClick={undoSet} size="sm" icon="↩">Undo</Btn>}<Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Swap</Btn></div>}</div>}
   <div style={{height:90}}/>
 </div>);}
 
