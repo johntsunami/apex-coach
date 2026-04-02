@@ -25013,8 +25013,8 @@
       "wheelchair_accessible"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/1.jpg",
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
@@ -25153,8 +25153,8 @@
       "advanced"
     ],
     "abilityLevel": "wheelchair_accessible",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Hip_Raise_On_Parallel_Bars/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Hip_Raise_On_Parallel_Bars/1.jpg",
     "youtubeVideoId": null,
     "methodology": [
       "sfs"
@@ -28692,8 +28692,8 @@
       "instability"
     ],
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Split_Squat/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Split_Squat/1.jpg",
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -28832,8 +28832,8 @@
       "anti_extension"
     ],
     "abilityLevel": "any",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Pike/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Pike/1.jpg",
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -33170,8 +33170,8 @@
       "phase2"
     ],
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plate_Pinch/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plate_Pinch/1.jpg",
     "youtubeVideoId": null,
     "methodology": [
       "cpt"
@@ -47888,8 +47888,8 @@
     "source": "NASM PES Methodology",
     "lastReviewed": "2026-03-29",
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Depth_Jump_Leap/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Depth_Jump_Leap/1.jpg",
     "youtubeVideoId": null
   },
   {
@@ -48032,8 +48032,8 @@
     "source": "NASM PES Methodology",
     "lastReviewed": "2026-03-29",
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lateral_Bound/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lateral_Bound/1.jpg",
     "youtubeVideoId": null
   },
   {
@@ -49328,8 +49328,8 @@
     "source": "NASM PES Methodology",
     "lastReviewed": "2026-03-29",
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Two-Arm_Overhead_Throw/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Two-Arm_Overhead_Throw/1.jpg",
     "youtubeVideoId": null
   },
   {
@@ -49472,8 +49472,8 @@
     "source": "NASM PES Methodology",
     "lastReviewed": "2026-03-29",
     "abilityLevel": "standing",
-    "imageUrl": null,
-    "imageUrl2": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Freehand_Jump_Squat/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Freehand_Jump_Squat/1.jpg",
     "youtubeVideoId": null
   }
 ]
