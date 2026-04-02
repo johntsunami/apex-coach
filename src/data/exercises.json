@@ -3526,7 +3526,8 @@
     "methodology": [
       "cpt"
     ],
-    "trackingType": "weighted"
+    "trackingType": "weighted",
+    "phase2_superset_pair": "stab_ball_chest_press"
   },
   {
     "id": "str_band_pull_apart",
@@ -4531,7 +4532,8 @@
     "methodology": [
       "cpt"
     ],
-    "trackingType": "weighted"
+    "trackingType": "weighted",
+    "phase2_superset_pair": "sl_squat_box"
   },
   {
     "id": "str_bss_bw",
@@ -30162,7 +30164,8 @@
     "methodology": [
       "cpt"
     ],
-    "trackingType": "bodyweight_reps"
+    "trackingType": "bodyweight_reps",
+    "phase2_superset_pair": "stab_ball_row"
   },
   {
     "id": "band_tricep_pushdown",
@@ -49838,5 +49841,4493 @@
     "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Freehand_Jump_Squat/1.jpg",
     "youtubeVideoId": null,
     "trackingType": "bodyweight_reps"
+  },
+  {
+    "id": "stab_ball_chest_press",
+    "name": "Stability Ball Dumbbell Chest Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Pectoralis Major",
+      "Anterior Deltoid"
+    ],
+    "secondaryMuscles": [
+      "Triceps",
+      "TVA",
+      "Rectus Abdominis"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball",
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 4
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Sit on ball, walk feet forward until upper back/shoulders rest on ball",
+      "Hips up, forming bridge — core engaged throughout",
+      "Hold dumbbells at chest height, press up",
+      "Lower slowly (4 sec), pause (2 sec), press up (1 sec)"
+    ],
+    "formCues": [
+      "Hips level with shoulders — don't let them drop",
+      "Core braced — the ball creates instability demand",
+      "Control the dumbbells — don't let them drift"
+    ],
+    "commonMistakes": [
+      "Hips sagging below shoulder line",
+      "Rushing the tempo — use 4/2/1",
+      "Ball positioned too high (neck on ball instead of shoulders)"
+    ],
+    "coreBracing": "HIGH — 30-40% brace to maintain bridge on ball.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Combines chest pressing with core stabilization. The unstable surface recruits deep core muscles that a flat bench doesn't challenge.",
+    "whyForYou": "",
+    "proTip": "Start lighter than your normal bench press — the stability demand reduces pressing strength ~20%.",
+    "tags": [
+      "stability_ball",
+      "chest",
+      "push",
+      "nasm_phase1",
+      "core_demand"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_pushup",
+    "name": "Stability Ball Push-Up",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Pectoralis Major",
+      "Anterior Deltoid",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3,
+        "wrist": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Place hands on sides of stability ball",
+      "Walk feet back to plank position",
+      "Lower chest toward ball with control",
+      "Press back up maintaining plank"
+    ],
+    "formCues": [
+      "Squeeze the ball — activates stabilizers",
+      "Body in straight line from head to heels",
+      "Elbows at 45 degrees, not flared"
+    ],
+    "commonMistakes": [
+      "Hands too far forward on ball",
+      "Hips sagging or piking",
+      "Bouncing off the ball"
+    ],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "The unstable surface forces shoulder stabilizers and core to work harder than floor push-ups.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "push",
+      "bodyweight",
+      "nasm_phase1",
+      "shoulder_stability"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_row",
+    "name": "Stability Ball Dumbbell Row",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Latissimus Dorsi",
+      "Rhomboids"
+    ],
+    "secondaryMuscles": [
+      "Biceps",
+      "TVA",
+      "Erector Spinae"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball",
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Lie chest-down on stability ball, feet wide for balance",
+      "Hold dumbbells hanging below shoulders",
+      "Pull dumbbells up toward ribs, squeeze shoulder blades",
+      "Lower with control (4 sec)"
+    ],
+    "formCues": [
+      "Chest stays on ball — don't lift torso",
+      "Retract shoulder blades at top",
+      "Feet wide for stability base"
+    ],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Anti-extension core demand combined with rowing pattern. NASM Phase 1 stability pull.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "pull",
+      "back",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_back_ext",
+    "name": "Stability Ball Back Extension",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Erector Spinae",
+      "Multifidus"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 2,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Lie face-down over ball, hips at ball apex",
+      "Feet anchored against wall or heavy object",
+      "Hands behind head or across chest",
+      "Extend spine upward, hold 2 seconds, lower slowly"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Safe spinal extension strengthening with core demand from ball instability.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "back_extension",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_ham_curl",
+    "name": "Stability Ball Hamstring Curl",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Calves"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 3,
+        "lower_back": 4
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": "str_leg_curl",
+    "emoji": "🏐",
+    "steps": [
+      "Lie on back, place heels on top of stability ball",
+      "Bridge hips up — straight line from shoulders to heels",
+      "Curl ball toward glutes by bending knees",
+      "Extend legs back out with control"
+    ],
+    "formCues": [
+      "Hips stay elevated throughout",
+      "Squeeze glutes at top of bridge",
+      "Don't let ball drift side to side"
+    ],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Hamstring strengthening with massive core stabilization demand. NASM Phase 1 staple.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "hamstrings",
+      "hinge",
+      "nasm_phase1",
+      "core_demand"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_russian_twist",
+    "name": "Stability Ball Russian Twist",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "Obliques",
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Sit on ball, walk feet forward until shoulders rest on ball",
+      "Bridge hips up, arms extended straight up toward ceiling",
+      "Rotate torso to one side — arms stay straight, ball rolls under shoulders",
+      "Return to center, rotate opposite side"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Rotational core with unstable base. Progress by holding a dumbbell or medicine ball.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "rotation",
+      "core",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_plank",
+    "name": "Stability Ball Plank",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "TVA",
+      "Rectus Abdominis",
+      "Obliques"
+    ],
+    "secondaryMuscles": [
+      "Shoulders",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "timed",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "20-30s",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "30-45s",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "45-60s",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Place forearms on stability ball",
+      "Walk feet back to plank position",
+      "Hold — body straight from head to heels",
+      "Focus on not letting ball drift"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Harder than floor plank — the ball adds instability that fires deep core stabilizers.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "plank",
+      "core",
+      "nasm_phase1",
+      "anti_extension"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_ytw",
+    "name": "Stability Ball Y-T-W Raises",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Lower Trapezius",
+      "Rhomboids",
+      "Rear Deltoid"
+    ],
+    "secondaryMuscles": [
+      "Rotator Cuff",
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 2,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Lie chest-down on stability ball",
+      "Y: raise arms overhead in Y shape, thumbs up — hold 2s",
+      "T: raise arms out to sides in T shape — hold 2s",
+      "W: bend elbows, pull into W shape, squeeze shoulder blades — hold 2s"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Scapular stabilizer strengthening in all 3 positions. Essential for shoulder health.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "shoulders",
+      "scapular",
+      "nasm_phase1",
+      "posture"
+    ],
+    "methodology": [
+      "cpt",
+      "ces"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_fly",
+    "name": "Stability Ball Dumbbell Fly",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Pectoralis Major"
+    ],
+    "secondaryMuscles": [
+      "Anterior Deltoid",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball",
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Bridge on ball as for chest press",
+      "Hold dumbbells above chest, slight elbow bend",
+      "Lower arms out to sides in arc (4 sec)",
+      "Bring back together, squeezing chest"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Chest isolation with stability ball core demand. Stretched position loads the pec.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "chest",
+      "fly",
+      "isolation"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_tri_ext",
+    "name": "Stability Ball Overhead Tricep Extension",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "arms",
+    "primaryMuscles": [
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Shoulders"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball",
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "💪",
+    "steps": [
+      "Sit upright on stability ball, feet flat",
+      "Hold single dumbbell overhead with both hands",
+      "Lower behind head bending elbows",
+      "Extend back up, lock out"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Tricep isolation with unstable seated position challenging core balance.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "triceps",
+      "isolation",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "stab_ball_reverse_hyper",
+    "name": "Stability Ball Reverse Hyperextension",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "glutes",
+    "primaryMuscles": [
+      "Glutes",
+      "Hamstrings",
+      "Erector Spinae"
+    ],
+    "secondaryMuscles": [
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "stability_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏐",
+    "steps": [
+      "Lie face-down on ball, hands on floor in front",
+      "Legs hanging behind, toes on floor",
+      "Lift both legs up, squeezing glutes at top",
+      "Lower with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Glute and lower back strengthening in a spine-neutral position.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "stability_ball",
+      "glutes",
+      "hinge",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bosu_pushup",
+    "name": "BOSU Push-Up",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Pectoralis Major",
+      "Anterior Deltoid",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "bosu_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3,
+        "wrist": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚫",
+    "steps": [
+      "Place hands on edges of BOSU dome (flat side up or down)",
+      "Walk feet back to plank position",
+      "Lower chest toward BOSU",
+      "Press back up with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Unstable push-up surface increases shoulder stabilizer and core recruitment.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bosu",
+      "push",
+      "bodyweight",
+      "nasm_phase1",
+      "shoulder_stability"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bosu_reverse_lunge",
+    "name": "BOSU Reverse Lunge",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "lunge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Ankle Stabilizers",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "bosu_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 3,
+        "ankle": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚫",
+    "steps": [
+      "Stand on BOSU dome with both feet",
+      "Step one foot back off the BOSU into reverse lunge",
+      "Lower until front thigh is parallel",
+      "Drive through front heel to return to standing on BOSU"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Single-leg balance on unstable surface + lunge strength. NASM Phase 1 progression.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bosu",
+      "lunge",
+      "balance",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bosu_plank",
+    "name": "BOSU Plank",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "anti_extension",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "TVA",
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Obliques",
+      "Shoulders"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "bosu_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "timed",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "20-30s",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "30-45s",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚫",
+    "steps": [
+      "Place forearms on BOSU dome",
+      "Walk feet back to plank position",
+      "Hold — body straight, don't let BOSU tilt"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Unstable plank surface increases core demand beyond floor plank.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bosu",
+      "plank",
+      "core",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bosu_sl_rdl",
+    "name": "BOSU Single-Leg Romanian Deadlift",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Erector Spinae",
+      "Ankle Stabilizers",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "bosu_ball"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "ankle": 3,
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚫",
+    "steps": [
+      "Stand on BOSU dome on one leg",
+      "Hinge forward at hips, extending rear leg behind",
+      "Reach toward ground, maintaining flat back",
+      "Return to standing with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Maximum proprioceptive demand — single-leg hinge on unstable surface.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bosu",
+      "hinge",
+      "single_leg",
+      "balance",
+      "nasm_phase2"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_squat_box",
+    "name": "Single-Leg Squat to Box",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Adductors",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "bench"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": "str_leg_press",
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg in front of a box/bench",
+      "Sit back and down to touch the box lightly",
+      "Drive through heel to stand back up",
+      "Don't put weight on box — just touch and go"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Unilateral strength and balance. The box limits depth for safety while building single-leg control.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "squat",
+      "balance",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_rdl_bw",
+    "name": "Single-Leg Romanian Deadlift (Bodyweight)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Erector Spinae",
+      "TVA",
+      "Ankle Stabilizers"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg, slight knee bend",
+      "Hinge forward from hips, extending rear leg behind",
+      "Reach toward ground — back stays flat",
+      "Return to standing with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Posterior chain + balance in one movement. Foundational NASM single-leg hinge.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "hinge",
+      "balance",
+      "bodyweight",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_rdl_db",
+    "name": "Single-Leg Romanian Deadlift (Dumbbell)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Erector Spinae",
+      "Grip",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Hold dumbbell in one or both hands",
+      "Stand on one leg, slight knee bend",
+      "Hinge forward, dumbbell tracks along standing leg",
+      "Return to standing, squeezing glute"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Loaded single-leg hinge — builds posterior chain strength with balance demand.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "hinge",
+      "loaded",
+      "nasm_phase2"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_cable_row",
+    "name": "Single-Leg Cable Row",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Latissimus Dorsi",
+      "Rhomboids"
+    ],
+    "secondaryMuscles": [
+      "Biceps",
+      "TVA",
+      "Ankle Stabilizers"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg facing cable machine",
+      "Grip handle with opposite hand",
+      "Pull handle to ribs, squeeze shoulder blade back",
+      "Return with control — maintain single-leg balance"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "NASM Phase 2 staple — combines pulling strength with single-leg proprioception.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "pull",
+      "cable",
+      "balance",
+      "nasm_phase2"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_db_press",
+    "name": "Single-Leg Dumbbell Shoulder Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Deltoids",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Ankle Stabilizers",
+      "Obliques"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg, hold dumbbell at shoulder height",
+      "Press dumbbell overhead while maintaining balance",
+      "Lower with control",
+      "Complete all reps, switch legs"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Overhead pressing with single-leg balance — NASM Phase 2 superset partner.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "push",
+      "shoulders",
+      "balance",
+      "nasm_phase2"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "sl_db_curl",
+    "name": "Single-Leg Dumbbell Curl",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "isolation",
+    "bodyPart": "arms",
+    "primaryMuscles": [
+      "Biceps"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Ankle Stabilizers",
+      "Forearms"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg, hold dumbbell in opposite hand",
+      "Curl dumbbell up with controlled bicep contraction",
+      "Lower with 4-second eccentric",
+      "Maintain balance throughout"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Bicep isolation with balance challenge. NASM proprioceptive enrichment principle.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "single_leg",
+      "isolation",
+      "biceps",
+      "balance",
+      "nasm_phase1"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bb_bench_press",
+    "name": "Barbell Bench Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Pectoralis Major",
+      "Anterior Deltoid",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "barbell",
+      "bench"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": "stab_ball_pushup",
+    "emoji": "🏋️",
+    "steps": [
+      "Lie on bench, feet flat on floor",
+      "Grip bar slightly wider than shoulder width",
+      "Unrack, lower to mid-chest (3 sec)",
+      "Press up to lockout"
+    ],
+    "formCues": [
+      "Retract shoulder blades — squeeze them together",
+      "Slight arch in upper back, not lower back",
+      "Bar path: slight diagonal from mid-chest to over shoulders"
+    ],
+    "commonMistakes": [
+      "Bouncing bar off chest",
+      "Flaring elbows to 90 degrees",
+      "Losing shoulder blade retraction"
+    ],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Gold standard horizontal push. Primary chest mass builder.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "barbell",
+      "push",
+      "chest",
+      "compound",
+      "strength"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bb_incline_press",
+    "name": "Barbell Incline Bench Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Upper Pectoralis",
+      "Anterior Deltoid",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "barbell",
+      "bench"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏋️",
+    "steps": [
+      "Set bench to 30-45 degree incline",
+      "Grip bar slightly wider than shoulders",
+      "Lower to upper chest",
+      "Press to lockout"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Targets upper chest (clavicular head) — key for full chest development.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "barbell",
+      "push",
+      "chest",
+      "incline",
+      "compound"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bb_overhead_press",
+    "name": "Barbell Overhead Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Deltoids",
+      "Triceps",
+      "Upper Pectoralis"
+    ],
+    "secondaryMuscles": [
+      "TVA",
+      "Trapezius"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "barbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2,
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏋️",
+    "steps": [
+      "Grip bar at shoulder width, bar in front rack",
+      "Brace core, press bar overhead",
+      "Lock out with bar directly over midfoot",
+      "Lower to front rack with control"
+    ],
+    "formCues": [
+      "Push head through once bar passes forehead",
+      "Full lockout — biceps by ears",
+      "Core braced — no excessive lean back"
+    ],
+    "commonMistakes": [
+      "Excessive lower back arch",
+      "Pressing in front instead of straight up",
+      "Not locking out at top"
+    ],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Primary vertical push compound. Builds shoulder mass and overhead pressing strength.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "barbell",
+      "push",
+      "shoulders",
+      "compound",
+      "overhead"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Military_Press/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Military_Press/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "bb_bent_row",
+    "name": "Barbell Bent-Over Row",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Latissimus Dorsi",
+      "Rhomboids",
+      "Trapezius"
+    ],
+    "secondaryMuscles": [
+      "Biceps",
+      "Erector Spinae",
+      "Rear Deltoid"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "barbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏋️",
+    "steps": [
+      "Hinge at hips, torso ~45 degrees",
+      "Grip bar overhand, slightly wider than shoulder",
+      "Pull bar to lower chest/upper abdomen",
+      "Lower with control, full arm extension"
+    ],
+    "formCues": [
+      "Flat back — chest up, shoulders back",
+      "Pull elbows back, not just up",
+      "Initiate with shoulder blades, finish with arms"
+    ],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Primary horizontal pull compound. Builds back thickness and width.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "barbell",
+      "pull",
+      "back",
+      "compound",
+      "row"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "t_bar_row",
+    "name": "T-Bar Row",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Latissimus Dorsi",
+      "Rhomboids",
+      "Lower Trapezius"
+    ],
+    "secondaryMuscles": [
+      "Biceps",
+      "Erector Spinae"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "barbell",
+      "landmine"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏋️",
+    "steps": [
+      "Straddle bar, hinge at hips",
+      "Grip handle or V-handle attached to bar",
+      "Pull to chest, squeeze shoulder blades",
+      "Lower with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Neutral grip rowing variation — easy on wrists, great for back thickness.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "barbell",
+      "pull",
+      "back",
+      "compound",
+      "row",
+      "thickness"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "arnold_press",
+    "name": "Arnold Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Anterior Deltoid",
+      "Lateral Deltoid",
+      "Triceps"
+    ],
+    "secondaryMuscles": [
+      "Upper Trapezius",
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "💪",
+    "steps": [
+      "Start with dumbbells at chin height, palms facing you (curl position)",
+      "Press up while rotating palms to face forward",
+      "Full lockout overhead, palms forward",
+      "Reverse the rotation as you lower"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Hits all three deltoid heads in one movement. Arnold's signature shoulder exercise.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "dumbbell",
+      "push",
+      "shoulders",
+      "rotation",
+      "compound"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pike_pushup",
+    "name": "Pike Push-Up",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Anterior Deltoid",
+      "Triceps",
+      "Upper Pectoralis"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3,
+        "wrist": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🔺",
+    "steps": [
+      "Start in downward dog position — hips high, hands shoulder width",
+      "Bend elbows, lower head toward floor between hands",
+      "Press back up to start position",
+      "Keep hips high throughout — this targets shoulders not chest"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Bodyweight vertical push — progression toward handstand push-up.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bodyweight",
+      "push",
+      "shoulders",
+      "overhead",
+      "progression"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "chinup",
+    "name": "Chin-Up",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "pull",
+    "bodyPart": "back",
+    "primaryMuscles": [
+      "Latissimus Dorsi",
+      "Biceps"
+    ],
+    "secondaryMuscles": [
+      "Rhomboids",
+      "Lower Trapezius",
+      "Forearms"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "pull_up_bar"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "💪",
+    "steps": [
+      "Grip bar underhand (supinated), shoulder width",
+      "Hang with full arm extension",
+      "Pull chin over bar, leading with chest",
+      "Lower with control to full hang"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Supinated pull-up — more bicep involvement than overhand. Often easier as first pull-up progression.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bodyweight",
+      "pull",
+      "back",
+      "biceps",
+      "compound"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chin-Up/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chin-Up/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "cable_fly_low",
+    "name": "Cable Fly (Low to High)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Upper Pectoralis",
+      "Anterior Deltoid"
+    ],
+    "secondaryMuscles": [
+      "Serratus Anterior"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🔗",
+    "steps": [
+      "Set cables at lowest position",
+      "Grip handles, step forward",
+      "Arc arms up and together in front of upper chest",
+      "Lower with control, feel chest stretch"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Targets upper chest from low angle. Constant cable tension throughout ROM.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "push",
+      "chest",
+      "fly",
+      "isolation",
+      "upper_chest"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "cable_fly_high",
+    "name": "Cable Fly (High to Low)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "push",
+    "bodyPart": "chest",
+    "primaryMuscles": [
+      "Lower Pectoralis",
+      "Sternal Pectoralis"
+    ],
+    "secondaryMuscles": [
+      "Anterior Deltoid"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🔗",
+    "steps": [
+      "Set cables at highest position",
+      "Grip handles, step forward",
+      "Arc arms down and together in front of lower chest",
+      "Return with control"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Targets lower/sternal chest from high angle.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "push",
+      "chest",
+      "fly",
+      "isolation",
+      "lower_chest"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "cable_pull_through",
+    "name": "Cable Pull-Through",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "hinge",
+    "bodyPart": "glutes",
+    "primaryMuscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Erector Spinae",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🔗",
+    "steps": [
+      "Face away from cable, rope between legs",
+      "Hinge at hips, letting cable pull you back",
+      "Drive hips forward, squeezing glutes at top",
+      "Control the return"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Hip hinge pattern teacher — great for learning to load the glutes before deadlifts.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "hinge",
+      "glutes",
+      "pattern_learning"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pistol_squat",
+    "name": "Pistol Squat (Assisted)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes"
+    ],
+    "secondaryMuscles": [
+      "Hip Flexors",
+      "TVA",
+      "Ankle Stabilizers"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 7,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "yellow",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 2,
+        "ankle": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🦵",
+    "steps": [
+      "Stand on one leg, other leg extended in front",
+      "Sit back and down as far as controlled",
+      "Drive through heel to stand back up",
+      "Use TRX strap or doorframe for assistance if needed"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Ultimate single-leg squat — requires mobility, strength, and balance.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "bodyweight",
+      "squat",
+      "single_leg",
+      "advanced",
+      "balance"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "overhead_carry",
+    "name": "Overhead Carry",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "carry",
+    "bodyPart": "shoulders",
+    "primaryMuscles": [
+      "Deltoids",
+      "Trapezius",
+      "TVA"
+    ],
+    "secondaryMuscles": [
+      "Obliques",
+      "Serratus Anterior",
+      "Triceps"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "timed",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 2,
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "30s each arm",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🏋️",
+    "steps": [
+      "Press dumbbell or kettlebell overhead, lock out arm",
+      "Walk forward with controlled steps",
+      "Keep arm vertical — bicep by ear",
+      "Maintain neutral spine, don't lean"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Overhead stability + core anti-lateral flexion + shoulder endurance.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "carry",
+      "shoulders",
+      "core",
+      "overhead",
+      "functional"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "renegade_row",
+    "name": "Renegade Row",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "anti_rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "TVA",
+      "Obliques",
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Rhomboids",
+      "Biceps",
+      "Triceps"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "dumbbell"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {
+        "shoulder": 3,
+        "wrist": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "💪",
+    "steps": [
+      "Plank position with hands on dumbbells",
+      "Row one dumbbell to hip while maintaining plank",
+      "Lower with control, row other side",
+      "Resist rotation — hips stay square to floor"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Anti-rotation core + pulling strength. Plank that fights rotation every rep.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "core",
+      "pull",
+      "anti_rotation",
+      "plank",
+      "compound"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Renegade_Row/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Renegade_Row/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "cable_woodchop",
+    "name": "Cable Woodchop (High to Low)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "Obliques",
+      "TVA",
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Shoulders",
+      "Hip Rotators"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🪵",
+    "steps": [
+      "Set cable at highest position",
+      "Stand sideways to cable, grip handle with both hands",
+      "Pull diagonally down and across body, rotating torso",
+      "Control return — resist the cable pulling you back"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Rotational core strength — NASM Phase 2-3 core strength exercise.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "rotation",
+      "core",
+      "nasm_phase2",
+      "functional"
+    ],
+    "methodology": [
+      "cpt",
+      "ace"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "cable_reverse_woodchop",
+    "name": "Cable Reverse Woodchop (Low to High)",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "Obliques",
+      "TVA"
+    ],
+    "secondaryMuscles": [
+      "Deltoids",
+      "Hip Rotators",
+      "Glutes"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🪵",
+    "steps": [
+      "Set cable at lowest position",
+      "Stand sideways, grip handle with both hands at hip",
+      "Lift diagonally up and across body, rotating torso",
+      "Control return"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Rotational lift pattern — ACE IFT multiplanar movement.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "rotation",
+      "core",
+      "nasm_phase2",
+      "ace"
+    ],
+    "methodology": [
+      "cpt",
+      "ace"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_tuck_jump",
+    "name": "Tuck Jump",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Quadriceps",
+      "Glutes",
+      "Hip Flexors"
+    ],
+    "secondaryMuscles": [
+      "Calves",
+      "TVA"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 6,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "yellow",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 2,
+        "ankle": 2,
+        "lower_back": 3
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚡",
+    "steps": [
+      "Stand with feet shoulder width",
+      "Jump explosively, pulling knees to chest at peak",
+      "Land softly with bent knees",
+      "Immediately repeat"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Intermediate plyometric — develops explosive leg power and hip flexor speed.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "plyometric",
+      "jump",
+      "power",
+      "nasm_phase3",
+      "bodyweight"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "pes_broad_jump",
+    "name": "Broad Jump",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "squat",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Glutes",
+      "Quadriceps",
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Calves",
+      "TVA",
+      "Hip Flexors"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 5,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "yellow",
+    "contraindications": {
+      "severity_gate": {
+        "knee": 2,
+        "ankle": 2
+      },
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "⚡",
+    "steps": [
+      "Stand with feet shoulder width, squat down slightly",
+      "Swing arms back, then explosively forward",
+      "Jump for maximum distance",
+      "Land softly, absorb with bent knees"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Horizontal power production — measures and develops explosive hip extension.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "plyometric",
+      "jump",
+      "power",
+      "horizontal",
+      "nasm_phase3"
+    ],
+    "methodology": [
+      "cpt",
+      "pes"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "mob_spiderman_lunge",
+    "name": "Spiderman Lunge with Rotation",
+    "category": "warmup",
+    "type": "strength",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Hip Flexors",
+      "Adductors",
+      "Thoracic Spine"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Obliques",
+      "Hamstrings"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "none",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🕷️",
+    "steps": [
+      "Step forward into deep lunge",
+      "Place same-side hand on floor inside front foot",
+      "Rotate opposite arm toward ceiling, opening chest",
+      "Hold 2-3 seconds, return, step forward and repeat other side"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Hip flexor + adductor + thoracic rotation in one movement. NASM CEx integration.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "warmup",
+      "mobility",
+      "integrated",
+      "hip",
+      "thoracic",
+      "nasm_cex"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "mob_inchworm",
+    "name": "Inchworm",
+    "category": "warmup",
+    "type": "strength",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Shoulders",
+      "Core"
+    ],
+    "secondaryMuscles": [
+      "Calves",
+      "Chest",
+      "Triceps"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "trackingType": "none",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🐛",
+    "steps": [
+      "Stand tall, hinge at hips, touch floor",
+      "Walk hands forward to plank position",
+      "Perform one push-up (optional)",
+      "Walk feet toward hands, stand up, repeat"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Dynamic hamstring + shoulder + core integration. Full-body warm-up in one movement.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "warmup",
+      "mobility",
+      "integrated",
+      "dynamic",
+      "nasm_cex"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg",
+    "imageUrl2": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/1.jpg",
+    "youtubeVideoId": null
+  },
+  {
+    "id": "mob_squat_to_stand",
+    "name": "Squat to Stand",
+    "category": "warmup",
+    "type": "strength",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Hamstrings",
+      "Hip Flexors",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Calves",
+      "Erector Spinae"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 2,
+    "trackingType": "none",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🧘",
+    "steps": [
+      "Stand with feet shoulder width",
+      "Hinge and grab toes",
+      "Pull yourself into deep squat, chest up",
+      "Stand up by extending legs while holding toes, then release"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "Hip mobility + hamstring flexibility + squat patterning in one flow.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "warmup",
+      "mobility",
+      "integrated",
+      "squat",
+      "dynamic"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "mob_lunge_elbow_instep",
+    "name": "Lunge with Elbow to Instep",
+    "category": "warmup",
+    "type": "strength",
+    "movementPattern": "mobility",
+    "bodyPart": "full_body",
+    "primaryMuscles": [
+      "Hip Flexors",
+      "Adductors",
+      "Thoracic Spine",
+      "Ankle Mobilizers"
+    ],
+    "secondaryMuscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home",
+      "outdoor"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "none",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🧘",
+    "steps": [
+      "Step into deep forward lunge",
+      "Place both hands inside front foot",
+      "Drop same-side elbow toward instep of front foot",
+      "Hold 2-3 seconds, extend front leg for hamstring stretch, repeat"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "NASM-specific warm-up combining hip, ankle, and thoracic mobility.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "warmup",
+      "mobility",
+      "integrated",
+      "nasm_specific",
+      "hip",
+      "ankle"
+    ],
+    "methodology": [
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "ace_transverse_lunge",
+    "name": "Transverse Plane Lunge with Reach",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "lunge",
+    "bodyPart": "legs",
+    "primaryMuscles": [
+      "Glutes",
+      "Quadriceps",
+      "Adductors"
+    ],
+    "secondaryMuscles": [
+      "Obliques",
+      "TVA",
+      "Hip Rotators"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "none"
+    ],
+    "locationCompatible": [
+      "gym",
+      "home"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 4,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🔄",
+    "steps": [
+      "Stand tall, step and rotate into transverse lunge (open hip)",
+      "Reach arms in direction of rotation",
+      "Push off rotated foot to return to start",
+      "Alternate sides"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "ACE IFT multiplanar lunge — trains the often-neglected transverse plane.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "lunge",
+      "rotation",
+      "transverse",
+      "ace",
+      "multiplanar"
+    ],
+    "methodology": [
+      "ace"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "ace_hk_cable_chop",
+    "name": "Half-Kneeling Cable Chop",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "Obliques",
+      "TVA"
+    ],
+    "secondaryMuscles": [
+      "Deltoids",
+      "Hip Stabilizers"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "weighted",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🪵",
+    "steps": [
+      "Half-kneeling position sideways to cable (inside knee down)",
+      "Grip handle at shoulder height with both hands",
+      "Pull and chop diagonally across body toward opposite hip",
+      "Control return — resist rotation"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "ACE-specific anti-rotation + rotation in half-kneeling for hip stability.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "rotation",
+      "core",
+      "ace",
+      "half_kneeling",
+      "anti_rotation"
+    ],
+    "methodology": [
+      "ace"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
+  },
+  {
+    "id": "ace_tall_kn_pallof",
+    "name": "Tall-Kneeling Pallof Press",
+    "category": "main",
+    "type": "strength",
+    "movementPattern": "anti_rotation",
+    "bodyPart": "core",
+    "primaryMuscles": [
+      "TVA",
+      "Obliques",
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Hip Stabilizers",
+      "Shoulders"
+    ],
+    "jointsInvolved": [],
+    "equipmentRequired": [
+      "cable"
+    ],
+    "locationCompatible": [
+      "gym"
+    ],
+    "phaseEligibility": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "difficultyLevel": 3,
+    "trackingType": "bodyweight_reps",
+    "safetyTier": "green",
+    "contraindications": {
+      "severity_gate": {},
+      "conditions": [],
+      "injuries": []
+    },
+    "substitutions": {},
+    "phaseParams": {
+      "1": {
+        "sets": "2",
+        "reps": "12-15",
+        "tempo": "4/2/1",
+        "rest": "60s",
+        "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "3-4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "90s",
+        "intensity": "RPE 7-9"
+      }
+    },
+    "phase2_superset_pair": null,
+    "emoji": "🧎",
+    "steps": [
+      "Kneel tall sideways to cable, handle at chest",
+      "Press handle straight out in front of chest",
+      "Hold 2-3 seconds — resist the cable rotating you",
+      "Return to chest and repeat"
+    ],
+    "formCues": [],
+    "commonMistakes": [],
+    "coreBracing": "MODERATE — brace at 20-30%.",
+    "breathing": {
+      "inhale": "Eccentric",
+      "exhale": "Concentric",
+      "pattern": "Exhale on effort"
+    },
+    "injuryNotes": {},
+    "purpose": "ACE IFT progression of Pallof press — tall kneeling removes ankle/knee compensation.",
+    "whyForYou": "",
+    "proTip": "",
+    "tags": [
+      "cable",
+      "anti_rotation",
+      "core",
+      "ace",
+      "kneeling",
+      "stability"
+    ],
+    "methodology": [
+      "ace",
+      "cpt"
+    ],
+    "imageUrl": null,
+    "imageUrl2": null,
+    "youtubeVideoId": null
   }
 ]
