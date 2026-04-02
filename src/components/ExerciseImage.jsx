@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getOverrideForExercise, uploadExerciseImage, clearOverride } from "../utils/imageOverrides.js";
 import YouTubePlayer, { VideoMapperModal, getVideoOverride, getNasmSlug } from "./YouTubePlayer.jsx";
+import EXERCISE_SVGS from "../data/exerciseSvgs.js";
 
 // ═══════════════════════════════════════════════════════════════
 // ExerciseImage — two frames: side-by-side or crossfade + dev image editor
@@ -227,8 +228,22 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
 
   const onUpdated = () => setRev(r => r + 1);
 
-  // ── NO URL → show video if available, otherwise emoji ────
+  // ── NO URL → check SVG map → video → emoji ──────────────
+  const svgMarkup = EXERCISE_SVGS[exercise?.id];
   if (!url) {
+    // SVG diagram available — render inline
+    if (svgMarkup) {
+      if (isThumbnail) {
+        return <div style={{ width: 48, height: 48, borderRadius: 8, overflow: "hidden", border: `1px solid ${C.border}`, flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: svgMarkup }} />;
+      }
+      return (
+        <div>
+          <div style={{ position: "relative", width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}` }} dangerouslySetInnerHTML={{ __html: svgMarkup }} />
+          {dev && <PencilIcon onClick={() => setShowModal(true)} />}
+          {showModal && <ImageEditModal exercise={exercise} onClose={() => setShowModal(false)} onUpdated={onUpdated} />}
+        </div>
+      );
+    }
     if (isThumbnail) {
       return <EmojiPlaceholder emoji={exercise?.emoji} width={48} height={48} />;
     }
@@ -246,7 +261,7 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
         </div>
       );
     }
-    // No image, no video → emoji fallback
+    // No image, no video, no SVG → emoji fallback
     return (
       <div>
         <div style={{ position: "relative" }}>

@@ -1,0 +1,771 @@
+// ═══════════════════════════════════════════════════════════════
+// APEX Coach — SVG Diagrams for exercises without photos
+// Each shows a stick figure in the START position
+// Dark theme: navy #0a1628 bg, teal #2dd4bf figure, #4a5a78 labels
+// ═══════════════════════════════════════════════════════════════
+
+const B = "#0a1628", T = "#2dd4bf", L = "#4a5a78", W = "#eab308", G = "#22c55e", R = "#ef4444", I = "#3b82f6";
+const FLOOR = (y=185) => `<line x1="20" y1="${y}" x2="280" y2="${y}" stroke="${L}" stroke-width="1.5" stroke-dasharray="4"/>`;
+const HEAD = (cx, cy, r=9) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${T}" stroke-width="2"/>`;
+const LABEL = (text, y=14) => `<text x="150" y="${y}" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">${text}</text>`;
+
+// Helper: standing figure
+const STAND = (x, headY=50) => {
+  const h = headY, neck = h+12, hip = neck+40, knee = hip+35, foot = knee+35;
+  return `${HEAD(x,h)}
+    <line x1="${x}" y1="${neck}" x2="${x}" y2="${hip}" stroke="${T}" stroke-width="2.5"/>
+    <line x1="${x}" y1="${hip}" x2="${x-8}" y2="${foot}" stroke="${T}" stroke-width="2"/>
+    <line x1="${x}" y1="${hip}" x2="${x+8}" y2="${foot}" stroke="${T}" stroke-width="2"/>
+    <line x1="${x}" y1="${neck+8}" x2="${x-18}" y2="${neck+25}" stroke="${T}" stroke-width="2"/>
+    <line x1="${x}" y1="${neck+8}" x2="${x+18}" y2="${neck+25}" stroke="${T}" stroke-width="2"/>`;
+};
+
+// Helper: supine figure (lying on back)
+const SUPINE = (y=130) => {
+  return `${HEAD(60, y)}
+    <line x1="68" y1="${y}" x2="220" y2="${y}" stroke="${T}" stroke-width="2.5"/>
+    <line x1="220" y1="${y}" x2="250" y2="${y-20}" stroke="${T}" stroke-width="2"/>
+    <line x1="250" y1="${y-20}" x2="265" y2="${y}" stroke="${T}" stroke-width="2"/>
+    <line x1="80" y1="${y}" x2="65" y2="${y+15}" stroke="${T}" stroke-width="2"/>
+    <line x1="80" y1="${y}" x2="95" y2="${y+15}" stroke="${T}" stroke-width="2"/>`;
+};
+
+// Helper: seated figure
+const SEATED = (x=150, seatY=110) => {
+  const h = seatY-60;
+  return `${HEAD(x, h)}
+    <line x1="${x}" y1="${h+12}" x2="${x}" y2="${seatY}" stroke="${T}" stroke-width="2.5"/>
+    <line x1="${x}" y1="${seatY}" x2="${x+30}" y2="${seatY}" stroke="${T}" stroke-width="2"/>
+    <line x1="${x+30}" y1="${seatY}" x2="${x+30}" y2="${seatY+40}" stroke="${T}" stroke-width="2"/>
+    <rect x="${x-20}" y="${seatY}" width="40" height="5" rx="2" fill="${L}" opacity="0.5"/>`;
+};
+
+const svg = (w, h, content, name) =>
+  `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" rx="12" fill="${B}"/>${LABEL(name)}${FLOOR(h-15)}${content}</svg>`;
+
+const EXERCISE_SVGS = {
+  // ══════════ STABILITY / MAIN ══════════
+  stab_ball_squat: svg(300, 200, `
+    ${HEAD(150, 45)}
+    <line x1="150" y1="57" x2="150" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="100" x2="140" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="140" y1="140" x2="140" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="100" x2="160" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="140" x2="160" y2="185" stroke="${T}" stroke-width="2"/>
+    <circle cx="150" cy="80" r="20" fill="none" stroke="${W}" stroke-width="2" stroke-dasharray="4"/>
+    <text x="150" y="84" text-anchor="middle" fill="${W}" font-size="8">BALL</text>
+    <line x1="130" y1="80" x2="105" y2="80" stroke="${L}" stroke-width="1.5"/>
+    <text x="90" y="83" text-anchor="end" fill="${L}" font-size="7">WALL</text>
+    <line x1="105" y1="30" x2="105" y2="185" stroke="${L}" stroke-width="2"/>
+  `, "STABILITY BALL WALL SQUAT"),
+
+  seated_hip_abd: svg(300, 200, `
+    ${SEATED(150, 110)}
+    <line x1="150" y1="110" x2="120" y2="110" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="110" x2="110" y2="150" stroke="${T}" stroke-width="2"/>
+    <path d="M130 108 L115 100" stroke="${W}" stroke-width="1.5" stroke-dasharray="3"/>
+    <text x="100" y="95" fill="${W}" font-size="8">PUSH OUT</text>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Band around knees</text>
+  `, "SEATED HIP ABDUCTION (BAND)"),
+
+  seated_captains_lift: svg(300, 200, `
+    ${HEAD(150, 40)}
+    <line x1="150" y1="52" x2="150" y2="95" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="70" x2="125" y2="90" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="70" x2="175" y2="90" stroke="${T}" stroke-width="2"/>
+    <line x1="125" y1="90" x2="115" y2="95" stroke="${T}" stroke-width="2"/>
+    <line x1="175" y1="90" x2="185" y2="95" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="95" x2="150" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="130" x2="140" y2="160" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="175" text-anchor="middle" fill="${G}" font-size="8">Knees to chest</text>
+    <rect x="110" y="93" width="80" height="6" rx="2" fill="${L}" opacity="0.4"/>
+  `, "CAPTAIN'S CHAIR LEG RAISE"),
+
+  // ══════════ MCKENZIE / REHAB ══════════
+  mck_neck_side_bend: svg(300, 200, `
+    ${HEAD(150, 55)}
+    <line x1="150" y1="67" x2="150" y2="120" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="80" x2="120" y2="100" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="80" x2="180" y2="100" stroke="${T}" stroke-width="2"/>
+    <path d="M155 50 Q170 40 175 55" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="185" y="50" fill="${W}" font-size="8">TILT</text>
+    <line x1="150" y1="120" x2="140" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="120" x2="160" y2="185" stroke="${T}" stroke-width="2"/>
+  `, "SIDE BENDING (IN RETRACTION)"),
+
+  mck_neck_rotation: svg(300, 200, `
+    ${HEAD(150, 55)}
+    <line x1="150" y1="67" x2="150" y2="120" stroke="${T}" stroke-width="2.5"/>
+    <path d="M142 50 Q130 45 135 60" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="115" y="45" fill="${W}" font-size="8">ROTATE</text>
+    <line x1="150" y1="80" x2="120" y2="100" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="80" x2="180" y2="100" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="120" x2="140" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="120" x2="160" y2="185" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="175" text-anchor="middle" fill="${G}" font-size="8">Chin tucked first</text>
+  `, "ROTATION IN RETRACTION"),
+
+  mck_sh_assisted_flexion: svg(300, 200, `
+    ${SUPINE(130)}
+    <line x1="100" y1="130" x2="100" y2="80" stroke="${T}" stroke-width="2"/>
+    <path d="M100 80 L105 60" stroke="${T}" stroke-width="2"/>
+    <text x="120" y="65" fill="${W}" font-size="8">Towel assist</text>
+    <line x1="105" y1="60" x2="130" y2="55" stroke="${W}" stroke-width="1" stroke-dasharray="3"/>
+  `, "ACTIVE-ASSISTED FLEXION"),
+
+  mck_sh_isometric: svg(300, 200, `
+    ${STAND(150, 55)}
+    <line x1="168" y1="75" x2="200" y2="75" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="60" x2="200" y2="90" stroke="${L}" stroke-width="3"/>
+    <text x="215" y="78" fill="${W}" font-size="8">WALL</text>
+    <text x="150" y="175" text-anchor="middle" fill="${G}" font-size="8">Push into wall, hold 5-10s</text>
+  `, "ISOMETRIC STRENGTHENING"),
+
+  mck_sh_active_rom: svg(300, 200, `
+    ${STAND(150, 55)}
+    <path d="M168 73 Q190 50 180 35" stroke="${T}" stroke-width="2" fill="none"/>
+    <path d="M175 40 L180 35 L185 42" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="200" y="35" fill="${W}" font-size="8">Pain-free arc</text>
+  `, "ACTIVE ROM (PAIN-FREE RANGE)"),
+
+  mck_kn_prone_flex: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">PRONE KNEE FLEXION</text>
+    ${HEAD(60, 130)}
+    <line x1="68" y1="130" x2="240" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <line x1="240" y1="130" x2="240" y2="80" stroke="${T}" stroke-width="2"/>
+    <path d="M240 85 L245 75" stroke="${T}" stroke-width="2"/>
+    <text x="250" y="70" fill="${W}" font-size="8">Heel to butt</text>
+    ${FLOOR(145)}
+  `, "PRONE KNEE FLEXION"),
+
+  mck_kn_flex_load: svg(300, 200, `
+    ${SEATED(150, 110)}
+    <line x1="180" y1="110" x2="190" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="190" y1="150" x2="180" y2="165" stroke="${T}" stroke-width="2"/>
+    <text x="200" y="160" fill="${W}" font-size="8">Flex + load</text>
+  `, "KNEE FLEXION LOADING"),
+
+  mck_hip_abd: svg(300, 200, `
+    ${HEAD(70, 80)}
+    <line x1="70" y1="92" x2="70" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <line x1="70" y1="130" x2="70" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="70" y1="130" x2="100" y2="150" stroke="${T}" stroke-width="2"/>
+    <path d="M100 150 L130 120" stroke="${T}" stroke-width="2"/>
+    <path d="M115 130 L125 120 L130 130" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="145" y="125" fill="${W}" font-size="8">LIFT</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Side-lying</text>
+    ${FLOOR()}
+  `, "HIP ABDUCTION (SIDE-LYING)"),
+
+  // ══════════ MOBILITY / WARMUP ══════════
+  mob_90_90_hip: svg(300, 200, `
+    ${HEAD(150, 40)}
+    <line x1="150" y1="52" x2="150" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="100" x2="110" y2="100" stroke="${T}" stroke-width="2"/>
+    <line x1="110" y1="100" x2="110" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="100" x2="190" y2="100" stroke="${T}" stroke-width="2"/>
+    <line x1="190" y1="100" x2="190" y2="140" stroke="${T}" stroke-width="2"/>
+    <text x="110" y="155" text-anchor="middle" fill="${W}" font-size="7">90deg</text>
+    <text x="190" y="155" text-anchor="middle" fill="${W}" font-size="7">90deg</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Seated on floor</text>
+  `, "90/90 HIP SWITCH"),
+
+  mob_shoulder_pass_through: svg(300, 200, `
+    ${STAND(150, 45)}
+    <line x1="130" y1="65" x2="90" y2="40" stroke="${T}" stroke-width="2"/>
+    <line x1="170" y1="65" x2="210" y2="40" stroke="${T}" stroke-width="2"/>
+    <line x1="90" y1="40" x2="210" y2="40" stroke="${W}" stroke-width="2" stroke-dasharray="4"/>
+    <text x="150" y="34" text-anchor="middle" fill="${W}" font-size="8">BAND / DOWEL</text>
+    <path d="M100 45 Q150 25 200 45" stroke="${W}" stroke-width="1" fill="none" stroke-dasharray="3"/>
+  `, "SHOULDER PASS-THROUGHS"),
+
+  dyn_leg_swings: svg(300, 200, `
+    ${HEAD(150, 40)}
+    <line x1="150" y1="52" x2="150" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="100" x2="150" y2="185" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="100" x2="100" y2="130" stroke="${T}" stroke-width="2" stroke-dasharray="4"/>
+    <line x1="150" y1="100" x2="200" y2="130" stroke="${T}" stroke-width="2" stroke-dasharray="4"/>
+    <path d="M100 135 Q150 155 200 135" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="160" text-anchor="middle" fill="${W}" font-size="8">SWING</text>
+  `, "LEG SWINGS (FWD/BACK + LATERAL)"),
+
+  dyn_carioca: svg(300, 200, `
+    ${HEAD(100, 50)}
+    <line x1="100" y1="62" x2="100" y2="105" stroke="${T}" stroke-width="2.5"/>
+    <line x1="100" y1="105" x2="85" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="105" x2="130" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="140" x2="130" y2="185" stroke="${T}" stroke-width="2"/>
+    <path d="M140 100 L200 100" stroke="${W}" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="170" y="92" fill="${W}" font-size="8">LATERAL</text>
+    <defs><marker id="arr" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0L6 2L0 4" fill="${W}"/></marker></defs>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Crossover grapevine steps</text>
+  `, "CARIOCA / GRAPEVINE"),
+
+  dyn_toy_soldiers: svg(300, 200, `
+    ${HEAD(150, 40)}
+    <line x1="150" y1="52" x2="150" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="100" x2="150" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="100" x2="130" y2="60" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="68" x2="175" y2="55" stroke="${T}" stroke-width="2"/>
+    <text x="185" y="52" fill="${W}" font-size="8">Touch toe</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Straight leg kicks while walking</text>
+  `, "TOY SOLDIERS"),
+
+  // ══════════ REHAB ══════════
+  rehab_hip_ir_er: svg(300, 200, `
+    ${SUPINE(120)}
+    <path d="M180 120 Q200 100 220 120" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <path d="M180 120 Q200 140 220 120" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="200" y="90" text-anchor="middle" fill="${W}" font-size="8">IR / ER</text>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Rotate hip in and out gently</text>
+  `, "SUPINE HIP IR/ER"),
+
+  rehab_hip_ir_stretch: svg(300, 200, `
+    ${HEAD(80, 80)}
+    <line x1="80" y1="92" x2="80" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <line x1="80" y1="130" x2="80" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="80" y1="130" x2="130" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="150" x2="130" y2="185" stroke="${T}" stroke-width="2"/>
+    <path d="M120 155 L140 170" stroke="${W}" stroke-width="1.5"/>
+    <text x="155" y="170" fill="${W}" font-size="8">Rotate</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="7">Side-lying</text>
+  `, "SIDE-LYING HIP IR STRETCH"),
+
+  rehab_hip_flexor_march: svg(300, 200, `
+    ${SUPINE(130)}
+    <line x1="160" y1="130" x2="160" y2="85" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="85" x2="180" y2="85" stroke="${T}" stroke-width="2"/>
+    <path d="M155 90 L150 75" stroke="${W}" stroke-width="1.5"/>
+    <text x="140" y="70" fill="${W}" font-size="8">MARCH</text>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Banded, alternate legs</text>
+  `, "HIP FLEXOR MARCH (SUPINE)"),
+
+  rehab_towel_scrunches: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">TOWEL SCRUNCHES</text>
+    <line x1="80" y1="120" x2="220" y2="120" stroke="${L}" stroke-width="1"/>
+    <rect x="80" y="120" width="140" height="4" rx="1" fill="${W}" opacity="0.3"/>
+    <text x="150" y="115" text-anchor="middle" fill="${W}" font-size="8">TOWEL</text>
+    <line x1="130" y1="90" x2="130" y2="120" stroke="${T}" stroke-width="3"/>
+    <line x1="125" y1="120" x2="135" y2="120" stroke="${T}" stroke-width="3"/>
+    <line x1="170" y1="90" x2="170" y2="120" stroke="${T}" stroke-width="3"/>
+    <line x1="165" y1="120" x2="175" y2="120" stroke="${T}" stroke-width="3"/>
+    <path d="M128 122 Q130 130 135 122" stroke="${W}" stroke-width="1" fill="none"/>
+    <text x="150" y="150" text-anchor="middle" fill="${G}" font-size="8">Scrunch toes to pull towel</text>
+  `, "TOWEL SCRUNCHES"),
+
+  rehab_toe_yoga: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">TOE YOGA</text>
+    <rect x="80" y="130" width="60" height="20" rx="4" fill="none" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="125" x2="100" y2="115" stroke="${T}" stroke-width="2.5"/>
+    <text x="100" y="110" text-anchor="middle" fill="${G}" font-size="7">BIG TOE UP</text>
+    <rect x="160" y="130" width="60" height="20" rx="4" fill="none" stroke="${T}" stroke-width="2"/>
+    <line x1="170" y1="145" x2="170" y2="125" stroke="${T}" stroke-width="2"/>
+    <line x1="180" y1="145" x2="180" y2="128" stroke="${T}" stroke-width="2"/>
+    <line x1="190" y1="145" x2="190" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="145" x2="200" y2="132" stroke="${T}" stroke-width="2"/>
+    <text x="185" y="120" text-anchor="middle" fill="${W}" font-size="7">LITTLE TOES DOWN</text>
+  `, "TOE YOGA"),
+
+  rehab_tib_ant_raise: svg(300, 200, `
+    ${STAND(150, 50)}
+    <line x1="200" y1="40" x2="200" y2="185" stroke="${L}" stroke-width="3"/>
+    <text x="215" y="110" fill="${L}" font-size="8">WALL</text>
+    <path d="M148 180 L148 170" stroke="${W}" stroke-width="2"/>
+    <text x="120" y="175" fill="${W}" font-size="7">TOES UP</text>
+  `, "TIBIALIS ANTERIOR RAISE"),
+
+  rehab_grip_strengthen: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">GRIP STRENGTHENING</text>
+    <circle cx="150" cy="100" r="25" fill="none" stroke="${W}" stroke-width="2"/>
+    <text x="150" y="104" text-anchor="middle" fill="${W}" font-size="8">BALL</text>
+    <path d="M130 80 Q125 95 130 110" stroke="${T}" stroke-width="2"/>
+    <path d="M140 75 Q135 95 140 115" stroke="${T}" stroke-width="2"/>
+    <path d="M160 75 Q165 95 160 115" stroke="${T}" stroke-width="2"/>
+    <path d="M170 80 Q175 95 170 110" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="160" text-anchor="middle" fill="${G}" font-size="8">Squeeze and hold 5-10s</text>
+  `, "GRIP STRENGTHENING"),
+
+  rehab_scapular_clock: svg(300, 200, `
+    ${STAND(150, 50)}
+    <circle cx="165" cy="70" r="25" fill="none" stroke="${W}" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="165" y1="45" x2="165" y2="50" stroke="${W}" stroke-width="1.5"/>
+    <line x1="190" y1="70" x2="185" y2="70" stroke="${W}" stroke-width="1.5"/>
+    <line x1="165" y1="95" x2="165" y2="90" stroke="${W}" stroke-width="1.5"/>
+    <line x1="140" y1="70" x2="145" y2="70" stroke="${W}" stroke-width="1.5"/>
+    <text x="210" y="45" fill="${W}" font-size="7">12</text>
+    <text x="210" y="75" fill="${W}" font-size="7">3</text>
+    <text x="210" y="100" fill="${W}" font-size="7">6</text>
+  `, "SCAPULAR CLOCK"),
+
+  rehab_cervical_snag: svg(300, 200, `
+    ${HEAD(150, 55)}
+    <line x1="150" y1="67" x2="150" y2="120" stroke="${T}" stroke-width="2.5"/>
+    <line x1="160" y1="60" x2="200" y2="55" stroke="${W}" stroke-width="2"/>
+    <text x="210" y="52" fill="${W}" font-size="7">TOWEL</text>
+    <path d="M200 55 Q210 60 200 65" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="170" text-anchor="middle" fill="${G}" font-size="8">Self-mobilization with towel</text>
+  `, "CERVICAL SNAG (TOWEL)"),
+
+  rehab_serratus_punch: svg(300, 200, `
+    ${SUPINE(130)}
+    <line x1="120" y1="130" x2="120" y2="70" stroke="${T}" stroke-width="2"/>
+    <path d="M118 75 L122 65" stroke="${T}" stroke-width="2"/>
+    <path d="M118 80 L112 70" stroke="${W}" stroke-width="1.5"/>
+    <text x="100" y="60" fill="${W}" font-size="8">PUNCH UP</text>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Reach ceiling, protract shoulder blade</text>
+  `, "SERRATUS PUNCH (SUPINE)"),
+
+  rehab_standing_hip_march: svg(300, 200, `
+    ${STAND(150, 45)}
+    <text x="150" y="175" text-anchor="middle" fill="${W}" font-size="8">Banded hip march</text>
+  `, "STANDING HIP MARCH (BAND)"),
+
+  // ══════════ BED / SUPINE REHAB ══════════
+  bed_hip_abd_add: svg(300, 200, `
+    ${SUPINE(120)}
+    <path d="M200 120 Q220 100 240 120" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <path d="M200 120 Q220 140 240 120" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="220" y="90" text-anchor="middle" fill="${W}" font-size="8">OPEN/CLOSE</text>
+  `, "SUPINE HIP ABD/ADD"),
+
+  bed_diaphragmatic: svg(300, 200, `
+    ${SUPINE(120)}
+    <ellipse cx="150" cy="115" rx="20" ry="10" fill="none" stroke="${G}" stroke-width="1.5"/>
+    <path d="M150 105 L150 95" stroke="${G}" stroke-width="1.5"/>
+    <text x="150" y="88" text-anchor="middle" fill="${G}" font-size="8">BELLY RISES</text>
+    <text x="150" y="160" text-anchor="middle" fill="${I}" font-size="8">Breathe into belly, not chest</text>
+  `, "DIAPHRAGMATIC BREATHING"),
+
+  bed_neck_rotation: svg(300, 200, `
+    ${SUPINE(120)}
+    <path d="M55 115 Q50 110 55 105" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="40" y="100" fill="${W}" font-size="8">TURN</text>
+    <text x="150" y="160" text-anchor="middle" fill="${I}" font-size="8">Gentle rotation, supine</text>
+  `, "GENTLE NECK ROTATION"),
+
+  // ══════════ AQUATIC ══════════
+  aqua_wall_pushup: svg(300, 200, `
+    ${HEAD(150, 50)}
+    <line x1="150" y1="62" x2="170" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="170" y1="100" x2="170" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="72" x2="120" y2="62" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="62" x2="110" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="110" y1="60" x2="110" y2="185" stroke="${L}" stroke-width="3"/>
+    <rect x="30" y="100" width="250" height="85" rx="0" fill="${I}" opacity="0.1"/>
+    <text x="60" y="115" fill="${I}" font-size="8">WATER LINE</text>
+  `, "POOL WALL PUSH-UP"),
+
+  aqua_flutter_kicks: svg(300, 200, `
+    ${HEAD(60, 100)}
+    <line x1="68" y1="100" x2="200" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="200" y1="100" x2="240" y2="85" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="100" x2="240" y2="115" stroke="${T}" stroke-width="2"/>
+    <path d="M230 80 L250 90" stroke="${W}" stroke-width="1.5"/>
+    <rect x="30" y="95" width="250" height="90" rx="0" fill="${I}" opacity="0.1"/>
+    <text x="150" y="160" text-anchor="middle" fill="${I}" font-size="8">Hold pool edge, flutter kick</text>
+  `, "POOL FLUTTER KICKS"),
+
+  aqua_arm_circles: svg(300, 200, `
+    ${HEAD(150, 60)}
+    <line x1="150" y1="72" x2="150" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <circle cx="120" cy="85" r="20" fill="none" stroke="${W}" stroke-width="1.5" stroke-dasharray="4"/>
+    <circle cx="180" cy="85" r="20" fill="none" stroke="${W}" stroke-width="1.5" stroke-dasharray="4"/>
+    <rect x="30" y="110" width="250" height="75" rx="0" fill="${I}" opacity="0.1"/>
+    <text x="150" y="125" text-anchor="middle" fill="${I}" font-size="8">Submerged arms</text>
+  `, "WATER ARM CIRCLES"),
+
+  // ══════════ TRX ══════════
+  trx_lunge: svg(300, 200, `
+    ${HEAD(130, 40)}
+    <line x1="130" y1="52" x2="130" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="130" y1="100" x2="120" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="150" x2="120" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="100" x2="170" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="170" y1="120" x2="200" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="130" x2="200" y2="100" stroke="${W}" stroke-width="1.5" stroke-dasharray="3"/>
+    <text x="210" y="95" fill="${W}" font-size="7">TRX</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Rear foot in strap</text>
+  `, "TRX LUNGE"),
+
+  trx_pike: svg(300, 200, `
+    ${HEAD(100, 60)}
+    <line x1="100" y1="72" x2="130" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="130" y1="100" x2="200" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="72" x2="90" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="90" y1="120" x2="90" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="130" x2="200" y2="100" stroke="${W}" stroke-width="1.5" stroke-dasharray="3"/>
+    <text x="210" y="95" fill="${W}" font-size="7">TRX</text>
+    <text x="150" y="175" text-anchor="middle" fill="${G}" font-size="8">Feet in straps, pike hips up</text>
+  `, "TRX PIKE"),
+
+  // ══════════ AGILITY / PES ══════════
+  agil_cone_shuffle: svg(300, 200, `
+    ${HEAD(150, 50)}
+    <line x1="150" y1="62" x2="150" y2="105" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="105" x2="135" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="105" x2="165" y2="150" stroke="${T}" stroke-width="2"/>
+    <polygon points="80,180 85,165 90,180" fill="${W}"/>
+    <polygon points="220,180 225,165 230,180" fill="${W}"/>
+    <path d="M95 172 L215 172" stroke="${W}" stroke-width="1" stroke-dasharray="4"/>
+    <text x="150" y="175" text-anchor="middle" fill="${W}" font-size="8">SHUFFLE</text>
+  `, "CONE SHUFFLE DRILL"),
+
+  agil_reaction_ball: svg(300, 200, `
+    ${STAND(150, 50)}
+    <circle cx="200" cy="60" r="10" fill="none" stroke="${W}" stroke-width="2"/>
+    <path d="M200 70 L195 100 L210 85 L190 110" stroke="${W}" stroke-width="1" fill="none" stroke-dasharray="3"/>
+    <text x="200" y="130" fill="${W}" font-size="8">Bounces randomly</text>
+  `, "REACTION BALL CATCHES"),
+
+  agil_sl_hop_stick: svg(300, 200, `
+    ${HEAD(150, 35)}
+    <line x1="150" y1="47" x2="150" y2="90" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="90" x2="150" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="90" x2="175" y2="120" stroke="${T}" stroke-width="2" stroke-dasharray="4"/>
+    <path d="M145 135 L155 120 L160 140" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="165" text-anchor="middle" fill="${G}" font-size="8">Hop and STICK the landing</text>
+  `, "SINGLE-LEG HOP & STICK"),
+
+  agil_t_drill: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">T-DRILL</text>
+    <line x1="150" y1="150" x2="150" y2="80" stroke="${W}" stroke-width="2"/>
+    <line x1="80" y1="80" x2="220" y2="80" stroke="${W}" stroke-width="2"/>
+    <polygon points="147,80 153,80 150,75" fill="${W}"/>
+    <polygon points="80,77 80,83 75,80" fill="${W}"/>
+    <polygon points="220,77 220,83 225,80" fill="${W}"/>
+    <circle cx="150" cy="155" r="4" fill="${T}"/>
+    <circle cx="150" cy="80" r="4" fill="${T}"/>
+    <circle cx="80" cy="80" r="4" fill="${T}"/>
+    <circle cx="220" cy="80" r="4" fill="${T}"/>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Sprint fwd, shuffle L/R, backpedal</text>
+  `, "T-DRILL"),
+
+  // ══════════ CARDIO ══════════
+  cardio_walking: svg(300, 200, `
+    ${HEAD(120, 45)}
+    <line x1="120" y1="57" x2="120" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="120" y1="100" x2="105" y2="150" stroke="${T}" stroke-width="2"/>
+    <line x1="105" y1="150" x2="105" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="100" x2="140" y2="145" stroke="${T}" stroke-width="2"/>
+    <line x1="140" y1="145" x2="145" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="70" x2="100" y2="90" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="70" x2="145" y2="85" stroke="${T}" stroke-width="2"/>
+    <path d="M160 100 L210 100" stroke="${W}" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <defs><marker id="arr2" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0L6 2L0 4" fill="${W}"/></marker></defs>
+    <text x="185" y="92" fill="${W}" font-size="8">WALK</text>
+  `, "WALKING (ZONE 2)"),
+
+  cardio_incline_treadmill: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">INCLINE TREADMILL WALK</text>
+    <line x1="60" y1="170" x2="240" y2="130" stroke="${L}" stroke-width="3"/>
+    ${HEAD(150, 60)}
+    <line x1="150" y1="72" x2="155" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="155" y1="110" x2="140" y2="148" stroke="${T}" stroke-width="2"/>
+    <line x1="155" y1="110" x2="170" y2="148" stroke="${T}" stroke-width="2"/>
+    <text x="250" y="125" fill="${W}" font-size="8">10-15%</text>
+    <text x="150" y="175" text-anchor="middle" fill="${R}" font-size="8">NO handrails!</text>
+  `, "INCLINE TREADMILL WALK"),
+
+  cond_boxing_drills: svg(300, 200, `
+    ${HEAD(130, 50)}
+    <line x1="130" y1="62" x2="130" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="130" y1="75" x2="100" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="75" x2="175" y2="70" stroke="${T}" stroke-width="2"/>
+    <line x1="175" y1="70" x2="190" y2="65" stroke="${T}" stroke-width="2"/>
+    <circle cx="195" cy="63" r="4" fill="none" stroke="${W}" stroke-width="1.5"/>
+    <text x="150" y="145" text-anchor="middle" fill="${W}" font-size="8">Jab-Cross-Hook</text>
+    <line x1="130" y1="110" x2="120" y2="160" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="110" x2="140" y2="160" stroke="${T}" stroke-width="2"/>
+  `, "BOXING DRILLS"),
+
+  cond_ub_ergometer: svg(300, 200, `
+    ${SEATED(140, 110)}
+    <line x1="155" y1="70" x2="190" y2="80" stroke="${T}" stroke-width="2"/>
+    <circle cx="200" cy="80" r="20" fill="none" stroke="${L}" stroke-width="2"/>
+    <line x1="200" y1="60" x2="200" y2="100" stroke="${L}" stroke-width="1.5"/>
+    <line x1="180" y1="80" x2="220" y2="80" stroke="${L}" stroke-width="1.5"/>
+    <text x="200" y="125" text-anchor="middle" fill="${W}" font-size="8">ARM BIKE</text>
+  `, "UPPER BODY ERGOMETER"),
+
+  cond_post_meal_walk: svg(300, 200, `
+    ${HEAD(120, 50)}
+    <line x1="120" y1="62" x2="120" y2="105" stroke="${T}" stroke-width="2.5"/>
+    <line x1="120" y1="105" x2="110" y2="155" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="105" x2="135" y2="155" stroke="${T}" stroke-width="2"/>
+    <text x="200" y="80" fill="${G}" font-size="9">10-15 min</text>
+    <text x="200" y="95" fill="${G}" font-size="9">after meals</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Improves glucose response</text>
+  `, "POST-MEAL WALK"),
+
+  outdoor_hill_sprints: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">HILL SPRINTS</text>
+    <line x1="40" y1="170" x2="260" y2="60" stroke="${L}" stroke-width="3"/>
+    ${HEAD(140, 65)}
+    <line x1="140" y1="77" x2="145" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="145" y1="110" x2="130" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="145" y1="110" x2="160" y2="135" stroke="${T}" stroke-width="2"/>
+    <path d="M170 90 L220 60" stroke="${W}" stroke-width="1.5" marker-end="url(#arr3)"/>
+    <defs><marker id="arr3" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0L6 2L0 4" fill="${W}"/></marker></defs>
+    <text x="230" y="55" fill="${W}" font-size="8">SPRINT</text>
+    <text x="150" y="185" text-anchor="middle" fill="${I}" font-size="8">30-50 yards, walk back down</text>
+  `, "HILL SPRINTS"),
+
+  pes_sprint_interval: svg(300, 200, `
+    ${HEAD(100, 45)}
+    <line x1="100" y1="57" x2="110" y2="95" stroke="${T}" stroke-width="2.5"/>
+    <line x1="110" y1="95" x2="90" y2="140" stroke="${T}" stroke-width="2"/>
+    <line x1="110" y1="95" x2="135" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="65" x2="75" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="65" x2="130" y2="60" stroke="${T}" stroke-width="2"/>
+    <path d="M150 80 L230 80" stroke="${W}" stroke-width="2" marker-end="url(#arr4)"/>
+    <defs><marker id="arr4" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0L6 2L0 4" fill="${W}"/></marker></defs>
+    <text x="190" y="72" fill="${W}" font-size="9">20m SPRINT</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">30s sprint / 90s walk</text>
+  `, "SPRINT INTERVALS"),
+
+  // ══════════ FOAM ROLL ══════════
+  fr_peroneals: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">FOAM ROLL PERONEALS</text>
+    ${HEAD(80, 80)}
+    <line x1="80" y1="92" x2="80" y2="120" stroke="${T}" stroke-width="2.5"/>
+    <line x1="80" y1="120" x2="200" y2="130" stroke="${T}" stroke-width="2"/>
+    <ellipse cx="170" cy="135" rx="15" ry="8" fill="none" stroke="${W}" stroke-width="2"/>
+    <text x="170" y="155" text-anchor="middle" fill="${W}" font-size="8">ROLLER</text>
+    <text x="200" y="115" fill="${I}" font-size="7">Outer calf</text>
+  `, "FOAM ROLL PERONEALS"),
+
+  fr_feet: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">FOAM ROLL FEET</text>
+    ${STAND(150, 50)}
+    <circle cx="155" cy="180" r="10" fill="none" stroke="${W}" stroke-width="2"/>
+    <text x="155" y="184" text-anchor="middle" fill="${W}" font-size="7">BALL</text>
+    <text x="230" y="175" fill="${I}" font-size="8">Roll arch</text>
+  `, "FOAM ROLL PLANTAR FASCIA"),
+
+  // ══════════ CONDITIONS / SPECIALIZED ══════════
+  cond_affected_arm_rom: svg(300, 200, `
+    ${SEATED(150, 110)}
+    <line x1="165" y1="70" x2="195" y2="55" stroke="${T}" stroke-width="2"/>
+    <path d="M190 60 Q200 45 195 35" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Gentle passive movement</text>
+  `, "AFFECTED ARM PASSIVE ROM"),
+
+  cond_bilateral_arm: svg(300, 200, `
+    ${SEATED(150, 110)}
+    <line x1="135" y1="70" x2="110" y2="50" stroke="${T}" stroke-width="2"/>
+    <line x1="165" y1="70" x2="190" y2="50" stroke="${T}" stroke-width="2"/>
+    <line x1="110" y1="50" x2="150" y2="30" stroke="${W}" stroke-width="1" stroke-dasharray="3"/>
+    <line x1="190" y1="50" x2="150" y2="30" stroke="${W}" stroke-width="1" stroke-dasharray="3"/>
+    <text x="150" y="170" text-anchor="middle" fill="${I}" font-size="8">Mirror both arms together</text>
+  `, "BILATERAL ARM TRAINING"),
+
+  cond_pursed_lip: svg(300, 200, `
+    ${HEAD(150, 60)}
+    <line x1="150" y1="72" x2="150" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <path d="M142 65 Q138 70 142 75" stroke="${G}" stroke-width="1.5" fill="none"/>
+    <path d="M158 65 Q162 70 158 75" stroke="${R}" stroke-width="1.5" fill="none"/>
+    <text x="120" y="68" fill="${G}" font-size="8">IN</text>
+    <text x="175" y="68" fill="${R}" font-size="8">OUT</text>
+    <text x="150" y="160" text-anchor="middle" fill="${I}" font-size="8">Inhale nose, exhale pursed lips</text>
+  `, "PURSED LIP BREATHING"),
+
+  cond_clamshell_preg: svg(300, 200, `
+    ${HEAD(80, 80)}
+    <line x1="80" y1="92" x2="80" y2="130" stroke="${T}" stroke-width="2.5"/>
+    <line x1="80" y1="130" x2="130" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="130" x2="130" y2="160" stroke="${T}" stroke-width="2"/>
+    <line x1="80" y1="130" x2="130" y2="110" stroke="${T}" stroke-width="2" stroke-dasharray="4"/>
+    <path d="M120 115 L135 105" stroke="${W}" stroke-width="1.5"/>
+    <text x="145" y="105" fill="${W}" font-size="8">OPEN</text>
+    <text x="150" y="175" text-anchor="middle" fill="${G}" font-size="8">Pregnancy-safe, side-lying</text>
+  `, "CLAMSHELL (PREGNANCY-SAFE)"),
+
+  cond_joint_rom_cycling: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">JOINT ROM CYCLING</text>
+    <circle cx="100" cy="100" r="30" fill="none" stroke="${T}" stroke-width="2" stroke-dasharray="6"/>
+    <circle cx="200" cy="100" r="30" fill="none" stroke="${T}" stroke-width="2" stroke-dasharray="6"/>
+    <path d="M85 80 L80 72" stroke="${W}" stroke-width="1.5"/>
+    <path d="M215 80 L220 72" stroke="${W}" stroke-width="1.5"/>
+    <text x="100" y="145" text-anchor="middle" fill="${I}" font-size="7">Shoulder</text>
+    <text x="200" y="145" text-anchor="middle" fill="${I}" font-size="7">Hip/Knee</text>
+    <text x="150" y="170" text-anchor="middle" fill="${G}" font-size="8">Gentle circles through range</text>
+  `, "JOINT ROM CYCLING"),
+
+  cond_iso_quad_set: svg(300, 200, `
+    ${SUPINE(120)}
+    <rect x="180" y="115" width="40" height="10" rx="3" fill="none" stroke="${W}" stroke-width="1.5"/>
+    <text x="200" y="113" text-anchor="middle" fill="${W}" font-size="7">TOWEL</text>
+    <path d="M195 115 L195 105" stroke="${G}" stroke-width="1.5"/>
+    <text x="195" y="100" text-anchor="middle" fill="${G}" font-size="7">PRESS</text>
+    <text x="150" y="165" text-anchor="middle" fill="${I}" font-size="8">Push knee into towel, hold 5-10s</text>
+  `, "ISOMETRIC QUAD SET"),
+
+  // ══════════ YOGA ══════════
+  yoga_seated_eagle_arms: svg(300, 200, `
+    ${SEATED(150, 120)}
+    <line x1="140" y1="80" x2="140" y2="60" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="80" x2="160" y2="60" stroke="${T}" stroke-width="2"/>
+    <path d="M140 65 Q150 55 160 65" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="50" text-anchor="middle" fill="${W}" font-size="8">WRAP</text>
+  `, "SEATED EAGLE ARMS"),
+
+  yoga_legs_wall: svg(300, 200, `
+    ${HEAD(80, 170)}
+    <line x1="80" y1="158" x2="80" y2="120" stroke="${T}" stroke-width="2.5"/>
+    <line x1="80" y1="120" x2="110" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="110" y1="120" x2="110" y2="40" stroke="${T}" stroke-width="2"/>
+    <line x1="115" y1="120" x2="115" y2="40" stroke="${T}" stroke-width="2"/>
+    <line x1="120" y1="30" x2="120" y2="185" stroke="${L}" stroke-width="3"/>
+    <text x="130" y="100" fill="${L}" font-size="8">WALL</text>
+  `, "LEGS UP THE WALL"),
+
+  yoga_savasana: svg(300, 200, `
+    ${HEAD(60, 100)}
+    <line x1="68" y1="100" x2="240" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="80" y1="100" x2="65" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="80" y1="100" x2="95" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="220" y1="100" x2="240" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="220" y1="100" x2="200" y2="120" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="80" text-anchor="middle" fill="${G}" font-size="9">Complete relaxation</text>
+    <text x="150" y="150" text-anchor="middle" fill="${I}" font-size="8">5-10 minutes, eyes closed</text>
+  `, "SAVASANA (CORPSE POSE)"),
+
+  yoga_crow: svg(300, 200, `
+    ${HEAD(150, 60)}
+    <line x1="150" y1="72" x2="150" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="80" x2="130" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="130" y1="120" x2="130" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="80" x2="170" y2="120" stroke="${T}" stroke-width="2"/>
+    <line x1="170" y1="120" x2="170" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="100" x2="120" y2="95" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="100" x2="180" y2="95" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="145" text-anchor="middle" fill="${W}" font-size="8">Knees on triceps</text>
+  `, "CROW POSE"),
+
+  yoga_wheel: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">WHEEL POSE (FULL BACKBEND)</text>
+    <path d="M80 160 Q150 40 220 160" stroke="${T}" stroke-width="2.5" fill="none"/>
+    <line x1="80" y1="160" x2="80" y2="185" stroke="${T}" stroke-width="2"/>
+    <line x1="220" y1="160" x2="220" y2="185" stroke="${T}" stroke-width="2"/>
+    ${HEAD(150, 90)}
+  `, "WHEEL POSE"),
+
+  yoga_headstand_prep: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">HEADSTAND PREP (WALL)</text>
+    ${HEAD(150, 170)}
+    <line x1="150" y1="158" x2="150" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="110" x2="130" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="110" x2="170" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="140" y1="165" x2="120" y2="170" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="165" x2="180" y2="170" stroke="${T}" stroke-width="2"/>
+    <line x1="200" y1="30" x2="200" y2="185" stroke="${L}" stroke-width="3"/>
+    <text x="215" y="100" fill="${L}" font-size="8">WALL</text>
+  `, "HEADSTAND PREP"),
+
+  yoga_dancer: svg(300, 200, `
+    ${HEAD(140, 40)}
+    <line x1="140" y1="52" x2="140" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="140" y1="100" x2="140" y2="185" stroke="${T}" stroke-width="2.5"/>
+    <line x1="140" y1="100" x2="180" y2="80" stroke="${T}" stroke-width="2"/>
+    <line x1="180" y1="80" x2="200" y2="60" stroke="${T}" stroke-width="2"/>
+    <line x1="140" y1="65" x2="175" y2="55" stroke="${T}" stroke-width="2"/>
+    <text x="210" y="55" fill="${W}" font-size="8">Grab foot</text>
+  `, "DANCER'S POSE"),
+
+  cond_restorative_yoga: svg(300, 200, `
+    ${SUPINE(120)}
+    <rect x="140" y="105" width="50" height="12" rx="3" fill="${L}" opacity="0.4"/>
+    <text x="165" y="113" text-anchor="middle" fill="${L}" font-size="6">BOLSTER</text>
+    <text x="150" y="160" text-anchor="middle" fill="${G}" font-size="9">Supported, gentle holds</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">5-10 min per pose</text>
+  `, "RESTORATIVE YOGA"),
+
+  // ══════════ PES / POWER ══════════
+  pes_depth_jump: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">DEPTH JUMP</text>
+    <rect x="40" y="120" width="60" height="65" rx="3" fill="${L}" opacity="0.4"/>
+    <text x="70" y="155" text-anchor="middle" fill="${L}" font-size="7">BOX</text>
+    ${HEAD(170, 55)}
+    <line x1="170" y1="67" x2="170" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="170" y1="110" x2="160" y2="155" stroke="${T}" stroke-width="2"/>
+    <line x1="170" y1="110" x2="180" y2="155" stroke="${T}" stroke-width="2"/>
+    <path d="M100 115 Q135 80 170 110" stroke="${W}" stroke-width="1.5" fill="none" stroke-dasharray="4"/>
+    <text x="135" y="80" fill="${W}" font-size="7">DROP</text>
+    <path d="M175 100 L190 70" stroke="${W}" stroke-width="1.5"/>
+    <text x="200" y="65" fill="${W}" font-size="7">JUMP</text>
+  `, "DEPTH JUMP"),
+
+  pes_lateral_bound: svg(300, 200, `
+    ${HEAD(100, 50)}
+    <line x1="100" y1="62" x2="100" y2="100" stroke="${T}" stroke-width="2.5"/>
+    <line x1="100" y1="100" x2="85" y2="145" stroke="${T}" stroke-width="2"/>
+    <line x1="100" y1="100" x2="120" y2="140" stroke="${T}" stroke-width="2" stroke-dasharray="4"/>
+    <path d="M130 90 L200 70" stroke="${W}" stroke-width="1.5" marker-end="url(#arr5)"/>
+    <defs><marker id="arr5" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0L6 2L0 4" fill="${W}"/></marker></defs>
+    <text x="170" y="60" fill="${W}" font-size="8">BOUND</text>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Single-leg lateral leap & stick</text>
+  `, "LATERAL BOUND"),
+
+  pes_shuttle_run: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">SHUTTLE RUN (5-10-5)</text>
+    <line x1="60" y1="100" x2="240" y2="100" stroke="${L}" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="60" y1="90" x2="60" y2="110" stroke="${W}" stroke-width="2"/>
+    <line x1="150" y1="90" x2="150" y2="110" stroke="${W}" stroke-width="2"/>
+    <line x1="240" y1="90" x2="240" y2="110" stroke="${W}" stroke-width="2"/>
+    <text x="60" y="80" text-anchor="middle" fill="${W}" font-size="8">5yd</text>
+    <text x="150" y="80" text-anchor="middle" fill="${T}" font-size="8">START</text>
+    <text x="240" y="80" text-anchor="middle" fill="${W}" font-size="8">10yd</text>
+    <path d="M150 105 L70 105" stroke="${W}" stroke-width="1" marker-end="url(#arr6)"/>
+    <path d="M70 110 L240 110" stroke="${W}" stroke-width="1" marker-end="url(#arr6)"/>
+    <defs><marker id="arr6" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><path d="M0 0L5 2L0 4" fill="${W}"/></marker></defs>
+  `, "SHUTTLE RUN"),
+
+  pes_squat_jump: svg(300, 200, `
+    ${HEAD(150, 40)}
+    <line x1="150" y1="52" x2="150" y2="90" stroke="${T}" stroke-width="2.5"/>
+    <line x1="150" y1="90" x2="140" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="140" y1="130" x2="140" y2="160" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="90" x2="160" y2="130" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="130" x2="160" y2="160" stroke="${T}" stroke-width="2"/>
+    <path d="M145 155 L150 140 L155 155" stroke="${W}" stroke-width="1.5" fill="none"/>
+    <text x="150" y="178" text-anchor="middle" fill="${W}" font-size="8">EXPLODE UP</text>
+  `, "SQUAT JUMP"),
+
+  pes_med_ball_overhead: svg(300, 200, `
+    ${HEAD(150, 50)}
+    <line x1="150" y1="62" x2="150" y2="110" stroke="${T}" stroke-width="2.5"/>
+    <line x1="140" y1="65" x2="140" y2="40" stroke="${T}" stroke-width="2"/>
+    <line x1="160" y1="65" x2="160" y2="40" stroke="${T}" stroke-width="2"/>
+    <circle cx="150" cy="35" r="10" fill="none" stroke="${W}" stroke-width="2"/>
+    <text x="150" y="39" text-anchor="middle" fill="${W}" font-size="7">MB</text>
+    <path d="M150 25 L150 18" stroke="${W}" stroke-width="1.5" marker-end="url(#arr7)"/>
+    <defs><marker id="arr7" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><path d="M0 0L5 2L0 4" fill="${W}"/></marker></defs>
+    <line x1="150" y1="110" x2="140" y2="160" stroke="${T}" stroke-width="2"/>
+    <line x1="150" y1="110" x2="160" y2="160" stroke="${T}" stroke-width="2"/>
+  `, "MED BALL OVERHEAD THROW"),
+
+  // Agility ladder
+  pes_agil_in_out: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">LADDER IN-OUT</text><rect x="120" y="30" width="60" height="150" fill="none" stroke="${L}" stroke-width="1.5"/>${[0,1,2,3,4].map(i=>`<line x1="120" y1="${50+i*30}" x2="180" y2="${50+i*30}" stroke="${L}" stroke-width="1"/>`).join("")}<circle cx="150" cy="45" r="4" fill="${T}"/><circle cx="100" cy="75" r="4" fill="${T}" opacity="0.5"/><circle cx="150" cy="105" r="4" fill="${T}"/><path d="M150 49 L100 71 L150 101" stroke="${W}" stroke-width="1" fill="none" stroke-dasharray="3"/>`, "LADDER IN-OUT"),
+
+  pes_agil_lateral: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">LADDER LATERAL SHUFFLE</text><rect x="120" y="30" width="60" height="150" fill="none" stroke="${L}" stroke-width="1.5"/>${[0,1,2,3,4].map(i=>`<line x1="120" y1="${50+i*30}" x2="180" y2="${50+i*30}" stroke="${L}" stroke-width="1"/>`).join("")}<path d="M90 40 L150 40 L90 70 L150 70 L90 100" stroke="${W}" stroke-width="1.5" fill="none"/>`, "LADDER LATERAL SHUFFLE"),
+
+  pes_agil_icky: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">LADDER ICKY SHUFFLE</text><rect x="120" y="30" width="60" height="150" fill="none" stroke="${L}" stroke-width="1.5"/>${[0,1,2,3,4].map(i=>`<line x1="120" y1="${50+i*30}" x2="180" y2="${50+i*30}" stroke="${L}" stroke-width="1"/>`).join("")}<path d="M100 35 L150 55 L200 35 L150 75 L100 55 L150 95" stroke="${W}" stroke-width="1.5" fill="none"/>`, "LADDER ICKY SHUFFLE"),
+
+  pes_agil_crossover: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">LADDER CROSSOVER</text><rect x="120" y="30" width="60" height="150" fill="none" stroke="${L}" stroke-width="1.5"/>${[0,1,2,3,4].map(i=>`<line x1="120" y1="${50+i*30}" x2="180" y2="${50+i*30}" stroke="${L}" stroke-width="1"/>`).join("")}<path d="M100 40 L160 60 L100 80 L160 100" stroke="${W}" stroke-width="1.5" fill="none"/>`, "LADDER CROSSOVER"),
+
+  pes_cone_5_10_5: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">PRO AGILITY (5-10-5)</text><polygon points="60,155 65,140 70,155" fill="${W}"/><polygon points="145,155 150,140 155,155" fill="${W}"/><polygon points="230,155 235,140 240,155" fill="${W}"/><line x1="70" y1="148" x2="230" y2="148" stroke="${L}" stroke-width="1" stroke-dasharray="4"/><path d="M150 145 L70 145" stroke="${T}" stroke-width="1.5" marker-end="url(#arr8)"/><path d="M70 150 L235 150" stroke="${T}" stroke-width="1.5" marker-end="url(#arr8)"/><path d="M235 155 L150 155" stroke="${T}" stroke-width="1.5" marker-end="url(#arr8)"/><defs><marker id="arr8" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><path d="M0 0L5 2L0 4" fill="${T}"/></marker></defs>`, "PRO AGILITY"),
+
+  pes_cone_l_drill: svg(300, 200, `<text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">L-DRILL (CONE)</text><polygon points="80,155 85,140 90,155" fill="${W}"/><polygon points="80,75 85,60 90,75" fill="${W}"/><polygon points="200,155 205,140 210,155" fill="${W}"/><line x1="85" y1="150" x2="85" y2="70" stroke="${T}" stroke-width="1.5"/><line x1="85" y1="150" x2="205" y2="150" stroke="${T}" stroke-width="1.5"/><path d="M90 148 L200 148" stroke="${W}" stroke-width="1" stroke-dasharray="3"/>`, "L-DRILL (CONE)"),
+
+  grip_plate_pinch: svg(300, 200, `
+    <text x="150" y="14" text-anchor="middle" fill="${L}" font-size="9" font-weight="600">PLATE PINCH HOLD</text>
+    ${STAND(150, 50)}
+    <rect x="135" y="120" width="8" height="40" rx="2" fill="${W}" opacity="0.6"/>
+    <rect x="157" y="120" width="8" height="40" rx="2" fill="${W}" opacity="0.6"/>
+    <path d="M133 130 Q130 140 133 150" stroke="${T}" stroke-width="2"/>
+    <path d="M167 130 Q170 140 167 150" stroke="${T}" stroke-width="2"/>
+    <text x="150" y="175" text-anchor="middle" fill="${I}" font-size="8">Pinch plates together, hold</text>
+  `, "PLATE PINCH HOLD"),
+};
+
+export default EXERCISE_SVGS;
