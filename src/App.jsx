@@ -28,6 +28,12 @@ import { capturePreReassessmentSnapshot, processReassessment } from "./utils/rea
 import ReassessmentSummary from "./components/ReassessmentSummary.jsx";
 import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage } from "./utils/programTracks.js";
 import { getGreeting, getSetMessage, getRestTip, getRestTimerMessage, getSkipRestMessage, getRecapHeadline, getWorkoutCompleteMessage, getStreakMessage, getStreakEmoji, getCheckInSummary, checkEasterEgg } from "./utils/personality.js";
+import BaselineTestFlow, { BaselineProgressCard, PowerRecordsCard } from "./components/BaselineTest.jsx";
+import { getBaselineCapabilities, getLatestBaseline, getCoreMovementSelections } from "./utils/baselineTest.js";
+import { addPowerElements, checkPowerRecovery } from "./utils/powerDevelopment.js";
+import { hasHypertrophyGoals, getHypertrophyVolume, getRecommendedSplit, getCurrentBlock, selectTechniques, NUTRITION_TIPS, getProteinTarget, getVolumeExplanation, RPE_GUIDE, MESOCYCLE_BLOCKS } from "./utils/hypertrophy.js";
+import { buildCardioBlock, CARDIO_EXERCISES } from "./utils/cardioEngine.js";
+import { getDailyWorkout, saveDailyWorkout, markExerciseDone, markExerciseStarted, getDailyProgress, getMiniSessions, getPhaseGroupedExercises, clearDailyWorkout, endDay, getCarryover, clearCarryover, estimateExerciseTime } from "./utils/splitWorkout.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -483,7 +489,13 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   // OPTIONAL: Foam rolling add-on
   const foamAddOn = foamPool.filter(e => !inhibit.find(x => x.id === e.id)).slice(0, 4).map(e => ({ ...e, _reason: "Optional recovery foam rolling" }));
 
-  return { inhibit, lengthen, cooldownStretches, foamAddOn };
+  // PHASE E (CARDIO): Prescribed cardio from NASM 5-stage system
+  const daysPerWeek = getAssessment()?.preferences?.daysPerWeek || 3;
+  const sessionIdx = (getSessions() || []).length % daysPerWeek;
+  const cardioBlock = buildCardioBlock(phase, location, sessionIdx, daysPerWeek);
+  const cardio = cardioBlock ? [cardioBlock.exercise] : [];
+
+  return { inhibit, lengthen, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
 }
 
 function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkInData=null) {
@@ -567,6 +579,63 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       }
     }
     if (supersets.length > 0) main = [...main, ...supersets.slice(0, 3)];
+  }
+
+  // ── CORE MOVEMENT GUARANTEE ──────────────────────────────────
+  // Every session must include: 1 push, 1 pull, 1 hinge, 1 squat, 1 core
+  const requiredPatterns = ["push", "pull", "hinge", "squat", "core"];
+  const mainIds = new Set(main.map(e => e.id));
+  const presentPatterns = new Set();
+  for (const ex of [...warmup, ...main]) {
+    const mp = (ex.movementPattern || "").toLowerCase();
+    if (mp.includes("push") || mp === "horizontal_push" || mp === "vertical_push") presentPatterns.add("push");
+    if (mp.includes("pull") || mp === "horizontal_pull" || mp === "vertical_pull") presentPatterns.add("pull");
+    if (mp.includes("hinge") || mp === "hip_hinge") presentPatterns.add("hinge");
+    if (mp.includes("squat")) presentPatterns.add("squat");
+    if (mp.includes("core") || mp === "anti_extension" || mp === "anti_rotation" || mp === "anti_lateral_flexion") presentPatterns.add("core");
+    // Also check body part as fallback
+    const bp = (ex.bodyPart || "").toLowerCase();
+    if (bp === "chest" || bp === "shoulders") presentPatterns.add("push");
+    if (bp === "back") presentPatterns.add("pull");
+    if (bp === "legs" && (mp.includes("hinge") || ex.name?.toLowerCase().includes("deadlift") || ex.name?.toLowerCase().includes("bridge"))) presentPatterns.add("hinge");
+    if (bp === "legs" && (mp.includes("squat") || ex.name?.toLowerCase().includes("squat") || ex.name?.toLowerCase().includes("lunge"))) presentPatterns.add("squat");
+    if (bp === "core") presentPatterns.add("core");
+  }
+
+  // Use baseline data to pick appropriate variations for missing patterns
+  const baseline = getLatestBaseline();
+  const baselineResults = baseline?.results || {};
+  const movements = getCoreMovementSelections(baselineResults);
+
+  for (const pattern of requiredPatterns) {
+    if (presentPatterns.has(pattern)) continue;
+    // Find a suitable exercise from DB for this pattern
+    const patternMap = { push: ["push","horizontal_push","vertical_push"], pull: ["pull","horizontal_pull","vertical_pull"], hinge: ["hinge","hip_hinge"], squat: ["squat"], core: ["core","anti_extension","anti_rotation"] };
+    const bodyPartMap = { push: ["chest","shoulders"], pull: ["back"], hinge: ["legs","glutes"], squat: ["legs"], core: ["core"] };
+    const matchPatterns = patternMap[pattern] || [pattern];
+    const matchBodyParts = bodyPartMap[pattern] || [];
+    const fill = exerciseDB.find(e =>
+      e.id && !mainIds.has(e.id) &&
+      e.category === "main" &&
+      (e.phaseEligibility || []).includes(phase) &&
+      e.safetyTier !== "red" &&
+      (matchPatterns.some(p => (e.movementPattern || "").toLowerCase().includes(p)) ||
+       matchBodyParts.includes(e.bodyPart))
+    );
+    if (fill) {
+      const mv = movements[pattern];
+      main.push({ ...fill, _reason: `Core movement guarantee: ${pattern} pattern${mv?.desc ? ` (baseline: ${mv.desc})` : ""}` });
+      mainIds.add(fill.id);
+    }
+  }
+
+  // ── POWER DEVELOPMENT INTEGRATION (Phase 4-5) ───────────────
+  // Add power elements based on goals and phase
+  const assessmentGoals = assessment?.goals?.types || [];
+  let prePowerPlan = { warmup, main, cooldown, all: [...warmup, ...main, ...cooldown] };
+  if (phase >= 3) {
+    const withPower = addPowerElements(prePowerPlan, phase, assessmentGoals);
+    main = withPower.main;
   }
 
   // Build dynamic session blocks based on check-in + main exercises
@@ -748,12 +817,18 @@ function DebugPanel({onClose}){
 }
 
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:20}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+function HomeScreen({onStart,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:20}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
+  {/* Daily workout progress card */}
+  {(()=>{const dp=getDailyProgress();if(!dp.hasWorkout||dp.doneCount===0)return null;return(<Card style={{borderColor:dp.pct>=100?C.success+"40":C.teal+"30"}} onClick={onStart}><div style={{display:"flex",alignItems:"center",gap:12}}><div style={{position:"relative",width:48,height:48,flexShrink:0}}><svg viewBox="0 0 36 36" style={{width:48,height:48,transform:"rotate(-90deg)"}}><circle cx="18" cy="18" r="15.5" fill="none" stroke={C.border} strokeWidth="3"/><circle cx="18" cy="18" r="15.5" fill="none" stroke={dp.pct>=100?C.success:C.teal} strokeWidth="3" strokeDasharray={`${dp.pct} ${100-dp.pct}`} strokeLinecap="round"/></svg><div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:dp.pct>=100?C.success:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{dp.pct}%</div></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{dp.pct>=100?"Workout Complete!":"Today's Workout"}</div><div style={{fontSize:11,color:C.textMuted}}>{dp.doneCount} of {dp.total} exercises · {dp.totalMinutes} min{dp.sessionCount>1?` across ${dp.sessionCount} sessions`:""}</div>{dp.remainingCount>0&&<div style={{fontSize:10,color:C.teal,marginTop:2}}>~{dp.estimatedRemaining} min remaining · Tap to continue</div>}</div></div></Card>);})()}
   <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></Card>
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{onViewPlan&&<Card onClick={onViewPlan} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📋</span><div style={{fontSize:11,fontWeight:700,color:C.info,marginTop:4}}>View Full Plan</div><div style={{fontSize:9,color:C.textDim}}>12-month roadmap</div></Card>}{onViewSummary&&<Card onClick={onViewSummary} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📊</span><div style={{fontSize:11,fontWeight:700,color:C.purple,marginTop:4}}>My Assessment</div><div style={{fontSize:9,color:C.textDim}}>Review profile</div></Card>}</div>
   <OvertrainingCard/>
+  <BaselineProgressCard onStartBaseline={onBaseline} onViewHistory={onBaseline}/>
+  <PowerRecordsCard/>
+  {/* Hypertrophy Goal Card — shows when size goals active */}
+  {(()=>{if(!hasHypertrophyGoals())return null;const a=getAssessment();const tw=getTrainingWeek();const block=getCurrentBlock(tw.week);const exp=a?.hypertrophyExperience||"intermediate";const cat=a?.physiqueCategory||"general";const wps=a?.weakPoints||[];const split=getRecommendedSplit(a?.preferences?.daysPerWeek||4,exp);const protein=getProteinTarget(185);return(<Card style={{borderColor:C.purple+"30"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{fontSize:10,fontWeight:700,color:C.purple,letterSpacing:2}}>HYPERTROPHY PROGRAM</div><Badge color={block.color}>{block.name}</Badge></div><div style={{fontSize:12,color:C.text,fontWeight:600}}>{cat==="general"?"Muscle Building":cat.replace(/_/g," ")} · {split.label}</div><div style={{fontSize:10,color:C.textMuted,marginTop:2}}>{block.guidance}</div>{wps.length>0&&<div style={{display:"flex",gap:3,flexWrap:"wrap",marginTop:6}}>{wps.slice(0,4).map(w=><Badge key={w} color={C.danger}>{w.replace(/_/g," ")}</Badge>)}{wps.length>4&&<Badge color={C.textDim}>+{wps.length-4}</Badge>}</div>}<div style={{marginTop:8,padding:"6px 8px",background:C.bgGlass,borderRadius:6,fontSize:10,color:C.textMuted}}><span style={{color:C.teal,fontWeight:600}}>Protein: </span>{protein.min}-{protein.max}g/day · <span style={{color:C.info,fontWeight:600}}>Week {tw.week}</span> · {block.rpeRange} RPE</div></Card>);})()}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>{[{v:String(stats.totalSessions),l:"Days Done"},{v:`${stats.streak} 🔥`,l:"Streak"},{v:String(stats.sessionsThisWeek),l:"This Week",c:C.teal},{v:stats.totalSessions>0?`${Math.min(100,Math.round(stats.streak/7*100))}%`:"—",l:"Consistency",c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:s.v.length>3?28:36,fontWeight:800,color:s.c||C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,textTransform:"uppercase",letterSpacing:1.5}}>{s.l}</div></Card>))}</div>
   {(()=>{const vs=getVolumeSummary(CURRENT_PHASE);const tw=getTrainingWeek();return(<div><SectionTitle icon="📊" title={`Weekly Volume — Week ${tw.week}`} sub={tw.isDeload?"DELOAD WEEK — 50% volume for recovery":vs.groups.length===0?"No sessions this week yet":"Sets completed vs limit per muscle"}/>{tw.isDeload&&<Card style={{background:C.info+"10",borderColor:C.info+"30",marginBottom:10,padding:14}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>🔄</span><div><div style={{fontSize:13,fontWeight:700,color:C.info}}>Deload Week Active</div><div style={{fontSize:11,color:C.textMuted}}>All volume reduced 50%. Focus on movement quality and recovery. Max {vs.limit.max} sets/muscle.</div></div></div></Card>}{vs.groups.length>0&&<Card style={{padding:14}}>{vs.groups.map(g=>(<div key={g.muscle} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:11,fontWeight:600,color:C.text,minWidth:70}}>{g.muscle}</span><div style={{flex:1}}><ProgressBar value={g.sets} max={g.limit} color={g.over?C.danger:g.pct>=80?C.warning:C.teal} height={5}/></div><span style={{fontSize:10,fontWeight:700,color:g.over?C.danger:g.pct>=80?C.warning:C.textMuted,minWidth:44,textAlign:"right"}}>{g.sets}/{g.limit}</span></div>))}</Card>}</div>);})()}
   <div><SectionTitle icon="🗓️" title="Your Plan"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:"Phase 1",s:"Foundation",a:true},{n:"Phase 2",s:"Strength",a:false},{n:"Phase 3",s:"Hypertrophy",a:false}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:14,borderColor:p.a?C.teal+"40":C.border,background:p.a?C.tealBg:C.bgCard}}><div style={{fontSize:14,fontWeight:700,color:p.a?C.text:C.textDim}}>{p.n}</div><div style={{fontSize:11,color:p.a?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div></div>
@@ -800,7 +875,8 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork,onSwapExerci
         ...(b.lengthen?.length?[{label:"PHASE B: ROM + MOBILITY",desc:"Dynamic joint prep + injury-specific",exercises:b.lengthen,color:"#8b5cf6"}]:[]),
         {label:"PHASE C: WARM-UP ACTIVATION",desc:"Prepare movement patterns",exercises:w.warmup,color:C.info},
         {label:"PHASE D: MAIN WORK",desc:"Compound + isolation training",exercises:w.main,color:C.teal},
-        ...(b.cooldownStretches?.length?[{label:"PHASE E: STRETCH + RECOVERY",desc:"Static stretches for all trained muscles",exercises:b.cooldownStretches,color:C.success}]:[{label:"COOLDOWN",desc:"Recovery stretches",exercises:w.cooldown,color:C.success}]),
+        ...(b.cardio?.length?[{label:"PHASE E: CARDIO",desc:b.cardioMeta?`${b.cardioMeta.stage.name} · ${b.cardioMeta.exercise._cardioMeta?.zoneDisplay||""}`:"Prescribed cardiovascular training",exercises:b.cardio,color:C.danger}]:[]),
+        ...(b.cooldownStretches?.length?[{label:"PHASE F: STRETCH + RECOVERY",desc:"Static stretches for all trained muscles",exercises:b.cooldownStretches,color:C.success}]:[{label:"COOLDOWN",desc:"Recovery stretches",exercises:w.cooldown,color:C.success}]),
       ];
       return sections.map(section=>(
         <div key={section.label}>
@@ -820,8 +896,8 @@ function TrainScreen({onStart,workout,mode,onModeChange,onExtraWork,onSwapExerci
         </div>
       ));
     })()}
-    {/* Cardio prescription */}
-    {(()=>{const injuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,injuries);return(<div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:8,height:8,borderRadius:4,background:C.danger}}/><div><span style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:1.5}}>CARDIO</span><div style={{fontSize:9,color:C.textDim}}>{rx.type} · {rx.frequency} · {rx.intensity}</div></div></div><Card style={{padding:12,marginBottom:4,borderLeft:`3px solid ${C.danger}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:24}}>🫀</span><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>Cardio: {rx.type} {rx.activities[0]}</div><div style={{fontSize:10,color:C.textDim}}>{rx.duration} · {rx.intensity}</div></div><Badge color={C.danger}>{rx.type}</Badge></div>{rx.activities.length>1&&<div style={{marginTop:6,fontSize:9,color:C.textMuted}}>Alternatives: {rx.activities.slice(1).join(", ")}</div>}</Card></div>);})()}
+    {/* Cardio prescription — fallback when cardio not in workout blocks */}
+    {!(w.blocks?.cardio?.length>0)&&(()=>{const injuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,injuries);return(<div><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:8,height:8,borderRadius:4,background:C.danger}}/><div><span style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:1.5}}>CARDIO (separate session recommended)</span><div style={{fontSize:9,color:C.textDim}}>{rx.type} · {rx.frequency} · {rx.guidance}</div></div></div><Card style={{padding:12,marginBottom:4,borderLeft:`3px solid ${C.danger}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:24}}>🫀</span><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>Cardio: {rx.type} {rx.activities[0]}</div><div style={{fontSize:10,color:C.textDim}}>{rx.duration} · {rx.intensity}</div></div><Badge color={C.danger}>{rx.type}</Badge></div>{rx.activities.length>1&&<div style={{marginTop:6,fontSize:9,color:C.textMuted}}>Alternatives: {rx.activities.slice(1).join(", ")}</div>}</Card></div>);})()}
     {/* Optional foam rolling add-on */}
     {w.blocks?.foamAddOn?.length>0&&<Card style={{padding:14,borderColor:C.orange+"30"}}>
       <div style={{fontSize:10,fontWeight:700,color:C.orange,letterSpacing:1.5,marginBottom:6}}>OPTIONAL: EXTRA FOAM ROLLING</div>
@@ -1276,76 +1352,163 @@ function CoachScreen(){const[mode,setMode]=useState(null);const[msgs,setMsgs]=us
   </div>);
 }
 
-// ── QUICK MODE ──────────────────────────────────────────────────
+// ── QUICK MODE (Flexible Checklist with Split Workout Support) ──
 function QuickModeScreen({workout,onComplete}){
-  const[checked,setChecked]=useState({});
+  const w=workout||defaultWorkout;
+  // Load persisted daily progress or init fresh
+  const[checked,setChecked]=useState(()=>{const d=getDailyWorkout();return d?.completed||{};});
   const[expanded,setExpanded]=useState(null);
+  const[splitMode,setSplitMode]=useState(()=>getDailyWorkout()?.splitMode||false);
+  const[showMini,setShowMini]=useState(false);
+  const[showEndDay,setShowEndDay]=useState(false);
+  const[collapsed,setCollapsed]=useState({});
   const[timerOn,setTimerOn]=useState(false);
   const[tl,setTl]=useState(0);
   const[timerFor,setTimerFor]=useState(null);
   const tr=useRef(null);
   useEffect(()=>{if(timerOn&&tl>0)tr.current=setTimeout(()=>setTl(t=>t-1),1000);else if(timerOn&&tl===0){setTimerOn(false);setTimerFor(null);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
   const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
-  const w=workout||defaultWorkout;
-  const allDone=w.all.length>0&&w.all.every(e=>checked[e.id]);
-  const doneCount=w.all.filter(e=>checked[e.id]).length;
-  const toggleCheck=(id)=>setChecked(p=>({...p,[id]:!p[id]}));
+
+  // Phase-grouped exercises (A-F)
+  const groups=useMemo(()=>getPhaseGroupedExercises(w),[w]);
+  const allExercises=useMemo(()=>groups.flatMap(g=>g.exercises),[groups]);
+  const allDone=allExercises.length>0&&allExercises.every(e=>checked[e.id]);
+  const doneCount=allExercises.filter(e=>checked[e.id]).length;
+  const totalCount=allExercises.length;
+
+  // Persist on every check change
+  useEffect(()=>{saveDailyWorkout(w,checked,null,splitMode);},[checked,splitMode]);
+
+  const toggleCheck=(id)=>{
+    setChecked(p=>{const next={...p,[id]:!p[id]};if(!p[id])markExerciseDone(id);return next;});
+  };
   const startRest=(ex)=>{const ep2=exParams(ex);const r=ep2.rest||60;setTl(r);setTimerFor(ex.id);setTimerOn(true);};
+
   const handleComplete=()=>{
-    const exercisesCompleted=w.all.filter(e=>checked[e.id]).map(e=>{const ep2=exParams(e);return{exercise_id:e.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false};});
+    const exercisesCompleted=allExercises.filter(e=>checked[e.id]).map(e=>{const ep2=exParams(e);return{exercise_id:e.id,sets_done:ep2.sets||1,reps_done:ep2.reps||"—",load:null,pain_during:false};});
+    clearDailyWorkout();
     onComplete(exercisesCompleted);
   };
+
+  const handleEndDay=(action)=>{
+    const result=endDay(action);
+    if(result){onComplete(result.exercisesCompleted);}
+    setShowEndDay(false);
+  };
+
+  // Mini-session suggestions
+  const miniSessions=useMemo(()=>getMiniSessions(w,new Set(Object.keys(checked).filter(k=>checked[k]))),[w,checked]);
+
+  // Render an exercise row
+  const ExRow=({ex,globalIdx})=>{
+    const ep2=exParams(ex);const em2=exMuscles(ex);const done=checked[ex.id];const isExp=expanded===ex.id;
+    const estMin=estimateExerciseTime(ex,CURRENT_PHASE);
+    return(<Card key={ex.id} style={{padding:0,marginBottom:4,opacity:done?0.5:1,borderColor:done?C.success+"40":C.border}}>
+      <div style={{display:"flex",alignItems:"center",gap:0}}>
+        <button onClick={()=>toggleCheck(ex.id)} style={{width:48,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",background:"none",border:"none",cursor:"pointer",flexShrink:0}}>
+          <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${done?C.success:C.border}`,background:done?C.success:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>{done&&<span style={{color:"#000",fontSize:14,fontWeight:800}}>✓</span>}</div>
+        </button>
+        <div onClick={()=>setExpanded(isExp?null:ex.id)} style={{flex:1,padding:"10px 12px 10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:8}}>
+          <ExerciseImage exercise={ex} size="thumb"/>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:600,color:done?C.textDim:C.text,textDecoration:done?"line-through":"none"}}>{globalIdx?`${globalIdx}. `:""}{ex.name}</div>
+            <div style={{fontSize:10,color:C.textDim}}>{ep2.sets}×{ex._duration||ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · ~{estMin}min{ep2.intensity?` · ${ep2.intensity}`:""}</div>
+            {ex._reason&&<div style={{fontSize:8,color:C.info}}>{ex._reason}</div>}
+          </div>
+          <span style={{color:C.textDim,fontSize:10,transform:isExp?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>
+        </div>
+      </div>
+      {isExp&&<div style={{padding:"0 14px 14px",borderTop:`1px solid ${C.border}`}}>
+        <div style={{marginTop:10}}><ExerciseImage exercise={ex} showBoth={true}/></div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:8}}>{em2.primary.map(mu=><Badge key={mu}>{mu}</Badge>)}{em2.secondary.slice(0,2).map(mu=><Badge key={mu} color={C.textDim}>{mu}</Badge>)}</div>
+        {(ex.formCues||[]).length>0&&<div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:8}}><div style={{fontSize:10,fontWeight:700,color:C.success,marginBottom:4}}>KEY FORM CUES</div>{ex.formCues.slice(0,3).map((c,i)=><div key={i} style={{fontSize:11,color:C.text,padding:"2px 0"}}>{c}</div>)}</div>}
+        {ex.injuryNotes&&<div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><div style={{fontSize:10,fontWeight:700,color:C.danger,marginBottom:4}}>INJURY NOTES</div>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:10,color:C.text,padding:"2px 0"}}><b style={{color:k==="lower_back"?C.danger:k==="knee"?C.warning:C.info}}>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<div style={{fontSize:11,color:C.text}}>{ex.injuryNotes}</div>}</div>}
+        {ep2.rest>0&&<Btn variant="dark" size="sm" onClick={()=>startRest(ex)} style={{marginTop:8}} icon="⏱️">{timerFor===ex.id&&timerOn?`Resting... ${fmt(tl)}`:`Start ${ep2.rest}s Rest Timer`}</Btn>}
+      </div>}
+    </Card>);
+  };
+
   return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-      <div><div style={{fontSize:24,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>QUICK MODE</div><div style={{fontSize:11,color:C.textMuted}}>{doneCount}/{w.all.length} exercises · Tap name to expand</div></div>
-      <Badge color={allDone?C.success:C.warning}>{Math.round(doneCount/Math.max(1,w.all.length)*100)}%</Badge>
+      <div><div style={{fontSize:24,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>WORKOUT CHECKLIST</div><div style={{fontSize:11,color:C.textMuted}}>{doneCount}/{totalCount} exercises · Tap any to start</div></div>
+      <Badge color={allDone?C.success:C.warning}>{Math.round(doneCount/Math.max(1,totalCount)*100)}%</Badge>
     </div>
-    <ProgressBar value={doneCount} max={w.all.length} color={C.teal} height={4}/>
-    {/* Rest timer floating card */}
-    {timerOn&&<Card glow={C.infoGlow} style={{textAlign:"center",position:"sticky",top:0,zIndex:50}}><div style={{fontSize:10,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase"}}>REST — HYDRATE 💧</div><div style={{fontSize:36,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setTimerFor(null);}} style={{margin:"4px auto 0",width:"auto"}}>Skip →</Btn></Card>}
-    {[{label:"WARM-UP",exercises:w.warmup,color:C.info},{label:"MAIN",exercises:w.main,color:C.teal},{label:"COOLDOWN",exercises:w.cooldown,color:C.success}].map(sec=>(
-      <div key={sec.label}>
-        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}><div style={{width:6,height:6,borderRadius:3,background:sec.color}}/><span style={{fontSize:10,fontWeight:700,color:sec.color,letterSpacing:1.5}}>{sec.label}</span></div>
-        {sec.exercises.map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);const done=checked[ex.id];const isExp=expanded===ex.id;return(<Card key={ex.id} style={{padding:0,marginBottom:4,opacity:done?0.6:1,borderColor:done?C.success+"40":C.border}}>
-          {/* Main row */}
-          <div style={{display:"flex",alignItems:"center",gap:0}}>
-            {/* Checkbox */}
-            <button onClick={()=>toggleCheck(ex.id)} style={{width:48,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",background:"none",border:"none",cursor:"pointer",flexShrink:0}}>
-              <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${done?C.success:C.border}`,background:done?C.success:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>{done&&<span style={{color:"#000",fontSize:14,fontWeight:800}}>✓</span>}</div>
-            </button>
-            {/* Exercise info — tap to expand */}
-            <div onClick={()=>setExpanded(isExp?null:ex.id)} style={{flex:1,padding:"10px 12px 10px 0",cursor:"pointer",display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:18,flexShrink:0}}>{ex.emoji}</span>
-              <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:600,color:done?C.textDim:C.text,textDecoration:done?"line-through":"none"}}>{ex.name}</div>
-                <div style={{fontSize:10,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {(ex.bodyPart||"").replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>
-              </div>
-              <span style={{color:C.textDim,fontSize:10,transform:isExp?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>
-            </div>
+    <ProgressBar value={doneCount} max={totalCount} color={C.teal} height={4}/>
+
+    {/* Non-linear order note */}
+    <div style={{padding:"8px 12px",background:C.info+"08",borderRadius:10,borderLeft:`3px solid ${C.info}`}}>
+      <div style={{fontSize:10,color:C.info,fontWeight:600}}>Recommended order shown, but you can do these in any sequence that works for your schedule.</div>
+    </div>
+
+    {/* Split mode toggle */}
+    <div style={{display:"flex",gap:8}}>
+      <button onClick={()=>setSplitMode(!splitMode)} style={{flex:1,padding:"8px 12px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",background:splitMode?C.purple+"15":"transparent",border:`1px solid ${splitMode?C.purple+"60":C.border}`,color:splitMode?C.purple:C.textDim,fontFamily:"inherit"}}>
+        {splitMode?"✓ Split Mode ON":"Split My Workout"}
+      </button>
+      {splitMode&&<button onClick={()=>setShowMini(!showMini)} style={{padding:"8px 12px",borderRadius:10,fontSize:11,fontWeight:700,cursor:"pointer",background:C.tealBg,border:`1px solid ${C.teal}40`,color:C.teal,fontFamily:"inherit"}}>
+        {showMini?"Hide":"Mini-Sessions"}
+      </button>}
+    </div>
+
+    {splitMode&&<div style={{padding:"8px 12px",background:C.purple+"08",borderRadius:10,fontSize:10,color:C.purple}}>
+      Splitting today's workout? Complete exercises whenever you have time. Your progress saves automatically.
+    </div>}
+
+    {/* Mini-session suggestions */}
+    {showMini&&miniSessions.length>0&&<div style={{display:"flex",flexDirection:"column",gap:6}}>
+      <div style={{fontSize:10,fontWeight:700,color:C.teal,letterSpacing:1.5}}>SUGGESTED GROUPINGS</div>
+      {miniSessions.map(ms=>(<Card key={ms.label} style={{padding:12,cursor:"pointer"}} onClick={()=>{setShowMini(false);/* scroll to first exercise of this group */}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <span style={{fontSize:20}}>{ms.icon}</span>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:700,color:C.text}}>{ms.label} (~{ms.estimatedMin} min)</div>
+            <div style={{fontSize:10,color:C.textMuted}}>{ms.desc} · {ms.exercises.length} exercises</div>
           </div>
-          {/* Expanded detail view */}
-          {isExp&&<div style={{padding:"0 14px 14px",borderTop:`1px solid ${C.border}`}}>
-            {/* SVG Illustration — CLAUDE.md Rule 3: always visible when expanded */}
-            <div style={{marginTop:10}}><ExerciseImage exercise={ex} showBoth={true}/></div>
-            {/* Muscles */}
-            <div style={{display:"flex",flexWrap:"wrap",gap:3,marginTop:8}}>{em2.primary.map(mu=><Badge key={mu}>{mu}</Badge>)}{em2.secondary.slice(0,2).map(mu=><Badge key={mu} color={C.textDim}>{mu}</Badge>)}</div>
-            {/* Key form cues */}
-            <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:8}}><div style={{fontSize:10,fontWeight:700,color:C.success,marginBottom:4}}>KEY FORM CUES</div>{(ex.formCues||[]).slice(0,3).map((c,i)=><div key={i} style={{fontSize:11,color:C.text,padding:"2px 0"}}>{c}</div>)}</div>
-            {/* Injury notes */}
-            <div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><div style={{fontSize:10,fontWeight:700,color:C.danger,marginBottom:4}}>INJURY NOTES</div>{typeof ex.injuryNotes==="object"?Object.entries(ex.injuryNotes).filter(([,v])=>v).map(([k,v])=><div key={k} style={{fontSize:10,color:C.text,padding:"2px 0"}}><b style={{color:k==="lower_back"?C.danger:k==="knee"?C.warning:C.info}}>{k==="lower_back"?"BACK":k.toUpperCase()}:</b> {v}</div>):<div style={{fontSize:11,color:C.text}}>{ex.injuryNotes}</div>}</div>
-            {/* Breathing */}
-            {ex.breathing&&<div style={{background:C.bgGlass,borderRadius:10,padding:10,marginTop:6}}><div style={{display:"flex",justifyContent:"space-around"}}>{[{l:"In",v:ex.breathing.inhale,c:C.info},...(ex.breathing.hold&&ex.breathing.hold!=="0"?[{l:"Hold",v:ex.breathing.hold,c:C.warning}]:[]),{l:"Out",v:ex.breathing.exhale,c:C.success}].map(b=>(<div key={b.l} style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:800,color:b.c,fontFamily:"'Bebas Neue',sans-serif"}}>{b.v}{String(b.v).match(/^\d+$/)?'s':''}</div><div style={{fontSize:8,color:C.textDim,textTransform:"uppercase"}}>{b.l}</div></div>))}</div>{ex.breathing.pattern&&<div style={{fontSize:9,color:C.textMuted,textAlign:"center",marginTop:4,fontStyle:"italic"}}>{ex.breathing.pattern}</div>}</div>}
-            {/* Rest timer button */}
-            {ep2.rest>0&&<Btn variant="dark" size="sm" onClick={()=>startRest(ex)} style={{marginTop:8}} icon="⏱️">{timerFor===ex.id&&timerOn?`Resting... ${fmt(tl)}`:`Start ${ep2.rest}s Rest Timer`}</Btn>}
-          </div>}
-        </Card>);})}
-      </div>
-    ))}
-    {/* Complete button */}
+          <Badge color={C.info}>{ms.estimatedMin}m</Badge>
+        </div>
+      </Card>))}
+    </div>}
+
+    {/* Rest timer floating card */}
+    {timerOn&&<Card glow={C.info+"25"} style={{textAlign:"center",position:"sticky",top:0,zIndex:50}}><div style={{fontSize:10,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase"}}>REST — HYDRATE 💧</div><div style={{fontSize:36,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{fmt(tl)}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setTimerFor(null);}} style={{margin:"4px auto 0",width:"auto"}}>Skip →</Btn></Card>}
+
+    {/* Phase-grouped exercise checklist */}
+    {groups.map(group=>{
+      const groupDone=group.exercises.filter(e=>checked[e.id]).length;
+      const groupTotal=group.exercises.length;
+      const isCollapsed=collapsed[group.label];
+      return(<div key={group.label}>
+        <button onClick={()=>setCollapsed(p=>({...p,[group.label]:!p[group.label]}))} style={{display:"flex",alignItems:"center",gap:6,marginBottom:6,width:"100%",background:"none",border:"none",cursor:"pointer",padding:0}}>
+          <div style={{width:6,height:6,borderRadius:3,background:group.color}}/>
+          <span style={{fontSize:10,fontWeight:700,color:group.color,letterSpacing:1.5,flex:1,textAlign:"left"}}>{group.label}</span>
+          <span style={{fontSize:9,color:groupDone===groupTotal?C.success:C.textDim,fontWeight:600}}>{groupDone}/{groupTotal}</span>
+          <span style={{fontSize:10,color:C.textDim,transform:isCollapsed?"rotate(0)":"rotate(90deg)",transition:"transform 0.2s"}}>▸</span>
+        </button>
+        {!isCollapsed&&group.exercises.map(ex=><ExRow key={ex.id} ex={ex} globalIdx={ex._globalIndex}/>)}
+        {isCollapsed&&groupDone<groupTotal&&<div style={{fontSize:9,color:C.textDim,padding:"4px 0 8px 12px"}}>{groupTotal-groupDone} remaining</div>}
+      </div>);
+    })}
+
+    {/* Action buttons */}
     <div style={{position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}>
-      <Btn onClick={handleComplete} disabled={!allDone} icon={allDone?"🏆":"🔒"} style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{allDone?"COMPLETE WORKOUT":"CHECK ALL EXERCISES TO FINISH"}</Btn>
-      {!allDone&&<div style={{textAlign:"center",fontSize:10,color:C.textDim,marginTop:4}}>{w.all.length-doneCount} remaining</div>}
+      {allDone&&<Btn onClick={handleComplete} icon="🏆" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>COMPLETE WORKOUT</Btn>}
+      {!allDone&&doneCount>0&&splitMode&&<Btn variant="dark" onClick={()=>setShowEndDay(true)} icon="🌙" style={{marginBottom:6}}>End My Day ({doneCount}/{totalCount} done)</Btn>}
+      {!allDone&&!splitMode&&<Btn onClick={handleComplete} disabled={doneCount===0} icon={doneCount>0?"✓":"🔒"} style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{doneCount>0?`COMPLETE (${doneCount}/${totalCount})`:"CHECK EXERCISES TO FINISH"}</Btn>}
+      {!allDone&&<div style={{textAlign:"center",fontSize:10,color:C.textDim,marginTop:4}}>{totalCount-doneCount} remaining · ~{Math.round((totalCount-doneCount)*3)} min</div>}
     </div>
+
+    {/* End Day Modal */}
+    {showEndDay&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={()=>setShowEndDay(false)}>
+      <div style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:20,padding:24,maxWidth:360,width:"100%"}} onClick={e=>e.stopPropagation()}>
+        <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,marginBottom:8}}>END TODAY'S WORKOUT?</div>
+        <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:16}}>You completed {doneCount} of {totalCount} exercises today. What should we do with the remaining {totalCount-doneCount}?</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          <Btn size="md" onClick={()=>handleEndDay("skip")} icon="⏭️">Skip for today</Btn>
+          <Btn size="md" variant="purple" onClick={()=>handleEndDay("carryover")} icon="📋">Add to tomorrow</Btn>
+          <Btn size="md" variant="ghost" onClick={()=>setShowEndDay(false)}>Keep going</Btn>
+        </div>
+      </div>
+    </div>}
     <div style={{height:90}}/>
   </div>);
 }
@@ -1496,14 +1659,14 @@ function RecapScreen({onFinish,sessionData}){
   const otAssessment=useMemo(()=>assessOvertraining(),[saved]);
   const stats=getStats();
   const streakMsg=getStreakMessage(stats.streak);
-  return(<div className="fade-in" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,textAlign:"center",paddingTop:24}}><div style={{fontSize:72}}>🏆</div><h2 style={{fontSize:32,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>SESSION COMPLETE</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:300}}>{getRecapHeadline()}</p>{streakMsg&&<div style={{fontSize:12,color:C.teal,fontWeight:600}}>{getStreakEmoji(stats.streak)} {streakMsg}</div>}<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,width:"100%"}}>{[{l:"Sessions",v:String(stats.totalSessions),c:C.info},{l:"This Week",v:String(stats.sessionsThisWeek),c:C.teal},{l:"Streak",v:`${stats.streak} 🔥`,c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase",marginTop:4}}>{s.l}</div></Card>))}</div>{Object.keys(stats.weeklyVolume||{}).length>0&&<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.purple,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Weekly Volume (sets)</div>{Object.entries(stats.weeklyVolume).map(([m,v])=>(<div key={m} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:12,color:C.textMuted}}>{m.replace(/_/g," ")}</span><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{v}</span></div>))}</Card>}<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Recovery Protocol</div>{["💧 500ml water within the hour","🍗 30-40g protein within 90 min","😴 7-8 hours sleep tonight","🧊 Joint soreness → 10-15min ice","🚶 Light 10-min walk"].map((r,i)=>(<div key={i} style={{fontSize:13,color:C.textMuted,padding:"4px 0"}}>{r}</div>))}</Card>{otAssessment&&otAssessment.level>0&&<Card style={{width:"100%",borderLeft:`3px solid ${otAssessment.color}`,borderColor:otAssessment.color+"40"}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontSize:18}}>{otAssessment.icon}</span><div style={{fontSize:12,fontWeight:700,color:otAssessment.color}}>Recovery Alert — Level {otAssessment.level}</div></div><div style={{fontSize:11,color:C.text,lineHeight:1.6}}>{otAssessment.message}</div>{otAssessment.recoveryTips.slice(0,2).map((t,i)=><div key={i} style={{fontSize:10,color:C.textMuted,marginTop:4}}>💡 {t}</div>)}</Card>}{otAssessment?.reversal?.detected&&<Card style={{width:"100%",borderLeft:`3px solid ${C.success}`,borderColor:C.success+"40"}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:18}}>📈</span><div style={{fontSize:11,color:C.success,fontWeight:600}}>{otAssessment.reversal.message}</div></div></Card>}<Btn onClick={onFinish} style={{marginTop:8}} icon="🏠">Back to Home</Btn><div style={{height:90}}/></div>);}
+  return(<div className="fade-in" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,textAlign:"center",paddingTop:24}}><div style={{fontSize:72}}>🏆</div><h2 style={{fontSize:32,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>SESSION COMPLETE</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:300}}>{getRecapHeadline()}</p>{streakMsg&&<div style={{fontSize:12,color:C.teal,fontWeight:600}}>{getStreakEmoji(stats.streak)} {streakMsg}</div>}<div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,width:"100%"}}>{[{l:"Sessions",v:String(stats.totalSessions),c:C.info},{l:"This Week",v:String(stats.sessionsThisWeek),c:C.teal},{l:"Streak",v:`${stats.streak} 🔥`,c:C.success}].map(s=>(<Card key={s.l} style={{textAlign:"center",padding:16}}><div style={{fontSize:22,fontWeight:800,color:s.c,fontFamily:"'Bebas Neue',sans-serif"}}>{s.v}</div><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase",marginTop:4}}>{s.l}</div></Card>))}</div>{Object.keys(stats.weeklyVolume||{}).length>0&&<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.purple,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Weekly Volume (sets)</div>{Object.entries(stats.weeklyVolume).map(([m,v])=>(<div key={m} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:12,color:C.textMuted}}>{m.replace(/_/g," ")}</span><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{v}</span></div>))}</Card>}<Card style={{width:"100%"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Recovery Protocol</div>{["💧 500ml water within the hour","🍗 30-40g protein within 90 min","😴 7-8 hours sleep tonight","🧊 Joint soreness → 10-15min ice","🚶 Light 10-min walk"].map((r,i)=>(<div key={i} style={{fontSize:13,color:C.textMuted,padding:"4px 0"}}>{r}</div>))}</Card>{/* Hypertrophy nutrition tip */}{hasHypertrophyGoals()&&<Card style={{width:"100%",borderColor:C.purple+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.purple,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}}>Muscle Building Nutrition</div>{NUTRITION_TIPS.building.slice(0,2).map((t,i)=>(<div key={i} style={{display:"flex",gap:8,padding:"4px 0"}}><span>{t.icon}</span><div><div style={{fontSize:12,fontWeight:600,color:C.text}}>{t.title}</div><div style={{fontSize:11,color:C.textMuted}}>{t.tip}</div></div></div>))}</Card>}{otAssessment&&otAssessment.level>0&&<Card style={{width:"100%",borderLeft:`3px solid ${otAssessment.color}`,borderColor:otAssessment.color+"40"}}><div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontSize:18}}>{otAssessment.icon}</span><div style={{fontSize:12,fontWeight:700,color:otAssessment.color}}>Recovery Alert — Level {otAssessment.level}</div></div><div style={{fontSize:11,color:C.text,lineHeight:1.6}}>{otAssessment.message}</div>{otAssessment.recoveryTips.slice(0,2).map((t,i)=><div key={i} style={{fontSize:10,color:C.textMuted,marginTop:4}}>💡 {t}</div>)}</Card>}{otAssessment?.reversal?.detected&&<Card style={{width:"100%",borderLeft:`3px solid ${C.success}`,borderColor:C.success+"40"}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:18}}>📈</span><div style={{fontSize:11,color:C.success,fontWeight:600}}>{otAssessment.reversal.message}</div></div></Card>}<Btn onClick={onFinish} style={{marginTop:8}} icon="🏠">Back to Home</Btn><div style={{height:90}}/></div>);}
 function TasksScreen(){return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TASKS</div><Card style={{textAlign:"center",padding:24}}><div style={{fontSize:48}}>🚧</div><div style={{fontSize:16,fontWeight:700,color:C.text,marginTop:8}}>Coming Soon</div><div style={{fontSize:13,color:C.textMuted,marginTop:4}}>Task board with CTFAR coaching and integrity scoring.</div></Card><div style={{height:90}}/></div>);}
 
 // ── INNER APP (authenticated) ───────────────────────────────────
 function AppInner(){
   const{user,profile,loading}=useAuth();
   useEffect(()=>{syncOverridesFromSupabase();},[]);
-  const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding"]);
+  const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding","baseline"]);
   const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);if(!_noRestore.has(s))try{localStorage.setItem("apex_last_screen",s);}catch{}},[]);const _savedTab=(()=>{try{return localStorage.getItem("apex_last_tab")||"home";}catch{return"home";}})();const[tab,_setTab]=useState(_savedTab);const setTab=(t)=>{_setTab(t);try{localStorage.setItem("apex_last_tab",t);}catch{}};
   const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);
@@ -1529,7 +1692,7 @@ function AppInner(){
   },[user,profile,loading,devBypass]);
   // Check for paused workout on mount
   const[resumePrompt,setResumePrompt]=useState(null);
-  useEffect(()=>{try{const raw=localStorage.getItem("apex_paused_workout");if(!raw)return;const pw=JSON.parse(raw);const age=(Date.now()-pw.pausedAt)/3600000;if(age>4){localStorage.removeItem("apex_paused_workout");return;}setResumePrompt(pw);}catch{}},[]);
+  useEffect(()=>{try{const raw=localStorage.getItem("apex_paused_workout");if(!raw)return;const pw=JSON.parse(raw);const pausedDate=new Date(pw.pausedAt).toISOString().split("T")[0];const today=new Date().toISOString().split("T")[0];if(pausedDate!==today){localStorage.removeItem("apex_paused_workout");return;}setResumePrompt(pw);}catch{}},[]);
   // Derive exercise list + phase boundaries from current workout
   const wxAll=workout.all, wxWEnd=workout.warmup.length, wxMEnd=wxWEnd+workout.main.length;
   const wxPhase=i=>i<wxWEnd?"warmup":i<wxMEnd?"main":"cooldown";
@@ -1581,10 +1744,11 @@ function AppInner(){
     {screen==="plan_view"&&<PlanView onClose={()=>setScreen("home")}/>}
     {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
-    {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
+    {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
     {/* Resume paused workout prompt */}
     {resumePrompt&&screen==="home"&&<Card glow={C.tealGlow} style={{margin:"0 0 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Unfinished Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} exercises done · {Math.round((Date.now()-resumePrompt.pausedAt)/60000)} min ago</div></div></div><div style={{display:"flex",gap:8}}><Btn size="sm" onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);localStorage.removeItem("apex_paused_workout");setResumePrompt(null);setScreen("perform");}} style={{flex:2}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}}>Discard</Btn></div></Card>}
-    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")}/>}
+    {screen==="home"&&<HomeScreen onStart={()=>setScreen("checkin")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")}/>}
+    {screen==="baseline"&&<BaselineTestFlow onComplete={()=>{setScreen("home");setTab("home");}} onClose={()=>{setScreen("home");setTab("home");}}/>}
     {screen==="train"&&<TrainScreen onStart={()=>setScreen("checkin")} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")} onSwapExercise={(orig,alt)=>{setWorkout(w=>{const swap={...alt,_swappedFor:orig.name,_swapReason:"User requested alternative"};const newAll=w.all.map(e=>e.id===orig.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===orig.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===orig.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===orig.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===orig.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===orig.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===orig.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});}}/>}
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} safetyReport={safetyReport} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}

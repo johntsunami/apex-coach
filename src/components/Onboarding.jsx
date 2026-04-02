@@ -146,6 +146,9 @@ export default function OnboardingFlow({ onComplete }) {
   const [compensations, setCompensations] = useState({}); // {comp_id: true/false}
   const [rom, setRom] = useState({ neck:"full", thoracic:"full", lumbar:"full", shoulders:"full", elbows:"full", wrists:"full", hips:"full", knee_left:"full", knee_right:"full", ankles:"full", feet:"full" });
   const [goals, setGoals] = useState({}); // {muscle: ["size","injury_prevention",...]}
+  const [physiqueCategory, setPhysiqueCategory] = useState(null);
+  const [hypertrophyExperience, setHypertrophyExperience] = useState(null);
+  const [weakPoints, setWeakPoints] = useState([]);
   const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], sports: [], customSport: "" });
   const [search, setSearch] = useState("");
 
@@ -206,6 +209,9 @@ export default function OnboardingFlow({ onComplete }) {
       compensations: detectedComps.map(c => c.id),
       rom,
       goals,
+      physiqueCategory,
+      hypertrophyExperience,
+      weakPoints,
       compensatoryAdditions: compensatoryAdds,
       fitnessLevel,
       startingPhase,
@@ -848,6 +854,68 @@ export default function OnboardingFlow({ onComplete }) {
             </div>
           ))}
         </Card>}
+        {/* Physique sub-questions — shown when any muscle has 'size' goal */}
+        {Object.values(goals).some(g => (Array.isArray(g) ? g : [g]).includes("size")) && <>
+          <Card style={{ borderColor: "#a855f7" + "30", background: "#a855f7" + "05" }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#a855f7", letterSpacing: 1.5, marginBottom: 8 }}>PHYSIQUE GOAL</div>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 10 }}>What's your physique goal?</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+              {[
+                { id: "general", l: "General Muscle Building", d: "Want to look better, no competition plans", i: "💪" },
+                { id: "mens_physique", l: "NPC Men's Physique", d: "V-taper: shoulders, back, chest, arms", i: "🏖️" },
+                { id: "classic_physique", l: "NPC Classic Physique", d: "Balanced full-body, golden era", i: "🏛️" },
+                { id: "bodybuilding", l: "NPC Bodybuilding", d: "Maximum mass & conditioning", i: "🏋️" },
+                { id: "bikini", l: "NPC Bikini", d: "Toned, lean, glute/shoulder emphasis", i: "👙" },
+                { id: "figure", l: "NPC Figure", d: "Athletic, muscular, balanced", i: "🏆" },
+                { id: "wellness", l: "NPC Wellness", d: "Lower body emphasis: glutes, quads, hams", i: "🍑" },
+                { id: "womens_physique", l: "NPC Women's Physique", d: "Muscular, symmetrical, full", i: "💎" },
+                { id: "no_compete", l: "Not Competing", d: "Just maximize muscle growth", i: "📈" },
+              ].map(opt => (
+                <button key={opt.id} onClick={() => setPhysiqueCategory(opt.id)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 10, textAlign: "left", cursor: "pointer",
+                  background: physiqueCategory === opt.id ? "#a855f7" + "15" : "transparent",
+                  border: `1px solid ${physiqueCategory === opt.id ? "#a855f7" + "60" : C.border}`,
+                  color: physiqueCategory === opt.id ? "#a855f7" : C.textDim }}>
+                  <span style={{ fontSize: 18 }}>{opt.i}</span>
+                  <div><div style={{ fontSize: 13, fontWeight: 600 }}>{opt.l}</div><div style={{ fontSize: 10, color: C.textDim }}>{opt.d}</div></div>
+                </button>
+              ))}
+            </div>
+          </Card>
+          <Card style={{ borderColor: "#f97316" + "30" }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#f97316", letterSpacing: 1.5, marginBottom: 8 }}>TRAINING EXPERIENCE</div>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 10 }}>Your hypertrophy training experience?</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+              {[
+                { id: "beginner", l: "New (< 1 yr)", i: "🌱" },
+                { id: "intermediate", l: "Intermediate (1-3 yr)", i: "📊" },
+                { id: "advanced", l: "Advanced (3+ yr)", i: "🔥" },
+                { id: "competitor", l: "Competitor", i: "🏆" },
+              ].map(opt => (
+                <button key={opt.id} onClick={() => setHypertrophyExperience(opt.id)} style={{ flex: 1, minWidth: 100, padding: "8px 6px", borderRadius: 10, textAlign: "center", cursor: "pointer",
+                  background: hypertrophyExperience === opt.id ? "#f97316" + "15" : "transparent",
+                  border: `1px solid ${hypertrophyExperience === opt.id ? "#f97316" + "60" : C.border}`,
+                  color: hypertrophyExperience === opt.id ? "#f97316" : C.textDim, fontSize: 12, fontWeight: 600 }}>
+                  {opt.i} {opt.l}
+                </button>
+              ))}
+            </div>
+          </Card>
+          <Card style={{ borderColor: C.danger + "30" }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 8 }}>WEAK POINTS</div>
+            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 10 }}>Any areas you want to prioritize? (multi-select)</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+              {["Chest","Back Width","Back Thickness","Front Delts","Side Delts","Rear Delts","Biceps","Triceps","Forearms","Quads","Hamstrings","Glutes","Calves","Abs","Traps"].map(wp => {
+                const id = wp.toLowerCase().replace(/\s+/g, "_");
+                const active = weakPoints.includes(id);
+                return <button key={id} onClick={() => setWeakPoints(p => active ? p.filter(x => x !== id) : [...p, id])} style={{ padding: "5px 9px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+                  background: active ? C.danger + "15" : "transparent",
+                  border: `1px solid ${active ? C.danger + "60" : C.border}`,
+                  color: active ? C.danger : C.textDim }}>{active ? "✓ " : ""}{wp}</button>;
+              })}
+            </div>
+            {weakPoints.length > 0 && <div style={{ fontSize: 11, color: C.teal, marginTop: 6 }}>Priority muscles will get +30% volume to bring them up.</div>}
+          </Card>
+        </>}
         <Btn onClick={next}>Next — Preferences →</Btn>
       </div>}
 

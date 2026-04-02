@@ -8,6 +8,9 @@ const KEYS = {
   PREFS: "apex_prefs",
   STATS: "apex_stats",
   IMAGE_OVERRIDES: "apex_image_overrides",
+  BASELINE_TESTS: "apex_baseline_tests",
+  BASELINE_CAPABILITIES: "apex_baseline_capabilities",
+  POWER_RECORDS: "apex_power_records",
 };
 
 // ── Low-level helpers ──────────────────────────────────────────

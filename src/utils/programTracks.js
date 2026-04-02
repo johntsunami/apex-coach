@@ -97,6 +97,11 @@ export function getSFSAssessments() {
 export function detectPrograms(assessment) {
   const programs = ["cpt"]; // Everyone gets CPT foundation
 
+  // HYP: size goals or physique category selected
+  const hasSize = Object.values(assessment?.goals || {}).some(g => (Array.isArray(g) ? g : [g]).includes("size"));
+  const hasPhysique = !!assessment?.physiqueCategory;
+  if (hasSize || hasPhysique) programs.push("hyp");
+
   // PES: sport interests or strength/endurance goals
   const hasSports = (assessment?.preferences?.sports || []).length > 0;
   const hasStrength = Object.values(assessment?.goals || {}).some(g => (Array.isArray(g) ? g : [g]).includes("strength"));
@@ -123,6 +128,7 @@ export const PROGRAM_FILTERS = [
   { id: "All", label: "All Programs" },
   { id: "cpt", label: "Foundation (CPT)" },
   { id: "pes", label: "Performance (PES)" },
+  { id: "hyp", label: "Hypertrophy (HYP)" },
   { id: "sfs", label: "Senior (SFS)" },
   { id: "ces", label: "Corrective (CES)" },
   { id: "rehab", label: "Rehab (PT)" },

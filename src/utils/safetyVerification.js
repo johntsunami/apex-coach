@@ -1061,6 +1061,117 @@ export function checkPTBlend(plan, profile) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// CHECK 13: PLYOMETRIC READINESS
+// Phase 3+ required, no acute joint conditions, landing mechanics
+// ═══════════════════════════════════════════════════════════════
+export function checkPlyometricReadiness(plan, profile) {
+  const result = { passed: true, issues: [], corrections: [] };
+  const phase = profile.phase || 1;
+  const injuries = profile.injuries || getInjuries();
+  const active = injuries.filter((i) => i.status !== "resolved");
+  let capabilities;
+  try { capabilities = JSON.parse(localStorage.getItem("apex_baseline_capabilities")) || []; } catch { capabilities = []; }
+
+  for (const ex of plan.all || []) {
+    const isPlyometric = (ex.capabilityTag || []).includes("plyometric") ||
+                         (ex.tags || []).includes("plyometric") || ex._isPower;
+    if (!isPlyometric) continue;
+
+    // Phase gate
+    if (phase < 3) {
+      result.passed = false;
+      result.issues.push({ check: 13, severity: "critical", exercise: ex.name, exerciseId: ex.id, msg: `Plyometric "${ex.name}" requires Phase 3+ (currently Phase ${phase})` });
+      result.corrections.push({ action: "remove", removed: ex.id, removedName: ex.name, reason: `Phase ${phase} < 3 — plyometrics not yet safe` });
+      continue;
+    }
+
+    // Joint condition blocks for jump exercises
+    const isJump = (ex.tags || []).includes("jump") || (ex.movementPattern || "") === "plyometric" ||
+                   (ex.name || "").toLowerCase().includes("jump");
+    if (isJump) {
+      for (const inj of active) {
+        const area = (inj.area || "").toLowerCase();
+        const sev = inj.severity || 0;
+        if ((area.includes("knee") && sev >= 2) || (area.includes("ankle") && sev >= 2) ||
+            (area.includes("back") && sev >= 3) || (inj.type || "").toLowerCase().includes("replacement") ||
+            (inj.type || "").toLowerCase().includes("stress fracture")) {
+          result.passed = false;
+          result.issues.push({ check: 13, severity: "critical", exercise: ex.name, exerciseId: ex.id, msg: `Jump exercise blocked: ${inj.area} severity ${sev}` });
+          result.corrections.push({ action: "remove", removed: ex.id, removedName: ex.name, reason: `${inj.area} (sev ${sev}) prohibits jump exercises` });
+          break;
+        }
+      }
+    }
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHECK 14: POWER EXERCISE VOLUME CAP
+// Max 3 power/plyometric exercises per session (NSCA CNS fatigue)
+// ═══════════════════════════════════════════════════════════════
+export function checkPowerVolumeCap(plan) {
+  const result = { passed: true, issues: [], corrections: [] };
+  const powerExercises = (plan.all || []).filter((e) =>
+    (e.capabilityTag || []).includes("power") ||
+    (e.capabilityTag || []).includes("plyometric") ||
+    (e.tags || []).includes("plyometric") ||
+    (e.tags || []).includes("power") ||
+    e._isPower
+  );
+
+  if (powerExercises.length > 3) {
+    result.passed = false;
+    const excess = powerExercises.slice(3);
+    for (const ex of excess) {
+      result.issues.push({ check: 14, severity: "warning", exercise: ex.name, exerciseId: ex.id, msg: `${powerExercises.length} power exercises exceed NSCA max of 3/session — CNS fatigue risk` });
+      result.corrections.push({ action: "remove", removed: ex.id, removedName: ex.name, reason: "Power volume cap exceeded (max 3 per session per NSCA)" });
+    }
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHECK 15: POWER SESSION RECOVERY
+// Min 48 hours between sessions with plyometric/power (NSCA)
+// ═══════════════════════════════════════════════════════════════
+export function checkPowerRecovery(plan, profile) {
+  const result = { passed: true, issues: [], corrections: [] };
+  const hasPowerInPlan = (plan.all || []).some((e) =>
+    (e.capabilityTag || []).includes("power") ||
+    (e.capabilityTag || []).includes("plyometric") ||
+    (e.tags || []).includes("plyometric") ||
+    e._isPower
+  );
+
+  if (!hasPowerInPlan) return result;
+
+  const sessions = profile.sessions || getSessions() || [];
+  for (let i = sessions.length - 1; i >= 0; i--) {
+    const s = sessions[i];
+    const hasPower = (s.exercises_completed || []).some((ec) => {
+      const dbEx = exById[ec.exercise_id];
+      return dbEx && (
+        (dbEx.capabilityTag || []).includes("power") ||
+        (dbEx.capabilityTag || []).includes("plyometric") ||
+        (dbEx.tags || []).includes("plyometric") ||
+        (dbEx.tags || []).includes("power")
+      );
+    });
+    if (hasPower) {
+      const hoursSince = (Date.now() - new Date(s.date).getTime()) / 3600000;
+      if (hoursSince < 48) {
+        result.passed = false;
+        result.issues.push({ check: 15, severity: "warning", msg: `Only ${Math.round(hoursSince)}h since last power session — NSCA recommends 48h minimum` });
+        // Don't remove exercises, just flag — user can override
+      }
+      break;
+    }
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // RUN ALL CHECKS — master verification function
 // ═══════════════════════════════════════════════════════════════
 
@@ -1077,6 +1188,9 @@ const CHECK_NAMES = [
   "Medication Interactions",
   "Red Flag Monitoring",
   "PT + Training Blend",
+  "Plyometric Readiness",
+  "Power Volume Cap",
+  "Power Session Recovery",
 ];
 
 const CHECK_FUNCTIONS = [
@@ -1092,6 +1206,9 @@ const CHECK_FUNCTIONS = [
   checkMedications,
   checkRedFlags,
   checkPTBlend,
+  checkPlyometricReadiness,
+  checkPowerVolumeCap,
+  checkPowerRecovery,
 ];
 
 export function runAllChecks(plan, profile = {}) {

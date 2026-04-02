@@ -15,6 +15,16 @@ const VOLUME_LIMITS = {
   5: { min: 18, max: 24 },
 };
 
+// Hypertrophy-specific volume limits by experience (Pelland et al. 2026)
+const HYPERTROPHY_VOLUME = {
+  beginner:     { min: 10, max: 12 },
+  intermediate: { min: 14, max: 18 },
+  advanced:     { min: 18, max: 24 },
+  competitor:   { min: 20, max: 25 },
+};
+const HYPERTROPHY_ABSOLUTE_CAP = 30;  // Hard cap — beyond this, negative returns
+const HYPERTROPHY_SESSION_CAP = 12;   // Max productive sets per muscle per session
+
 // ── Week & deload tracking ────────────────────────────────────
 
 function getTrainingWeek() {
@@ -140,6 +150,11 @@ function capExerciseParams(exercise, phase = 1, difficulty = "standard") {
   } else if (difficulty === "send") {
     if (exercise.category === "main") sets += 2;
     rest = Math.max(0, rest - 20);
+  } else if (difficulty === "hypertrophy") {
+    // Hypertrophy: extra set on main exercises, longer rest for compounds
+    if (exercise.category === "main") sets += 1;
+    const isCompound = (exercise.movementPattern || "").match(/push|pull|squat|hinge|press|row/i);
+    rest = isCompound ? Math.max(rest, 90) : Math.max(60, rest);
   }
 
   // Cap sets to max allowed for this phase week
@@ -198,4 +213,7 @@ export {
   capExerciseParams,
   getVolumeSummary,
   VOLUME_LIMITS,
+  HYPERTROPHY_VOLUME,
+  HYPERTROPHY_ABSOLUTE_CAP,
+  HYPERTROPHY_SESSION_CAP,
 };
