@@ -26,8 +26,8 @@ export function hasCompletedAssessment() {
 
 // ── Shared styles (match App.jsx C object) ────────────────────
 const C={bg:"#060b18",bgCard:"#0d1425",bgElevated:"#162040",bgGlass:"rgba(255,255,255,0.04)",border:"rgba(255,255,255,0.08)",text:"#e8ecf4",textMuted:"#7a8ba8",textDim:"#4a5a78",teal:"#00d2c8",tealGlow:"rgba(0,210,200,0.15)",tealDark:"#00a89f",tealBg:"rgba(0,210,200,0.08)",success:"#22c55e",danger:"#ef4444",warning:"#eab308",info:"#3b82f6",orange:"#f97316",purple:"#a855f7",purpleGlow:"rgba(168,85,247,0.12)"};
-const Card=({children,style,onClick})=><div onClick={onClick} style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:16,padding:18,cursor:onClick?"pointer":"default",...style}}>{children}</div>;
-const Btn=({children,onClick,disabled,style,variant="teal",icon})=>{const v={teal:{background:`linear-gradient(135deg,${C.teal},${C.tealDark})`,color:"#000",fontWeight:700},dark:{background:C.bgElevated,color:C.text,border:`1px solid ${C.border}`}};return<button onClick={onClick} disabled={disabled} style={{...v[variant],padding:"14px 24px",borderRadius:14,fontSize:15,cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.4:1,display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",fontFamily:"inherit",border:v[variant]?.border||"none",...style}}>{icon&&<span>{icon}</span>}{children}</button>;};
+const Card=({children,style,onClick})=><div onClick={onClick} style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,padding:14,cursor:onClick?"pointer":"default",...style}}>{children}</div>;
+const Btn=({children,onClick,disabled,style,variant="teal",icon})=>{const v={teal:{background:`linear-gradient(135deg,${C.teal},${C.tealDark})`,color:"#000",fontWeight:700},dark:{background:C.bgElevated,color:C.text,border:`1px solid ${C.border}`}};return<button onClick={onClick} disabled={disabled} style={{...v[variant],padding:"12px 20px",borderRadius:12,fontSize:14,cursor:disabled?"not-allowed":"pointer",opacity:disabled?0.4:1,display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",fontFamily:"inherit",border:v[variant]?.border||"none",...style}}>{icon&&<span>{icon}</span>}{children}</button>;};
 const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",padding:"4px 10px",borderRadius:8,fontSize:10,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color,background:color+"15",border:`1px solid ${color}25`}}>{children}</span>;
 const ProgressBar=({value,max=100,color=C.teal,height=6})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2,transition:"width 0.4s ease"}}/></div>;
 
@@ -108,7 +108,7 @@ const HOME_EQUIPMENT_OPTIONS = [
   {id:"none",label:"None — bodyweight only"},
 ];
 
-const SPORTS = ["BJJ","Surfing","Muay Thai","Snowboarding","Hiking","Running","Swimming","Cycling","Rock Climbing","Yoga","CrossFit","None"];
+const SPORTS = ["Basketball","Soccer","Baseball/Softball","Tennis","Golf","Swimming","Running/Track","Cycling","Hiking","Rock Climbing","CrossFit","Boxing/Kickboxing","MMA/BJJ","Wrestling","Volleyball","Football","Yoga","Pilates","Dance","Rowing","Skiing/Snowboarding","Surfing","Skateboarding","Pickleball","Martial Arts","Muay Thai","None"];
 
 // 40 most common exercises — mapped to closest DB IDs
 const FAVORITE_GRID = [
@@ -143,13 +143,21 @@ export default function OnboardingFlow({ onComplete }) {
   const [parqWarning, setParqWarning] = useState(false);
   const [conditions, setConditions] = useState([]); // [{conditionId, severity}]
   const [condCatOpen, setCondCatOpen] = useState(null);
+  const [condSearch, setCondSearch] = useState("");
+  const [customCondText, setCustomCondText] = useState("");
+  // Build full flat conditions list for search (memoized)
+  const allConditions = useMemo(() => {
+    const fromDB = conditionsDB.map(c => ({ id: c.id, name: c.name, category: c.category }));
+    const fromMH = MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }));
+    return [...fromDB, ...fromMH];
+  }, []);
   const [compensations, setCompensations] = useState({}); // {comp_id: true/false}
   const [rom, setRom] = useState({ neck:"full", thoracic:"full", lumbar:"full", shoulders:"full", elbows:"full", wrists:"full", hips:"full", knee_left:"full", knee_right:"full", ankles:"full", feet:"full" });
   const [goals, setGoals] = useState({}); // {muscle: ["size","injury_prevention",...]}
   const [physiqueCategory, setPhysiqueCategory] = useState(null);
   const [hypertrophyExperience, setHypertrophyExperience] = useState(null);
   const [weakPoints, setWeakPoints] = useState([]);
-  const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], sports: [], customSport: "" });
+  const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], blacklist: [], blacklistCustom: "", sports: [], customSport: "" });
   const [search, setSearch] = useState("");
 
   // ── New clinical assessment state ──────────────────────────
@@ -303,10 +311,45 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 1: CONDITIONS ───────────────────────────── */}
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Select any active conditions. Tap a category, then select your specific condition. Tap again to deselect. Select all that apply — there is no limit.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Search for your condition or browse by category. Select all that apply.</div></div>
         <WhyHelper screenNum={1} />
         {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
-        {/* Body region cards — large tappable, one region at a time */}
+        {/* Search/autocomplete */}
+        <input value={condSearch} onChange={e => setCondSearch(e.target.value)} placeholder="Type your condition... (e.g. knee, carpal, anxiety)" style={{ width: "100%", padding: "14px 16px", borderRadius: 14, background: C.bgElevated, border: `1px solid ${condSearch ? C.teal + "60" : C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+        {condSearch.trim().length >= 2 && (() => {
+          const q = condSearch.toLowerCase();
+          const matches = allConditions.filter(c => c.name.toLowerCase().includes(q));
+          return <Card style={{ padding: 8, maxHeight: 250, overflowY: "auto" }}>
+            {matches.length > 0 ? matches.slice(0, 15).map(cond => {
+              const sel = conditions.find(c => c.conditionId === cond.id);
+              const cat = CONDITION_CATEGORIES.find(c => c.id === cond.category);
+              return <button key={cond.id} onClick={() => {
+                if (sel) setConditions(p => p.filter(c => c.conditionId !== cond.id));
+                else setConditions(p => [...p, { conditionId: cond.id, name: cond.name, severity: 2, bodyArea: "", condType: "", category: cond.category }]);
+              }} style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "10px 12px", background: sel ? C.tealBg : "transparent", border: "none", borderBottom: `1px solid ${C.border}`, color: sel ? C.teal : C.text, fontSize: 14, cursor: "pointer", textAlign: "left", fontFamily: "inherit" }}>
+                <span style={{ fontSize: 11 }}>{sel ? "✅" : "○"}</span>
+                <span style={{ flex: 1 }}>{cond.name}</span>
+                {cat && <span style={{ fontSize: 10, color: C.textDim }}>{cat.icon}</span>}
+              </button>;
+            }) : <div style={{ padding: 12 }}>
+              <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 8 }}>No matching conditions found.</div>
+              <div style={{ fontSize: 12, color: C.textDim, marginBottom: 8 }}>Don't see your condition? Describe it here:</div>
+              <input value={customCondText} onChange={e => setCustomCondText(e.target.value)} placeholder="Describe your condition..." style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box", marginBottom: 8 }} />
+              {customCondText.trim().length > 2 && <Btn variant="dark" onClick={() => {
+                const id = "custom_" + Date.now();
+                setConditions(p => [...p, { conditionId: id, name: customCondText.trim(), severity: 2, bodyArea: "", condType: "", category: "custom", isCustom: true }]);
+                setCustomCondText(""); setCondSearch("");
+              }}>Add "{customCondText.trim()}"</Btn>}
+            </div>}
+          </Card>;
+        })()}
+        {/* Custom conditions note */}
+        {conditions.some(c => c.isCustom) && <Card style={{ padding: 12, borderColor: C.warning + "40", background: C.warning + "08" }}>
+          <div style={{ fontSize: 11, color: C.warning, fontWeight: 600 }}>Custom conditions noted</div>
+          <div style={{ fontSize: 11, color: C.textMuted, marginTop: 4 }}>We've applied conservative safety measures — reduced intensity and added general joint protection. For specific adaptations, consult your healthcare provider.</div>
+        </Card>}
+        {/* Body region cards — browse alternative */}
+        <div style={{ fontSize: 11, color: C.textDim, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>Or browse by category</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {CONDITION_CATEGORIES.map(cat => {
           const catConds = cat.id === "mental_health"
@@ -788,37 +831,38 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 10: ROM SELF-ASSESSMENT (was 3) ───────── */}
       {screen === 10 && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Rate each joint's mobility. Limited or painful areas get adapted exercises.</div></div>
+        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Try each self-test and pick the closest result. Limited or painful areas get adapted exercises.</div><div style={{ fontSize: 11, color: C.textDim, marginTop: 4, fontStyle: "italic" }}>For the most accurate assessment, have someone watch you or record yourself.</div></div>
         <WhyHelper screenNum={10} />
         {[
-          { id:"neck", label:"Neck", desc:"Can you look fully up, down, left, right?", icon:"😐" },
-          { id:"thoracic", label:"Thoracic Spine", desc:"Can you rotate your upper back while hips stay still?", icon:"🔄" },
-          { id:"lumbar", label:"Lumbar Spine", desc:"Can you bend forward and touch your toes?", icon:"🙇" },
-          { id:"shoulders", label:"Shoulders", desc:"Can you reach both arms fully overhead?", icon:"🤸" },
-          { id:"elbows", label:"Elbows", desc:"Can you fully straighten and bend both elbows?", icon:"💪" },
-          { id:"wrists", label:"Wrists", desc:"Can you bend wrists fully forward and back?", icon:"🤲" },
-          { id:"hips", label:"Hips", desc:"Can you sit in a deep squat comfortably?", icon:"🧘" },
-          { id:"knee_left", label:"Left Knee", desc:"Can you fully bend and straighten without pain?", icon:"🦵" },
-          { id:"knee_right", label:"Right Knee", desc:"Same — right side", icon:"🦵" },
-          { id:"ankles", label:"Ankles", desc:"Can you touch knee to wall 4 inches from foot?", icon:"🦶" },
-          { id:"feet", label:"Toes / Feet", desc:"Can you pull toes up toward shin (dorsiflexion)?", icon:"🦶" },
+          { id:"neck", label:"Neck", icon:"😐", test:"Slowly turn your head fully left, then fully right. Then look up and down.", opts:[{v:"full",l:"Full rotation, no issue",c:C.success},{v:"limited",l:"Slightly restricted",c:C.warning},{v:"mod_limited",l:"Can't turn past 45°",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"thoracic", label:"Upper Back", icon:"🔄", test:"Sit in a chair, cross arms on chest. Rotate your upper body left and right while keeping hips still.", opts:[{v:"full",l:"Rotated easily both ways",c:C.success},{v:"limited",l:"Slightly stiff one side",c:C.warning},{v:"mod_limited",l:"Significantly limited",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"lumbar", label:"Lower Back", icon:"🙇", test:"Stand with feet together. Bend forward and reach for your toes. How far did you get?", opts:[{v:"full",l:"Touched toes easily",c:C.success},{v:"limited",l:"Reached shins",c:C.warning},{v:"mod_limited",l:"Only reached knees",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"shoulders", label:"Shoulders", icon:"🤸", test:"Stand facing a wall, arms straight. Raise both arms overhead and try to touch the wall with your thumbs.", opts:[{v:"full",l:"Touched wall easily",c:C.success},{v:"limited",l:"Almost touched",c:C.warning},{v:"mod_limited",l:"Couldn't reach",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"elbows", label:"Elbows", icon:"💪", test:"Fully straighten both arms, then bend them to touch your shoulders.", opts:[{v:"full",l:"Full range both ways",c:C.success},{v:"limited",l:"Slightly restricted",c:C.warning},{v:"mod_limited",l:"Can't fully straighten or bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"wrists", label:"Wrists", icon:"🤲", test:"Place palms together in prayer position. Push hands down while keeping palms flat. Then reverse (backs of hands together).", opts:[{v:"full",l:"Both directions comfortable",c:C.success},{v:"limited",l:"Some stiffness",c:C.warning},{v:"mod_limited",l:"Very limited bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"hips", label:"Hips", icon:"🧘", test:"Lying on your back, pull one knee to your chest. How far does it go?", opts:[{v:"full",l:"Knee touches chest",c:C.success},{v:"limited",l:"Close but not there",c:C.warning},{v:"mod_limited",l:"Significantly limited",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"knee_left", label:"Left Knee", icon:"🦵", test:"Stand on one leg. Slowly bend your left knee as deep as you can (hold a wall for balance).", opts:[{v:"full",l:"Deep bend, no issue",c:C.success},{v:"limited",l:"Moderate bend only",c:C.warning},{v:"mod_limited",l:"Very shallow bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"knee_right", label:"Right Knee", icon:"🦵", test:"Same test — right leg.", opts:[{v:"full",l:"Deep bend, no issue",c:C.success},{v:"limited",l:"Moderate bend only",c:C.warning},{v:"mod_limited",l:"Very shallow bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"ankles", label:"Ankles", icon:"🦶", test:"Face a wall, foot 4 inches away. Push your knee toward the wall while keeping heel down.", opts:[{v:"full",l:"Knee touched wall",c:C.success},{v:"limited",l:"Close but not there",c:C.warning},{v:"mod_limited",l:"Heel lifted",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
+          { id:"feet", label:"Toes / Feet", icon:"🦶", test:"Sitting, pull your toes up toward your shin as far as you can (dorsiflexion).", opts:[{v:"full",l:"Good pull-up range",c:C.success},{v:"limited",l:"Slightly limited",c:C.warning},{v:"mod_limited",l:"Very stiff",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
         ].map(joint => (
-          <Card key={joint.id} style={{ padding: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ fontSize: 16 }}>{joint.icon}</span><div><div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{joint.label}</div><div style={{ fontSize: 14, color: C.textDim }}>{joint.desc}</div></div></div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
-              {[{ v:"full", l:"Full", c:C.success }, { v:"limited", l:"Limited", c:C.warning }, { v:"painful", l:"Painful", c:C.danger }].map(opt => (
+          <Card key={joint.id} style={{ padding: 12 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}><span style={{ fontSize: 14 }}>{joint.icon}</span><div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{joint.label}</div></div>
+            <div style={{ fontSize: 12, color: C.info, lineHeight: 1.5, marginBottom: 8, padding: "6px 8px", background: C.info + "08", borderRadius: 8, borderLeft: `2px solid ${C.info}30` }}>{joint.test}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+              {joint.opts.map(opt => (
                 <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: p[joint.id] === opt.v ? "full" : opt.v }))}
-                  style={{ padding: "10px 4px", borderRadius: 8, fontSize: 16, fontWeight: 600, textAlign: "center", cursor: "pointer",
+                  style={{ padding: "8px 6px", borderRadius: 8, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", lineHeight: 1.3,
                     background: rom[joint.id] === opt.v ? opt.c + "15" : "transparent",
                     border: `1px solid ${rom[joint.id] === opt.v ? opt.c : C.border}`,
                     color: rom[joint.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
               ))}
             </div>
-            {rom[joint.id] === "painful" && <div style={{ fontSize: 15, color: C.danger, marginTop: 6 }}>→ We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
-            {rom[joint.id] === "limited" && <div style={{ fontSize: 15, color: C.warning, marginTop: 6 }}>→ Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
+            {(rom[joint.id] === "painful" || rom[joint.id] === "mod_limited") && <div style={{ fontSize: 11, color: C.danger, marginTop: 4 }}>We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
+            {rom[joint.id] === "limited" && <div style={{ fontSize: 11, color: C.warning, marginTop: 4 }}>Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
           </Card>
         ))}
-        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 14, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} joint{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
+        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 12, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} area{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
         <Btn onClick={next}>Next — Goals →</Btn>
       </div>}
 
@@ -847,12 +891,18 @@ export default function OnboardingFlow({ onComplete }) {
           );
         })}
         {compensatoryAdds.length > 0 && <Card style={{ borderColor: C.info + "30", background: C.info + "08" }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 8 }}>AUTO-ADDED COMPENSATORY WORK</div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 4 }}>BUILDING YOUR PERSONALIZED WORKOUT</div>
+          <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5, marginBottom: 8 }}>We've also added exercises to protect the areas you're NOT training — this prevents muscle imbalances and injury.</div>
           {compensatoryAdds.map((a, i) => (
-            <div key={i} style={{ fontSize: 15, color: C.text, padding: "4px 0", borderBottom: `1px solid ${C.border}` }}>
-              <b style={{ color: C.teal }}>{a.muscle}</b> added because you selected <b>{a.trigger}</b> → {a.reason}
+            <div key={i} style={{ fontSize: 12, color: C.text, padding: "3px 0", borderBottom: `1px solid ${C.border}` }}>
+              <b style={{ color: C.teal }}>{a.muscle}</b> — {a.reason}
             </div>
           ))}
+        </Card>}
+        {/* Lower body minimum guarantee */}
+        {!(goals.legs?.length > 0 || goals.glutes?.length > 0) && <Card style={{ borderColor: C.warning + "30", background: C.warning + "06" }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.warning, marginBottom: 4 }}>FOUNDATIONAL BALANCE WORK INCLUDED</div>
+          <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5 }}>Even though lower body isn't your focus, we've included foundational hip and core work to keep you balanced and injury-free. You can't build a strong house on a weak foundation.</div>
         </Card>}
         {/* Physique sub-questions — shown when any muscle has 'size' goal */}
         {Object.values(goals).some(g => (Array.isArray(g) ? g : [g]).includes("size")) && <>
@@ -980,13 +1030,14 @@ export default function OnboardingFlow({ onComplete }) {
         </Card>
         {/* Sports + custom */}
         <Card>
-          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Sport interests</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-            {SPORTS.map(s => {
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 4 }}>Sport interests</div>
+          <div style={{ fontSize: 11, color: C.textDim, marginBottom: 6 }}>Select all that apply. We'll tailor exercises for your sports.</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+            {SPORTS.filter(s => !prefs.customSport || s.toLowerCase().includes(prefs.customSport.toLowerCase())).map(s => {
               const sel = prefs.sports.includes(s);
               return (
                 <button key={s} onClick={() => setPrefs(p => ({ ...p, sports: sel ? p.sports.filter(x => x !== s) : [...p.sports, s] }))}
-                  style={{ padding: "6px 12px", borderRadius: 16, fontSize: 15, fontWeight: 600, cursor: "pointer",
+                  style={{ padding: "5px 10px", borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: "pointer",
                     background: sel ? C.purple + "15" : "transparent",
                     border: `1px solid ${sel ? C.purple + "60" : C.border}`,
                     color: sel ? C.purple : C.textDim }}>{sel ? "✓ " : ""}{s}</button>
@@ -1035,6 +1086,25 @@ export default function OnboardingFlow({ onComplete }) {
           </div>}
           {prefs.favorites.length > 0 && <div style={{ fontSize: 14, color: C.teal, marginTop: 6 }}>{prefs.favorites.length} exercise{prefs.favorites.length !== 1 ? "s" : ""} favorited</div>}
           {prefs.favorites.length > 8 && <div style={{ fontSize: 12, color: "#f97316", marginTop: 4, padding: "8px 10px", background: "#f97316" + "10", borderRadius: 8, lineHeight: 1.5 }}>You've selected {prefs.favorites.length} favorites. We'll rotate them through your workouts to maintain balanced muscle development. Not all favorites will appear in every session — this prevents overtraining one area.</div>}
+        </Card>
+        {/* Exercise Blacklist */}
+        <Card>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.danger, marginBottom: 4 }}>Exercises You Want to Avoid</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8, lineHeight: 1.5 }}>Any exercises you dislike or want removed from your plan? We'll find alternatives.</div>
+          <input value={prefs.blacklistCustom||""} onChange={e => setPrefs(p => ({ ...p, blacklistCustom: e.target.value }))} placeholder="Search exercises to avoid..." style={{ width: "100%", padding: "8px 12px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+          {(prefs.blacklistCustom||"").trim().length >= 2 && <div style={{ maxHeight: 120, overflowY: "auto", marginTop: 4 }}>
+            {exerciseDB.filter(e => e.name.toLowerCase().includes(prefs.blacklistCustom.toLowerCase())).slice(0, 6).map(e => {
+              const bl = prefs.blacklist.includes(e.id);
+              return <div key={e.id} onClick={() => setPrefs(p => ({ ...p, blacklist: bl ? p.blacklist.filter(x => x !== e.id) : [...p.blacklist, e.id], blacklistCustom: "" }))}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 0", cursor: "pointer", borderBottom: `1px solid ${C.border}` }}>
+                <span style={{ fontSize: 12, color: bl ? C.danger : C.textDim }}>{bl ? "✕" : "○"}</span>
+                <span style={{ fontSize: 13, color: bl ? C.danger : C.text, flex: 1 }}>{e.name}</span>
+              </div>;
+            })}
+          </div>}
+          {prefs.blacklist.length > 0 && <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
+            {prefs.blacklist.map(id => { const ex = exerciseDB.find(e => e.id === id); return ex ? <span key={id} onClick={() => setPrefs(p => ({ ...p, blacklist: p.blacklist.filter(x => x !== id) }))} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 11, cursor: "pointer" }}>{ex.name} ✕</span> : null; })}
+          </div>}
         </Card>
         <Btn onClick={next}>Next — Summary →</Btn>
       </div>}

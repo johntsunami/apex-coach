@@ -26,6 +26,15 @@ export default function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ── User-scoped localStorage management ────────────────────
+  // Prevents user A's data from leaking to user B
+  function _getLocalUid() { try { return localStorage.getItem("apex_current_uid"); } catch { return null; } }
+  function _setLocalUid(uid) { try { localStorage.setItem("apex_current_uid", uid); } catch {} }
+  function _clearUserLocalStorage() {
+    const userKeys = ["apex_assessment","apex_injuries","apex_injury_history","apex_sessions","apex_stats","apex_prefs","apex_paused_workout","apex_last_screen","apex_last_tab","apex_image_overrides","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_current_uid"];
+    userKeys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
+  }
+
   // Check session on mount + listen for auth changes
   useEffect(() => {
     if (!isSupabaseAvailable()) {
@@ -43,8 +52,15 @@ export default function AuthProvider({ children }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
+      const newUser = session?.user ?? null;
+      // Clear stale localStorage when user changes (prevents data leaking between accounts)
+      const prevUid = _getLocalUid();
+      if (newUser && prevUid && prevUid !== newUser.id) {
+        _clearUserLocalStorage();
+      }
+      if (newUser) _setLocalUid(newUser.id);
+      setUser(newUser);
+      if (newUser) fetchProfile(newUser.id);
       else { setProfile(null); setLoading(false); }
     });
 
@@ -108,6 +124,7 @@ export default function AuthProvider({ children }) {
 
   async function signOut() {
     if (!isSupabaseAvailable()) return;
+    _clearUserLocalStorage();
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);

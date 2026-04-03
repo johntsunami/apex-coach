@@ -5,12 +5,9 @@
 const KEY = "apex_injuries";
 const HISTORY_KEY = "apex_injury_history";
 
-// Default injuries (John's profile from CLAUDE.md)
-const DEFAULTS = [
-  { id: "inj_1", area: "Lower Back", type: "Post-Surgical", severity: 3, status: "managing", gateKey: "lower_back", protocols: ["Avoid axial loading >70% 1RM", "McGill Big 3 daily", "Hip hinge pattern priority"], notes: "", tempFlag: null },
-  { id: "inj_2", area: "Left Knee", type: "Post-Surgical", severity: 2, status: "rehab", gateKey: "knee", protocols: ["Limited deep flexion", "VMO activation pre-sets", "No plyometrics yet"], notes: "", tempFlag: null },
-  { id: "inj_3", area: "Left Shoulder", type: "Labrum Tear", severity: 2, status: "managing", gateKey: "shoulder", protocols: ["No behind-neck pressing", "External rotation warm-up", "Avoid overhead at end-range"], notes: "", tempFlag: null },
-];
+// No hardcoded defaults — each user's conditions come from their own assessment via Supabase.
+// Empty array means "no conditions reported" for new users.
+const DEFAULTS = [];
 
 function getInjuries() {
   try {

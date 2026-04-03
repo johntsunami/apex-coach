@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import exerciseDB from "./data/exercises.json";
-import { getSessions, saveSession, getStats, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
+import { getSessions, saveSession, getStats, isTodayComplete, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capExerciseParams, getVolumeSummary, getTrainingWeek } from "./utils/volumeTracker.js";
 import { getWorkoutOverloads } from "./utils/overload.js";
 import OnboardingFlow, { hasCompletedAssessment, getAssessment, saveAssessment } from "./components/Onboarding.jsx";
@@ -9,9 +9,9 @@ import AssessmentSummary from "./components/AssessmentSummary.jsx";
 import ExerciseImage from "./components/ExerciseImage.jsx";
 import ExtraWork from "./components/ExtraWork.jsx";
 import PlanView from "./components/PlanView.jsx";
-import { getInjuries } from "./utils/injuries.js";
+import { getInjuries, saveInjuries, conditionToGateKey } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
-import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen } from "./components/AuthScreens.jsx";
+import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";
@@ -486,6 +486,17 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   // Fill to minimum 3
   stretchPool.forEach(e => { if (cooldownStretches.length < 3 && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "General recovery", _duration: "30s" }); });
 
+  // HIGH STRESS: Add breathing exercises to warm-up start and cooldown end
+  const stressLevel = checkInData?.stress || 5;
+  if (stressLevel > 6) {
+    const breathingPool = exerciseDB.filter(e => (e.type === "breathing" || e.category === "breathing" || (e.name || "").toLowerCase().includes("breath")) && locOk(e));
+    if (breathingPool.length > 0) {
+      const breathEx = breathingPool[0];
+      if (!inhibit.find(x => x.id === breathEx.id)) inhibit.unshift({ ...breathEx, _reason: "High stress — breathing to decompress" });
+      if (!cooldownStretches.find(x => x.id === breathEx.id)) cooldownStretches.push({ ...breathEx, _reason: "High stress — wind-down breathing" });
+    }
+  }
+
   // OPTIONAL: Foam rolling add-on
   const foamAddOn = foamPool.filter(e => !inhibit.find(x => x.id === e.id)).slice(0, 4).map(e => ({ ...e, _reason: "Optional recovery foam rolling" }));
 
@@ -502,9 +513,12 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const weeklyVol = getWeeklyVolume();
   const runningVol = { ...weeklyVol }; // mutable copy for tracking within this session
   const volSwaps = []; // track volume-based substitutions
-  const pick = (category, limit) => {
+  const assessment = getAssessment();
+  const blacklist = new Set(assessment?.preferences?.blacklist || []);
+  const pick = (category, limit, excludeStarters) => {
     const pool = exerciseDB.filter(e =>
       e.category === category &&
+      !blacklist.has(e.id) &&
       (e.phaseEligibility || []).includes(phase) &&
       (category !== "main" || e.safetyTier !== "red")
     );
@@ -516,6 +530,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     for (const ex of pool) {
       if (result.length >= limit) break;
       if (usedIds.has(ex.id)) continue;
+      // First exercise variety: skip recent starters for first pick only
+      if (excludeStarters && result.length === 0 && excludeStarters.has(ex.id)) continue;
       // Location filter
       let picked = null;
       if (locationFilter(ex, location)) {
@@ -554,12 +570,15 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const mainLimit = sessionTime <= 30 ? 4 : sessionTime <= 45 ? 6 : 8;
   const cooldownLimit = sessionTime <= 30 ? 2 : 3;
 
-  const warmup = pick("warmup", warmupLimit);
+  // First exercise variety: exclude starters from last 3 sessions
+  const recentSessions = getSessions() || [];
+  const last3Starters = new Set(recentSessions.slice(-3).map(s => (s.exercises_completed || [])[0]?.exercise_id).filter(Boolean));
+
+  const warmup = pick("warmup", warmupLimit, last3Starters);
   let main = pick("main", mainLimit);
   const cooldown = pick("cooldown", cooldownLimit);
 
   // Prioritize favorited exercises — include ready ones, cap per session for balance (Fix #5)
-  const assessment = getAssessment();
   const favs = assessment?.preferences?.favorites || [];
   if (favs.length > 0) {
     const mainIds = new Set(main.map(e => e.id));
@@ -647,6 +666,17 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     }
   }
 
+  // ── LOWER BODY MINIMUM — ensure at least 2 lower body exercises even if user skipped leg goals ──
+  const goalsData = assessment?.goals || {};
+  const hasLegGoals = (goalsData.legs?.length > 0 || goalsData.glutes?.length > 0);
+  if (!hasLegGoals) {
+    const lowerIds = new Set(main.filter(e => e.bodyPart === "legs" || e.bodyPart === "glutes" || e.bodyPart === "hips").map(e => e.id));
+    if (lowerIds.size < 2) {
+      const lowerPool = exerciseDB.filter(e => e.category === "main" && (e.bodyPart === "legs" || e.bodyPart === "glutes" || e.bodyPart === "hips") && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location) && !mainIds.has(e.id));
+      for (const ex of lowerPool) { if (lowerIds.size >= 2) break; if (!lowerIds.has(ex.id)) { main.push({ ...ex, _reason: "Foundational hip/core — injury prevention minimum" }); mainIds.add(ex.id); lowerIds.add(ex.id); } }
+    }
+  }
+
   // ── POWER DEVELOPMENT INTEGRATION (Phase 4-5) ───────────────
   // Add power elements based on goals and phase
   const assessmentGoals = assessment?.goals?.types || [];
@@ -670,7 +700,15 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     }
   }
   const enrich = (ex) => lastLoads[ex.id] ? { ...ex, _lastLoad: lastLoads[ex.id] } : ex;
-  const eWarmup = warmup.map(enrich), eMain = main.map(enrich), eCooldown = cooldown.map(enrich);
+
+  // Deduplicate: no exercise ID should appear more than once across the entire session
+  const dedup = (arr) => { const seen = new Set(); return arr.filter(ex => { if (seen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } seen.add(ex.id); return true; }); };
+  const dWarmup = dedup(warmup);
+  const allSeen = new Set(dWarmup.map(e => e.id));
+  const dMain = main.filter(ex => { if (allSeen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } allSeen.add(ex.id); return true; });
+  const dCooldown = cooldown.filter(ex => { if (allSeen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } allSeen.add(ex.id); return true; });
+
+  const eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
 
   return { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks };
 }
@@ -834,13 +872,17 @@ function DebugPanel({onClose}){
   );
 }
 
+// TODO: Passive Stretching TV Mode — fullscreen image rotator showing one stretch every 3 minutes
+// with optional 1-5 minute timer per stretch. Randomized, condition-filtered, no contraindicated
+// stretches. Activated from Home screen. Designed for use while watching TV.
+
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:20}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   {/* Daily workout progress card */}
   {(()=>{const dp=getDailyProgress();if(!dp.hasWorkout||dp.doneCount===0)return null;return(<Card style={{borderColor:dp.pct>=100?C.success+"40":C.teal+"30"}} onClick={onStart}><div style={{display:"flex",alignItems:"center",gap:12}}><div style={{position:"relative",width:48,height:48,flexShrink:0}}><svg viewBox="0 0 36 36" style={{width:48,height:48,transform:"rotate(-90deg)"}}><circle cx="18" cy="18" r="15.5" fill="none" stroke={C.border} strokeWidth="3"/><circle cx="18" cy="18" r="15.5" fill="none" stroke={dp.pct>=100?C.success:C.teal} strokeWidth="3" strokeDasharray={`${dp.pct} ${100-dp.pct}`} strokeLinecap="round"/></svg><div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:dp.pct>=100?C.success:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{dp.pct}%</div></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{dp.pct>=100?"Workout Complete!":"Today's Workout"}</div><div style={{fontSize:11,color:C.textMuted}}>{dp.doneCount} of {dp.total} exercises · {dp.totalMinutes} min{dp.sessionCount>1?` across ${dp.sessionCount} sessions`:""}</div>{dp.remainingCount>0&&<div style={{fontSize:10,color:C.teal,marginTop:2}}>~{dp.estimatedRemaining} min remaining · Tap to continue</div>}</div></div></Card>);})()}
-  <Card glow={C.tealGlow}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge>WEEK 1 · DAY 2</Badge><span style={{fontSize:32}}>💪</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>UPPER BODY + CORE</h2><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div>{resumePrompt?<><ProgressBar value={resumePrompt.completedExercises?.length||0} max={resumePrompt.workout?.all?.length||1} color={C.teal} height={4}/><div style={{fontSize:11,color:C.teal,marginTop:4}}>{resumePrompt.completedExercises?.length||0} of {resumePrompt.workout?.all?.length||"?"} exercises done · {formatTimeAgo(resumePrompt.pausedAt)}</div><Btn onClick={onStart} style={{marginTop:12}} icon="▶">Continue Today's Workout</Btn></>:<><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></>}</Card>
+  {(()=>{const todayDone=isTodayComplete();return(<Card glow={todayDone?C.success+"15":C.tealGlow} style={todayDone?{borderColor:C.success+"40"}:undefined}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge color={todayDone?C.success:undefined}>{todayDone?"COMPLETED":"WEEK 1 · DAY 2"}</Badge><span style={{fontSize:32}}>{todayDone?"✅":"💪"}</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{todayDone?"TODAY'S WORKOUT: COMPLETE":"UPPER BODY + CORE"}</h2>{todayDone?<><div style={{display:"flex",gap:16,fontSize:12,color:C.textMuted,marginBottom:8}}><span>{todayDone.exerciseCount} exercises</span><span>{todayDone.durationMinutes} min</span>{todayDone.sessionCount>1&&<span>{todayDone.sessionCount} sessions</span>}</div><ProgressBar value={100} max={100} color={C.success} height={4}/><div style={{fontSize:11,color:C.success,marginTop:4,fontWeight:600}}>Great work today!</div><Btn variant="dark" onClick={onStart} style={{marginTop:12}} icon="➕">Want to do more? Add-on exercises</Btn></>:resumePrompt?<><ProgressBar value={resumePrompt.completedExercises?.length||0} max={resumePrompt.workout?.all?.length||1} color={C.teal} height={4}/><div style={{fontSize:11,color:C.teal,marginTop:4}}>{resumePrompt.completedExercises?.length||0} of {resumePrompt.workout?.all?.length||"?"} exercises done · {formatTimeAgo(resumePrompt.pausedAt)}</div><Btn onClick={onStart} style={{marginTop:12}} icon="▶">Continue Today's Workout</Btn></>:<><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~45 min</span><span>🏋️ Gym</span><span>Phase 1</span></div><ProgressBar value={35} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase 1 · Stabilization Endurance</div><Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn></>}</Card>);})()}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{onViewPlan&&<Card onClick={onViewPlan} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📋</span><div style={{fontSize:11,fontWeight:700,color:C.info,marginTop:4}}>View Full Plan</div><div style={{fontSize:9,color:C.textDim}}>12-month roadmap</div></Card>}{onViewSummary&&<Card onClick={onViewSummary} style={{cursor:"pointer",padding:14,textAlign:"center"}}><span style={{fontSize:18}}>📊</span><div style={{fontSize:11,fontWeight:700,color:C.purple,marginTop:4}}>My Assessment</div><div style={{fontSize:9,color:C.textDim}}>Review profile</div></Card>}</div>
   <OvertrainingCard/>
   <BaselineProgressCard onStartBaseline={onBaseline} onViewHistory={onBaseline}/>
@@ -876,7 +918,7 @@ function TrainScreen({onStart,resumePrompt,workout,mode,onModeChange,onExtraWork
   const[swapTarget,setSwapTarget]=useState(null);
   const planIds=useMemo(()=>new Set((w.all||[]).map(e=>e.id)),[w]);
   return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:16}}>
-    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div></div>
+    {(()=>{const td=isTodayComplete();return(<div><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div>{td&&<Badge color={C.success}>DONE ✓</Badge>}</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div>{td&&<div style={{fontSize:11,color:C.success,marginTop:4}}>{td.exerciseCount} exercises · {td.durationMinutes} min completed</div>}</div>);})()}
     {/* Mode toggle */}
     <div style={{display:"flex",background:C.bgElevated,borderRadius:12,padding:3,border:`1px solid ${C.border}`}}>
       {[{id:"guided",label:"Guided Mode",icon:"📋",desc:"Step-by-step coaching"},{id:"quick",label:"Quick Mode",icon:"✅",desc:"Checklist — experienced users"}].map(o=>(<button key={o.id} onClick={()=>onModeChange?.(o.id)} style={{flex:1,padding:"10px 8px",borderRadius:10,background:m===o.id?C.tealBg:"transparent",border:m===o.id?`1px solid ${C.teal}30`:"1px solid transparent",cursor:"pointer",textAlign:"center"}}><div style={{fontSize:14}}>{o.icon}</div><div style={{fontSize:11,fontWeight:700,color:m===o.id?C.teal:C.textDim}}>{o.label}</div><div style={{fontSize:9,color:C.textDim}}>{o.desc}</div></button>))}
@@ -960,7 +1002,9 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
   const soreLabel=soreAreas.length===0?"None reported":soreAreas.map(id=>{const bp=BODY_PARTS.find(b=>b.id===id);return bp?bp.label:id;}).join(", ");
   const soreImpact=soreAreas.length===0?"No adjustments needed":soreAreas.length<=2?"Minor adjustments — avoiding direct loading of sore areas":"Significant adjustments — reduced volume, extra warm-up for affected areas";
   const stressLvl=checkIn?.stress||5;
-  const stressImpact=stressLvl<=3?"Standard volume and pace":stressLvl<=6?"-20% volume, +15s rest, supportive coaching tone":"-40% volume, +30s rest, simplified exercises, gentle tone";
+  const energyLvl=checkIn?.energy||5;
+  const stressImpact=stressLvl<=3?"Standard coaching tone":stressLvl<=6?"Supportive coaching tone, breathing exercises added":"+3 min breathing in warm-up & cooldown. Intensity unchanged — exercise is one of the best stress relievers.";
+  const energyImpact=energyLvl<=3?"-30% volume, lighter loads — conserve energy for recovery":energyLvl<=5?"-15% volume, standard loads":"Full volume and intensity";
   // Compute excluded exercises
   const excluded=useMemo(()=>{
     const selectedIds=new Set(workout.all.map(e=>e.id));
@@ -985,7 +1029,8 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
     {/* Adaptation preview — show how check-in affects today (Fix #13) */}
     {(soreAreas.length>0||stressLvl>6||checkIn?.sleep==="poor")&&<Card style={{borderColor:C.info+"30",background:C.info+"06",padding:12}}><div style={{fontSize:10,fontWeight:700,color:C.info,letterSpacing:1.5,marginBottom:6}}>ADAPTED FOR YOU TODAY</div>
       {soreAreas.length>0&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.warning}}>💪 {soreLabel}</span> — volume reduced for sore areas, extra warm-up added</div>}
-      {stressLvl>6&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.danger}}>🧠 High stress (Lvl {stressLvl})</span> — {stressImpact}</div>}
+      {stressLvl>6&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.danger}}>🧠 High stress (Lvl {stressLvl})</span> — we've added breathing exercises to help you decompress. Your workout intensity stays the same.</div>}
+      {energyLvl<=3&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.orange}}>⚡ Low energy (Lvl {energyLvl})</span> — {energyImpact}</div>}
       {checkIn?.sleep==="poor"&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.purple}}>😴 Poor sleep</span> — {sleepImpact}</div>}
       {checkIn?.sleep==="ok"&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.warning}}>😴 OK sleep</span> — {sleepImpact}</div>}
       {checkIn?.painTypes&&Object.entries(checkIn.painTypes).filter(([,v])=>v==="sharp").map(([area])=>{const bp=BODY_PARTS.find(b=>b.id===area);return <div key={area} style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.danger}}>⚠️ Sharp pain: {bp?.label||area}</span> — exercises loading this area removed</div>;})}
@@ -1009,8 +1054,8 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
       {[
         {icon:"😴",label:"Sleep",value:sleepLabel,impact:sleepImpact,color:checkIn?.sleep==="great"||checkIn?.sleep==="good"?C.success:C.warning},
         {icon:"💪",label:"Soreness",value:soreLabel,impact:soreImpact,color:soreAreas.length===0?C.success:soreAreas.length<=2?C.warning:C.danger},
-        {icon:"🧠",label:"Stress",value:stressLvl+"/10",impact:stressImpact,color:stressLvl<=3?C.success:stressLvl<=6?C.warning:C.danger},
-        {icon:"⚡",label:"Energy",value:(checkIn?.energy||5)+"/10",impact:checkIn?.energy>=7?"Full intensity cleared":checkIn?.energy>=4?"Standard intensity":"Reduced intensity — listen to your body",color:(checkIn?.energy||5)>=7?C.success:(checkIn?.energy||5)>=4?C.warning:C.danger},
+        {icon:"🧠",label:"Stress",value:stressLvl+"/10",impact:stressImpact+" (affects tone & breathing only)",color:stressLvl<=3?C.success:stressLvl<=6?C.warning:C.danger},
+        {icon:"⚡",label:"Energy",value:energyLvl+"/10",impact:energyImpact,color:energyLvl>=7?C.success:energyLvl>=4?C.warning:C.danger},
         {icon:"🩺",label:"Injuries",value:INJURIES.length+" active",impact:injuryBlocked+" exercises blocked system-wide, "+workout.all.filter(e=>e._swappedFor).length+" swapped today",color:C.warning},
       ].map(f=>(<div key={f.label} style={{display:"flex",gap:10,padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
         <span style={{fontSize:16,flexShrink:0}}>{f.icon}</span>
@@ -1155,18 +1200,26 @@ const exMode=(()=>{
   if(eq.some(e=>WEIGHTED_EQ.has(e)))return"weighted";
   return"bodyweight";
 })();
-// Per-set tracking
-const defaultReps=exMode==="timed"?parseInt(String(ep.reps).replace(/[^0-9]/g,''))||30:parseInt(String(ep.reps).replace(/[^0-9]/g,''))||12;
+// Per-set tracking — extract only the FIRST number from reps string (e.g. "12-15" → 12, "30s per leg" → 30)
+const _parseReps=(s)=>{const m=String(s).match(/\d+/);return m?parseInt(m[0],10):null;};
+const defaultReps=exMode==="timed"?(_parseReps(ep.reps)||30):(_parseReps(ep.reps)||12);
+const repsCap=defaultReps*4; // max input = 4x prescribed
 const[setLog,setSetLog]=useState([]);
 const[curReps,setCurReps]=useState(defaultReps);
 const[curLoad,setCurLoad]=useState(exercise._lastLoad||"");
 const[curRpe,setCurRpe]=useState(0);
 const[curPain,setCurPain]=useState(false);
 const[curQuality,setCurQuality]=useState("");
-useEffect(()=>{setCs(1);setResting(false);setTimerOn(false);setTl(ep.rest||0);setExp("steps");setSetLog([]);setCurReps(parseInt(String(ep.reps).replace(/[^0-9]/g,''))||12);setCurLoad(exercise._lastLoad||"");setCurRpe(0);setCurPain(false);setCurQuality("");},[exercise.id]);
-useEffect(()=>{if(timerOn&&tl>0)tr.current=setTimeout(()=>setTl(t=>t-1),1000);else if(timerOn&&tl===0){setTimerOn(false);setResting(false);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
+useEffect(()=>{setCs(1);setResting(false);setTimerOn(false);setTl(ep.rest||0);setExp("steps");setSetLog([]);setCurReps(_parseReps(ep.reps)||12);setCurLoad(exercise._lastLoad||"");setCurRpe(0);setCurPain(false);setCurQuality("");setAutoAdvancing(false);setAutoAdvanceName("");},[exercise.id]);
+const[autoAdvancing,setAutoAdvancing]=useState(false);const[autoAdvanceName,setAutoAdvanceName]=useState("");
+const[restTipText,setRestTipText]=useState(()=>getRestTip());
+const[restTipChanged,setRestTipChanged]=useState(false);
+useEffect(()=>{if(timerOn&&tl>0){tr.current=setTimeout(()=>setTl(t=>t-1),1000);// Change tip once at halfway for long rest periods (>90s)
+if(ep.rest>90&&tl===Math.floor(ep.rest/2)&&!restTipChanged){setRestTipText(getRestTip());setRestTipChanged(true);}}else if(timerOn&&tl===0){setTimerOn(false);setResting(false);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
+// Auto-advance: when rest ends and all sets are done, show 3s transition then call onDone
+useEffect(()=>{if(autoAdvancing){const t=setTimeout(()=>{setAutoAdvancing(false);setAutoAdvanceName("");onDone({sets:setLog});},3000);return()=>clearTimeout(t);}},[autoAdvancing]);
 const logAndAdvance=()=>{const entry={set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"};setSetLog(prev=>[...prev,entry]);setCurPain(false);setCurQuality("");};
-const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);}}else{onDone({sets:[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}]});}};
+const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);setRestTipText(getRestTip());setRestTipChanged(false);}}else{const allSets=[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}];setSetLog(allSets);setAutoAdvanceName("next");setAutoAdvancing(true);}};
 const undoSet=()=>{if(cs>1&&canUndo){setCs(s=>s-1);setSetLog(prev=>prev.slice(0,-1));setResting(false);setTimerOn(false);setCanUndo(false);}};
 const fmt=s=>`${Math.floor(s/60)}:${(s%60).toString().padStart(2,"0")}`;
 const pc={warmup:C.info,main:C.teal,cooldown:C.success}[phase]||C.teal;
@@ -1177,11 +1230,11 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   {/* Exercise image — animated crossfade between start/end positions */}
   <ExerciseImage exercise={exercise}/>
   <div style={{textAlign:"center"}}><h2 style={{fontSize:24,fontWeight:800,color:"#FFF",margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>{exercise.name.toUpperCase()}</h2><div style={{fontSize:12,color:C.textDim,marginTop:4}}>📍 {exLocationLabel(exercise)} · {exercise.difficultyLevel?`Level ${exercise.difficultyLevel}`:exercise.difficulty||""}</div></div>
-  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:6}}>
-    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
-    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.reps}</div></Card>
-    <Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Tempo</div><div style={{fontSize:14,fontWeight:700,color:C.textMuted}}>{ep.tempo||exercise.tempo||"—"}</div></Card>
-    {ep.intensity&&<Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>RPE</div><div style={{fontSize:20,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.intensity}</div></Card>}
+  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:4}}>
+    <Card style={{textAlign:"center",padding:8}}><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>Sets</div><div style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{cs}/{ep.sets||1}</div></Card>
+    <Card style={{textAlign:"center",padding:8}}><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>Reps</div><div style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif"}}>{ep.reps}</div></Card>
+    {(()=>{const t=ep.tempo||exercise.tempo||"";const parts=t.split("/");const desc=parts.length===3?`${parts[0]}s down, ${parts[1]==="0"?"no pause":parts[1]+"s hold"}, ${parts[2]}s up`:t||"—";return<Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Tempo</div><div style={{fontSize:11,fontWeight:600,color:C.textMuted,lineHeight:1.3}}>{desc}</div></Card>;})()}
+    {ep.intensity&&(()=>{const rpeMatch=String(ep.intensity).match(/\d+/);const n=rpeMatch?parseInt(rpeMatch[0],10):0;const desc=n>=10?"absolute limit":n>=9?"near max":n>=8?"very hard":n>=7?"hard but doable":n>=6?"moderate-hard":n>=5?"moderate":"light";return<Card style={{textAlign:"center",padding:10}}><div style={{fontSize:10,color:C.textDim,textTransform:"uppercase"}}>Effort</div><div style={{fontSize:16,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{n}/10</div><div style={{fontSize:9,color:C.textMuted,marginTop:1}}>{desc}</div></Card>;})()}
   </div>
   {/* Step-by-step instructions — shown immediately after sets/reps */}
   <Card style={{padding:14,borderLeft:`3px solid ${C.info}`}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>📋 STEP-BY-STEP</div>{exercise.steps.map((s,i)=>(<div key={i} style={{display:"flex",gap:10,padding:"6px 0",borderBottom:i<exercise.steps.length-1?`1px solid ${C.border}`:"none"}}><div style={{minWidth:22,height:22,borderRadius:"50%",background:C.infoGlow,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:800,color:C.info,flexShrink:0}}>{i+1}</div><p style={{fontSize:13,color:C.text,lineHeight:1.6,margin:0}}>{s}</p></div>))}</Card>
@@ -1191,31 +1244,32 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
 
     {/* TIMED: duration + effort */}
     {exMode==="timed"&&<div>
-      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (seconds)</div>
-      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><button onClick={()=>setCurReps(r=>Math.max(5,r-5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:40,textAlign:"center"}}>{curReps}s</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (seconds) <span style={{fontSize:8}}>({defaultReps}s)</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><button onClick={()=>setCurReps(r=>Math.max(5,r-5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><input type="number" inputMode="numeric" value={curReps} onChange={e=>{const v=parseInt(e.target.value);if(!isNaN(v)&&v>=1&&v<=repsCap)setCurReps(v);else if(e.target.value==="")setCurReps(1);}} style={{width:52,fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",textAlign:"center",background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px 4px",outline:"none",boxSizing:"border-box"}}/><span style={{fontSize:14,color:C.textDim}}>s</span><button onClick={()=>setCurReps(r=>Math.min(repsCap,r+5))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button>{curReps!==defaultReps&&<button onClick={()=>setCurReps(defaultReps)} style={{padding:"4px 8px",borderRadius:6,background:"transparent",border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,cursor:"pointer",fontFamily:"inherit"}}>Reset</button>}</div>
     </div>}
 
     {/* BODYWEIGHT: reps + effort (no weight) */}
     {exMode==="bodyweight"&&<div style={{marginBottom:8}}>
-      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps</div>
-      <div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:30,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+1)} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps <span style={{color:C.textDim,fontSize:8}}>(prescribed: {defaultReps})</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><input type="number" inputMode="numeric" value={curReps} onChange={e=>{const v=parseInt(e.target.value);if(!isNaN(v)&&v>=1&&v<=repsCap)setCurReps(v);else if(e.target.value==="")setCurReps(1);}} style={{width:52,fontSize:22,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",textAlign:"center",background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px 4px",outline:"none",boxSizing:"border-box"}}/><button onClick={()=>setCurReps(r=>Math.min(repsCap,r+1))} style={{width:32,height:32,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button>{curReps!==defaultReps&&<button onClick={()=>setCurReps(defaultReps)} style={{padding:"4px 8px",borderRadius:6,background:"transparent",border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,cursor:"pointer",fontFamily:"inherit"}}>Reset</button>}</div>
     </div>}
 
     {/* WEIGHTED: reps + weight + effort */}
     {exMode==="weighted"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
-      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps</div><div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:24,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+1)} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div></div>
+      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Reps <span style={{fontSize:8}}>({defaultReps})</span></div><div style={{display:"flex",alignItems:"center",gap:3}}><button onClick={()=>setCurReps(r=>Math.max(1,r-1))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><input type="number" inputMode="numeric" value={curReps} onChange={e=>{const v=parseInt(e.target.value);if(!isNaN(v)&&v>=1&&v<=repsCap)setCurReps(v);else if(e.target.value==="")setCurReps(1);}} style={{width:44,fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",textAlign:"center",background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px",outline:"none",boxSizing:"border-box"}}/><button onClick={()=>setCurReps(r=>Math.min(repsCap,r+1))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button>{curReps!==defaultReps&&<button onClick={()=>setCurReps(defaultReps)} style={{padding:"2px 6px",borderRadius:4,background:"transparent",border:`1px solid ${C.border}`,color:C.textDim,fontSize:8,cursor:"pointer",fontFamily:"inherit"}}>↺</button>}</div></div>
       <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Weight (lbs)</div><div style={{display:"flex",alignItems:"center",gap:2}}>{[{v:-50,l:"-50"},{v:-5,l:"-5"}].map(b=><button key={b.l} onClick={()=>setCurLoad(l=>String(Math.max(0,(parseFloat(l)||0)+b.v)))} style={{width:30,height:28,borderRadius:4,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{b.l}</button>)}<input value={curLoad} onChange={e=>setCurLoad(e.target.value)} placeholder="—" type="number" style={{flex:1,padding:"6px 4px",borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontFamily:"inherit",outline:"none",textAlign:"center",boxSizing:"border-box",minWidth:0}}/>{[{v:5,l:"+5"},{v:50,l:"+50"}].map(b=><button key={b.l} onClick={()=>setCurLoad(l=>String(Math.max(0,(parseFloat(l)||0)+b.v)))} style={{width:30,height:28,borderRadius:4,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:9,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{b.l}</button>)}</div></div>
     </div>}
 
     {/* CARDIO: duration + distance + effort */}
     {exMode==="cardio"&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:8}}>
-      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (min)</div><div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-5))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><span style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",minWidth:24,textAlign:"center"}}>{curReps}</span><button onClick={()=>setCurReps(r=>r+5)} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div></div>
+      <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Duration (min)</div><div style={{display:"flex",alignItems:"center",gap:4}}><button onClick={()=>setCurReps(r=>Math.max(1,r-5))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>-</button><input type="number" inputMode="numeric" value={curReps} onChange={e=>{const v=parseInt(e.target.value);if(!isNaN(v)&&v>=1&&v<=repsCap)setCurReps(v);else if(e.target.value==="")setCurReps(1);}} style={{width:44,fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",textAlign:"center",background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:6,padding:"2px",outline:"none",boxSizing:"border-box"}}/><button onClick={()=>setCurReps(r=>Math.min(repsCap,r+5))} style={{width:28,height:28,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,cursor:"pointer"}}>+</button></div></div>
       <div><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Distance (mi, optional)</div><input value={curLoad} onChange={e=>setCurLoad(e.target.value)} placeholder="—" type="number" step="0.1" style={{width:"100%",padding:"6px 8px",borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.text,fontSize:14,fontFamily:"inherit",outline:"none",textAlign:"center",boxSizing:"border-box"}}/></div>
     </div>}
 
     {/* Effort Level — shown for weighted, bodyweight, timed, cardio (NOT mobility) */}
-    {exMode!=="mobility"&&<div style={{display:"flex",gap:6,marginBottom:6}}>
-      <div style={{flex:1}}><div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Effort Level 1-10 (optional) <span title="RPE = how hard it felt. 5 = moderate, 7 = challenging, 9 = near max, 10 = absolute limit." style={{cursor:"help",color:C.info,fontWeight:700}}>ⓘ</span></div><div style={{display:"flex",gap:2}}>{[5,6,7,8,9,10].map(v=><button key={v} onClick={()=>setCurRpe(curRpe===v?0:v)} style={{flex:1,padding:"4px 0",borderRadius:4,fontSize:9,fontWeight:700,cursor:"pointer",background:curRpe===v?C.teal+"20":"transparent",border:`1px solid ${curRpe===v?C.teal:C.border}`,color:curRpe===v?C.teal:C.textDim}}>{v}</button>)}</div></div>
+    {exMode!=="mobility"&&<div style={{marginBottom:6}}>
+      <div style={{fontSize:9,color:C.textDim,marginBottom:3}}>Effort Level (optional)</div>
+      <div style={{display:"flex",gap:2}}>{[{v:5,l:"moderate"},{v:6,l:"mod-hard"},{v:7,l:"hard"},{v:8,l:"very hard"},{v:9,l:"near max"},{v:10,l:"limit"}].map(b=><button key={b.v} onClick={()=>setCurRpe(curRpe===b.v?0:b.v)} style={{flex:1,padding:"4px 2px",borderRadius:4,cursor:"pointer",background:curRpe===b.v?C.teal+"20":"transparent",border:`1px solid ${curRpe===b.v?C.teal:C.border}`,color:curRpe===b.v?C.teal:C.textDim,textAlign:"center"}}><div style={{fontSize:11,fontWeight:700}}>{b.v}</div><div style={{fontSize:7,lineHeight:1.1}}>{b.l}</div></button>)}</div>
     </div>}
 
     {/* Pain + Quality — shown for weighted, bodyweight, timed (NOT mobility/cardio) */}
@@ -1243,8 +1297,9 @@ return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
   <Sec id="tips" title="Pro Tip" icon="💡" color={C.teal} collapsible><p style={{fontSize:11,color:C.text,margin:0}}>{exercise.proTip}</p></Sec>
   {/* Muscles + equipment + tempo — bottom metadata */}
   <div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:10,padding:"8px 12px"}}><div style={{display:"flex",flexWrap:"wrap",gap:3,marginBottom:4}}>{em.primary.map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.teal+"12",padding:"2px 6px",borderRadius:4,fontWeight:600}}>{m}</span>)}{em.secondary.map(m=><span key={m} style={{fontSize:8,color:C.textDim,background:C.bgGlass,padding:"2px 6px",borderRadius:4}}>{m}</span>)}</div><div style={{fontSize:9,color:C.textDim}}>🔧 {(exercise.equipmentRequired||[exercise.equipment]).join(", ")} · ⏱️ {ep.tempo||exercise.tempo||""}</div></div>
-  {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>{getRestTimerMessage(tl,ep.rest)||"REST — HYDRATE 💧"}</div><div style={{fontSize:48,fontWeight:800,color:tl<=10?C.teal:C.text,fontFamily:"'Bebas Neue',sans-serif",transition:"color 0.3s"}}>{fmt(tl)}</div><ProgressBar value={tl} max={ep.rest} color={tl<=10?C.teal:C.info} height={4}/><div style={{fontSize:10,color:C.textDim,marginTop:8,minHeight:16,fontStyle:"italic"}}>{getRestTip()}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
-  {!resting&&<div style={{display:"flex",flexDirection:"column",gap:6,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}>{exMode==="none"?<div style={{display:"grid",gridTemplateColumns:"3fr 1fr",gap:8}}><Btn onClick={()=>onDone({sets:[{set_number:1,reps_done:1,load:null,rpe:null,pain:false,quality:"good"}]})} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>COMPLETE</Btn><Btn variant="dark" onClick={onSub} icon="🔄" size="sm">Swap</Btn></div>:<div style={{display:"grid",gridTemplateColumns:canUndo?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>{canUndo&&<Btn variant="ghost" onClick={undoSet} size="sm" icon="↩">Undo</Btn>}<Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Swap</Btn></div>}</div>}
+  {resting&&<Card glow={C.infoGlow} style={{textAlign:"center"}}><div style={{fontSize:12,fontWeight:700,color:C.info,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>{getRestTimerMessage(tl,ep.rest)||"REST — HYDRATE 💧"}</div><div style={{fontSize:48,fontWeight:800,color:tl<=10?C.teal:C.text,fontFamily:"'Bebas Neue',sans-serif",transition:"color 0.3s"}}>{fmt(tl)}</div><ProgressBar value={tl} max={ep.rest} color={tl<=10?C.teal:C.info} height={4}/><div style={{fontSize:10,color:C.textDim,marginTop:8,minHeight:16,fontStyle:"italic"}}>{restTipText}</div><Btn variant="ghost" size="sm" onClick={()=>{setTimerOn(false);setResting(false);}} style={{margin:"10px auto 0",width:"auto"}}>Skip →</Btn></Card>}
+  {autoAdvancing&&<Card glow={C.tealGlow} style={{textAlign:"center"}}><div style={{fontSize:14,fontWeight:700,color:C.teal,letterSpacing:2,marginBottom:4}}>ALL SETS COMPLETE</div><div style={{fontSize:18,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>Moving to next exercise...</div><ProgressBar value={100} max={100} color={C.success} height={4}/></Card>}
+  {!resting&&!autoAdvancing&&<div style={{display:"flex",flexDirection:"column",gap:6,position:"sticky",bottom:76,background:C.bg,padding:"12px 0",zIndex:50}}>{exMode==="none"?<div style={{display:"grid",gridTemplateColumns:"3fr 1fr",gap:8}}><Btn onClick={()=>onDone({sets:[{set_number:1,reps_done:1,load:null,rpe:null,pain:false,quality:"good"}]})} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>COMPLETE</Btn><Btn variant="dark" onClick={onSub} icon="🔄" size="sm">Swap</Btn></div>:<div style={{display:"grid",gridTemplateColumns:canUndo?"1fr 1fr 1fr":"1fr 1fr",gap:8}}>{canUndo&&<Btn variant="ghost" onClick={undoSet} size="sm" icon="↩">Undo</Btn>}<Btn onClick={handleSet} icon="✓" style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{cs<(ep.sets||1)?"SET DONE":"COMPLETE"}</Btn><Btn variant="dark" onClick={onSub} icon="🔄">Swap</Btn></div>}</div>}
   <div style={{height:90}}/>
 </div>);}
 
@@ -1560,12 +1615,47 @@ function QuickModeScreen({workout,onComplete}){
 
 // ── OTHER SCREENS ───────────────────────────────────────────────
 function Mindfulness({onContinue,type}){
-  const labels={warmupToMain:{t:"TRANSITION",s:"Warm-up done. Time for 3 deep breaths.",i:"🧘"},mainToCooldown:{t:"COOLDOWN TIME",s:"The hard part is done. You earned this.",i:"🌊"},midSession:{t:"HALFWAY CHECK-IN",s:"Pause. Reset. Finish strong.",i:"💭"}}[type]||{t:"BREATHE",s:"Reset your nervous system.",i:"🧘"};
+  const labels={warmupToMain:{t:"TRANSITION",s:"Warm-up done. Time for 3 deep breaths.",i:"🧘"},mainToCooldown:{t:"COOLDOWN TIME",s:"Bringing your heart rate down gradually. Breathe with the timer.",i:"🌊"},midSession:{t:"HALFWAY CHECK-IN",s:"How are you feeling?",i:"💭"}}[type]||{t:"BREATHE",s:"Reset your nervous system.",i:"🧘"};
+  const isMidSession=type==="midSession";
+
+  // ── Mid-session quick check-in (5s auto-dismiss) ──
+  const[midTimer,setMidTimer]=useState(5);
+  const[midPaused,setMidPaused]=useState(false);
+  const midRef=useRef(null);
+  useEffect(()=>{
+    if(!isMidSession)return;
+    if(midPaused)return;
+    if(midTimer<=0){onContinue();return;}
+    midRef.current=setTimeout(()=>setMidTimer(t=>t-1),1000);
+    return()=>clearTimeout(midRef.current);
+  },[isMidSession,midTimer,midPaused]);
+
+  if(isMidSession)return(<div className="fade-in" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,minHeight:300,textAlign:"center"}}>
+    <div style={{fontSize:48}}>{labels.i}</div>
+    <h2 style={{fontSize:26,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{labels.t}</h2>
+    <p style={{fontSize:14,color:C.textMuted}}>{labels.s}</p>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,width:"100%",maxWidth:300}}>
+      {[{l:"Great",c:C.success,i:"💪"},{l:"Good",c:C.teal,i:"👍"},{l:"Tired",c:C.warning,i:"😮‍💨"},{l:"Pain",c:C.danger,i:"⚠️"}].map(o=><button key={o.l} onClick={()=>{setMidPaused(true);setTimeout(onContinue,500);}} style={{padding:"12px 8px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,cursor:"pointer",textAlign:"center"}}><div style={{fontSize:20}}>{o.i}</div><div style={{fontSize:12,fontWeight:600,color:o.c,marginTop:2}}>{o.l}</div></button>)}
+    </div>
+    {!midPaused&&<div style={{display:"flex",alignItems:"center",gap:8}}>
+      <button onClick={()=>setMidPaused(true)} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:8,padding:"6px 12px",color:C.textMuted,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>⏸ Pause</button>
+      <div style={{fontSize:11,color:C.textDim}}>Auto-continuing in {midTimer}s</div>
+    </div>}
+    {midPaused&&<Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn>}
+  </div>);
+
+  // ── Full breathing exercise (phase transitions) ──
+  const isCooldown=type==="mainToCooldown";
+  // Cooldown: progressive deceleration 4/4 → 6/6 → 7/7
+  const cooldownPacing=[{i:4,h:0,e:4},{i:6,h:0,e:6},{i:7,h:0,e:7}];
   const LS="apex_breath_prefs";
   const saved=(()=>{try{return JSON.parse(localStorage.getItem(LS))||{};}catch{return{};}})();
-  const[inh,setInh]=useState(saved.inh||7);
-  const[hld,setHld]=useState(saved.hld||7);
-  const[exh,setExh]=useState(saved.exh||7);
+  const defaultInh=isCooldown?cooldownPacing[0].i:(saved.inh||7);
+  const defaultHld=isCooldown?cooldownPacing[0].h:(saved.hld||7);
+  const defaultExh=isCooldown?cooldownPacing[0].e:(saved.exh||7);
+  const[inh,setInh]=useState(defaultInh);
+  const[hld,setHld]=useState(defaultHld);
+  const[exh,setExh]=useState(defaultExh);
   const[phase,setPhase]=useState("idle");// idle|in|hold|out|done
   const[sec,setSec]=useState(0);
   const[cycle,setCycle]=useState(0);
@@ -1573,11 +1663,11 @@ function Mindfulness({onContinue,type}){
   const totalCycles=3;
   const timerRef=useRef(null);
 
-  // Save prefs on change
-  useEffect(()=>{try{localStorage.setItem(LS,JSON.stringify({inh,hld,exh}));}catch{}},[inh,hld,exh]);
+  // Save prefs on change (not for cooldown — those are auto-paced)
+  useEffect(()=>{if(!isCooldown)try{localStorage.setItem(LS,JSON.stringify({inh,hld,exh}));}catch{}},[inh,hld,exh]);
 
   // Auto-start breathing
-  useEffect(()=>{if(phase==="idle"){setPhase("in");setSec(inh);setCycle(0);}},[]);
+  useEffect(()=>{if(phase==="idle"){setPhase("in");setSec(defaultInh);setCycle(0);}},[]);
 
   // Timer tick
   useEffect(()=>{
@@ -1585,20 +1675,23 @@ function Mindfulness({onContinue,type}){
     timerRef.current=setTimeout(()=>{
       if(sec>1){setSec(s=>s-1);}
       else{
-        // Advance phase
-        if(phase==="in"){setPhase("hold");setSec(hld);}
+        if(phase==="in"){setPhase(hld>0?"hold":"out");setSec(hld>0?hld:exh);}
         else if(phase==="hold"){setPhase("out");setSec(exh);}
         else if(phase==="out"){
           const next=cycle+1;
           if(next>=totalCycles){setPhase("done");}
-          else{setCycle(next);setPhase("in");setSec(inh);}
+          else{
+            setCycle(next);setPhase("in");
+            // Cooldown: progress to slower pacing each cycle
+            if(isCooldown&&cooldownPacing[next]){const p=cooldownPacing[next];setInh(p.i);setHld(p.h);setExh(p.e);setSec(p.i);}
+            else{setSec(inh);}
+          }
         }
       }
     },1000);
     return()=>clearTimeout(timerRef.current);
   },[phase,sec,cycle,inh,hld,exh]);
 
-  // Circle animation
   useEffect(()=>{
     if(phase==="in")setCircleScale(1);
     else if(phase==="hold")setCircleScale(1);
@@ -1614,7 +1707,6 @@ function Mindfulness({onContinue,type}){
     <div style={{fontSize:48}}>{labels.i}</div>
     <h2 style={{fontSize:26,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3,margin:0}}>{labels.t}</h2>
     <p style={{fontSize:14,color:C.textMuted,maxWidth:280}}>{labels.s}</p>
-    {/* Breathing circle */}
     {phase!=="done"&&<div style={{position:"relative",width:160,height:160,display:"flex",alignItems:"center",justifyContent:"center"}}>
       <div style={{width:140,height:140,borderRadius:"50%",border:`3px solid ${phaseColor}30`,position:"absolute",top:10,left:10}}/>
       <div style={{width:`${circleScale*140}px`,height:`${circleScale*140}px`,borderRadius:"50%",background:`${phaseColor}15`,border:`2px solid ${phaseColor}`,transition:"all 1s ease-in-out",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}>
@@ -1623,7 +1715,6 @@ function Mindfulness({onContinue,type}){
     </div>}
     {phase!=="done"&&<div style={{fontSize:16,fontWeight:700,color:phaseColor}}>{phaseLabel}...</div>}
     {phase!=="done"&&<div style={{fontSize:10,color:C.textDim}}>Breath {cycle+1} of {totalCycles}</div>}
-    {/* Timing adjusters */}
     <Card style={{background:C.bgGlass,width:"100%",maxWidth:300,padding:12}}>
       <div style={{display:"flex",justifyContent:"space-around"}}>
         <Adj label="In" val={inh} set={setInh}/>
@@ -1709,7 +1800,7 @@ function TasksScreen(){return(<div style={{display:"flex",flexDirection:"column"
 
 // ── INNER APP (authenticated) ───────────────────────────────────
 function AppInner(){
-  const{user,profile,loading}=useAuth();
+  const{user,profile,loading,updateProfile}=useAuth();
   useEffect(()=>{syncOverridesFromSupabase();},[]);
   const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding","baseline"]);
   const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);if(!_noRestore.has(s))try{localStorage.setItem("apex_last_screen",s);}catch{}},[]);const _savedTab=(()=>{try{return localStorage.getItem("apex_last_tab")||"home";}catch{return"home";}})();const[tab,_setTab]=useState(_savedTab);const setTab=(t)=>{_setTab(t);try{localStorage.setItem("apex_last_tab",t);}catch{}};
@@ -1726,6 +1817,7 @@ function AppInner(){
   const[reassessDiff,setReassessDiff]=useState(null); // post-reassessment comparison
   const[showPause,setShowPause]=useState(false);
   const[showEndConfirm,setShowEndConfirm]=useState(false);
+  const[showHomeScreenPrompt,setShowHomeScreenPrompt]=useState(false);
   // Dev bypass: add ?dev to URL to skip auth (dev mode only)
   const devBypass=import.meta.env.DEV&&new URLSearchParams(window.location.search).has("dev");
   // Route logic: auth state → screen
@@ -1741,7 +1833,18 @@ function AppInner(){
     }
     // If Supabase says completed but localStorage is empty → restore from Supabase
     if(supabaseCompleted && !localCompleted && profile?.assessment_data){
-      try{ saveAssessment(profile.assessment_data); }catch{}
+      try{
+        saveAssessment(profile.assessment_data);
+        // Rebuild injuries from assessment conditions
+        const conds=profile.assessment_data.conditions||[];
+        if(conds.length){
+          const restored=conds.map((c,i)=>({id:"inj_r_"+i,area:c.name||c.conditionId||"Unknown",type:"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,protocols:[],notes:"",tempFlag:null}));
+          saveInjuries(restored);
+        }
+        // Rebuild PT protocols from assessment
+        const protocols=generateProtocols(profile.assessment_data);
+        if(protocols.length)saveLocalProtocols(protocols);
+      }catch{}
     }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
@@ -1759,15 +1862,16 @@ function AppInner(){
   const handleCheckIn=(data)=>{const loc=data?.location||"gym";const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
   try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx:0,completedExercises:[],workout:vf.plan,sessionStart:start,checkInData:data,pausedAt:Date.now()}));}catch{}};
   const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
-  const trackExDone=(exercise,setData)=>{const ep2=exParams(exercise);const sets=setData?.sets||[{set_number:1,reps_done:parseInt(String(ep2.reps).replace(/[^0-9]/g,''))||12,load:null,rpe:null,pain:false,quality:"good"}];const bestLoad=Math.max(...sets.map(s=>s.load||0),0);const painDuring=sets.some(s=>s.pain);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:sets.length,sets,reps_done:ep2.reps||"—",load:bestLoad||null,pain_during:painDuring}]);recordExerciseCompletion(exercise.id,!painDuring);};
+  const[performSwap,setPerformSwap]=useState(null); // exercise to swap during perform
+  const trackExDone=(exercise,setData)=>{const ep2=exParams(exercise);const _pr=s=>{const m=String(s).match(/\d+/);return m?parseInt(m[0],10):12;};const sets=setData?.sets||[{set_number:1,reps_done:_pr(ep2.reps),load:null,rpe:null,pain:false,quality:"good"}];const bestLoad=Math.max(...sets.map(s=>s.load||0),0);const painDuring=sets.some(s=>s.pain);setCompletedExercises(prev=>[...prev,{exercise_id:exercise.id,sets_done:sets.length,sets,reps_done:ep2.reps||"—",load:bestLoad||null,pain_during:painDuring}]);recordExerciseCompletion(exercise.id,!painDuring);};
   // Auto-save workout progress to localStorage for resume-on-refresh
   const _saveWorkoutProgress=(nextIdx,extraCompleted)=>{try{const allCompleted=extraCompleted||completedExercises;localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx:nextIdx,completedExercises:allCompleted,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}};
   const handleExDone=(setData)=>{setExHistory(h=>[...h,{idx:exIdx,snapshot:[...completedExercises]}]);trackExDone(wxAll[exIdx],setData);const n=exIdx+1;window.scrollTo(0,0);if(n>=wxAll.length){localStorage.removeItem("apex_paused_workout");setScreen("reflect");return;}// Auto-save progress after each exercise
-  const updatedCompleted=[...completedExercises,{exercise_id:wxAll[exIdx].id,sets_done:(setData?.sets||[]).length||1,sets:setData?.sets||[],reps_done:"—",load:null,pain_during:false}];_saveWorkoutProgress(n,updatedCompleted);if(n===wxWEnd||n===wxMEnd){setExIdx(n);setScreen("mindfulness");return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
+  const updatedCompleted=[...completedExercises,{exercise_id:wxAll[exIdx].id,sets_done:(setData?.sets||[]).length||1,sets:setData?.sets||[],reps_done:"—",load:null,pain_during:false}];_saveWorkoutProgress(n,updatedCompleted);const curEx=wxAll[exIdx];const isBreathingEx=curEx?.category==="foam_roll"||curEx?.category==="cooldown"||curEx?.category==="mobility"||curEx?.type==="breathing"||curEx?.type==="static_stretch"||curEx?.type==="mobility";if(n===wxWEnd||n===wxMEnd){setExIdx(n);if(!isBreathingEx){setScreen("mindfulness");}return;}const mid=wxWEnd+Math.floor(workout.main.length/2);if(n===mid&&wxPhase(exIdx)==="main"&&!isBreathingEx){setExIdx(n);setScreen("mindfulness");return;}setExIdx(n);};
   const handleExBack=()=>{if(exHistory.length===0)return;const prev=exHistory[exHistory.length-1];setExHistory(h=>h.slice(0,-1));setExIdx(prev.idx);setCompletedExercises(prev.snapshot);setScreen("perform");};
   const getMT=()=>exIdx===wxWEnd?"warmupToMain":exIdx===wxMEnd?"mainToCooldown":"midSession";
   const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},starred:reflData?.starred||[],flagged:reflData?.flagged||[],painFlagged:reflData?.painFlags||[],notes:reflData?.notes||"",durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:reflData?.overall||"just_right",difficulty});
-  const reset=()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);};
+  const reset=()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);try{const hsp=localStorage.getItem("apex_home_screen_prompt");if(hsp==="remind_later"){const sc=(getSessions()||[]).length;if(sc>=3){localStorage.removeItem("apex_home_screen_prompt");setShowHomeScreenPrompt(true);}}}catch{}};
   // Loading spinner
   if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
   return(<>
@@ -1798,7 +1902,7 @@ function AppInner(){
       }
     }}/>}
     {screen==="reassess_summary"&&reassessDiff&&<ReassessmentSummary diff={reassessDiff} onContinue={()=>{setReassessDiff(null);setScreen("home");setTab("home");}}/>}
-    {screen==="assessment_summary"&&<AssessmentSummary onContinue={()=>{setScreen("home");setTab("home");}} userName={profile?.first_name||USER.name}/>}
+    {screen==="assessment_summary"&&<AssessmentSummary onContinue={()=>{setScreen("home");setTab("home");try{const d=localStorage.getItem("apex_home_screen_prompt");if(d!=="never")setShowHomeScreenPrompt(true);}catch{}}} userName={profile?.first_name||USER.name}/>}
     {screen==="plan_view"&&<PlanView onClose={()=>setScreen("home")}/>}
     {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
@@ -1813,7 +1917,8 @@ function AppInner(){
     {screen==="checkin"&&<CheckInScreen onComplete={(data)=>handleCheckIn(data)}/>}
     {screen==="plan"&&<PlanScreen checkIn={checkInData} workout={workout} safetyReport={safetyReport} onGo={(d)=>{const dd=d||"standard";setDifficulty(dd);if(dd!=="standard"){const loc=checkInData?.location||"gym";setWorkout(buildWorkoutList(CURRENT_PHASE,loc,dd));}setScreen(workoutMode==="quick"?"quickmode":"perform");}}/>}
     {screen==="quickmode"&&<QuickModeScreen workout={workout} onComplete={(exDone)=>{setCompletedExercises(exDone);setScreen("reflect");}}/>}
-    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={handleExDone} onBack={exHistory.length>0?handleExBack:()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setScreen("train");}} onEndEarly={()=>setShowEndConfirm(true)} onPause={()=>setShowPause(true)}/>}
+    {screen==="perform"&&<ExerciseScreen exercise={wxAll[exIdx]} index={exIdx} total={wxAll.length} phase={wxPhase(exIdx)} onDone={handleExDone} onSub={()=>setPerformSwap(wxAll[exIdx])} onBack={exHistory.length>0?handleExBack:()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setScreen("train");}} onEndEarly={()=>setShowEndConfirm(true)} onPause={()=>setShowPause(true)}/>}
+    {performSwap&&<SwapModal exercise={performSwap} phase={CURRENT_PHASE} location={checkInData?.location||"gym"} excludeIds={new Set(wxAll.map(e=>e.id))} onClose={()=>setPerformSwap(null)} onSwap={(alt)=>{const swap={...alt,_swappedFor:performSwap.name,_swapReason:"User requested alternative"};setWorkout(w=>{const newAll=w.all.map(e=>e.id===performSwap.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===performSwap.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===performSwap.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===performSwap.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===performSwap.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});setPerformSwap(null);}}/>}
     {/* End Early confirm */}
     {showEndConfirm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={()=>setShowEndConfirm(false)}><div style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:20,padding:24,maxWidth:360,width:"100%"}} onClick={e=>e.stopPropagation()}><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,marginBottom:8}}>END SESSION EARLY?</div><div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:16}}>Your {completedExercises.length} completed exercise{completedExercises.length!==1?"s":""} will be saved. Remaining exercises will be logged as skipped.</div><div style={{display:"flex",gap:8}}><button onClick={()=>setShowEndConfirm(false)} style={{flex:1,padding:"12px",borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textMuted,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Keep Going</button><button onClick={()=>{setShowEndConfirm(false);localStorage.removeItem("apex_paused_workout");setScreen("reflect");}} style={{flex:1,padding:"12px",borderRadius:12,background:C.danger,border:"none",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>End & Save</button></div></div></div>}
     {/* Pause overlay */}
@@ -1827,6 +1932,7 @@ function AppInner(){
     {screen==="pt_session"&&ptProtocol&&<PTMiniSession protocol={ptProtocol} onComplete={()=>{setScreen("home");setTab("home");setPtProtocol(null);}} onClose={()=>{setScreen("home");setTab("home");setPtProtocol(null);}}/>}
     {screen==="pt_progress"&&<PTProgressPage onClose={()=>{setScreen("home");setTab("home");}} onStartSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}}/>}
     {screen!=="auth"&&screen!=="profile"&&<BottomNav active={tab} onNav={navTo}/>}
+    {showHomeScreenPrompt&&<SaveToHomeScreenModal onDismiss={(action)=>{setShowHomeScreenPrompt(false);if(action==="never"){try{localStorage.setItem("apex_home_screen_prompt","never");}catch{}if(user)updateProfile({home_screen_prompt_dismissed:true}).catch(()=>{});}}} onRemindLater={()=>{setShowHomeScreenPrompt(false);try{localStorage.setItem("apex_home_screen_prompt","remind_later");}catch{}}}/>}
   </>);
 }
 

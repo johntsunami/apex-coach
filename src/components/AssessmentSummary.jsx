@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import exerciseDB from "../data/exercises.json";
 import compensationsDB from "../data/compensations.json";
 import { getAssessment } from "./Onboarding.jsx";
@@ -172,16 +172,42 @@ export default function AssessmentSummary({ onContinue, userName }) {
         <div style={{ fontSize: 9, color: C.textDim, marginTop: 8, fontStyle: "italic" }}>Timelines adapt based on your progress — we move you forward when you're ready, not on a fixed calendar.</div>
       </Card>
 
-      {/* Section 5: First Week Preview */}
+      {/* Section 5: First Week Preview — editable */}
       <Card>
-        <div style={{ fontSize: 11, fontWeight: 700, color: C.success, letterSpacing: 2, marginBottom: 10 }}>FIRST WEEK PREVIEW</div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.success, letterSpacing: 2, marginBottom: 4 }}>FIRST WEEK PREVIEW</div>
+        <div style={{ fontSize: 10, color: C.textDim, marginBottom: 8 }}>Tap ✕ to remove an exercise — we'll find a replacement.</div>
         {firstWeek.map(day => (
-          <div key={day.day} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}` }}>
+          <div key={day.day} style={{ padding: "6px 0", borderBottom: `1px solid ${C.border}` }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.text, marginBottom: 4 }}>Day {day.day} — ~{prefs.sessionTime || 45} min</div>
-            {[{ label: "Warm-Up", exercises: day.warmup, color: C.info }, { label: "Main", exercises: day.main, color: C.teal }, { label: "Cooldown", exercises: day.cooldown, color: C.success }].map(sec => (
-              <div key={sec.label} style={{ marginLeft: 8, marginBottom: 2 }}>
+            {[{ label: "Warm-Up", exercises: day.warmup, color: C.info, key: "warmup" }, { label: "Main", exercises: day.main, color: C.teal, key: "main" }, { label: "Cooldown", exercises: day.cooldown, color: C.success, key: "cooldown" }].map(sec => (
+              <div key={sec.label} style={{ marginLeft: 8, marginBottom: 3 }}>
                 <span style={{ fontSize: 8, fontWeight: 700, color: sec.color }}>{sec.label}: </span>
-                <span style={{ fontSize: 9, color: C.textMuted }}>{sec.exercises.map(e => e.emoji + " " + e.name).join(", ") || "—"}</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 2 }}>
+                  {sec.exercises.map(e => (
+                    <span key={e.id} style={{ display: "inline-flex", alignItems: "center", gap: 3, padding: "2px 6px", borderRadius: 6, background: C.bgGlass, border: `1px solid ${C.border}`, fontSize: 9, color: C.textMuted }}>
+                      {e.emoji} {e.name}
+                      {sec.key === "main" && sec.exercises.length > 1 && <span onClick={() => {
+                        // Check movement pattern minimum before removing
+                        const mp = (e.movementPattern || "").toLowerCase();
+                        const patterns = ["push","pull","hinge","squat","core"];
+                        const thisPattern = patterns.find(p => mp.includes(p));
+                        const othersWithPattern = sec.exercises.filter(x => x.id !== e.id && patterns.some(p => (x.movementPattern || "").toLowerCase().includes(p) && p === thisPattern));
+                        if (thisPattern && othersWithPattern.length === 0) {
+                          alert(`You need at least one ${thisPattern} exercise for balanced training. Try swapping it instead.`);
+                          return;
+                        }
+                        // Find substitute
+                        const sub = exerciseDB.find(s => s.category === sec.key && s.id !== e.id && !sec.exercises.find(x => x.id === s.id) && (s.bodyPart === e.bodyPart || (s.movementPattern || "").includes(thisPattern || "")) && (s.phaseEligibility || []).includes(1));
+                        if (sub) {
+                          const idx = sec.exercises.indexOf(e);
+                          sec.exercises[idx] = sub;
+                        } else {
+                          sec.exercises.splice(sec.exercises.indexOf(e), 1);
+                        }
+                      }} style={{ cursor: "pointer", color: C.danger, fontSize: 9, fontWeight: 700, marginLeft: 2 }}>✕</span>}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to APEX Coach</title>
+</head>
+<body style="margin:0;padding:0;background:#060b18;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#060b18;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#0d1425;border-radius:20px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;">
+
+        <!-- Header -->
+        <tr><td style="padding:40px 32px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:42px;font-weight:800;color:#00d2c8;letter-spacing:6px;font-family:Impact,'Arial Black',sans-serif;">APEX</div>
+          <div style="font-size:14px;font-weight:800;color:#e8ecf4;letter-spacing:4px;margin-top:-2px;font-family:Impact,'Arial Black',sans-serif;">COACH</div>
+          <div style="font-size:13px;color:#7a8ba8;margin-top:10px;">Your AI-Powered Training Team</div>
+        </td></tr>
+
+        <!-- Welcome -->
+        <tr><td style="padding:32px 32px 16px;">
+          <div style="font-size:22px;font-weight:800;color:#e8ecf4;margin-bottom:12px;">Welcome to APEX Coach!</div>
+          <div style="font-size:14px;color:#7a8ba8;line-height:1.7;">
+            Tap the button below to confirm your account and start your fitness journey.
+          </div>
+        </td></tr>
+
+        <!-- CTA Button -->
+        <tr><td style="padding:8px 32px 32px;text-align:center;">
+          <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#00d2c8,#00a89f);color:#000;font-size:16px;font-weight:800;text-decoration:none;border-radius:14px;letter-spacing:1px;">CONFIRM MY ACCOUNT</a>
+        </td></tr>
+
+        <!-- Divider -->
+        <tr><td style="padding:0 32px;"><div style="border-top:1px solid rgba(255,255,255,0.06);"></div></td></tr>
+
+        <!-- Features -->
+        <tr><td style="padding:28px 32px 8px;">
+          <div style="font-size:11px;font-weight:700;color:#4a5a78;letter-spacing:2px;margin-bottom:16px;">WHAT APEX COACH DOES FOR YOU</div>
+
+          <!-- Feature items -->
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="padding:10px 0;">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">ADAPTIVE TRAINING</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Your workouts adapt daily based on how you feel &mdash; sleep, energy, stress, and soreness all shape your plan. No two sessions are the same.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">INJURY-SMART PROGRAMMING</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Report any condition or injury and the app automatically filters out unsafe exercises and adds rehabilitation protocols. Built from 100+ clinical condition protocols reviewed by licensed physical therapists.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">EVIDENCE-BASED PERIODIZATION</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Your training follows the Optimum Performance Training model &mdash; 5 phases from stabilization through power. You'll progress through each phase as your body is ready.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">FULL BODY ROM MODULE</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">A complete head-to-toe range of motion system covering every joint in every plane &mdash; exactly like a physical therapy session.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">CARDIO FITNESS TRACKING</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">VO2 max testing, heart rate zone training, and 38+ cardio exercises across every gym machine and outdoor activity.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">BODYBUILDING &amp; PHYSIQUE</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Evidence-based hypertrophy programming with advanced techniques &mdash; drop sets, rest-pause, supersets, and periodized competition prep.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">POWER &amp; BODYWEIGHT MASTERY</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Plyometrics, explosive training, and progressive bodyweight challenges from wall push-ups to one-arm push-ups.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">PT REHABILITATION</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Mini-sessions with before/after pain tracking, daily reminders, and criteria-based progression for every condition.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">AI COACHING</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">Two modes: Health Coach for exercise science questions and Mental Health Coach for CBT, DBT, and motivational support.</div>
+            </td></tr>
+            <tr><td style="padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);">
+              <div style="font-size:14px;font-weight:700;color:#00d2c8;">YOUR JOURNEY DASHBOARD</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-top:4px;">See your complete long-term plan, 6-week cycle goals, milestone badges, and progress across every training module.</div>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <!-- Divider -->
+        <tr><td style="padding:8px 32px;"><div style="border-top:1px solid rgba(255,255,255,0.06);"></div></td></tr>
+
+        <!-- Save to Home Screen -->
+        <tr><td style="padding:24px 32px;">
+          <div style="background:#162040;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+            <div style="font-size:14px;font-weight:800;color:#e8ecf4;margin-bottom:12px;">SAVE APEX COACH TO YOUR HOME SCREEN</div>
+            <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-bottom:16px;">For the best experience, save the app to your phone's home screen:</div>
+
+            <div style="margin-bottom:16px;">
+              <div style="font-size:12px;font-weight:700;color:#00d2c8;margin-bottom:8px;">iPhone (Safari):</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.8;padding-left:8px;">
+                1. Open Safari and go to: <a href="https://apex-coach-five.vercel.app" style="color:#00d2c8;text-decoration:none;">apex-coach-five.vercel.app</a><br/>
+                2. Tap the Share button (square with arrow) at the bottom<br/>
+                3. Scroll down and tap "Add to Home Screen"<br/>
+                4. Tap "Add" &mdash; the app icon appears on your home screen
+              </div>
+            </div>
+
+            <div style="margin-bottom:16px;">
+              <div style="font-size:12px;font-weight:700;color:#00d2c8;margin-bottom:8px;">Android (Chrome):</div>
+              <div style="font-size:12px;color:#7a8ba8;line-height:1.8;padding-left:8px;">
+                1. Open Chrome and go to: <a href="https://apex-coach-five.vercel.app" style="color:#00d2c8;text-decoration:none;">apex-coach-five.vercel.app</a><br/>
+                2. Tap the three-dot menu in the top right<br/>
+                3. Tap "Add to Home Screen" or "Install App"<br/>
+                4. Tap "Add" &mdash; the app icon appears on your home screen
+              </div>
+            </div>
+
+            <div style="text-align:center;padding:12px;background:#0d1425;border-radius:10px;">
+              <div style="font-size:10px;color:#4a5a78;letter-spacing:1px;">BOOKMARK THIS LINK</div>
+              <a href="https://apex-coach-five.vercel.app" style="font-size:14px;color:#00d2c8;font-weight:700;text-decoration:none;">apex-coach-five.vercel.app</a>
+            </div>
+          </div>
+        </td></tr>
+
+        <!-- Footer -->
+        <tr><td style="padding:20px 32px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:12px;color:#7a8ba8;line-height:1.6;margin-bottom:12px;">
+            Questions? Reply to this email or use the AI Coach inside the app.
+          </div>
+          <div style="font-size:14px;font-weight:700;color:#e8ecf4;margin-bottom:4px;">Let's build something incredible.</div>
+          <div style="font-size:12px;color:#4a5a78;">&mdash; The APEX Coach Team</div>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

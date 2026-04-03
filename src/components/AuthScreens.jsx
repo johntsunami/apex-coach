@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "./AuthProvider.jsx";
+import { supabase } from "../utils/supabase.js";
 
 // ═══════════════════════════════════════════════════════════════
 // Landing Page + Sign Up + Log In + Forgot Password
@@ -57,8 +58,41 @@ export function SignUpScreen({ onBack, onSuccess }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendMsg, setResendMsg] = useState(null);
+  const cooldownRef = useRef(null);
   // Clear all fields on mount to prevent stale data from previous user
   useEffect(() => { setFirstName(""); setEmail(""); setPassword(""); setError(null); }, []);
+  useEffect(() => { return () => { if (cooldownRef.current) clearInterval(cooldownRef.current); }; }, []);
+
+  // Poll for email confirmation when on confirmation screen
+  useEffect(() => {
+    if (!showConfirmation) return;
+    const poll = setInterval(async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session?.user?.email_confirmed_at) {
+        clearInterval(poll);
+        onSuccess?.();
+      }
+    }, 3000);
+    return () => clearInterval(poll);
+  }, [showConfirmation, onSuccess]);
+
+  const startCooldown = () => {
+    setResendCooldown(60);
+    if (cooldownRef.current) clearInterval(cooldownRef.current);
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown(prev => { if (prev <= 1) { clearInterval(cooldownRef.current); return 0; } return prev - 1; });
+    }, 1000);
+  };
+
+  const handleResend = async () => {
+    setResendMsg(null);
+    const { error: err } = await supabase.auth.resend({ type: "signup", email: email.trim() });
+    if (err) setResendMsg({ type: "error", text: err.message });
+    else { setResendMsg({ type: "success", text: "Confirmation email resent!" }); startCooldown(); }
+  };
 
   const handleSubmit = async () => {
     setError(null);
@@ -76,7 +110,16 @@ export function SignUpScreen({ onBack, onSuccess }) {
         else setError(err.message || "Sign up failed — check console for details");
       } else {
         console.log("SignUp UI success, user:", data?.user?.id);
-        onSuccess?.();
+        // If email confirmation is required, Supabase returns a user but no session
+        // If email confirmation is disabled, user gets a session immediately
+        if (data?.session) {
+          // No email confirmation needed — proceed directly
+          onSuccess?.();
+        } else {
+          // Email confirmation required — show confirmation screen
+          setShowConfirmation(true);
+          startCooldown();
+        }
       }
     } catch (e) {
       setLoading(false);
@@ -84,6 +127,30 @@ export function SignUpScreen({ onBack, onSuccess }) {
       setError("Unexpected error: " + (e.message || "unknown") + " — check browser console");
     }
   };
+
+  if (showConfirmation) return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16, textAlign: "center", paddingTop: 20 }}>
+      <div style={{ fontSize: 56 }}>📧</div>
+      <div style={{ fontSize: 24, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>CHECK YOUR EMAIL</div>
+      <div style={{ fontSize: 14, color: C.text, lineHeight: 1.6 }}>
+        We sent a confirmation link to<br/><b style={{ color: C.teal }}>{email}</b>
+      </div>
+      <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.6 }}>
+        Tap the link in your email to activate your account, then come back here.
+      </div>
+      <div style={{ padding: 16, background: C.bgCard, borderRadius: 14, border: `1px solid ${C.border}` }}>
+        <div style={{ fontSize: 11, color: C.textDim, lineHeight: 1.5 }}>
+          Didn't get it? Check your <b style={{ color: C.textMuted }}>spam folder</b>.<br/>
+          The email comes from <b style={{ color: C.textMuted }}>noreply@mail.app.supabase.io</b>
+        </div>
+      </div>
+      {resendMsg && <div style={{ padding: 10, borderRadius: 10, fontSize: 12, background: resendMsg.type === "error" ? C.danger + "15" : C.success + "15", color: resendMsg.type === "error" ? C.danger : C.success, border: `1px solid ${resendMsg.type === "error" ? C.danger : C.success}30` }}>{resendMsg.text}</div>}
+      <Btn variant="dark" onClick={handleResend} disabled={resendCooldown > 0}>
+        {resendCooldown > 0 ? `Resend Email (${resendCooldown}s)` : "Resend Email"}
+      </Btn>
+      <Btn variant="ghost" onClick={onBack}>← Back</Btn>
+    </div>
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -104,18 +171,43 @@ export function LogInScreen({ onBack, onForgot, onSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [unconfirmed, setUnconfirmed] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resendMsg, setResendMsg] = useState(null);
+  const cooldownRef = useRef(null);
   useEffect(() => { setEmail(""); setPassword(""); setError(null); }, []);
+  useEffect(() => { return () => { if (cooldownRef.current) clearInterval(cooldownRef.current); }; }, []);
   const [loading, setLoading] = useState(false);
+
+  const startCooldown = () => {
+    setResendCooldown(60);
+    if (cooldownRef.current) clearInterval(cooldownRef.current);
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown(prev => { if (prev <= 1) { clearInterval(cooldownRef.current); return 0; } return prev - 1; });
+    }, 1000);
+  };
+
+  const handleResendFromLogin = async () => {
+    setResendMsg(null);
+    const { error: err } = await supabase.auth.resend({ type: "signup", email: email.trim() });
+    if (err) setResendMsg({ type: "error", text: err.message });
+    else { setResendMsg({ type: "success", text: "Confirmation email resent! Check your inbox." }); startCooldown(); }
+  };
 
   const handleSubmit = async () => {
     setError(null);
+    setUnconfirmed(false);
+    setResendMsg(null);
     if (!email.trim() || !password) return setError("Email and password required");
     setLoading(true);
     const { error: err } = await signIn(email.trim(), password);
     setLoading(false);
     if (err) {
       if (err.message?.includes("Invalid login")) setError("Wrong email or password. Try again.");
-      else if (err.message?.includes("Email not confirmed")) setError("Check your email to confirm your account first.");
+      else if (err.message?.includes("Email not confirmed")) {
+        setUnconfirmed(true);
+        setError("Please confirm your email first. Check your inbox for the confirmation link.");
+      }
       else setError(err.message || "Login failed");
     } else {
       onSuccess?.();
@@ -128,6 +220,15 @@ export function LogInScreen({ onBack, onForgot, onSuccess }) {
       <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" />
       <Input value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" type="password" />
       {error && <div style={{ padding: 12, background: C.danger + "15", borderRadius: 10, border: `1px solid ${C.danger}30`, fontSize: 12, color: C.danger }}>{error}</div>}
+      {unconfirmed && <>
+        {resendMsg && <div style={{ padding: 10, borderRadius: 10, fontSize: 12, background: resendMsg.type === "error" ? C.danger + "15" : C.success + "15", color: resendMsg.type === "error" ? C.danger : C.success, border: `1px solid ${resendMsg.type === "error" ? C.danger : C.success}30` }}>{resendMsg.text}</div>}
+        <Btn variant="dark" onClick={handleResendFromLogin} disabled={resendCooldown > 0}>
+          {resendCooldown > 0 ? `Resend Confirmation (${resendCooldown}s)` : "Resend Confirmation Email"}
+        </Btn>
+        <div style={{ fontSize: 11, color: C.textDim, textAlign: "center" }}>
+          Your link may have expired. Tap above to get a new one.
+        </div>
+      </>}
       <Btn onClick={handleSubmit} disabled={loading} icon={loading ? "⏳" : "→"}>{loading ? "Logging in..." : "Log In"}</Btn>
       <button onClick={onForgot} style={{ background: "none", border: "none", color: C.teal, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>Forgot password?</button>
       <Btn variant="ghost" onClick={onBack}>← Back</Btn>
@@ -385,6 +486,56 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
       )}
 
       <div style={{ height: 90 }} />
+    </div>
+  );
+}
+
+// ── Save to Home Screen Modal ────────────────────────────────
+export function SaveToHomeScreenModal({ onDismiss, onRemindLater }) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(navigator.userAgent);
+
+  const stepStyle = { display: "flex", gap: 10, alignItems: "flex-start", textAlign: "left" };
+  const numStyle = { width: 24, height: 24, borderRadius: 12, background: C.teal, color: "#000", fontSize: 13, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 };
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.9)", zIndex: 600, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }} onClick={onDismiss}>
+      <div style={{ background: C.bg, border: `1px solid ${C.teal}30`, borderRadius: 20, padding: 24, maxWidth: 380, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>📱</div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>ADD TO HOME SCREEN</div>
+          <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4 }}>Access your workouts instantly — no app store needed.</div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
+          {isIOS ? (<>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.text, letterSpacing: 1 }}>IPHONE / IPAD (SAFARI)</div>
+            <div style={stepStyle}><div style={numStyle}>1</div><div style={{ fontSize: 12, color: C.text }}>Tap the <b style={{ color: C.teal }}>Share button</b> <span style={{ fontSize: 16 }}>⬆</span> at the bottom of Safari</div></div>
+            <div style={stepStyle}><div style={numStyle}>2</div><div style={{ fontSize: 12, color: C.text }}>Scroll down and tap <b style={{ color: C.teal }}>"Add to Home Screen"</b></div></div>
+            <div style={stepStyle}><div style={numStyle}>3</div><div style={{ fontSize: 12, color: C.text }}>Tap <b style={{ color: C.teal }}>"Add"</b> — the app icon appears on your home screen</div></div>
+          </>) : isAndroid ? (<>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.text, letterSpacing: 1 }}>ANDROID (CHROME)</div>
+            <div style={stepStyle}><div style={numStyle}>1</div><div style={{ fontSize: 12, color: C.text }}>Tap the <b style={{ color: C.teal }}>three-dot menu</b> <span style={{ fontSize: 14, fontWeight: 800 }}>⋮</span> in the top right</div></div>
+            <div style={stepStyle}><div style={numStyle}>2</div><div style={{ fontSize: 12, color: C.text }}>Tap <b style={{ color: C.teal }}>"Add to Home Screen"</b> or <b style={{ color: C.teal }}>"Install App"</b></div></div>
+            <div style={stepStyle}><div style={numStyle}>3</div><div style={{ fontSize: 12, color: C.text }}>Tap <b style={{ color: C.teal }}>"Add"</b> — the app icon appears on your home screen</div></div>
+          </>) : (<>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.text, letterSpacing: 1 }}>DESKTOP</div>
+            <div style={stepStyle}><div style={numStyle}>1</div><div style={{ fontSize: 12, color: C.text }}>Press <b style={{ color: C.teal }}>Ctrl+D</b> (or Cmd+D on Mac) to bookmark this page</div></div>
+            <div style={stepStyle}><div style={numStyle}>2</div><div style={{ fontSize: 12, color: C.text }}>Or look for the <b style={{ color: C.teal }}>install icon</b> in your browser's address bar</div></div>
+          </>)}
+        </div>
+
+        <div style={{ padding: 12, background: C.bgCard, borderRadius: 12, border: `1px solid ${C.border}`, marginBottom: 16, textAlign: "center" }}>
+          <div style={{ fontSize: 10, color: C.textDim }}>BOOKMARK THIS LINK</div>
+          <div style={{ fontSize: 12, color: C.teal, fontWeight: 600, marginTop: 4, wordBreak: "break-all" }}>apex-coach-five.vercel.app</div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Btn onClick={onDismiss}>Got It</Btn>
+          <Btn variant="dark" onClick={onRemindLater}>Remind Me Later</Btn>
+          <button onClick={() => { onDismiss("never"); }} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit", padding: 8 }}>Don't show again</button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#0a1628"/>
+  <rect x="16" y="16" width="480" height="480" rx="68" fill="#0a1628" stroke="#00d2c8" stroke-width="3" stroke-opacity="0.3"/>
+  <text x="256" y="280" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="290" font-weight="800" fill="#00d2c8" text-anchor="middle" dominant-baseline="central" letter-spacing="12">A</text>
+  <text x="256" y="410" font-family="'Bebas Neue',Impact,'Arial Black',sans-serif" font-size="56" font-weight="800" fill="#e8ecf4" text-anchor="middle" letter-spacing="10">COACH</text>
+</svg>

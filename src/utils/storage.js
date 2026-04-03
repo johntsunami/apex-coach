@@ -141,6 +141,19 @@ function _dateKey(d) {
   return d.toISOString().split("T")[0];
 }
 
+function isTodayComplete() {
+  const sessions = getSessions();
+  if (!sessions.length) return null;
+  const today = _dateKey(new Date());
+  const todaySessions = sessions.filter(s => _dateKey(new Date(s.date)) === today);
+  if (!todaySessions.length) return null;
+  // Return summary of today's session(s)
+  const last = todaySessions[todaySessions.length - 1];
+  const totalExercises = todaySessions.reduce((sum, s) => sum + (s.exercises_completed?.length || 0), 0);
+  const totalMinutes = todaySessions.reduce((sum, s) => sum + (s.duration_minutes || 0), 0);
+  return { done: true, exerciseCount: totalExercises, durationMinutes: totalMinutes, sessionCount: todaySessions.length, lastSession: last };
+}
+
 // ── User Preferences ──────────────────────────────────────────
 
 function getPrefs() {
@@ -196,6 +209,7 @@ export {
   getSessions,
   saveSession,
   getStats,
+  isTodayComplete,
   getPrefs,
   setPref,
   toggleFavorite,
