@@ -237,7 +237,9 @@ const INJURY_ADJUSTMENTS = {
       hinge: { weekRange: [1, 2], allowOnly: ["glute_bridge", "hip_thrust"], message: "Start with bridges, introduce DB RDL in Week 3+ if pain-free" },
       hingeWeek3: { allow: ["db_romanian_deadlift", "single_leg_rdl"] },
       squat: { allowOnly: ["goblet_squat", "leg_press"], message: "Goblet squat and leg press only until Week 4+" },
-      core: { pattern: "anti_extension_only", allow: ["plank", "dead_bug", "bird_dog", "pallof_press"], block: ["crunch", "sit_up", "russian_twist", "cable_rotation"], message: "Anti-extension only — no crunches, no rotation under load" },
+      core: { pattern: "anti_extension_only", allow: ["plank", "dead_bug", "bird_dog", "pallof_press"], block: ["crunch", "sit_up", "russian_twist", "cable_rotation", "cable_woodchop", "cable_reverse_woodchop"], message: "Anti-extension only — no crunches, no loaded rotation" },
+      blockCategories: ["plyometric"],
+      blockPatterns: ["jump", "bound", "sprint", "slam"],
       addExercises: ["mckenzie_extension", "hip_flexor_stretch"],
       addFrequency: "every session",
       weeklyCheck: "How is your back this week? Better / Same / Worse",
@@ -246,13 +248,16 @@ const INJURY_ADJUSTMENTS = {
     high: { // severity 3-5
       hinge: { weekRange: [1, 4], allowOnly: ["glute_bridge"], message: "Glute bridge only for Weeks 1-4. No deadlifts until severity drops to 2 or below" },
       squat: { allowOnly: ["wall_squat", "stability_ball_squat"], message: "Wall squat or stability ball squat only. No free-standing loaded squats." },
-      core: { pattern: "supine_only", allow: ["dead_bug", "pelvic_tilt"], block: ["plank", "side_plank", "crunch", "sit_up", "russian_twist", "cable_rotation", "ab_wheel"], message: "Supine only (dead bug, pelvic tilt). No plank until Week 4+ and pain-free" },
+      core: { pattern: "supine_only", allow: ["dead_bug", "pelvic_tilt"], block: ["plank", "side_plank", "crunch", "sit_up", "russian_twist", "cable_rotation", "ab_wheel", "cable_woodchop", "cable_reverse_woodchop"], message: "Supine only (dead bug, pelvic tilt). No plank until Week 4+ and pain-free" },
+      blockCategories: ["plyometric"],
+      blockPatterns: ["jump", "bound", "sprint", "slam", "throw", "battle_rope"],
       addExercises: ["mckenzie_extension"],
       addFrequency: "2-3x daily (morning + workout + evening)",
       maxRPE: 5,
       phaseGate: 2, // cannot progress past this severity
       weeklyCheck: "How is your back this week? Better / Same / Worse",
       regressOnWorse: true,
+      cardioOnly: ["walking", "bike", "elliptical", "pool"],
     },
   },
   knee: {

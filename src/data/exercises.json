@@ -32214,7 +32214,7 @@
         "deep_knee_flexion"
       ],
       "severity_gate": {
-        "lower_back": 5,
+        "lower_back": 4,
         "knee": 2,
         "shoulder": 5
       }
@@ -32352,7 +32352,7 @@
       "conditions": [],
       "movements_to_avoid": [],
       "severity_gate": {
-        "lower_back": 5,
+        "lower_back": 4,
         "knee": 2,
         "shoulder": 5
       }
@@ -32770,7 +32770,7 @@
         "plyometrics"
       ],
       "severity_gate": {
-        "lower_back": 5,
+        "lower_back": 4,
         "knee": 2,
         "shoulder": 5
       }
@@ -32906,7 +32906,7 @@
       "conditions": [],
       "movements_to_avoid": [],
       "severity_gate": {
-        "lower_back": 5,
+        "lower_back": 4,
         "knee": 2,
         "shoulder": 5
       }
@@ -33176,7 +33176,7 @@
       "conditions": [],
       "movements_to_avoid": [],
       "severity_gate": {
-        "lower_back": 5,
+        "lower_back": 4,
         "knee": 3,
         "shoulder": 4
       }
@@ -53687,7 +53687,9 @@
     "trackingType": "weighted",
     "safetyTier": "green",
     "contraindications": {
-      "severity_gate": {},
+      "severity_gate": {
+        "lower_back": 3
+      },
       "conditions": [],
       "injuries": []
     },
@@ -53784,7 +53786,9 @@
     "trackingType": "weighted",
     "safetyTier": "green",
     "contraindications": {
-      "severity_gate": {},
+      "severity_gate": {
+        "lower_back": 3
+      },
       "conditions": [],
       "injuries": []
     },
@@ -53986,7 +53990,8 @@
     "contraindications": {
       "severity_gate": {
         "knee": 2,
-        "ankle": 2
+        "ankle": 2,
+        "lower_back": 3
       },
       "conditions": [],
       "injuries": []
@@ -54581,7 +54586,9 @@
     "trackingType": "weighted",
     "safetyTier": "green",
     "contraindications": {
-      "severity_gate": {},
+      "severity_gate": {
+        "lower_back": 3
+      },
       "conditions": [],
       "injuries": []
     },
