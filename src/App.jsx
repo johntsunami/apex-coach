@@ -1409,10 +1409,33 @@ function LibraryScreen(){
   const[abilityFilter,setAbilityFilter]=useState("All");
   const[phaseFilter,setPhaseFilter]=useState("All");
   const[locFilter,setLocFilter]=useState("All");
+  const[safetyFilter,setSafetyFilter]=useState("all"); // "all" | "safe" | "blocked"
   const[search,setSearch]=useState("");
   const[sel,setSel]=useState(null);
+  // Compute blocked exercises based on user's active injuries
+  const userInjuries=useMemo(()=>getInjuries().filter(i=>i.status!=="resolved"),[]);
+  const blockedMap=useMemo(()=>{
+    const map={};// exerciseId -> [reasons]
+    for(const ex of exerciseDB){
+      const sg=ex.contraindications?.severity_gate||{};
+      const reasons=[];
+      for(const inj of userInjuries){
+        const gateKey=inj.gateKey||(inj.area||"").toLowerCase().replace(/\s+/g,"_");
+        const gate=sg[gateKey];
+        if(gate!==undefined&&inj.severity>gate){
+          reasons.push(`${inj.area} (severity ${inj.severity}) exceeds gate ${gate}`);
+        }
+      }
+      if(ex.safetyTier==="red")reasons.push("Red safety tier — requires clearance");
+      if(reasons.length>0)map[ex.id]=reasons;
+    }
+    return map;
+  },[userInjuries]);
+  const blockedCount=Object.keys(blockedMap).length;
   const filtered=useMemo(()=>{
     let list=exerciseDB;
+    if(safetyFilter==="blocked") list=list.filter(e=>blockedMap[e.id]);
+    else if(safetyFilter==="safe") list=list.filter(e=>!blockedMap[e.id]);
     if(catFilter!=="All") list=list.filter(e=>catFilter==="rehab"?(e.category==="rehab"||e.category==="mckenzie"||e.category==="mobility"):e.category===catFilter);
     if(bodyFilter!=="All") list=list.filter(e=>e.bodyPart===bodyFilter);
     if(abilityFilter!=="All") list=list.filter(e=>e.level===abilityFilter);
@@ -1420,11 +1443,15 @@ function LibraryScreen(){
     if(locFilter!=="All") list=list.filter(e=>(e.locationCompatible||[]).includes(locFilter));
     if(search.trim()) { const q=search.toLowerCase(); list=list.filter(e=>e.name.toLowerCase().includes(q)||(e.tags||[]).some(t=>t.includes(q))); }
     return list;
-  },[catFilter,bodyFilter,abilityFilter,phaseFilter,locFilter,search]);
+  },[catFilter,bodyFilter,abilityFilter,phaseFilter,locFilter,safetyFilter,search,blockedMap]);
   const FilterRow=({label,items,value,onChange,color=C.teal})=>(<div><div style={{fontSize:10,fontWeight:700,color:C.textDim,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{label}</div><div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:4}}>{items.map(p=>(<button key={p} onClick={()=>onChange(p)} style={{padding:"5px 10px",borderRadius:16,border:`1px solid ${value===p?color+"60":C.border}`,background:value===p?color+"15":"transparent",color:value===p?color:C.textDim,fontSize:10,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{p==="All"?"All":p.replace(/_/g," ")}</button>))}</div></div>);
   return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{exerciseDB.length} total · {filtered.length} shown</div></div>
     <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍 Search exercises or tags..." style={{padding:"10px 14px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontFamily:"inherit",outline:"none"}}/>
+    {/* Safety filter — shows blocked exercises for user's conditions */}
+    {userInjuries.length>0&&<div style={{display:"flex",gap:6}}>
+      {[{id:"all",label:"All Exercises",icon:"📋",c:C.teal},{id:"safe",label:`Safe for You (${exerciseDB.length-blockedCount})`,icon:"✅",c:C.success},{id:"blocked",label:`Blocked (${blockedCount})`,icon:"🚫",c:C.danger}].map(f=>(<button key={f.id} onClick={()=>setSafetyFilter(f.id)} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",background:safetyFilter===f.id?f.c+"15":"transparent",border:`1px solid ${safetyFilter===f.id?f.c+"60":C.border}`,color:safetyFilter===f.id?f.c:C.textDim,textAlign:"center",fontSize:10,fontWeight:700}}><div>{f.icon}</div>{f.label}</button>))}
+    </div>}
     <FilterRow label="Category" items={CATEGORIES} value={catFilter} onChange={setCatFilter} color={C.teal}/>
     <FilterRow label="Body Part" items={BODY_GROUPS} value={bodyFilter} onChange={setBodyFilter} color={C.purple}/>
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
@@ -1434,11 +1461,11 @@ function LibraryScreen(){
     </div>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 4px"}}><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</span><span style={{fontSize:11,color:C.textDim}}>of {exerciseDB.length} total</span></div>
     {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
-    {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14}}>
+    {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);const isBlocked=!!blockedMap[ex.id];const blockReasons=blockedMap[ex.id]||[];return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14,opacity:isBlocked?0.7:1,borderColor:isBlocked?C.danger+"30":undefined}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <ExerciseImage exercise={ex} size="thumb"/>
-        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:C.text}}>{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div></div>
-        <Badge color={ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{ex.safetyTier||"—"}</Badge>
+        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:isBlocked?C.danger:C.text}}>{isBlocked?"🚫 ":""}{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>{isBlocked&&<div style={{fontSize:10,color:C.danger,marginTop:2}}>{blockReasons[0]}</div>}</div>
+        <Badge color={isBlocked?C.danger:ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{isBlocked?"BLOCKED":ex.safetyTier||"—"}</Badge>
       </div>
       {sel===ex.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>
         {/* Image */}
