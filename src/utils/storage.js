@@ -76,14 +76,23 @@ function saveSession(session) {
 // ── Stats (derived from sessions) ─────────────────────────────
 
 function _updateStats(sessions) {
-  const stats = getStats();
+  // Always compute fresh from session data — never use stale cached values
+  return _computeFreshStats(sessions);
+}
 
-  // Total session count
-  stats.totalSessions = sessions.length;
+// Compute all stats fresh from session history — called on save AND on read
+function _computeFreshStats(sessions) {
+  if (!sessions) sessions = getSessions();
 
-  // Calculate streak (consecutive days with a session)
+  // Filter to primary sessions only (exclude supplemental add-ons)
+  const primary = sessions.filter(s => s.session_type !== "supplemental");
+
+  // "Days Done" = unique calendar days with at least one primary session
+  const sessionDates = new Set(primary.map((s) => _dateKey(new Date(s.date))));
+  const totalSessions = sessionDates.size;
+
+  // Calculate streak (consecutive days with a session, using LOCAL timezone)
   const today = _dateKey(new Date());
-  const sessionDates = new Set(sessions.map((s) => _dateKey(new Date(s.date))));
   let streak = 0;
   let d = new Date();
   // Check today first, then go backward
@@ -99,14 +108,14 @@ function _updateStats(sessions) {
       break;
     }
   }
-  stats.streak = streak;
 
   // Last session date
-  if (sessions.length > 0) {
-    stats.lastSessionDate = sessions[sessions.length - 1].date;
+  let lastSessionDate = null;
+  if (primary.length > 0) {
+    lastSessionDate = primary[primary.length - 1].date;
   }
 
-  // Weekly volume per muscle group (last 7 days)
+  // Weekly volume per muscle group (last 7 days) — includes supplemental
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
   const recentSessions = sessions.filter(
@@ -120,25 +129,45 @@ function _updateStats(sessions) {
       });
     }
   });
-  stats.weeklyVolume = weeklyVolume;
-  stats.sessionsThisWeek = recentSessions.length;
+
+  // "This Week" = unique days with primary sessions in the last 7 days
+  const recentPrimary = recentSessions.filter(s => s.session_type !== "supplemental");
+  const recentDays = new Set(recentPrimary.map(s => _dateKey(new Date(s.date))));
+  const sessionsThisWeek = recentDays.size;
+
+  const stats = {
+    totalSessions,
+    streak,
+    lastSessionDate,
+    weeklyVolume,
+    sessionsThisWeek,
+  };
 
   set(KEYS.STATS, stats);
   return stats;
 }
 
+// getStats now recomputes fresh every time — streak is always accurate
 function getStats() {
-  return get(KEYS.STATS) || {
-    totalSessions: 0,
-    streak: 0,
-    lastSessionDate: null,
-    weeklyVolume: {},
-    sessionsThisWeek: 0,
-  };
+  const sessions = getSessions();
+  if (!sessions.length) {
+    return {
+      totalSessions: 0,
+      streak: 0,
+      lastSessionDate: null,
+      weeklyVolume: {},
+      sessionsThisWeek: 0,
+    };
+  }
+  return _computeFreshStats(sessions);
 }
 
+// Local timezone date key (not UTC) — fixes midnight boundary issues
 function _dateKey(d) {
-  return d.toISOString().split("T")[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 function isTodayComplete() {
