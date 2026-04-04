@@ -393,7 +393,7 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
 // Adapters normalize the 300-exercise JSON schema for existing UI components
 const CURRENT_PHASE = 1;
 const BODY_GROUPS=["All","back","core","shoulders","legs","glutes","hips","full_body","chest","arms","neck","ankles","calves"];
-const CATEGORIES=["All","warmup","main","cooldown","rehab","mobility","mckenzie","cardio","foam_roll"];
+const CATEGORIES=["All","warmup","main","cooldown","rehab","cardio","foam_roll"];
 const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
 const ABILITY_LEVELS=["All","beginner","intermediate","advanced"];
 
@@ -1381,25 +1381,21 @@ function ProgressionRoadmapCard({targetId,compact=false}){
 function LibraryScreen(){
   const[catFilter,setCatFilter]=useState("All");
   const[bodyFilter,setBodyFilter]=useState("All");
-  const[moveFilter,setMoveFilter]=useState("All");
   const[abilityFilter,setAbilityFilter]=useState("All");
   const[phaseFilter,setPhaseFilter]=useState("All");
   const[locFilter,setLocFilter]=useState("All");
-  const[progFilter,setProgFilter]=useState("All");
   const[search,setSearch]=useState("");
   const[sel,setSel]=useState(null);
   const filtered=useMemo(()=>{
     let list=exerciseDB;
-    if(progFilter!=="All") list=filterByProgram(list,progFilter);
-    if(catFilter!=="All") list=list.filter(e=>e.category===catFilter);
+    if(catFilter!=="All") list=list.filter(e=>catFilter==="rehab"?(e.category==="rehab"||e.category==="mckenzie"||e.category==="mobility"):e.category===catFilter);
     if(bodyFilter!=="All") list=list.filter(e=>e.bodyPart===bodyFilter);
-    if(moveFilter!=="All") list=list.filter(e=>e.movementPattern===moveFilter);
     if(abilityFilter!=="All") list=list.filter(e=>e.level===abilityFilter);
     if(phaseFilter!=="All") list=list.filter(e=>(e.phaseEligibility||[]).includes(parseInt(phaseFilter)));
     if(locFilter!=="All") list=list.filter(e=>(e.locationCompatible||[]).includes(locFilter));
     if(search.trim()) { const q=search.toLowerCase(); list=list.filter(e=>e.name.toLowerCase().includes(q)||(e.tags||[]).some(t=>t.includes(q))); }
     return list;
-  },[catFilter,bodyFilter,moveFilter,abilityFilter,phaseFilter,locFilter,search]);
+  },[catFilter,bodyFilter,abilityFilter,phaseFilter,locFilter,search]);
   const FilterRow=({label,items,value,onChange,color=C.teal})=>(<div><div style={{fontSize:10,fontWeight:700,color:C.textDim,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{label}</div><div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:4}}>{items.map(p=>(<button key={p} onClick={()=>onChange(p)} style={{padding:"5px 10px",borderRadius:16,border:`1px solid ${value===p?color+"60":C.border}`,background:value===p?color+"15":"transparent",color:value===p?color:C.textDim,fontSize:10,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{p==="All"?"All":p.replace(/_/g," ")}</button>))}</div></div>);
   return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
     <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{exerciseDB.length} total · {filtered.length} shown</div></div>

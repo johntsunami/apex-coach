@@ -16932,7 +16932,7 @@
   {
     "id": "rehab_pigeon_pose",
     "name": "Pigeon Pose (Modified)",
-    "category": "cooldown",
+    "category": "rehab",
     "type": "flexibility",
     "movementPattern": "static_stretch",
     "bodyPart": "hips",
@@ -32455,6 +32455,7 @@
       "outdoor"
     ],
     "phaseEligibility": [
+      1,
       2,
       3,
       4,
@@ -38754,6 +38755,8 @@
       "outdoor"
     ],
     "phaseEligibility": [
+      1,
+      2,
       3,
       4,
       5
@@ -41621,7 +41624,7 @@
   {
     "id": "rehab_thoracic_ext_roller",
     "name": "Thoracic Extension over Foam Roller",
-    "category": "mobility",
+    "category": "rehab",
     "type": "mobility",
     "movementPattern": "mobility",
     "bodyPart": "back",
