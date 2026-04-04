@@ -296,6 +296,38 @@ const INJURY_ADJUSTMENTS = {
       phaseGate: 1, // cannot progress past Phase 1 until severity drops to 2
     },
   },
+  ankle: {
+    low: { // severity 1-2
+      blockCategories: ["plyometric"],
+      addExercises: ["ankle_dorsiflexion_mob", "calf_stretch", "ankle_alphabet"],
+      addFrequency: "every session warm-up",
+      message: "Ankle mobility work added to every warm-up. No jumping until cleared.",
+    },
+    high: { // severity 3-5
+      blockCategories: ["plyometric"],
+      blockPatterns: ["jump", "hop", "bound", "sprint", "running"],
+      addExercises: ["ankle_dorsiflexion_mob", "calf_stretch", "ankle_alphabet", "single_leg_balance"],
+      addFrequency: "every session",
+      cardioOnly: ["bike", "pool", "upper_body_ergometer"],
+      phaseGate: 2,
+      message: "No impact activities. Cardio limited to bike, pool, or arm bike.",
+    },
+  },
+  wrist: {
+    low: { // severity 1-2
+      push: { block: ["push_up"], allow: ["push_up_fists", "db_bench_press", "machine_chest_press"], message: "Modify push-ups to fists or use dumbbells. Avoid flat-hand weight bearing." },
+      addExercises: ["wrist_ext_stretch", "wrist_flex_stretch", "median_nerve_glide"],
+      addFrequency: "before and after any gripping exercises",
+      message: "Use wrist wraps for heavy gripping. Neutral grip preferred.",
+    },
+    high: { // severity 3-5
+      push: { block: ["push_up", "plank"], allow: ["machine_chest_press", "db_bench_press"], message: "No flat-hand weight bearing. Machine and DB pressing only." },
+      blockPatterns: ["heavy_grip", "hang"],
+      addExercises: ["wrist_ext_stretch", "wrist_flex_stretch", "median_nerve_glide"],
+      addFrequency: "every session",
+      message: "Avoid all exercises requiring sustained grip or wrist deviation.",
+    },
+  },
 };
 
 export function getInjuryAdjustments(injuries, mesoWeek = 1) {

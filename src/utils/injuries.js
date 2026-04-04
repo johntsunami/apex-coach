@@ -147,11 +147,29 @@ function getChangeHistory() {
   }
 }
 
-// Map condition category to severity gate key
-function conditionToGateKey(condCategory) {
-  const map = {
+// Map condition to severity gate key — uses condition ID for precision, falls back to category
+function conditionToGateKey(condCategoryOrId) {
+  if (!condCategoryOrId) return "other";
+  const id = condCategoryOrId.toLowerCase().replace(/\s+/g, "_");
+
+  // Specific condition ID → gate key (most precise)
+  // Shoulder conditions
+  if (id.includes("shoulder") || id.includes("rotator") || id.includes("labrum") || id.includes("impingement") || id.includes("frozen_shoulder") || id.includes("slap") || id.includes("bankart")) return "shoulder";
+  // Knee conditions
+  if (id.includes("knee") || id.includes("acl") || id.includes("mcl") || id.includes("meniscus") || id.includes("patellar") || id.includes("patellofemoral")) return "knee";
+  // Hip conditions
+  if (id.includes("hip") || id.includes("trochanteric") || id.includes("bursitis") && id.includes("hip")) return "knee"; // hip maps to knee gate (closest lower body gate)
+  // Ankle/foot conditions
+  if (id.includes("ankle") || id.includes("plantar") || id.includes("achilles") || id.includes("foot")) return "ankle";
+  // Wrist/hand conditions
+  if (id.includes("wrist") || id.includes("carpal") || id.includes("quervain") || id.includes("trigger_finger") || id.includes("dupuytren")) return "wrist";
+  // Spinal conditions
+  if (id.includes("spinal") || id.includes("disc") || id.includes("lumbar") || id.includes("cervical") || id.includes("thoracic") || id.includes("spondyl") || id.includes("stenosis") || id.includes("sciatica") || id.includes("neck") || id.includes("back") || id.includes("whiplash") || id.includes("kyphosis") || id.includes("lordosis") || id.includes("scoliosis") || id.includes("coccyx") || id.includes("si_joint") || id.includes("microdiscectomy") || id.includes("fusion")) return "lower_back";
+
+  // Category-level fallback
+  const categoryMap = {
     spinal: "lower_back",
-    joint: "knee", // default for joint — user can override
+    joint: "knee",
     neurological: "other",
     systemic: "other",
     cardiopulmonary: "other",
@@ -161,7 +179,7 @@ function conditionToGateKey(condCategory) {
     age_related: "other",
     amputation: "other",
   };
-  return map[condCategory] || "other";
+  return categoryMap[id] || "other";
 }
 
 // ── Resolve (heal) a condition — moves to history, doesn't delete ──

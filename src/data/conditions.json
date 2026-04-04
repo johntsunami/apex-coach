@@ -287,7 +287,13 @@
       "Hyperextension",
       "Heavy axial loading",
       "Back extension machine",
-      "Heavy overhead press"
+      "Heavy overhead press",
+      "Deep barbell back squats",
+      "Straight-leg deadlifts",
+      "Double-leg raises",
+      "Contact sports",
+      "All jumping activities (both feet leaving ground)",
+      "Spinal manipulation/thrust manual therapy"
     ],
     "modifications": {
       "flexionBiased": true,
@@ -363,7 +369,11 @@
     "avoid": [
       "Heavy axial loading early",
       "Repetitive flexion under load",
-      "High impact"
+      "High impact",
+      "Sit-ups and crunches (repeated loaded flexion)",
+      "Conventional deadlifts and heavy barbell back squats",
+      "Clean and jerk, snatch (explosive spinal loading)",
+      "Jumping rope (repeated spinal impact)"
     ],
     "modifications": {
       "assessDirectionalPreference": true
@@ -1200,7 +1210,10 @@
     "avoid": [
       "Upright rows",
       "Lateral raises above 90° with internal rotation",
-      "Behind-neck anything"
+      "Behind-neck anything",
+      "Dips (anterior shoulder stress)",
+      "Overhead pressing during symptomatic phase",
+      "Bench press without scapular control (use caution)"
     ],
     "modifications": {},
     "phases": {},
@@ -1346,7 +1359,10 @@
     "avoid": [
       "Deep squat past 90°",
       "Hip flexion with adduction and internal rotation",
-      "Pigeon pose"
+      "Pigeon pose",
+      "High-impact sports (running, basketball, soccer)",
+      "Weighted lunges if symptomatic",
+      "Prolonged sitting in deep hip flexion"
     ],
     "modifications": {},
     "phases": {},
@@ -1582,7 +1598,11 @@
     ],
     "avoid": [
       "Prolonged wrist flexion under load",
-      "Heavy front rack position"
+      "Heavy front rack position",
+      "Push-ups on flat hands (extreme wrist extension under load)",
+      "Planks on flat hands (use fists or wrist wraps)",
+      "Heavy gripping without wrist straps (deadlifts, pull-ups)",
+      "Hyperextension or hyperflexion of wrist during any exercise"
     ],
     "modifications": {
       "wristNeutralPositioning": true
@@ -1659,7 +1679,10 @@
     "avoid": [
       "Barefoot running initially",
       "Plyometrics on hard surfaces",
-      "Prolonged standing"
+      "Prolonged standing",
+      "Running on hard surfaces during acute phase",
+      "Hill running during acute phase",
+      "High-impact aerobics (jumping jacks, box jumps) during acute phase"
     ],
     "modifications": {},
     "phases": {},
@@ -1911,7 +1934,11 @@
     "avoid": [
       "Spinal flexion under load",
       "Explosive twisting",
-      "High impact if severe"
+      "High impact if severe",
+      "Sit-ups and crunches (vertebral fracture risk)",
+      "Toe touches (loaded spinal flexion)",
+      "Explosive twisting (golf swing, Russian twists)",
+      "Yoga/Pilates with extreme spinal flexion"
     ],
     "modifications": {
       "loadBonesProgressively": true
@@ -3818,5 +3845,99 @@
     "userMessage": "Type 1 diabetes requires glucose and ketone monitoring before exercise. We plan carbohydrate intake around your sessions and adjust based on your insulin timing.",
     "notes": "CGM/SMBG checks mandatory before exercise. No exercise if ketones present. Carbohydrate planning essential. Insulin-exercise interactions are complex — reduce basal for prolonged aerobic, may need carbs for anaerobic. Hypoglycemia risk continues 24+ hours post-exercise.",
     "source": "ADA Standards of Care, Riddell et al. Lancet Diabetes 2017"
+  },
+  {
+    "id": "A21",
+    "condition": "lumbar_microdiscectomy",
+    "name": "Lumbar Microdiscectomy (Post-Op)",
+    "category": "spinal",
+    "severityRange": "1-5",
+    "recommended": [
+      "cardio_walking",
+      "breath_diaphragmatic",
+      "mck_back_prone_lying",
+      "mck_back_prone_elbows",
+      "stab_dead_bug",
+      "stab_bird_dog",
+      "str_glute_bridge",
+      "corr_supine_pelvic_tilt"
+    ],
+    "mandatoryDaily": [
+      "cardio_walking",
+      "breath_diaphragmatic",
+      "corr_supine_pelvic_tilt"
+    ],
+    "avoid": [
+      "Sit-ups and crunches (loaded spinal flexion)",
+      "Conventional deadlifts and barbell back squats (axial compression)",
+      "Russian twists and cable woodchops (loaded rotation)",
+      "Good mornings and back extension machine",
+      "Bending forward combined with lifting",
+      "Running (before 3 months post-op)",
+      "All plyometrics and jumping (before 3-6 months)",
+      "Toe touches and Jefferson curls",
+      "Any exercise combining flexion + rotation under load",
+      "Heavy overhead pressing (spinal compression)",
+      "Rowing machine (repeated flexion-extension cycle)"
+    ],
+    "modifications": {
+      "coreExercises": "Anti-movement ONLY (dead bug, bird dog, side plank after week 4)",
+      "noLoadedSpinalMotion": true,
+      "maxIntensity": "RPE 5 for first 12 weeks post-op",
+      "liftingRestriction": "No lifting >10-15 lbs for first 6 weeks"
+    },
+    "phases": {
+      "weeks_0_2": "Walking + light stretching only. No bending, twisting, or lifting >10-15 lbs.",
+      "weeks_2_6": "Add core stability (dead bug, bird dog), gentle ROM. Gradually increase lifting limit.",
+      "weeks_6_8": "Surgeon clearance for full activity. Light resistance training. Stationary bike.",
+      "weeks_8_12": "McKenzie press-ups if extension-biased. Progressive loading with neutral spine.",
+      "months_3_6": "Return to heavier lifting with proper form. Swimming allowed. Running with clearance.",
+      "months_6_plus": "Most can return to pre-surgical activity levels. Maintain core stability program."
+    },
+    "referOutIf": "New radiating pain, progressive numbness/weakness in legs, bowel/bladder changes, increased pain with any exercise, wound changes",
+    "userMessage": "Your microdiscectomy recovery follows a careful progression. We protect your spine while rebuilding core stability. Most people return to full activity by 3-6 months.",
+    "source": "Ohio State lumbar discectomy protocol, Mass General rehabilitation guidelines, Spine-Health return to exercise guidelines"
+  },
+  {
+    "id": "B30",
+    "condition": "patellofemoral_pain",
+    "name": "Patellofemoral Pain Syndrome (Runner's Knee)",
+    "category": "joint",
+    "severityRange": "1-5",
+    "recommended": [
+      "corr_clamshell",
+      "corr_side_lying_hip_abd",
+      "corr_monster_walk",
+      "rehab_lateral_band_walk",
+      "str_glute_bridge",
+      "rehab_vmo_wall_sit",
+      "rehab_tke",
+      "str_goblet_squat"
+    ],
+    "mandatoryDaily": [
+      "corr_clamshell",
+      "rehab_vmo_wall_sit"
+    ],
+    "avoid": [
+      "Deep squats with knee valgus (knee caving inward)",
+      "Lunges with knee collapsing inward",
+      "Prolonged running downhill",
+      "Full-depth leg press with heavy load",
+      "Full-depth barbell back squat",
+      "Open kinetic chain leg extension through pain"
+    ],
+    "modifications": {
+      "squatDepth": "Monitor form, limit depth if painful. Knee must track over 2nd toe.",
+      "hipStrengthening": "Critical — hip abductors and external rotators address root cause.",
+      "runningModification": "Reduce mileage, avoid hills, consider gait analysis"
+    },
+    "phases": {
+      "weeks_0_4": "Hip strengthening focus (clamshells, side-lying abduction, monster walks). VMO activation. Patellar taping if helpful.",
+      "weeks_4_8": "Progressive loading. Squats with form correction. Single-leg exercises introduced.",
+      "weeks_8_12": "Return to running with gait modification. Sport-specific training."
+    },
+    "referOutIf": "Locking, giving way, significant swelling, pain not improving after 6 weeks of targeted hip/quad strengthening",
+    "userMessage": "Patellofemoral pain responds well to exercise — especially hip strengthening. We focus on your hip abductors and external rotators because weak hips are the most common cause of knee tracking problems.",
+    "source": "JOSPT 2019 Clinical Practice Guidelines (APTA), Mass General PFPS protocol"
   }
 ]
