@@ -135,7 +135,9 @@ async function restoreSessionsFromSupabase() {
     if (local.length >= rows.length) return false;
     const restored = rows.map(r => ({
       session_id: r.id,
-      date: r.created_at || r.date,
+      // Prefer created_at (timestamptz with TZ) over date (bare date, UTC-parsed)
+      // For bare date fallback, append T12:00:00 to avoid UTC midnight shift
+      date: r.created_at || (r.date ? r.date + "T12:00:00" : new Date().toISOString()),
       exercises_completed: r.exercises_completed || [],
       exercises_skipped: r.exercises_skipped || [],
       readiness: { RTT: r.rtt_score, CTP: r.ctp_score, safety_level: r.safety_level },
@@ -172,7 +174,8 @@ function _computeFreshStats(sessions) {
   const primary = sessions.filter(s => s.session_type !== "supplemental");
 
   // "Days Done" = unique calendar days with at least one primary session
-  const sessionDates = new Set(primary.map((s) => _dateKey(new Date(s.date))));
+  // Pass raw date string to _dateKey to avoid UTC parsing issues with bare dates
+  const sessionDates = new Set(primary.map((s) => _dateKey(s.date)));
   const totalSessions = sessionDates.size;
 
   // Calculate streak (consecutive days with a session, using LOCAL timezone)
@@ -216,7 +219,7 @@ function _computeFreshStats(sessions) {
 
   // "This Week" = unique days with primary sessions in the last 7 days
   const recentPrimary = recentSessions.filter(s => s.session_type !== "supplemental");
-  const recentDays = new Set(recentPrimary.map(s => _dateKey(new Date(s.date))));
+  const recentDays = new Set(recentPrimary.map(s => _dateKey(s.date)));
   const sessionsThisWeek = recentDays.size;
 
   const stats = {
@@ -246,8 +249,15 @@ function getStats() {
   return _computeFreshStats(sessions);
 }
 
-// Local timezone date key (not UTC) — fixes midnight boundary issues
+// Local timezone date key — handles both ISO timestamps and bare date strings safely
 function _dateKey(d) {
+  // If input is a string like "2026-04-03" (no time/timezone), treat it as local date directly
+  // to avoid UTC interpretation shifting the day backward in western timezones
+  if (typeof d === "string" || d instanceof String) {
+    const match = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (match) return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+  if (!(d instanceof Date)) d = new Date(d);
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
@@ -258,7 +268,7 @@ function isTodayComplete() {
   const sessions = getSessions();
   if (!sessions.length) return null;
   const today = _dateKey(new Date());
-  const todaySessions = sessions.filter(s => _dateKey(new Date(s.date)) === today);
+  const todaySessions = sessions.filter(s => _dateKey(s.date) === today);
   if (!todaySessions.length) return null;
   // Only count primary sessions (not supplemental add-ons)
   const primarySessions = todaySessions.filter(s => s.session_type !== "supplemental");
