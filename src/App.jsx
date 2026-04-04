@@ -35,7 +35,7 @@ import { hasHypertrophyGoals, getHypertrophyVolume, getRecommendedSplit, getCurr
 import { buildCardioBlock, CARDIO_EXERCISES } from "./utils/cardioEngine.js";
 import { getDailyWorkout, saveDailyWorkout, markExerciseDone, markExerciseStarted, getDailyProgress, getMiniSessions, getPhaseGroupedExercises, clearDailyWorkout, endDay, getCarryover, clearCarryover, estimateExerciseTime } from "./utils/splitWorkout.js";
 import { getOrCreateWeeklyPlan, getTodayFromPlan, getTomorrowFromPlan, updateDayStatus, adjustPlanForCheckIn, shouldRegeneratePlan, regenerateWeeklyPlan, generateWeeklyPlan, archiveWeeklyPlan, ADDON_TYPES, DAY_NAMES, getDayOfWeek, getWeeklyPlan, saveWeeklyPlan } from "./utils/weeklyPlanner.js";
-import { getTodayWorkoutStatus, saveSupplementalSession } from "./utils/storage.js";
+import { getTodayWorkoutStatus, saveSupplementalSession, restoreSessionsFromSupabase } from "./utils/storage.js";
 import { determineTrainingTier, checkPhaseReadiness, getOrCreateMesocycle, getMesocycleContext, getMesocycle, analyzeFeedback, TIERS, TIER_PROGRESSIONS } from "./utils/mesocycle.js";
 
 // ═══════════════════════════════════════════════════════════════
@@ -1852,19 +1852,28 @@ function AppInner(){
       setScreen("onboarding");return;
     }
     // If Supabase says completed but localStorage is empty → restore from Supabase
-    if(supabaseCompleted && !localCompleted && profile?.assessment_data){
-      try{
-        saveAssessment(profile.assessment_data);
-        // Rebuild injuries from assessment conditions
-        const conds=profile.assessment_data.conditions||[];
-        if(conds.length){
-          const restored=conds.map((c,i)=>({id:"inj_r_"+i,area:c.name||c.conditionId||"Unknown",type:"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,protocols:[],notes:"",tempFlag:null}));
-          saveInjuries(restored);
-        }
-        // Rebuild PT protocols from assessment
-        const protocols=generateProtocols(profile.assessment_data);
-        if(protocols.length)saveLocalProtocols(protocols);
-      }catch{}
+    if(supabaseCompleted && !localCompleted){
+      if(profile?.assessment_data){
+        try{
+          saveAssessment(profile.assessment_data);
+          // Rebuild injuries from assessment conditions
+          const conds=profile.assessment_data.conditions||[];
+          if(conds.length){
+            const restored=conds.map((c,i)=>({id:"inj_r_"+i,area:c.name||c.conditionId||"Unknown",type:"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,protocols:[],notes:"",tempFlag:null}));
+            saveInjuries(restored);
+          }
+          // Rebuild PT protocols from assessment
+          const protocols=generateProtocols(profile.assessment_data);
+          if(protocols.length)saveLocalProtocols(protocols);
+        }catch(e){console.warn("Assessment restore error:",e);}
+      } else {
+        // assessment_completed=true but assessment_data is null — save a minimal marker
+        // so hasCompletedAssessment() returns true and user isn't sent to onboarding
+        try{saveAssessment({_restoredStub:true,completedAt:new Date().toISOString()});}catch{}
+        console.warn("APEX: assessment_completed=true but assessment_data missing in Supabase. Skipping onboarding.");
+      }
+      // Restore workout sessions from Supabase (fire-and-forget)
+      restoreSessionsFromSupabase().catch(()=>{});
     }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
@@ -1913,7 +1922,7 @@ function AppInner(){
     {/* Auth screens (unauthenticated) */}
     {screen==="auth"&&authView==="landing"&&<LandingPage onSignUp={()=>setAuthView("signup")} onLogIn={()=>setAuthView("login")}/>}
     {screen==="auth"&&authView==="signup"&&<SignUpScreen onBack={()=>setAuthView("landing")} onSuccess={()=>{setAuthView("landing");setScreen("onboarding");}}/>}
-    {screen==="auth"&&authView==="login"&&<LogInScreen onBack={()=>setAuthView("landing")} onForgot={()=>setAuthView("forgot")} onSuccess={()=>setScreen("home")}/>}
+    {screen==="auth"&&authView==="login"&&<LogInScreen onBack={()=>setAuthView("landing")} onForgot={()=>setAuthView("forgot")} onSuccess={()=>{/* Don't setScreen here — let the routing useEffect decide based on profile.assessment_completed after profile loads */}}/>}
     {screen==="auth"&&authView==="forgot"&&<ForgotPasswordScreen onBack={()=>setAuthView("login")}/>}
     {/* App screens (authenticated) */}
     {screen==="onboarding"&&<OnboardingFlow onComplete={(data)=>{

@@ -70,7 +70,91 @@ function saveSession(session) {
   // Update stats after saving session
   _updateStats(sessions);
 
+  // Fire-and-forget sync to Supabase for cross-device persistence
+  _syncSessionToSupabase(entry);
+
   return entry;
+}
+
+// ── Supabase session sync (fire-and-forget) ───────────────────
+async function _syncSessionToSupabase(entry) {
+  try {
+    const { supabase, isSupabaseAvailable } = await import("../utils/supabase.js");
+    if (!isSupabaseAvailable()) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+    await supabase.from("sessions").insert({
+      user_id: session.user.id,
+      date: entry.date?.split("T")[0] || new Date().toISOString().split("T")[0],
+      location: entry.check_in?.location || "gym",
+      duration_minutes: entry.duration_minutes || 0,
+      safety_level: entry.readiness?.safety_level || "CLEAR",
+      difficulty_selected: entry.difficulty || "standard",
+      rtt_score: entry.readiness?.RTT || null,
+      ctp_score: entry.readiness?.CTP || null,
+      check_in_data: entry.check_in || {},
+      exercises_completed: entry.exercises_completed || [],
+      exercises_skipped: entry.exercises_skipped || [],
+      volume_data: entry.total_volume || {},
+      status: "completed",
+      session_type: entry.session_type || "primary",
+    });
+    // Also sync reflection
+    if (entry.reflection) {
+      const { data: sessRows } = await supabase.from("sessions").select("id").eq("user_id", session.user.id).order("created_at", { ascending: false }).limit(1);
+      if (sessRows?.[0]) {
+        await supabase.from("session_reflections").insert({
+          session_id: sessRows[0].id,
+          user_id: session.user.id,
+          difficulty_rating: entry.reflection?.difficulty || null,
+          pain_rating: entry.reflection?.pain || null,
+          enjoyment_rating: entry.reflection?.enjoyment || null,
+          form_confidence: entry.reflection?.form_confidence || null,
+          overall: entry.overall || "just_right",
+          starred_exercises: entry.starred || [],
+          flagged_exercises: entry.flagged || [],
+          pain_flagged_exercises: entry.pain_flagged || [],
+          notes: entry.notes || "",
+        });
+      }
+    }
+  } catch (e) { console.warn("Session sync to Supabase failed (non-blocking):", e); }
+}
+
+// Restore sessions from Supabase on login (called from AuthProvider flow)
+async function restoreSessionsFromSupabase() {
+  try {
+    const { supabase, isSupabaseAvailable } = await import("../utils/supabase.js");
+    if (!isSupabaseAvailable()) return false;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return false;
+    const { data: rows, error } = await supabase.from("sessions").select("*").eq("user_id", session.user.id).order("date", { ascending: true });
+    if (error || !rows?.length) return false;
+    // Only restore if localStorage has fewer sessions (don't overwrite newer local data)
+    const local = getSessions();
+    if (local.length >= rows.length) return false;
+    const restored = rows.map(r => ({
+      session_id: r.id,
+      date: r.created_at || r.date,
+      exercises_completed: r.exercises_completed || [],
+      exercises_skipped: r.exercises_skipped || [],
+      readiness: { RTT: r.rtt_score, CTP: r.ctp_score, safety_level: r.safety_level },
+      check_in: r.check_in_data || {},
+      reflection: {},
+      starred: [],
+      flagged: [],
+      pain_flagged: [],
+      notes: "",
+      overall: r.difficulty_selected || "just_right",
+      duration_minutes: r.duration_minutes || 0,
+      total_volume: r.volume_data || {},
+      session_type: r.session_type || "primary",
+    }));
+    set(KEYS.SESSIONS, restored);
+    _updateStats(restored);
+    console.log("APEX: Restored", restored.length, "sessions from Supabase");
+    return true;
+  } catch (e) { console.warn("Session restore from Supabase failed:", e); return false; }
 }
 
 // ── Stats (derived from sessions) ─────────────────────────────
@@ -298,5 +382,6 @@ export {
   toggleFavorite,
   addPainFlag,
   computeSessionVolume,
+  restoreSessionsFromSupabase,
   KEYS,
 };

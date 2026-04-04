@@ -31,7 +31,18 @@ export default function AuthProvider({ children }) {
   function _getLocalUid() { try { return localStorage.getItem("apex_current_uid"); } catch { return null; } }
   function _setLocalUid(uid) { try { localStorage.setItem("apex_current_uid", uid); } catch {} }
   function _clearUserLocalStorage() {
-    const userKeys = ["apex_assessment","apex_injuries","apex_injury_history","apex_sessions","apex_stats","apex_prefs","apex_paused_workout","apex_last_screen","apex_last_tab","apex_image_overrides","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_current_uid"];
+    const userKeys = [
+      "apex_assessment","apex_injuries","apex_injury_history","apex_sessions","apex_stats",
+      "apex_prefs","apex_paused_workout","apex_last_screen","apex_last_tab",
+      "apex_image_overrides","apex_youtube_overrides","apex_baseline_tests",
+      "apex_baseline_capabilities","apex_power_records","apex_current_uid",
+      "apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps",
+      "apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings",
+      "apex_pt_protocols","apex_pt_sessions","apex_media_pref",
+      "apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover",
+      "apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive",
+      "apex_mesocycle","apex_mesocycle_archive",
+    ];
     userKeys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
   }
 
