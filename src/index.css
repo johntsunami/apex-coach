@@ -70,9 +70,9 @@ button:active:not(:disabled) { transform: scale(0.97); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 /* ── Input styling ── */
-input[type="range"] { -webkit-appearance: none; appearance: none; background: var(--border); height: 10px; border-radius: 5px; cursor: pointer; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 48px; height: 48px; border-radius: 50%; background: var(--teal); cursor: pointer; box-shadow: 0 0 10px rgba(0,210,200,0.4); border: 3px solid rgba(255,255,255,0.15); }
-input[type="range"]::-moz-range-thumb { width: 48px; height: 48px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 3px solid rgba(255,255,255,0.15); box-shadow: 0 0 10px rgba(0,210,200,0.4); }
+input[type="range"] { -webkit-appearance: none; appearance: none; background: var(--border); height: 14px; border-radius: 7px; cursor: pointer; margin: 24px 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 80px; height: 80px; border-radius: 50%; background: var(--teal); cursor: pointer; box-shadow: 0 0 16px rgba(0,210,200,0.5); border: 4px solid rgba(255,255,255,0.2); }
+input[type="range"]::-moz-range-thumb { width: 80px; height: 80px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 4px solid rgba(255,255,255,0.2); box-shadow: 0 0 16px rgba(0,210,200,0.5); }
 
 /* ── Confetti burst ── */
 .confetti-container { position: fixed; top: 50%; left: 50%; pointer-events: none; z-index: 999; }
