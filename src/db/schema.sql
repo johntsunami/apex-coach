@@ -295,3 +295,28 @@ CREATE POLICY "Users can view own pt_reminders" ON pt_reminders FOR SELECT USING
 CREATE POLICY "Users can insert own pt_reminders" ON pt_reminders FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "Users can update own pt_reminders" ON pt_reminders FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can delete own pt_reminders" ON pt_reminders FOR DELETE USING (auth.uid() = user_id);
+
+-- ── WEEKLY PLANS ─────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS weekly_plans (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id uuid REFERENCES profiles ON DELETE CASCADE NOT NULL,
+  week_start date NOT NULL,
+  training_split text NOT NULL,
+  days_per_week integer NOT NULL,
+  phase integer NOT NULL,
+  day_plans jsonb NOT NULL DEFAULT '[]'::jsonb,
+  rotation_indices jsonb DEFAULT '{}'::jsonb,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, week_start)
+);
+
+ALTER TABLE weekly_plans ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own weekly_plans" ON weekly_plans FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own weekly_plans" ON weekly_plans FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own weekly_plans" ON weekly_plans FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can delete own weekly_plans" ON weekly_plans FOR DELETE USING (auth.uid() = user_id);
+
+-- Add status field to sessions for tracking not_started/in_progress/completed
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS status text DEFAULT 'completed' CHECK (status IN ('not_started', 'in_progress', 'completed'));
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS session_type text DEFAULT 'primary' CHECK (session_type IN ('primary', 'supplemental'));

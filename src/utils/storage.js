@@ -147,11 +147,63 @@ function isTodayComplete() {
   const today = _dateKey(new Date());
   const todaySessions = sessions.filter(s => _dateKey(new Date(s.date)) === today);
   if (!todaySessions.length) return null;
-  // Return summary of today's session(s)
-  const last = todaySessions[todaySessions.length - 1];
-  const totalExercises = todaySessions.reduce((sum, s) => sum + (s.exercises_completed?.length || 0), 0);
-  const totalMinutes = todaySessions.reduce((sum, s) => sum + (s.duration_minutes || 0), 0);
-  return { done: true, exerciseCount: totalExercises, durationMinutes: totalMinutes, sessionCount: todaySessions.length, lastSession: last };
+  // Only count primary sessions (not supplemental add-ons)
+  const primarySessions = todaySessions.filter(s => s.session_type !== "supplemental");
+  if (!primarySessions.length) return null;
+  const last = primarySessions[primarySessions.length - 1];
+  const totalExercises = primarySessions.reduce((sum, s) => sum + (s.exercises_completed?.length || 0), 0);
+  const totalMinutes = primarySessions.reduce((sum, s) => sum + (s.duration_minutes || 0), 0);
+  return { done: true, exerciseCount: totalExercises, durationMinutes: totalMinutes, sessionCount: primarySessions.length, lastSession: last };
+}
+
+// ── Today's workout status ────────────────────────────────────
+// Returns "completed" | "in_progress" | "not_started"
+function getTodayWorkoutStatus() {
+  // Check completed sessions first
+  if (isTodayComplete()) return "completed";
+  // Check for in-progress workout in localStorage
+  try {
+    const raw = localStorage.getItem("apex_daily_workout");
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.date === _dateKey(new Date()) && data.completed) {
+        const doneCount = Object.values(data.completed).filter(Boolean).length;
+        if (doneCount > 0) return "in_progress";
+      }
+    }
+    const paused = localStorage.getItem("apex_paused_workout");
+    if (paused) {
+      const p = JSON.parse(paused);
+      if (p.completedExercises?.length > 0) return "in_progress";
+    }
+  } catch {}
+  return "not_started";
+}
+
+// ── Save a supplemental (add-on) session ──────────────────────
+function saveSupplementalSession(session) {
+  const sessions = getSessions();
+  const entry = {
+    session_id: `s_addon_${Date.now()}`,
+    date: new Date().toISOString(),
+    session_type: "supplemental",
+    exercises_completed: session.exercisesCompleted || [],
+    exercises_skipped: [],
+    readiness: {},
+    check_in: {},
+    reflection: {},
+    starred: [],
+    flagged: [],
+    pain_flagged: [],
+    notes: session.notes || "",
+    overall: "just_right",
+    duration_minutes: session.durationMinutes || 0,
+    total_volume: session.totalVolume || {},
+    addon_type: session.addonType || "general",
+  };
+  sessions.push(entry);
+  set(KEYS.SESSIONS, sessions);
+  return entry;
 }
 
 // ── User Preferences ──────────────────────────────────────────
@@ -208,8 +260,10 @@ export {
   clear,
   getSessions,
   saveSession,
+  saveSupplementalSession,
   getStats,
   isTodayComplete,
+  getTodayWorkoutStatus,
   getPrefs,
   setPref,
   toggleFavorite,
