@@ -395,7 +395,7 @@ const CURRENT_PHASE = 1;
 const BODY_GROUPS=["All","back","core","shoulders","legs","glutes","hips","full_body","chest","arms","neck","ankles","calves"];
 const CATEGORIES=["All","warmup","main","cooldown","rehab","mobility","mckenzie","cardio","foam_roll"];
 const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
-const ABILITY_LEVELS=["All","any","standing","seated_only","supine_only","wheelchair_accessible","aquatic","bed_bound"];
+const ABILITY_LEVELS=["All","beginner","intermediate","advanced"];
 
 // Extract phase-appropriate sets/reps/rest/intensity from phaseParams (with volume caps)
 function exParams(ex, phase=CURRENT_PHASE, diff="standard") {
@@ -1394,7 +1394,7 @@ function LibraryScreen(){
     if(catFilter!=="All") list=list.filter(e=>e.category===catFilter);
     if(bodyFilter!=="All") list=list.filter(e=>e.bodyPart===bodyFilter);
     if(moveFilter!=="All") list=list.filter(e=>e.movementPattern===moveFilter);
-    if(abilityFilter!=="All") list=list.filter(e=>e.abilityLevel===abilityFilter);
+    if(abilityFilter!=="All") list=list.filter(e=>e.level===abilityFilter);
     if(phaseFilter!=="All") list=list.filter(e=>(e.phaseEligibility||[]).includes(parseInt(phaseFilter)));
     if(locFilter!=="All") list=list.filter(e=>(e.locationCompatible||[]).includes(locFilter));
     if(search.trim()) { const q=search.toLowerCase(); list=list.filter(e=>e.name.toLowerCase().includes(q)||(e.tags||[]).some(t=>t.includes(q))); }
@@ -1409,7 +1409,7 @@ function LibraryScreen(){
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
       <FilterRow label="Phase" items={["All","1","2","3","4","5"]} value={phaseFilter} onChange={setPhaseFilter} color={C.success}/>
       <FilterRow label="Location" items={["All","gym","home","outdoor"]} value={locFilter} onChange={setLocFilter} color={C.orange}/>
-      <FilterRow label="Ability" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
+      <FilterRow label="Level" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
     </div>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 4px"}}><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</span><span style={{fontSize:11,color:C.textDim}}>of {exerciseDB.length} total</span></div>
     {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
