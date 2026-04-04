@@ -35,11 +35,83 @@ function addInjury(injury) {
     notes: injury.notes || "",
     conditionId: injury.conditionId || null,
     tempFlag: null,
+    createdAt: injury.createdAt || new Date().toISOString(),
+    surgeryDate: injury.surgeryDate || null,
+    painFreeStreak: 0,     // consecutive pain-free sessions for this area
+    lastPainDate: null,     // last date pain was reported for this area
+    lastSeverityChange: new Date().toISOString(),
   };
   injuries.push(entry);
   saveInjuries(injuries);
   _logChange("added", entry);
   return injuries;
+}
+
+// Get weeks since injury/surgery for healing timeline phase matching
+function getWeeksSinceInjury(injury) {
+  const refDate = injury.surgeryDate || injury.createdAt;
+  if (!refDate) return null;
+  const diff = Date.now() - new Date(refDate).getTime();
+  return Math.floor(diff / (7 * 24 * 60 * 60 * 1000));
+}
+
+// Match current healing phase from conditions.json timeline
+function getHealingPhase(injury, conditionsDB) {
+  const weeks = getWeeksSinceInjury(injury);
+  if (weeks === null) return null;
+  const cond = conditionsDB?.find(c => c.condition === injury.conditionId || c.id === injury.conditionId);
+  if (!cond?.phases) return null;
+  // Find matching phase based on weeks
+  const phaseKeys = Object.keys(cond.phases).sort();
+  let matched = null;
+  for (const key of phaseKeys) {
+    const m = key.match(/(\d+)/);
+    if (m) {
+      const phaseStart = parseInt(m[1]);
+      const isMonths = key.includes("month");
+      const phaseWeeks = isMonths ? phaseStart * 4 : phaseStart;
+      if (weeks >= phaseWeeks) matched = { key, description: cond.phases[key], weeksSince: weeks };
+    }
+  }
+  return matched;
+}
+
+// Update pain-free streak for an injury area after a session
+function updatePainTracking(injuryId, hadPain) {
+  const injuries = getInjuries();
+  const idx = injuries.findIndex(i => i.id === injuryId);
+  if (idx === -1) return injuries;
+  if (hadPain) {
+    injuries[idx].painFreeStreak = 0;
+    injuries[idx].lastPainDate = new Date().toISOString();
+  } else {
+    injuries[idx].painFreeStreak = (injuries[idx].painFreeStreak || 0) + 1;
+  }
+  saveInjuries(injuries);
+  return injuries;
+}
+
+// Check if any injuries should suggest severity reduction
+function getSeverityReductionSuggestions() {
+  const injuries = getInjuries().filter(i => i.status !== "resolved" && i.severity > 1);
+  const suggestions = [];
+  for (const inj of injuries) {
+    const streak = inj.painFreeStreak || 0;
+    const weeks = getWeeksSinceInjury(inj);
+    // Suggest reduction after 6+ pain-free sessions (roughly 2 weeks of training)
+    if (streak >= 6 && inj.severity > 1) {
+      suggestions.push({
+        injuryId: inj.id,
+        area: inj.area,
+        currentSeverity: inj.severity,
+        suggestedSeverity: inj.severity - 1,
+        painFreeStreak: streak,
+        weeksSinceInjury: weeks,
+        message: `${inj.area} has been pain-free for ${streak} sessions. Consider reducing severity from ${inj.severity} to ${inj.severity - 1} to unlock more exercises.`,
+      });
+    }
+  }
+  return suggestions;
 }
 
 function updateInjury(id, updates) {
@@ -227,5 +299,9 @@ export {
   computeChangelog,
   getChangeHistory,
   conditionToGateKey,
+  getWeeksSinceInjury,
+  getHealingPhase,
+  updatePainTracking,
+  getSeverityReductionSuggestions,
   DEFAULTS,
 };

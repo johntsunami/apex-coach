@@ -9,7 +9,7 @@ import AssessmentSummary from "./components/AssessmentSummary.jsx";
 import ExerciseImage from "./components/ExerciseImage.jsx";
 import ExtraWork from "./components/ExtraWork.jsx";
 import PlanView from "./components/PlanView.jsx";
-import { getInjuries, saveInjuries, conditionToGateKey } from "./utils/injuries.js";
+import { getInjuries, saveInjuries, conditionToGateKey, updatePainTracking, getSeverityReductionSuggestions } from "./utils/injuries.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
@@ -518,12 +518,45 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const volSwaps = []; // track volume-based substitutions
   const assessment = getAssessment();
   const blacklist = new Set(assessment?.preferences?.blacklist || []);
+
+  // ── PAIN-BASED FILTERING ──────────────────────────────────────
+  // 1. Today's check-in: sharp pain areas → block exercises for those body parts
+  const sharpPainParts = new Set();
+  const dulllSoreParts = new Set();
+  if (checkInData?.soreness?.length > 0 && checkInData.painTypes) {
+    const areaToBodyPart = { lshoulder:"shoulders",rshoulder:"shoulders",chest:"chest",upperback:"back",lowerback:"back",core:"core",hips:"hips",lknee:"legs",rknee:"legs",lquad:"legs",rquad:"legs",hamstrings:"legs",calves:"calves",feet:"ankles",lelbow:"arms",relbow:"arms",wrists:"arms",head:"neck" };
+    for (const area of checkInData.soreness) {
+      const bp = areaToBodyPart[area];
+      if (bp && checkInData.painTypes[area] === "sharp") sharpPainParts.add(bp);
+      else if (bp) dulllSoreParts.add(bp);
+    }
+  }
+  // 2. Yesterday's pain-flagged exercises → exclude them today
+  const recentPainIds = new Set();
+  try {
+    const sessions = getSessions() || [];
+    const twoDaysAgo = new Date(); twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    sessions.filter(s => new Date(s.date) >= twoDaysAgo).forEach(s => {
+      (s.pain_flagged || []).forEach(pf => {
+        const id = typeof pf === "string" ? pf : pf.exercise_id;
+        if (id) recentPainIds.add(id);
+      });
+      // Also check per-set pain in completed exercises
+      (s.exercises_completed || []).forEach(ec => {
+        if (ec.pain_during || (ec.sets || []).some(st => st.pain)) recentPainIds.add(ec.exercise_id);
+      });
+    });
+  } catch {}
+
   const pick = (category, limit, excludeStarters) => {
     const pool = exerciseDB.filter(e =>
       e.category === category &&
       !blacklist.has(e.id) &&
+      !recentPainIds.has(e.id) && // exclude yesterday's painful exercises
       (e.phaseEligibility || []).includes(phase) &&
-      (category !== "main" || e.safetyTier !== "red")
+      (category !== "main" || e.safetyTier !== "red") &&
+      // Sharp pain filter: block exercises targeting sharp-pain body parts
+      (category !== "main" || !sharpPainParts.has(e.bodyPart))
     );
     // Shuffle pool for variety — different exercises each session (Fix #14)
     const sessionSeed = (getSessions()?.length || 0) + new Date().getDate();
@@ -936,6 +969,8 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   {showCardioLog&&<CardioLogModal onClose={()=>setShowCardioLog(false)} onSaved={()=>setCardioRev(r=>r+1)}/>}
   <ProgressDashboard phase={CURRENT_PHASE}/>
   <div><SectionTitle icon="🩺" title="Active Injury Protocols" sub="Tap to expand · Edit to manage"/>{dynamicInjuries.map(inj=>(<Card key={inj.id} onClick={()=>setSi(si===inj.id?null:inj.id)} style={{marginBottom:8,cursor:"pointer",borderColor:inj.tempFlag?C.warning+"60":C.border}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div style={{fontSize:15,fontWeight:700,color:C.text}}>{inj.area}</div><div style={{fontSize:12,color:C.textDim}}>{inj.type}{inj.notes?` — ${inj.notes}`:""}</div>{inj.tempFlag&&<div style={{fontSize:10,color:C.warning,marginTop:2}}>⚡ {inj.tempFlag}</div>}</div><Badge color={inj.severity<=2?C.warning:C.danger}>SEV {inj.severity}/5</Badge></div>{si===inj.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>{(inj.protocols||[]).map((p,i)=><div key={i} style={{display:"flex",gap:8,padding:"5px 0"}}><span style={{color:C.teal}}>▸</span><span style={{fontSize:13,color:C.textMuted}}>{p}</span></div>)}</div>}</Card>))}{onEditInjuries&&<button onClick={onEditInjuries} style={{background:C.bgElevated,border:`1px solid ${C.border}`,borderRadius:12,padding:"10px 16px",color:C.textMuted,fontSize:11,cursor:"pointer",width:"100%",fontFamily:"inherit",marginTop:4}}>✏️ Edit Injuries & Conditions</button>}</div>
+  {/* Severity reduction suggestions — show when pain-free milestones hit */}
+  {(()=>{try{const suggestions=getSeverityReductionSuggestions();if(!suggestions.length)return null;return(<div>{suggestions.map(s=>(<Card key={s.injuryId} style={{borderColor:C.success+"40",background:C.success+"06",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>📈</span><div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:C.success}}>Recovery Progress: {s.area}</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>{s.message}</div></div></div><div style={{display:"flex",gap:8,marginTop:10}}><button onClick={()=>{try{const injs=getInjuries();const idx=injs.findIndex(i=>i.id===s.injuryId);if(idx>=0){injs[idx].severity=s.suggestedSeverity;injs[idx].painFreeStreak=0;injs[idx].lastSeverityChange=new Date().toISOString();saveInjuries(injs);}}catch{}}} style={{flex:1,padding:"8px",borderRadius:8,background:C.success+"15",border:`1px solid ${C.success}30`,color:C.success,fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>Reduce to Severity {s.suggestedSeverity}</button><button onClick={()=>{try{const injs=getInjuries();const idx=injs.findIndex(i=>i.id===s.injuryId);if(idx>=0){injs[idx].painFreeStreak=0;saveInjuries(injs);}}catch{}}} style={{flex:1,padding:"8px",borderRadius:8,background:"transparent",border:`1px solid ${C.border}`,color:C.textDim,fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Not Yet</button></div></Card>))}</div>);}catch{return null;}})()}
   <PTProgressCard onStartSession={(p)=>{onPTSession?.(p);}} onViewProgress={onPTProgress}/>
   {/* Unlock notifications */}
   {(()=>{const notifs=getUnlockNotifications().filter(n=>!n.seen);if(!notifs.length)return null;return(<Card style={{borderColor:C.success+"40",background:C.success+"08"}}><div style={{fontSize:11,fontWeight:700,color:C.success,letterSpacing:2,marginBottom:6}}>EXERCISE UNLOCKED!</div>{notifs.map((n,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}><span style={{fontSize:16}}>🏆</span><div style={{flex:1}}><div style={{fontSize:12,fontWeight:600,color:C.text}}>{n.unlockedName}</div><div style={{fontSize:9,color:C.textMuted}}>{n.msg||`Unlocked from ${n.fromName}`}</div></div></div>)}<button onClick={()=>{markNotificationsSeen();}} style={{background:"none",border:`1px solid ${C.success}30`,borderRadius:8,padding:"6px 12px",color:C.success,fontSize:10,fontWeight:700,cursor:"pointer",width:"100%",marginTop:6,fontFamily:"inherit"}}>Got it!</button></Card>);})()}
@@ -1967,7 +2002,9 @@ function AppInner(){
   const buildSessionData=(reflData)=>({exercisesCompleted:completedExercises,exercisesSkipped:[],readiness:checkInData?{RTT:checkInData.readiness,CTP:checkInData.capacity,safety_level:checkInData.readiness>=70?"CLEAR":checkInData.readiness>=50?"CAUTION":checkInData.readiness>=30?"RESTRICTED":"STOP"}:{},checkIn:checkInData?{sleep:checkInData.sleep,soreness_areas:checkInData.soreness||[],energy:checkInData.energy,stress:checkInData.stress,location:checkInData.location}:{},reflection:{difficulty:reflData?.d||5,pain:reflData?.p||5,enjoyment:reflData?.e||5,form_confidence:reflData?.f||5},starred:reflData?.starred||[],flagged:reflData?.flagged||[],painFlagged:reflData?.painFlags||[],notes:reflData?.notes||"",durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,overall:reflData?.overall||"just_right",difficulty});
   const reset=()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);setScreen("home");setTab("home");setExIdx(0);setReflectData(null);setCompletedExercises([]);setSessionStart(null);setCheckInData(null);setDifficulty("standard");setExHistory([]);
     // Mark today as completed in weekly plan
-    const wp=getWeeklyPlan();if(wp)updateDayStatus(wp,getDayOfWeek(),"completed");const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);try{const hsp=localStorage.getItem("apex_home_screen_prompt");if(hsp==="remind_later"){const sc=(getSessions()||[]).length;if(sc>=3){localStorage.removeItem("apex_home_screen_prompt");setShowHomeScreenPrompt(true);}}}catch{}};
+    const wp=getWeeklyPlan();if(wp)updateDayStatus(wp,getDayOfWeek(),"completed");
+    // Update pain-free streaks for all active injuries based on this session
+    try{const activeInj=getInjuries().filter(i=>i.status!=="resolved");const painAreas=new Set();(completedExercises||[]).forEach(ec=>{if(ec.pain_during||(ec.sets||[]).some(s=>s.pain)){const ex=exerciseDB.find(e=>e.id===ec.exercise_id);if(ex?.bodyPart)painAreas.add(ex.bodyPart);}});for(const inj of activeInj){const bp=(inj.area||"").toLowerCase();const hadPain=painAreas.has(bp)||painAreas.has(bp.replace(/left |right |l\. |r\. /g,""));updatePainTracking(inj.id,hadPain);}}catch(e){console.warn("Pain tracking update error:",e);}const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);try{const hsp=localStorage.getItem("apex_home_screen_prompt");if(hsp==="remind_later"){const sc=(getSessions()||[]).length;if(sc>=3){localStorage.removeItem("apex_home_screen_prompt");setShowHomeScreenPrompt(true);}}}catch{}};
   // Loading spinner
   if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
   return(<>
