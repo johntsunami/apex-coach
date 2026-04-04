@@ -1329,9 +1329,9 @@
     ],
     "coreBracing": "HIGH (60-70%) — brace before lifting, maintain throughout.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "5",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Breathe normally during the 5s hold — don't hold breath"
     },
     "injuryNotes": {
@@ -1605,9 +1605,9 @@
     ],
     "coreBracing": "MODERATE (30%) — maintain pelvic stability.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale during reach, inhale on return"
     },
     "injuryNotes": {
@@ -2023,9 +2023,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — maintain neutral spine at top.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Inhale at bottom, exhale on lift, brief hold at top"
     },
     "injuryNotes": {
@@ -2160,9 +2160,9 @@
     ],
     "coreBracing": "MODERATE (40-50%) — resist pelvic rotation.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -2773,9 +2773,9 @@
     ],
     "coreBracing": "LIGHT (20%) — maintain straight body.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering, exhale pushing"
     },
     "injuryNotes": {
@@ -2912,9 +2912,9 @@
     ],
     "coreBracing": "MODERATE (40%) — maintain plank.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering, exhale pushing"
     },
     "injuryNotes": {
@@ -3064,9 +3064,9 @@
     ],
     "coreBracing": "MODERATE (50%) — maintain plank.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering, exhale pushing"
     },
     "injuryNotes": {
@@ -3216,9 +3216,9 @@
     ],
     "coreBracing": "MOD-HIGH (60-70%) — prevent rotation and back arch.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press, inhale on return"
     },
     "injuryNotes": {
@@ -3368,9 +3368,9 @@
     ],
     "coreBracing": "MODERATE (40%) — maintain flat back.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering, exhale pressing"
     },
     "injuryNotes": {
@@ -3521,9 +3521,9 @@
     ],
     "coreBracing": "MODERATE (40-50%) — maintain bench position.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering, exhale pressing"
     },
     "injuryNotes": {
@@ -3656,9 +3656,9 @@
     ],
     "coreBracing": "LIGHT (20%) — stand tall.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you pull apart"
     },
     "injuryNotes": {
@@ -3798,9 +3798,9 @@
     ],
     "coreBracing": "MINIMAL (10-20%) — bench does the work.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull, inhale on lower"
     },
     "injuryNotes": {
@@ -3946,9 +3946,9 @@
     ],
     "coreBracing": "MODERATE (40%) — maintain flat back.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -4093,9 +4093,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — upright posture.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -4243,9 +4243,9 @@
     ],
     "coreBracing": "MODERATE (40-50%) — maintain reverse plank.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -4830,9 +4830,9 @@
     ],
     "coreBracing": "MODERATE (50%) — maintain upright under load.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale descending, exhale ascending"
     },
     "injuryNotes": {
@@ -4991,9 +4991,9 @@
     ],
     "coreBracing": "MAXIMUM (90-100%) — full brace with axial load.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Big breath, brace, descend, exhale at top"
     },
     "injuryNotes": {
@@ -5125,9 +5125,9 @@
     ],
     "coreBracing": "LIGHT (20%) — isolation move.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -5257,9 +5257,9 @@
     ],
     "coreBracing": "LIGHT (20%) — stand tall.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on rotation out"
     },
     "injuryNotes": {
@@ -5392,9 +5392,9 @@
     ],
     "coreBracing": "LIGHT (20%) — stand tall.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on curl up"
     },
     "injuryNotes": {
@@ -5521,9 +5521,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push down"
     },
     "injuryNotes": {
@@ -5661,9 +5661,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on raise"
     },
     "injuryNotes": {
@@ -5795,9 +5795,9 @@
     ],
     "coreBracing": "LIGHT (20%) — balance.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on rise"
     },
     "injuryNotes": {
@@ -6059,9 +6059,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on extension"
     },
     "injuryNotes": {
@@ -6747,9 +6747,9 @@
     ],
     "coreBracing": "HIGH (60-70%) — anti-lateral flexion.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous controlled breathing"
     },
     "injuryNotes": {
@@ -6886,9 +6886,9 @@
     ],
     "coreBracing": "HIGH (60-70%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Controlled breathing"
     },
     "injuryNotes": {
@@ -7431,9 +7431,9 @@
     ],
     "coreBracing": "LIGHT (20%) — hands provide support.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you extend back"
     },
     "injuryNotes": {
@@ -8117,9 +8117,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Inhale to extend, hold, exhale to return"
     },
     "injuryNotes": {
@@ -8390,9 +8390,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you side bend"
     },
     "injuryNotes": {
@@ -8528,9 +8528,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale during rotation"
     },
     "injuryNotes": {
@@ -9069,9 +9069,9 @@
     ],
     "coreBracing": "LIGHT (20%) — maintain flat back.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -9498,9 +9498,9 @@
     ],
     "coreBracing": "LIGHT (20%) — machine supports back.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push"
     },
     "injuryNotes": {
@@ -9772,9 +9772,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on raise"
     },
     "injuryNotes": {
@@ -9910,9 +9910,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on raise"
     },
     "injuryNotes": {
@@ -10048,9 +10048,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on raise"
     },
     "injuryNotes": {
@@ -10856,9 +10856,9 @@
     ],
     "coreBracing": "MINIMAL (10%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous calm breathing"
     },
     "injuryNotes": {
@@ -14888,9 +14888,9 @@
     ],
     "coreBracing": "LIGHT (20%) — maintain upright posture",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Inhale at start, exhale as you pull apart, inhale as you return."
     },
     "injuryNotes": {
@@ -15668,9 +15668,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — maintain bridge position while resisting rotation",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale as you lift each foot. Inhale as you lower. Maintain steady breathing rhythm."
     },
     "injuryNotes": {
@@ -15822,9 +15822,9 @@
     ],
     "coreBracing": "LIGHT (15%) — maintain side-lying spinal neutral",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you open. Hold and breathe at the top. Inhale as you lower."
     },
     "injuryNotes": {
@@ -15975,9 +15975,9 @@
     ],
     "coreBracing": "LIGHT (15%) — maintain side-lying alignment",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you lift. Hold at top. Inhale as you lower."
     },
     "injuryNotes": {
@@ -16131,9 +16131,9 @@
     ],
     "coreBracing": "MODERATE (30%) — maintain quarter-squat posture",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Breathe naturally. Exhale with each step. Do not hold breath."
     },
     "injuryNotes": {
@@ -17174,9 +17174,9 @@
     ],
     "coreBracing": "MODERATE (40%) — maintain flat back.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on march up"
     },
     "injuryNotes": {
@@ -17307,9 +17307,9 @@
     ],
     "coreBracing": "MODERATE (30%) — prevent trunk movement.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -17444,9 +17444,9 @@
     ],
     "coreBracing": "LIGHT (20-30%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous breathing"
     },
     "injuryNotes": {
@@ -18247,9 +18247,9 @@
     ],
     "coreBracing": "NONE — lean on wall.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -18924,9 +18924,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on squeeze"
     },
     "injuryNotes": {
@@ -20013,9 +20013,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on curl up"
     },
     "injuryNotes": {
@@ -21443,9 +21443,9 @@
     ],
     "coreBracing": "HIGH (60-70%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous breathing"
     },
     "injuryNotes": {
@@ -23178,9 +23178,9 @@
     ],
     "coreBracing": "LIGHT (20%) — sit tall.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press"
     },
     "injuryNotes": {
@@ -23325,9 +23325,9 @@
     ],
     "coreBracing": "MODERATE (40%) — prevent back arch.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press up"
     },
     "injuryNotes": {
@@ -23465,9 +23465,9 @@
     ],
     "coreBracing": "NONE — seated support.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on raise"
     },
     "injuryNotes": {
@@ -23598,9 +23598,9 @@
     ],
     "coreBracing": "MODERATE (30%) — maintain upright.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -23731,9 +23731,9 @@
     ],
     "coreBracing": "NONE — seated support.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on curl"
     },
     "injuryNotes": {
@@ -23868,9 +23868,9 @@
     ],
     "coreBracing": "LIGHT (20%) — prevent back arch.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on extension"
     },
     "injuryNotes": {
@@ -24000,9 +24000,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -24138,9 +24138,9 @@
     ],
     "coreBracing": "MODERATE (30%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale during rotation"
     },
     "injuryNotes": {
@@ -24420,9 +24420,9 @@
     ],
     "coreBracing": "MODERATE (30%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push up"
     },
     "injuryNotes": {
@@ -24694,9 +24694,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on rotation"
     },
     "injuryNotes": {
@@ -24825,9 +24825,9 @@
     ],
     "coreBracing": "NONE — seated.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on extension"
     },
     "injuryNotes": {
@@ -25087,9 +25087,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Breathe normally"
     },
     "injuryNotes": {
@@ -25355,9 +25355,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on push apart"
     },
     "injuryNotes": {
@@ -25498,9 +25498,9 @@
     ],
     "coreBracing": "HIGH (60-70%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -25761,9 +25761,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on slide in"
     },
     "injuryNotes": {
@@ -26025,9 +26025,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Normal breathing"
     },
     "injuryNotes": {
@@ -26158,9 +26158,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on return"
     },
     "injuryNotes": {
@@ -26821,9 +26821,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push"
     },
     "injuryNotes": {
@@ -28107,9 +28107,9 @@
     ],
     "coreBracing": "HIGH (60-70%) — asymmetric load demands anti-rotation.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press"
     },
     "injuryNotes": {
@@ -28247,9 +28247,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -28528,9 +28528,9 @@
     ],
     "coreBracing": "HIGH (60-70%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous"
     },
     "injuryNotes": {
@@ -28667,9 +28667,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -28808,9 +28808,9 @@
     ],
     "coreBracing": "HIGH (60-70%) — instability demands.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push"
     },
     "injuryNotes": {
@@ -29231,9 +29231,9 @@
     ],
     "coreBracing": "MAXIMUM (90%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on pike up"
     },
     "injuryNotes": {
@@ -29371,9 +29371,9 @@
     ],
     "coreBracing": "MODERATE (30%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -29505,9 +29505,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on curl"
     },
     "injuryNotes": {
@@ -29640,9 +29640,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull"
     },
     "injuryNotes": {
@@ -29786,9 +29786,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press"
     },
     "injuryNotes": {
@@ -30210,9 +30210,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on press"
     },
     "injuryNotes": {
@@ -30353,9 +30353,9 @@
     ],
     "coreBracing": "MODERATE (30%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on pull down"
     },
     "injuryNotes": {
@@ -30487,9 +30487,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on push down"
     },
     "injuryNotes": {
@@ -30619,9 +30619,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on curl"
     },
     "injuryNotes": {
@@ -30754,9 +30754,9 @@
     ],
     "coreBracing": "MODERATE (40%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on thrust"
     },
     "injuryNotes": {
@@ -35557,9 +35557,9 @@
     ],
     "coreBracing": "LIGHT (15-20%) — maintain upright posture without rigid bracing",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Rhythmic breathing matched to cadence. Pursed lip exhale for COPD patients."
     },
     "injuryNotes": {
@@ -35840,9 +35840,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — maintain brace throughout circuit, especially on transitions",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale on exertion for each exercise. Deep breaths during transitions."
     },
     "injuryNotes": {
@@ -36242,9 +36242,9 @@
     ],
     "coreBracing": "LIGHT (20%) — enough to prevent trunk rotation",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as knee opens, inhale as it closes"
     },
     "injuryNotes": {
@@ -36512,9 +36512,9 @@
     ],
     "coreBracing": "MINIMAL (10%) — relaxed, focus entirely on the quad",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Breathe normally throughout. Don't hold breath."
     },
     "injuryNotes": {
@@ -37603,9 +37603,9 @@
     ],
     "coreBracing": "NONE — completely relaxed body, focus on jaw only",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Breathe naturally through the nose"
     },
     "injuryNotes": {
@@ -37738,9 +37738,9 @@
     ],
     "coreBracing": "NONE — completely relaxed",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Breathe naturally through the nose"
     },
     "injuryNotes": {
@@ -39172,9 +39172,9 @@
     ],
     "coreBracing": "MODERATE (40-50%) — brace to prevent lower back hyperextension at the top",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale at the bottom. Exhale and brace as you drive up."
     },
     "injuryNotes": {
@@ -39314,9 +39314,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — brace to maintain upright torso on single leg",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale at the bottom. Exhale as you drive up."
     },
     "injuryNotes": {
@@ -39451,9 +39451,9 @@
     ],
     "coreBracing": "MODERATE (40%) — maintain plank position throughout",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale on the way down. Exhale pressing up."
     },
     "injuryNotes": {
@@ -39603,9 +39603,9 @@
     ],
     "coreBracing": "LIGHT (25%) — maintain upright torso",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Inhale lowering. Exhale pressing up."
     },
     "injuryNotes": {
@@ -40880,9 +40880,9 @@
     ],
     "coreBracing": "MODERATE (30%) — press lower back into floor and maintain throughout",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Exhale as you lift the leg. Inhale as you lower. Back stays pressed into floor."
     },
     "injuryNotes": {
@@ -41589,9 +41589,9 @@
     ],
     "coreBracing": "LIGHT (15%) — maintain neutral spine supine",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on the punch (protraction). Inhale on the retraction."
     },
     "injuryNotes": {
@@ -41862,9 +41862,9 @@
     ],
     "coreBracing": "MODERATE (30-40%) — brace to prevent lumbar extension during hip flexion",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale as you lift the knee. Inhale lowering."
     },
     "injuryNotes": {
@@ -42924,9 +42924,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous breathing"
     },
     "injuryNotes": {
@@ -43307,9 +43307,9 @@
     ],
     "coreBracing": "LIGHT (20%).",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on extension"
     },
     "injuryNotes": {
@@ -43435,9 +43435,9 @@
     ],
     "coreBracing": "LIGHT.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "1",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on extension"
     },
     "injuryNotes": {
@@ -44087,9 +44087,9 @@
     ],
     "coreBracing": "LIGHT.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "3",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Hold at top"
     },
     "injuryNotes": {
@@ -44346,9 +44346,9 @@
     ],
     "coreBracing": "LIGHT.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "2",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Exhale on lift"
     },
     "injuryNotes": {
@@ -44738,9 +44738,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous"
     },
     "injuryNotes": {
@@ -44994,9 +44994,9 @@
     ],
     "coreBracing": "NONE.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "2",
+      "exhale": "3",
       "pattern": "Continuous"
     },
     "injuryNotes": {
@@ -47920,9 +47920,9 @@
     ],
     "coreBracing": "MAXIMUM.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "3",
-      "exhale": "2",
+      "exhale": "4",
       "pattern": "Hold breath initially, then breathe"
     },
     "injuryNotes": {
@@ -48581,9 +48581,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -48727,9 +48727,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -48873,9 +48873,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49017,9 +49017,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49169,9 +49169,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49321,9 +49321,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49465,9 +49465,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49609,9 +49609,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49753,9 +49753,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -49897,9 +49897,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -50041,9 +50041,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {
@@ -50187,9 +50187,9 @@
     ],
     "coreBracing": "HIGH — maintain neutral spine during all explosive movements.",
     "breathing": {
-      "inhale": "2",
+      "inhale": "3",
       "hold": "0",
-      "exhale": "1",
+      "exhale": "3",
       "pattern": "Exhale on effort, inhale on reset"
     },
     "injuryNotes": {

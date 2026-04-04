@@ -41,7 +41,7 @@ export default function AuthProvider({ children }) {
       "apex_pt_protocols","apex_pt_sessions","apex_media_pref",
       "apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover",
       "apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive",
-      "apex_mesocycle","apex_mesocycle_archive",
+      "apex_mesocycle","apex_mesocycle_archive","apex_exercise_effort",
     ];
     userKeys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
   }

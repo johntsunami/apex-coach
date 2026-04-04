@@ -75,7 +75,7 @@ const MUSCLE_GROUPS = [
 
 const GOAL_OPTIONS = [
   {v:"size",l:"Size",c:"#a855f7"},{v:"strength",l:"Strength",c:"#00d2c8"},{v:"endurance",l:"Endurance",c:"#3b82f6"},
-  {v:"injury_prevention",l:"Injury Prev",c:"#eab308"},{v:"maintain",l:"Maintain",c:"#7a8ba8"},
+  {v:"maintain",l:"Maintain",c:"#7a8ba8"},
 ];
 
 const COMPENSATORY_LOGIC = {
