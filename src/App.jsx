@@ -26,7 +26,7 @@ import OvertrainingCard from "./components/OvertrainingCard.jsx";
 import { assessOvertraining, applyOvertrainingModifiers } from "./utils/overtrainingDetector.js";
 import { capturePreReassessmentSnapshot, processReassessment } from "./utils/reassessment.js";
 import ReassessmentSummary from "./components/ReassessmentSummary.jsx";
-import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage } from "./utils/programTracks.js";
+import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage, prioritizeBySport, getSportTrainingSummary } from "./utils/programTracks.js";
 import { getGreeting, getSetMessage, getRestTip, getRestTimerMessage, getSkipRestMessage, getRecapHeadline, getWorkoutCompleteMessage, getStreakMessage, getStreakEmoji, getCheckInSummary, checkEasterEgg, formatTimeAgo, formatDuration } from "./utils/personality.js";
 import BaselineTestFlow, { BaselineProgressCard, PowerRecordsCard } from "./components/BaselineTest.jsx";
 import { getBaselineCapabilities, getLatestBaseline, getCoreMovementSelections } from "./utils/baselineTest.js";
@@ -561,6 +561,12 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     // Shuffle pool for variety — different exercises each session (Fix #14)
     const sessionSeed = (getSessions()?.length || 0) + new Date().getDate();
     for (let i = pool.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    // Sport prioritization — sort sport-relevant exercises to front of shuffled pool
+    const userSports = assessment?.preferences?.sports || [];
+    if (userSports.length > 0 && category === "main") {
+      const prioritized = prioritizeBySport(pool, userSports);
+      pool.length = 0; pool.push(...prioritized);
+    }
     const result = [];
     const usedIds = new Set();
     for (const ex of pool) {

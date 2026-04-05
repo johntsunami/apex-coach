@@ -138,3 +138,88 @@ export function filterByProgram(exercises, programId) {
   if (programId === "All") return exercises;
   return exercises.filter(e => (e.methodology || []).includes(programId));
 }
+
+// ── Sport-Aware Exercise Prioritization ──────────────────────
+// Scores and sorts exercises based on user's sport selections.
+// Exercises matching sport movement patterns are prioritized.
+
+// Map sport names (as stored in assessment) to SPORT_TEMPLATES keys
+const SPORT_NAME_MAP = {
+  "Basketball": null, "Soccer": null, "Baseball/Softball": null,
+  "Tennis": null, "Volleyball": null, "Football": null,
+  "Yoga": null, "Pilates": null, "Dance": null,
+  "Rowing": { patterns: ["pull", "hinge", "anti_extension"], focus: "Pull power, hip hinge endurance, core anti-extension" },
+  "Cycling": { patterns: ["squat", "hinge", "locomotion"], focus: "Quad endurance, hip flexor mobility, cardiovascular base" },
+  "Pickleball": { patterns: ["rotation", "lunge", "anti_rotation"], focus: "Lateral agility, rotational power, shoulder endurance" },
+  "Skateboarding": { patterns: ["squat", "anti_rotation", "carry"], focus: "Single-leg balance, ankle stability, core anti-rotation" },
+  "Martial Arts": { patterns: ["rotation", "push", "anti_rotation"], focus: "Rotational power, shoulder endurance, core stability" },
+  "Wrestling": { patterns: ["hinge", "pull", "carry", "rotation"], focus: "Hip power, grip endurance, neck strength, rotational control" },
+  "CrossFit": { patterns: ["squat", "hinge", "push", "pull"], focus: "Balanced compound strength, metabolic conditioning" },
+  "Boxing/Kickboxing": { patterns: ["rotation", "push", "anti_rotation"], focus: "Rotational power, shoulder endurance, footwork" },
+  "Rock Climbing": { patterns: ["pull", "carry", "anti_extension"], focus: "Grip endurance, lat/forearm strength, shoulder stability, core tension" },
+  "Skiing/Snowboarding": null, // mapped via SPORT_TEMPLATES.Snowboarding
+  "MMA/BJJ": null, // mapped via SPORT_TEMPLATES.BJJ
+};
+
+function getSportPatterns(sports) {
+  if (!sports || sports.length === 0) return null;
+  const allPatterns = new Map(); // pattern -> weight (how many sports need it)
+  for (const sport of sports) {
+    // Check SPORT_TEMPLATES first (exact match), then SPORT_NAME_MAP
+    const template = SPORT_TEMPLATES[sport] || SPORT_NAME_MAP[sport] ||
+      (sport.includes("BJJ") || sport.includes("MMA") ? SPORT_TEMPLATES.BJJ : null) ||
+      (sport.includes("Skiing") || sport.includes("Snowboard") ? SPORT_TEMPLATES.Snowboarding : null) ||
+      (sport.includes("Muay") || sport.includes("Kickbox") ? SPORT_TEMPLATES["Muay Thai"] : null);
+    if (!template?.patterns) continue;
+    for (const p of template.patterns) {
+      allPatterns.set(p, (allPatterns.get(p) || 0) + 1);
+    }
+  }
+  return allPatterns.size > 0 ? allPatterns : null;
+}
+
+// Score an exercise based on how well it matches the user's sport patterns
+function sportScore(exercise, sportPatterns) {
+  if (!sportPatterns) return 0;
+  const mp = (exercise.movementPattern || "").toLowerCase();
+  const bp = (exercise.bodyPart || "").toLowerCase();
+  const name = (exercise.name || "").toLowerCase();
+  let score = 0;
+  for (const [pattern, weight] of sportPatterns) {
+    if (mp.includes(pattern)) score += weight * 3;
+    // Body part relevance (shoulders for surfing/climbing, legs for hiking/skiing)
+    if (pattern === "pull" && (bp === "back" || bp === "arms")) score += weight;
+    if (pattern === "push" && (bp === "chest" || bp === "shoulders")) score += weight;
+    if (pattern === "squat" && (bp === "legs" || bp === "glutes")) score += weight;
+    if (pattern === "hinge" && (bp === "legs" || bp === "glutes" || bp === "back")) score += weight;
+    if (pattern === "rotation" && bp === "core") score += weight;
+    if (pattern === "carry" && (bp === "core" || bp === "arms")) score += weight;
+    if (pattern === "anti_extension" && bp === "core") score += weight;
+    if (pattern === "anti_rotation" && bp === "core") score += weight;
+    // Name bonus for sport-specific exercises
+    if (name.includes("sport") || name.includes("agility") || name.includes("power")) score += weight;
+  }
+  return score;
+}
+
+// Prioritize exercises in a pool based on sport selections.
+// Returns the same exercises but sorted so sport-relevant ones come first.
+export function prioritizeBySport(exercises, sports) {
+  const patterns = getSportPatterns(sports);
+  if (!patterns) return exercises;
+  return [...exercises].sort((a, b) => sportScore(b, patterns) - sportScore(a, patterns));
+}
+
+// Get a summary of how sports affect the user's training
+export function getSportTrainingSummary(sports, currentPhase) {
+  if (!sports || sports.length === 0) return null;
+  const summaries = [];
+  for (const sport of sports) {
+    const msg = getSportMessage(sport, currentPhase);
+    const template = getSportTemplate(sport);
+    summaries.push({ sport, message: msg, patterns: template.patterns, focus: template.focus, active: currentPhase >= template.unlockPhase });
+  }
+  return summaries;
+}
+
+export { SPORT_TEMPLATES, getSportPatterns };
