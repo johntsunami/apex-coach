@@ -170,8 +170,8 @@ function _updateStats(sessions) {
 function _computeFreshStats(sessions) {
   if (!sessions) sessions = getSessions();
 
-  // Filter to primary sessions only (exclude supplemental add-ons)
-  const primary = sessions.filter(s => s.session_type !== "supplemental");
+  // Filter to primary sessions only (exclude supplemental add-ons and secondary two-a-days for day count)
+  const primary = sessions.filter(s => s.session_type !== "supplemental" && s.session_type !== "secondary");
 
   // "Days Done" = unique calendar days with at least one primary session
   // Pass raw date string to _dateKey to avoid UTC parsing issues with bare dates
@@ -282,10 +282,33 @@ function isTodayComplete() {
 }
 
 // ── Today's workout status ────────────────────────────────────
-// Returns "completed" | "in_progress" | "not_started"
+// Returns "completed" | "completed_can_add" | "in_progress" | "not_started"
 function getTodayWorkoutStatus() {
-  // Check completed sessions first
-  if (isTodayComplete()) return "completed";
+  const todayDone = isTodayComplete();
+  if (todayDone) {
+    // Check if a safe second workout is possible
+    try {
+      const today = _dateKey(new Date());
+      const sessions = getSessions();
+      const todaySessions = sessions.filter(s => _dateKey(s.date) === today);
+
+      // Already did a secondary? No three-a-days
+      const secondaryCount = todaySessions.filter(s => s.session_type === "secondary").length;
+      if (secondaryCount >= 1) return "completed";
+
+      // Check time since completion — minimum 4 hours
+      const completionTime = getTodaySessionCompletionTime();
+      if (completionTime) {
+        const hoursSince = (Date.now() - new Date(completionTime).getTime()) / (3600 * 1000);
+        if (hoursSince < 4) return "completed";
+      }
+
+      // Overtraining check is done at the App.jsx level before showing the card
+      // (can't import overtrainingDetector here without circular dependency)
+
+      return "completed_can_add";
+    } catch { return "completed"; }
+  }
   // Check for in-progress workout in localStorage
   try {
     const raw = localStorage.getItem("apex_daily_workout");
@@ -303,6 +326,35 @@ function getTodayWorkoutStatus() {
     }
   } catch {}
   return "not_started";
+}
+
+// ── Get completion time of today's primary session ─────────────
+function getTodaySessionCompletionTime() {
+  const sessions = getSessions();
+  const today = _dateKey(new Date());
+  const todayPrimary = sessions.filter(s =>
+    _dateKey(s.date) === today && s.session_type !== "supplemental" && s.session_type !== "secondary"
+  );
+  if (!todayPrimary.length) return null;
+  return todayPrimary[todayPrimary.length - 1].date;
+}
+
+// ── Get muscle groups trained in today's first session ──────────
+function getFirstSessionMuscles(exerciseDB) {
+  const sessions = getSessions();
+  const today = _dateKey(new Date());
+  const todayPrimary = sessions.filter(s =>
+    _dateKey(s.date) === today && s.session_type !== "supplemental"
+  );
+  if (!todayPrimary.length || !exerciseDB) return new Set();
+  const muscles = new Set();
+  for (const sess of todayPrimary) {
+    for (const ec of (sess.exercises_completed || [])) {
+      const ex = exerciseDB.find(e => e.id === ec.exercise_id);
+      if (ex?.bodyPart) muscles.add(ex.bodyPart);
+    }
+  }
+  return muscles;
 }
 
 // ── Save a supplemental (add-on) session ──────────────────────
@@ -389,6 +441,8 @@ export {
   getStats,
   isTodayComplete,
   getTodayWorkoutStatus,
+  getTodaySessionCompletionTime,
+  getFirstSessionMuscles,
   getPrefs,
   setPref,
   toggleFavorite,

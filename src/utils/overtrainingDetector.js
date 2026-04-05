@@ -168,6 +168,34 @@ function detectSignals() {
     });
   }
 
+  // SIGNAL 10: Two-a-day pattern (multiple sessions today or 3+ in 2 weeks)
+  try {
+    const todayKey = new Date().toISOString().split("T")[0];
+    const todaySessions = sessions.filter(s => {
+      const d = typeof s.date === "string" ? s.date.split("T")[0] : "";
+      return d === todayKey && s.session_type !== "supplemental";
+    });
+    if (todaySessions.length >= 2) {
+      signals.push({
+        id: "two_a_day", severity: 1,
+        label: "Two-a-day training today",
+        detail: `${todaySessions.length} sessions today — increased recovery needed`,
+        recovery: "Extra nutrition, hydration, and 8+ hours sleep critical after two-a-day training.",
+      });
+    }
+    // Check 2-week pattern
+    const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const recentSecondary = sessions.filter(s => new Date(s.date) >= twoWeeksAgo && s.session_type === "secondary");
+    if (recentSecondary.length >= 3) {
+      signals.push({
+        id: "frequent_two_a_day", severity: 2,
+        label: "Frequent two-a-day pattern",
+        detail: `${recentSecondary.length} two-a-day sessions in 2 weeks — monitoring closely`,
+        recovery: "Consider reducing to single sessions for a week to allow full recovery.",
+      });
+    }
+  } catch {}
+
   return { signals, severity: signals.reduce((s, sig) => s + sig.severity, 0) };
 }
 

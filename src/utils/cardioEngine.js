@@ -283,6 +283,13 @@ function shouldIncludeCardio(sessionIndex, daysPerWeek, assessment) {
   else if (hasSizeGoal) cardioSessions = 2;
   else cardioSessions = Math.min(daysPerWeek, Math.max(2, Math.floor(daysPerWeek * 0.5)));
 
+  // Check weekly cardio deficit — if behind, always include
+  try {
+    const progress = getWeeklyCardioProgress();
+    if (progress.behindSchedule) return true;
+    if (progress.pct >= 100) return false; // already met target
+  } catch {}
+
   // Distribute evenly: first N sessions include cardio
   return sessionIndex < cardioSessions;
 }
@@ -410,7 +417,68 @@ export const TALK_TEST_PROMPTS = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// 12. EXPORT ALL CARDIO EXERCISES (for merging into main DB)
+// ═══════════════════════════════════════════════════════════════
+// 12. WEEKLY CARDIO PROGRESS TRACKING
+// Combines in-workout cardio + standalone cardio sessions
+// ═══════════════════════════════════════════════════════════════
+
+export function getWeeklyCardioProgress(phase = 1) {
+  try {
+    const injuries = getInjuries().filter(i => i.status !== "resolved");
+    const rx = getCardioPrescription(phase, injuries);
+    const weeklyTarget = (rx.duration ? parseInt(rx.duration) || 20 : 20) * (rx.freqPerWeek || 3);
+
+    // Source 1: Standalone cardio sessions
+    let standaloneMin = 0;
+    try {
+      const raw = localStorage.getItem("apex_cardio_sessions");
+      if (raw) {
+        const logs = JSON.parse(raw);
+        const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+        logs.filter(l => new Date(l.date) >= weekAgo).forEach(l => {
+          standaloneMin += l.duration || 0;
+        });
+      }
+    } catch {}
+
+    // Source 2: In-workout cardio from completed sessions
+    const sessions = getSessions();
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+    let inWorkoutMin = 0;
+    const zoneBreakdown = { 1: 0, 2: 0, 3: 0 };
+
+    sessions.filter(s => new Date(s.date) >= weekAgo).forEach(s => {
+      (s.exercises_completed || []).forEach(ec => {
+        if (ec._cardioDuration) {
+          inWorkoutMin += ec._cardioDuration;
+          const z = ec._cardioZone || 1;
+          zoneBreakdown[z] = (zoneBreakdown[z] || 0) + ec._cardioDuration;
+        } else if (ec.exercise_id?.startsWith("cardio_") || ec.exercise_id?.includes("walking") || ec.exercise_id?.includes("sprint")) {
+          // Estimate 15 min for cardio exercises without explicit tracking
+          inWorkoutMin += 15;
+          zoneBreakdown[1] = (zoneBreakdown[1] || 0) + 15;
+        }
+      });
+    });
+
+    const totalMin = standaloneMin + inWorkoutMin;
+    const deficit = Math.max(0, weeklyTarget - totalMin);
+    const pct = weeklyTarget > 0 ? Math.round(totalMin / weeklyTarget * 100) : 0;
+
+    return {
+      totalMinutes: totalMin,
+      targetMinutes: weeklyTarget,
+      deficit,
+      pct,
+      zoneBreakdown,
+      behindSchedule: deficit > 10,
+      onTrack: totalMin >= weeklyTarget * 0.8,
+      prescription: rx,
+    };
+  } catch { return { totalMinutes: 0, targetMinutes: 60, deficit: 60, pct: 0, zoneBreakdown: { 1: 0, 2: 0, 3: 0 }, behindSchedule: true, onTrack: false, prescription: {} }; }
+}
+
+// 13. EXPORT ALL CARDIO EXERCISES (for merging into main DB)
 // ═══════════════════════════════════════════════════════════════
 
 export { CARDIO_EXERCISES };

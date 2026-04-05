@@ -8,6 +8,7 @@ import { getSessions, isTodayComplete } from "./storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, capExerciseParams, getTrainingWeek } from "./volumeTracker.js";
 import { getAssessment } from "../components/Onboarding.jsx";
 import { getInjuries, conditionToGateKey } from "./injuries.js";
+import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
 
 const LS_WEEKLY_PLAN = "apex_weekly_plan";
@@ -325,9 +326,16 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
         dayName: DAY_NAMES[dayOfWeek],
         type: "rest",
         label: "Rest Day",
-        description: weekPlan.isDeload
-          ? "Deload week — extra recovery. Light walking and stretching."
-          : "Recovery — ROM, walking, gentle stretching recommended",
+        description: (() => {
+          const base = weekPlan.isDeload
+            ? "Deload week — extra recovery. Light walking and stretching."
+            : "Recovery — ROM, walking, gentle stretching recommended";
+          try {
+            const cp = getWeeklyCardioProgress(phase);
+            if (cp && cp.deficit > 15) return base + ` | Cardio suggestion: 20 min walk (${cp.deficit} min remaining this week)`;
+          } catch {}
+          return base;
+        })(),
         exercises: [],
         muscleGroups: [],
         estimatedMinutes: 0,
