@@ -249,13 +249,15 @@ function getStats() {
   return _computeFreshStats(sessions);
 }
 
-// Local timezone date key — handles both ISO timestamps and bare date strings safely
+// Local timezone date key — ALWAYS returns the LOCAL calendar date
 function _dateKey(d) {
-  // If input is a string like "2026-04-03" (no time/timezone), treat it as local date directly
-  // to avoid UTC interpretation shifting the day backward in western timezones
+  // For bare date strings like "2026-04-03" (no time component), return as-is
   if (typeof d === "string" || d instanceof String) {
-    const match = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
-    if (match) return `${match[1]}-${match[2]}-${match[3]}`;
+    const s = String(d);
+    // Bare date (no T) — treat as local directly
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    // ISO timestamp with T — parse to Date to get LOCAL date, not UTC date
+    // "2026-04-05T03:00:00.000Z" at UTC-7 is actually April 4 local time
   }
   if (!(d instanceof Date)) d = new Date(d);
   const y = d.getFullYear();
