@@ -777,12 +777,22 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     return enriched;
   };
 
-  // Deduplicate: no exercise ID should appear more than once across the entire session
-  const dedup = (arr) => { const seen = new Set(); return arr.filter(ex => { if (seen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } seen.add(ex.id); return true; }); };
-  const dWarmup = dedup(warmup);
-  const allSeen = new Set(dWarmup.map(e => e.id));
-  const dMain = main.filter(ex => { if (allSeen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } allSeen.add(ex.id); return true; });
-  const dCooldown = cooldown.filter(ex => { if (allSeen.has(ex.id)) { console.log(`Duplicate ${ex.name} removed from plan — already included`); return false; } allSeen.add(ex.id); return true; });
+  // Deduplicate: no exercise ID should appear more than once across the ENTIRE session
+  // This is the final safety net — catches duplicates from favorites, core guarantee, sport priority, etc.
+  const globalSeen = new Set();
+  const dedupGlobal = (arr) => arr.filter(ex => {
+    if (globalSeen.has(ex.id)) return false;
+    globalSeen.add(ex.id);
+    return true;
+  });
+  const dWarmup = dedupGlobal(warmup);
+  const dMain = dedupGlobal(main);
+  const dCooldown = dedupGlobal(cooldown);
+  // Also dedup the blocks exercises against warmup/main/cooldown
+  if (blocks.inhibit) blocks.inhibit = blocks.inhibit.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
+  if (blocks.lengthen) blocks.lengthen = blocks.lengthen.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
+  if (blocks.cooldownStretches) blocks.cooldownStretches = blocks.cooldownStretches.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
+  if (blocks.cardio) blocks.cardio = blocks.cardio.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
 
   const eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
 
@@ -1011,7 +1021,7 @@ function TrainScreen({onStart,resumePrompt,workout,mode,onModeChange,onExtraWork
   const resumeDone = resumePrompt?.completedExercises?.length || 0;
   const resumeTotal = resumePrompt?.workout?.all?.length || totalEx;
   const[swapTarget,setSwapTarget]=useState(null);
-  const planIds=useMemo(()=>new Set((w.all||[]).map(e=>e.id)),[w]);
+  const planIds=useMemo(()=>{const ids=new Set((w.all||[]).map(e=>e.id));const b=w.blocks||{};[b.inhibit,b.lengthen,b.cooldownStretches,b.cardio].forEach(arr=>(arr||[]).forEach(e=>ids.add(e.id)));return ids;},[w]);
   return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:16}}>
     {(()=>{const td=isTodayComplete();return(<div><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>TODAY'S WORKOUT</div>{td&&<Badge color={C.success}>DONE ✓</Badge>}</div><div style={{fontSize:12,color:C.textMuted}}>Week 1 · Day 2 · Upper Body + Core · Phase {CURRENT_PHASE}</div>{td&&<div style={{fontSize:11,color:C.success,marginTop:4}}>{td.exerciseCount} exercises · {td.durationMinutes} min completed</div>}</div>);})()}
     {/* Mode toggle */}
@@ -2096,7 +2106,7 @@ function AppInner(){
       // Stay at same index (next exercise slides into this position)
       window.scrollTo(0,0);
     }}/>}
-    {performSwap&&<SwapModal exercise={performSwap} phase={CURRENT_PHASE} location={checkInData?.location||"gym"} excludeIds={new Set(wxAll.map(e=>e.id))} onClose={()=>setPerformSwap(null)} onSwap={(alt)=>{const swap={...alt,_swappedFor:performSwap.name,_swapReason:"User requested alternative"};setWorkout(w=>{const newAll=w.all.map(e=>e.id===performSwap.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===performSwap.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===performSwap.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===performSwap.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===performSwap.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});setPerformSwap(null);}}/>}
+    {performSwap&&<SwapModal exercise={performSwap} phase={CURRENT_PHASE} location={checkInData?.location||"gym"} excludeIds={new Set([...wxAll.map(e=>e.id),...(workout.blocks?.inhibit||[]).map(e=>e.id),...(workout.blocks?.lengthen||[]).map(e=>e.id),...(workout.blocks?.cooldownStretches||[]).map(e=>e.id),...(workout.blocks?.cardio||[]).map(e=>e.id)])} onClose={()=>setPerformSwap(null)} onSwap={(alt)=>{const swap={...alt,_swappedFor:performSwap.name,_swapReason:"User requested alternative"};setWorkout(w=>{const newAll=w.all.map(e=>e.id===performSwap.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===performSwap.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===performSwap.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===performSwap.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===performSwap.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===performSwap.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});setPerformSwap(null);}}/>}
     {/* End Early confirm */}
     {showEndConfirm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16}} onClick={()=>setShowEndConfirm(false)}><div style={{background:C.bg,border:`1px solid ${C.border}`,borderRadius:20,padding:24,maxWidth:360,width:"100%"}} onClick={e=>e.stopPropagation()}><div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2,marginBottom:8}}>END SESSION EARLY?</div><div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:16}}>Your {completedExercises.length} completed exercise{completedExercises.length!==1?"s":""} will be saved. Remaining exercises will be logged as skipped.</div><div style={{display:"flex",gap:8}}><button onClick={()=>setShowEndConfirm(false)} style={{flex:1,padding:"12px",borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textMuted,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Keep Going</button><button onClick={()=>{setShowEndConfirm(false);setScreen("reflect");}} style={{flex:1,padding:"12px",borderRadius:12,background:C.danger,border:"none",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>End & Save</button></div></div></div>}
     {/* Pause overlay */}
