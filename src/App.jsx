@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import exerciseDB from "./data/exercises.json";
+import _conditionsDB from "./data/conditions.json";
 import { getSessions, saveSession, getStats, isTodayComplete, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capExerciseParams, getVolumeSummary, getTrainingWeek } from "./utils/volumeTracker.js";
 import { getWorkoutOverloads } from "./utils/overload.js";
@@ -495,6 +496,64 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   // Fill to 3-5 with general mobility
   mobPool.forEach(e => { if (lengthen.length < 4 && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Dynamic joint prep" }); });
 
+  // ── PT/McKENZIE PROTOCOL INJECTION ──────────────────────────
+  // For users with active conditions: inject mandatory therapeutic exercises
+  // into warm-up activation (1-3 exercises) and cooldown (1-2 exercises)
+  // This counts as one of their daily PT sessions, without replacing main work
+  if (injuries.length > 0) {
+    try {
+      const conditionsDB = _conditionsDB;
+      const ptWarmup = []; // therapeutic activation exercises for warm-up
+      const ptCooldown = []; // therapeutic recovery exercises for cooldown
+      const addedIds = new Set([...inhibit, ...lengthen].map(e => e.id));
+
+      for (const inj of injuries) {
+        // Find condition in conditions.json for mandatoryDaily exercises
+        const cond = conditionsDB.find(c => c.condition === inj.conditionId || c.id === inj.conditionId);
+        const mandatory = cond?.mandatoryDaily || [];
+
+        // Add mandatory daily exercises to warm-up (max 2 per condition)
+        let added = 0;
+        for (const exId of mandatory) {
+          if (added >= 2) break;
+          if (addedIds.has(exId)) continue;
+          const ex = exerciseDB.find(e => e.id === exId);
+          if (!ex || !locOk(ex)) continue;
+          // Activation-type exercises go to warm-up, breathing/stretches to cooldown
+          const isActivation = ex.category === "main" || ex.category === "warmup" || ex.category === "rehab" || ex.type === "stability";
+          if (isActivation) {
+            ptWarmup.push({ ...ex, _reason: `${inj.area} protocol — mandatory daily`, _ptProtocol: true });
+          } else {
+            ptCooldown.push({ ...ex, _reason: `${inj.area} protocol — therapeutic recovery`, _ptProtocol: true });
+          }
+          addedIds.add(exId);
+          added++;
+        }
+
+        // Also add McKenzie exercises from INJURY_ADJUSTMENTS if not already covered
+        const gateKey = inj.gateKey || "other";
+        const mckExercises = gateKey === "lower_back" ? ["mck_back_press_up", "mck_back_prone_elbows"] :
+          gateKey === "knee" ? ["rehab_vmo_wall_sit", "rehab_tke"] :
+          gateKey === "shoulder" ? ["iso_band_ext_rotation", "iso_face_pulls"] : [];
+
+        for (const exId of mckExercises) {
+          if (addedIds.has(exId)) continue;
+          if (ptWarmup.length + ptCooldown.length >= 4) break; // cap total PT additions
+          const ex = exerciseDB.find(e => e.id === exId);
+          if (!ex || !locOk(ex)) continue;
+          ptWarmup.push({ ...ex, _reason: `${inj.area} — preventative protocol`, _ptProtocol: true });
+          addedIds.add(exId);
+        }
+      }
+
+      // Inject PT exercises: warm-up activation goes after mobility, cooldown goes to stretch section
+      if (ptWarmup.length > 0) lengthen.push(...ptWarmup);
+      // ptCooldown will be added to cooldownStretches below
+      // Store for later injection
+      buildSessionBlocks._ptCooldown = ptCooldown;
+    } catch (e) { console.warn("PT protocol injection error:", e); }
+  }
+
   // PHASE E: COOLDOWN — static stretches for ALL muscles trained
   const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(phase) && locOk(e));
   const trainedBps = new Set((mainExercises || []).map(e => e.bodyPart).filter(Boolean));
@@ -508,6 +567,13 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   });
   // Fill to minimum 3
   stretchPool.forEach(e => { if (cooldownStretches.length < 3 && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "General recovery", _duration: "30s" }); });
+  // Inject PT cooldown exercises (therapeutic recovery from protocol injection above)
+  if (buildSessionBlocks._ptCooldown?.length > 0) {
+    for (const ptEx of buildSessionBlocks._ptCooldown) {
+      if (!cooldownStretches.find(x => x.id === ptEx.id)) cooldownStretches.push(ptEx);
+    }
+    buildSessionBlocks._ptCooldown = [];
+  }
 
   // HIGH STRESS: Add breathing exercises to cooldown (rest-in-place exercises belong at end of workout)
   const stressLevel = checkInData?.stress || 5;
