@@ -518,6 +518,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const volSwaps = []; // track volume-based substitutions
   const assessment = getAssessment();
   const blacklist = new Set(assessment?.preferences?.blacklist || []);
+  // Add recently flagged exercises (from reflection "needs modification") to blacklist
+  try{const prefs=getPrefs();(prefs.flagged||[]).forEach(id=>blacklist.add(id));}catch{}
 
   // ── PAIN-BASED FILTERING ──────────────────────────────────────
   // 1. Today's check-in: sharp pain areas → block exercises for those body parts
@@ -600,11 +602,27 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     }
     return result;
   };
+  // ── ENERGY/SLEEP/STRESS VOLUME MODIFIERS ─────────────────────
+  // These actually reduce volume based on check-in data (not just display text)
+  let volumeModifier = 1.0; // 1.0 = full volume
+  if (checkInData) {
+    if (checkInData.energy <= 3) volumeModifier *= 0.7;        // Low energy: -30%
+    else if (checkInData.energy <= 5) volumeModifier *= 0.85;  // Moderate: -15%
+    if (checkInData.sleep === "poor") volumeModifier *= 0.7;   // Poor sleep: -30%
+    else if (checkInData.sleep === "ok") volumeModifier *= 0.85; // OK sleep: -15%
+    if (checkInData.stress >= 7) volumeModifier *= 0.6;        // High stress: -40%
+    else if (checkInData.stress >= 4) volumeModifier *= 0.8;   // Moderate stress: -20%
+  }
+
   // Respect user's session time preference (Fix #8)
   const sessionTime = getAssessment()?.preferences?.sessionTime || 45;
-  const warmupLimit = sessionTime <= 30 ? 3 : sessionTime <= 45 ? 4 : 5;
-  const mainLimit = sessionTime <= 30 ? 4 : sessionTime <= 45 ? 6 : 8;
-  const cooldownLimit = sessionTime <= 30 ? 2 : 3;
+  const baseWarmup = sessionTime <= 30 ? 3 : sessionTime <= 45 ? 4 : 5;
+  const baseMain = sessionTime <= 30 ? 4 : sessionTime <= 45 ? 6 : 8;
+  const baseCooldown = sessionTime <= 30 ? 2 : 3;
+  // Apply volume modifier to main exercise count
+  const warmupLimit = baseWarmup;
+  const mainLimit = Math.max(3, Math.round(baseMain * volumeModifier));
+  const cooldownLimit = baseCooldown;
 
   // First exercise variety: exclude starters from last 3 sessions
   const recentSessions = getSessions() || [];
@@ -1988,7 +2006,10 @@ function AppInner(){
     const loc=data?.location||"gym";
     // Weekly plan integration — wrapped in try/catch so it NEVER blocks the core workout flow
     try{const weekPlan=getOrCreateWeeklyPlan(exerciseDB,CURRENT_PHASE,loc);const todayPlan=getTodayFromPlan(weekPlan);if(todayPlan)adjustPlanForCheckIn(todayPlan,data,exerciseDB,CURRENT_PHASE);updateDayStatus(weekPlan,getDayOfWeek(),"in_progress");}catch(e){console.warn("Weekly plan adjust error (non-blocking):",e);}
-    const w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
+    let w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data);
+    // Apply overtraining modifiers if detected
+    try{const otSignals=assessOvertraining();if(otSignals&&otSignals.level>=2){w=applyOvertrainingModifiers(w,otSignals)||w;}}catch(e){console.warn("Overtraining modifier error:",e);}
+    const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
     try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx:0,completedExercises:[],workout:vf.plan,sessionStart:start,checkInData:data,pausedAt:Date.now()}));}catch{}};
   const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
   const[performSwap,setPerformSwap]=useState(null); // exercise to swap during perform
