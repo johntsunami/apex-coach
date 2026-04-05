@@ -1328,11 +1328,17 @@ const[autoAdvancing,setAutoAdvancing]=useState(false);const[autoAdvanceName,setA
 const[restTipText,setRestTipText]=useState(()=>getRestTip());
 const[restTipChanged,setRestTipChanged]=useState(false);
 useEffect(()=>{if(timerOn&&tl>0){tr.current=setTimeout(()=>setTl(t=>t-1),1000);// Change tip once at halfway for long rest periods (>90s)
-if(ep.rest>90&&tl===Math.floor(ep.rest/2)&&!restTipChanged){setRestTipText(getRestTip());setRestTipChanged(true);}}else if(timerOn&&tl===0){setTimerOn(false);setResting(false);}return()=>clearTimeout(tr.current);},[timerOn,tl]);
-// Auto-advance: when rest ends and all sets are done, show 3s transition then call onDone
-useEffect(()=>{if(autoAdvancing){const t=setTimeout(()=>{setAutoAdvancing(false);setAutoAdvanceName("");onDone({sets:setLog});},3000);return()=>clearTimeout(t);}},[autoAdvancing]);
+if(ep.rest>90&&tl===Math.floor(ep.rest/2)&&!restTipChanged){setRestTipText(getRestTip());setRestTipChanged(true);}}else if(timerOn&&tl===0){setTimerOn(false);setResting(false);
+// If this was the last set's rest, auto-advance to next exercise immediately
+if(cs>=(ep.sets||1)){setAutoAdvanceName("next");setAutoAdvancing(true);}
+}return()=>clearTimeout(tr.current);},[timerOn,tl]);
+// Auto-advance: show brief transition then call onDone
+const setLogRef=useRef(setLog);setLogRef.current=setLog;
+useEffect(()=>{if(autoAdvancing){const t=setTimeout(()=>{setAutoAdvancing(false);setAutoAdvanceName("");onDone({sets:setLogRef.current});},1500);return()=>clearTimeout(t);}},[autoAdvancing]);
 const logAndAdvance=()=>{const entry={set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"};setSetLog(prev=>[...prev,entry]);setCurPain(false);setCurQuality("");};
-const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);setRestTipText(getRestTip());setRestTipChanged(false);}}else{const allSets=[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}];setSetLog(allSets);setAutoAdvanceName("next");setAutoAdvancing(true);
+const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);setRestTipText(getRestTip());setRestTipChanged(false);}}else{const allSets=[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}];setSetLog(allSets);
+  // Last set complete — advance to next exercise immediately (no second tap needed)
+  setAutoAdvanceName("next");setAutoAdvancing(true);
   // Store effort level for future workout adjustments
   if(curRpe){try{const effortKey="apex_exercise_effort";const raw=localStorage.getItem(effortKey);const effortMap=raw?JSON.parse(raw):{};effortMap[exercise.id]={rpe:curRpe,reps:curReps,load:curLoad?parseFloat(curLoad):null,date:new Date().toISOString(),adjustment:curRpe<=4?"increase":curRpe>=9?"decrease":"maintain"};localStorage.setItem(effortKey,JSON.stringify(effortMap));}catch{}}
   }};
