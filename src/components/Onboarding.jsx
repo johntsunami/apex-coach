@@ -103,8 +103,15 @@ const HOME_EQUIPMENT_OPTIONS = [
   {id:"pull_up_bar",label:"Pull-Up Bar"},
   {id:"foam_roller",label:"Foam Roller"},
   {id:"mat",label:"Exercise Mat"},
-  {id:"bench",label:"Bench"},
+  {id:"bench",label:"Bench / Step"},
   {id:"stability_ball",label:"Stability Ball"},
+  {id:"trx",label:"TRX / Suspension Trainer"},
+  {id:"medicine_ball",label:"Medicine Ball"},
+  {id:"bosu_ball",label:"BOSU Ball"},
+  {id:"box",label:"Plyo Box / Step Box"},
+  {id:"grip_ball",label:"Grip/Stress Ball"},
+  {id:"ab_wheel",label:"Ab Wheel"},
+  {id:"jump_rope",label:"Jump Rope"},
   {id:"none",label:"None — bodyweight only"},
 ];
 

@@ -423,14 +423,34 @@ function exLocationLabel(ex) {
 }
 
 // ── Location-aware workout builder with equipment filtering + substitutions ──
-const HOME_EQUIPMENT = new Set(["none","mat","band","dumbbell","kettlebell","foam_roller","towel","strap","wall","bench","stability_ball","box"]);
+// Base equipment everyone has (bodyweight, walls, towels)
+const ALWAYS_AVAILABLE = new Set(["none","wall","towel","strap"]);
 const exById = Object.fromEntries(exerciseDB.map(e => [e.id, e]));
+
+// Build the user's actual equipment set from their assessment
+function getUserEquipment() {
+  try {
+    const assessment = getAssessment();
+    const selected = assessment?.preferences?.homeEquipment || [];
+    const equip = new Set(ALWAYS_AVAILABLE);
+    selected.forEach(id => equip.add(id));
+    // "none" means bodyweight only — don't add anything extra
+    if (selected.includes("none") && selected.length === 1) return equip;
+    return equip;
+  } catch { return new Set(ALWAYS_AVAILABLE); }
+}
 
 function locationFilter(ex, location) {
   if (location === "gym") return true;
-  if (location === "outdoor") return (ex.locationCompatible || []).includes("outdoor");
-  // home: every piece of equipmentRequired must be in HOME_EQUIPMENT
-  return (ex.equipmentRequired || []).every(eq => HOME_EQUIPMENT.has(eq));
+  if (location === "outdoor") {
+    // Outdoor: only bodyweight + minimal. Check locationCompatible tag AND equipment
+    if (!(ex.locationCompatible || []).includes("outdoor")) return false;
+    const outdoorEquip = new Set(["none","wall","towel","strap","mat","band"]);
+    return (ex.equipmentRequired || []).every(eq => outdoorEquip.has(eq));
+  }
+  // Home: every piece of required equipment must be in user's actual equipment
+  const userEquip = getUserEquipment();
+  return (ex.equipmentRequired || []).every(eq => userEquip.has(eq));
 }
 
 function trySubstitute(ex, location, phase) {

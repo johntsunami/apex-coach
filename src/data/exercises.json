@@ -6516,7 +6516,7 @@
       "shoulder"
     ],
     "equipmentRequired": [
-      "stability_ball"
+      "ab_wheel"
     ],
     "locationCompatible": [
       "gym",
@@ -18838,7 +18838,7 @@
       "wrist"
     ],
     "equipmentRequired": [
-      "none"
+      "grip_ball"
     ],
     "locationCompatible": [
       "gym",
@@ -28586,8 +28586,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -28723,8 +28722,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -28864,8 +28862,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -29001,8 +28998,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -29145,8 +29141,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       2,
@@ -29284,8 +29279,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -29424,8 +29418,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
@@ -29559,8 +29552,7 @@
       "trx"
     ],
     "locationCompatible": [
-      "gym",
-      "home"
+      "gym"
     ],
     "phaseEligibility": [
       1,
