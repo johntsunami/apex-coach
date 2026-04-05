@@ -22552,8 +22552,8 @@
   {
     "id": "breath_diaphragmatic",
     "name": "Diaphragmatic Breathing (90/90)",
-    "category": "warmup",
-    "type": "mobility",
+    "category": "cooldown",
+    "type": "breathing",
     "movementPattern": "breathing",
     "bodyPart": "core",
     "primaryMuscles": [
@@ -22686,8 +22686,8 @@
   {
     "id": "breath_box",
     "name": "Box Breathing (4-4-4-4)",
-    "category": "warmup",
-    "type": "mobility",
+    "category": "cooldown",
+    "type": "breathing",
     "movementPattern": "breathing",
     "bodyPart": "core",
     "primaryMuscles": [
@@ -22817,8 +22817,8 @@
   {
     "id": "breath_crocodile",
     "name": "Crocodile Breathing (Prone)",
-    "category": "warmup",
-    "type": "mobility",
+    "category": "cooldown",
+    "type": "breathing",
     "movementPattern": "breathing",
     "bodyPart": "core",
     "primaryMuscles": [
@@ -22948,8 +22948,8 @@
   {
     "id": "breath_physiological_sigh",
     "name": "Physiological Sigh (Double Inhale + Long Exhale)",
-    "category": "warmup",
-    "type": "mobility",
+    "category": "cooldown",
+    "type": "breathing",
     "movementPattern": "breathing",
     "bodyPart": "core",
     "primaryMuscles": [

@@ -489,13 +489,11 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   // Fill to minimum 3
   stretchPool.forEach(e => { if (cooldownStretches.length < 3 && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "General recovery", _duration: "30s" }); });
 
-  // HIGH STRESS: Add breathing exercises to warm-up start and cooldown end
+  // HIGH STRESS: Add breathing exercises to cooldown (rest-in-place exercises belong at end of workout)
   const stressLevel = checkInData?.stress || 5;
   if (stressLevel > 6) {
-    const breathingPool = exerciseDB.filter(e => (e.type === "breathing" || e.category === "breathing" || (e.name || "").toLowerCase().includes("breath")) && locOk(e));
-    if (breathingPool.length > 0) {
-      const breathEx = breathingPool[0];
-      if (!inhibit.find(x => x.id === breathEx.id)) inhibit.unshift({ ...breathEx, _reason: "High stress — breathing to decompress" });
+    const breathingPool = exerciseDB.filter(e => (e.type === "breathing" || (e.name || "").toLowerCase().includes("breath")) && locOk(e));
+    for (const breathEx of breathingPool.slice(0, 2)) {
       if (!cooldownStretches.find(x => x.id === breathEx.id)) cooldownStretches.push({ ...breathEx, _reason: "High stress — wind-down breathing" });
     }
   }
