@@ -81,6 +81,113 @@ Never mention "NASM" by name. Use evidence-based exercise science principles.
 - Ephemeral data (paused workout, daily plan, rotation indices, last screen, stats) can stay localStorage-only
 - When adding new data persistence: add the localStorage key to `CRITICAL_KEYS` in `src/utils/dataSync.js` if the data is user-created and not easily regenerated
 
+### Rule 10: Preventing Recurring Bugs — Standards Checklist
+
+#### 10A — Loading States (Never Show Zero During Load)
+Any UI element showing a count or list of user data (conditions, injuries, sessions, streak, days done) must use null as the initial state — never an empty array or zero.
+
+WRONG:
+```
+const [conditions, setConditions] = useState([])
+// renders "0 active" before Supabase responds
+```
+
+RIGHT:
+```
+const [conditions, setConditions] = useState(null)
+// renders "Loading..." until Supabase responds
+// only renders "0 active" if Supabase confirms empty
+```
+
+Rule: show a loading skeleton or dash "—" while fetching. Only show 0 after Supabase confirms the actual count is 0.
+
+#### 10B — React Hooks Ordering (Prevents Error #310)
+ALL hooks must be declared unconditionally at the top of every component before any conditional logic, early returns, or JSX.
+
+NEVER:
+```
+if (!user) return null          // early return
+const [x, setX] = useState()   // hook after return — ILLEGAL
+
+if (condition) {
+  const [x, setX] = useState() // hook inside condition — ILLEGAL
+}
+```
+
+ALWAYS:
+```
+const [x, setX] = useState(null)  // hooks first
+const [y, setY] = useState(null)  // hooks first
+if (!user) return null             // conditional after
+```
+
+For components needing per-item state (e.g. QA panel, profile list), use a single state object keyed by ID:
+
+- WRONG: `profiles.map(p => useState())`
+- RIGHT: `const [results, setResults] = useState({})`
+
+Never extract a sub-component just to use hooks conditionally — this masks the violation. Flatten first, extract only after it works.
+
+#### 10C — Active Workout Protection
+When any preference that affects workout generation changes (session time, location, conditions, injuries, phase), always check for an in-progress session first:
+
+- If workoutInProgress === true:
+  - Write preference change to Supabase
+  - Set pendingPlanRebuild = true in localStorage
+  - Do NOT rebuild or overwrite the active plan
+  - After session ends: detect flag, rebuild silently
+
+- If no workout in progress:
+  - Write preference to Supabase
+  - Rebuild plan immediately
+  - Clear any stale cached plan
+
+#### 10D — Plan Staleness Prevention
+Every stored workout plan must be saved with the parameters used to generate it:
+
+```
+stored_plan: {
+  exercises: [...],
+  generated_with: {
+    sessionTime,
+    location,
+    phase,
+    conditionIds,
+    injuryIds,
+    generatedAt
+  }
+}
+```
+
+On app load: compare generated_with against current user preferences. If any value differs, discard and regenerate before displaying. Never show a plan built with stale parameters.
+
+#### 10E — New Screen Checklist
+Before shipping any new screen that reads or writes user data, verify all of these:
+
+- [ ] Initial state uses null (not [] or 0) for loaded data
+- [ ] Shows loading state while Supabase fetch is in flight
+- [ ] All hooks declared unconditionally at component top
+- [ ] Data reads from Supabase on mount (not localStorage)
+- [ ] Writes go to Supabase FIRST, then localStorage cache
+- [ ] Count displays show — not 0 during loading
+- [ ] Tested on fresh login with no localStorage present
+- [ ] Tested on a second device after saving on first
+- [ ] Tested after a preference change mid-session
+
+#### 10F — Swap Button UI Rule
+Exercise swap/substitute actions must NEVER render as inline icon + muscle name label on workout list cards.
+
+This pattern is banned on list cards:
+```
+[Gastrocnemius] [🔄]   ← broken, cluttered, confusing
+```
+
+Allowed patterns:
+1. Three-dot menu (⋯) on the card → opens action sheet with [Swap this exercise] and [View details]
+2. [Swap Exercise] button inside the exercise detail screen only
+
+Muscle names and target labels belong in the exercise detail screen — never on the list card.
+
 ---
 
 ## SCORING FORMULAS (from V7 spec)
