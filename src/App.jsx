@@ -40,7 +40,7 @@ import { buildCardioBlock, CARDIO_EXERCISES, getWeeklyCardioProgress } from "./u
 import { getDailyWorkout, saveDailyWorkout, markExerciseDone, markExerciseStarted, getDailyProgress, getMiniSessions, getPhaseGroupedExercises, clearDailyWorkout, endDay, getCarryover, clearCarryover, estimateExerciseTime } from "./utils/splitWorkout.js";
 import { getOrCreateWeeklyPlan, getTodayFromPlan, getTomorrowFromPlan, updateDayStatus, adjustPlanForCheckIn, shouldRegeneratePlan, regenerateWeeklyPlan, generateWeeklyPlan, archiveWeeklyPlan, ADDON_TYPES, DAY_NAMES, getDayOfWeek, getWeeklyPlan, saveWeeklyPlan } from "./utils/weeklyPlanner.js";
 import { getTodayWorkoutStatus, saveSupplementalSession, restoreSessionsFromSupabase, backfillSessionsToSupabase, getFirstSessionMuscles, getTodaySessionCompletionTime } from "./utils/storage.js";
-import { determineTrainingTier, checkPhaseReadiness, getOrCreateMesocycle, getMesocycleContext, getMesocycle, analyzeFeedback, TIERS, TIER_PROGRESSIONS } from "./utils/mesocycle.js";
+import { determineTrainingTier, checkPhaseReadiness, getOrCreateMesocycle, getMesocycleContext, getMesocycle, analyzeFeedback, TIERS, TIER_PROGRESSIONS, isInContinuousCycling, shouldPromptFitnessReassessment, detectPlateau, getCompetitionPlan, CYCLE_EMPHASES } from "./utils/mesocycle.js";
 import { fullSyncCycle, syncCriticalDataToSupabase } from "./utils/dataSync.js";
 
 // ═══════════════════════════════════════════════════════════════
@@ -396,7 +396,19 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
 
 // ── EXERCISE DATABASE (from JSON) ─────────────────────────────
 // Adapters normalize the 300-exercise JSON schema for existing UI components
-const CURRENT_PHASE = 1;
+// Dynamic phase: reads from mesocycle → assessment → default 1
+function getCurrentPhase() {
+  try {
+    const meso = JSON.parse(localStorage.getItem("apex_mesocycle"));
+    if (meso?.phase) return meso.phase;
+  } catch {}
+  try {
+    const a = JSON.parse(localStorage.getItem("apex_assessment"));
+    if (a?.startingPhase) return a.startingPhase;
+  } catch {}
+  return 1;
+}
+const CURRENT_PHASE = getCurrentPhase();
 const BODY_GROUPS=["All","back","core","shoulders","legs","glutes","hips","full_body","chest","arms","neck","ankles","calves"];
 const CATEGORIES=["All","warmup","main","cooldown","rehab","cardio","foam_roll"];
 const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
@@ -481,8 +493,15 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   const _assessment = getAssessment();
   const userComps = (_assessment?.compensations || []).map(id => _compensationsDB.find(c => c.id === id)).filter(Boolean);
   const rom = _assessment?.rom || {};
-  const romToBodyPart = { neck: "neck", thoracic: "back", lumbar: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
-  const romLimitedBps = new Set(Object.entries(rom).filter(([, v]) => v === "limited" || v === "mod_limited").map(([j]) => romToBodyPart[j]).filter(Boolean));
+  const romToBodyPart = { neck: "neck", cervical_retraction: "neck", thoracic: "back", lumbar: "back", lumbar_ext: "back", lumbar_flex: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hip_flexion: "hips", hip_ir: "hips", hip_er: "hips", hip_ext: "hips", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
+  // 5-tier ROM: full (T1), slight (T2), limited (T3), mod_limited (T4), painful (T5)
+  // T2+ all get mobility work; T4/T5 get daily priority; T5 uses gentle AAROM
+  const romTierBps = {}; // {bodyPart: highest tier number}
+  const tierNum = v => v === "slight" ? 2 : v === "limited" ? 3 : v === "mod_limited" ? 4 : v === "painful" ? 5 : 1;
+  Object.entries(rom).forEach(([j, v]) => { const bp = romToBodyPart[j]; const t = tierNum(v); if (bp && t > 1) romTierBps[bp] = Math.max(romTierBps[bp] || 0, t); });
+  const romLimitedBps = new Set(Object.keys(romTierBps)); // any T2+ body part
+  const romDailyBps = new Set(Object.entries(romTierBps).filter(([, t]) => t >= 4).map(([bp]) => bp)); // T4-T5: daily priority
+  const romPainfulBps = new Set(Object.entries(romTierBps).filter(([, t]) => t >= 5).map(([bp]) => bp)); // T5: gentle AAROM
   // Tightness from check-in (separate from soreness per NASM)
   const soreMap = { lowerback: "back", upperback: "back", hips: "hips", lknee: "legs", rknee: "legs", calves: "calves", hamstrings: "legs", lquad: "legs", rquad: "legs", lshoulder: "shoulders", rshoulder: "shoulders" };
   const tightAreas = soreAreas.filter(a => checkInData?.painTypes?.[a] === "tightness");
@@ -506,23 +525,51 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
       if (ex && locOk(ex) && !inhibit.find(x => x.id === ex.id)) { inhibit.push({ ...ex, _reason: `${comp.name} — corrective foam roll`, _compensationProtocol: true }); compInhibitAdded++; }
     }
   }
-  // ROM-limited & tight areas: extra foam rolling
-  foamPool.forEach(e => { if (inhibit.length < 6 && (romLimitedBps.has(e.bodyPart) || tightBps.has(e.bodyPart)) && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: tightBps.has(e.bodyPart) ? "Reported tight — tissue prep" : "ROM-limited — tissue prep" }); });
+  // ROM-limited & tight areas: extra foam rolling (T4/T5 daily areas get priority)
+  romDailyBps.forEach(bp => { foamPool.forEach(e => { if (inhibit.length < 7 && e.bodyPart === bp && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: romPainfulBps.has(bp) ? "ROM: pain-limited — gentle tissue prep" : "ROM: severely limited — daily tissue prep" }); }); });
+  foamPool.forEach(e => { if (inhibit.length < 7 && (romLimitedBps.has(e.bodyPart) || tightBps.has(e.bodyPart)) && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: tightBps.has(e.bodyPart) ? "Reported tight — tissue prep" : "ROM-limited — tissue prep" }); });
 
-  // PHASE B: LENGTHEN — mobility + ROM for joints
+  // PHASE B: LENGTHEN — Phase-specific per NASM CPT 7th Ed
+  // Phase 1: SMR + static stretching (to inhibit overactive muscles) + mobility
+  // Phase 2+: SMR + dynamic/active-isolated stretching only (no static in warm-up)
   const mobPool = exerciseDB.filter(e => (e.category === "warmup" || e.category === "mobility") && e.type === "mobility" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  // Phase 1 static stretch pool: cooldown static stretches used in warm-up to inhibit overactive muscles
+  const phase1StaticPool = phase === 1 ? exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type === "static" && (e.phaseEligibility || []).includes(1) && locOk(e)) : [];
   const lengthen = [];
+  // PHASE 1 ONLY: static stretches for overactive muscles in warm-up (per NASM CPT 7th Ed)
+  // This inhibits overactive muscles before activation. Phase 2+ uses dynamic only.
+  if (phase === 1 && phase1StaticPool.length > 0) {
+    let phase1StaticAdded = 0;
+    // Static stretches for compensation-identified overactive muscles
+    for (const comp of userComps) {
+      if (phase1StaticAdded >= 3) break;
+      const overactiveBps = (comp.protocol?.inhibit?.muscles || []).map(m => m.toLowerCase());
+      for (const ex of phase1StaticPool) {
+        if (phase1StaticAdded >= 3 || lengthen.length >= 4) break;
+        if (overactiveBps.some(m => (ex.bodyPart || "").includes(m) || (ex.primaryMuscles || []).some(pm => pm.toLowerCase().includes(m)))) {
+          if (!lengthen.find(x => x.id === ex.id)) { lengthen.push({ ...ex, _reason: `${comp.name} — static stretch to inhibit overactive muscle (Phase 1)`, _duration: "30s hold", _phase1Static: true }); phase1StaticAdded++; }
+        }
+      }
+    }
+    // Also add static stretches for sore/tight areas in Phase 1
+    tightBps.forEach(bp => { if (phase1StaticAdded >= 4) return; const s = phase1StaticPool.find(e => e.bodyPart === bp && !lengthen.find(x => x.id === e.id)); if (s) { lengthen.push({ ...s, _reason: `Reported tight — static stretch to inhibit (Phase 1)`, _duration: "30s hold", _phase1Static: true }); phase1StaticAdded++; } });
+  }
+  // T4/T5 ROM daily areas: priority mobility every session (never skip)
+  romDailyBps.forEach(bp => {
+    const exes = mobPool.filter(e => e.bodyPart === bp && !lengthen.find(x => x.id === e.id));
+    for (const ex of exes.slice(0, 2)) { if (lengthen.length < 8) lengthen.push({ ...ex, _reason: romPainfulBps.has(bp) ? `ROM: ${bp} pain-limited — gentle AAROM mobility` : `ROM: ${bp} severely limited — daily mobility (priority)` }); }
+  });
   // Injury-specific mobility
   injuries.forEach(inj => {
     const injMob = mobPool.find(e => e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders") && !lengthen.find(x => x.id === e.id));
-    if (injMob && lengthen.length < 5) lengthen.push({ ...injMob, _reason: `${inj.area} — injury-specific mobility` });
+    if (injMob && lengthen.length < 7) lengthen.push({ ...injMob, _reason: `${inj.area} — injury-specific mobility` });
   });
   // Sore area mobility
-  mobPool.forEach(e => { if (lengthen.length < 5 && soreBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Extra ROM for sore area" }); });
+  mobPool.forEach(e => { if (lengthen.length < 7 && soreBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Extra ROM for sore area" }); });
   // Tightness-reported areas: extra mobility (does NOT reduce volume like soreness)
-  mobPool.forEach(e => { if (lengthen.length < 6 && tightBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Reported tight — extra mobility" }); });
-  // ROM-limited joints: extra mobility even if not sore
-  mobPool.forEach(e => { if (lengthen.length < 6 && romLimitedBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "ROM-limited — mobility work" }); });
+  mobPool.forEach(e => { if (lengthen.length < 7 && tightBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Reported tight — extra mobility" }); });
+  // ROM T2-T3 joints: mobility work (T4/T5 already added above with priority)
+  romLimitedBps.forEach(bp => { if (!romDailyBps.has(bp)) mobPool.forEach(e => { if (lengthen.length < 8 && e.bodyPart === bp && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: (romTierBps[bp] === 2) ? "ROM: slight tightness — maintenance mobility" : "ROM: moderate limitation — focused mobility" }); }); });
   // Compensation protocol: lengthen + activate exercises (NASM CES)
   let compLengthenAdded = 0;
   for (const comp of userComps) {
@@ -639,8 +686,9 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     }
   } catch (e) { console.warn("Climbing protocol injection error:", e); }
 
-  // PHASE E: COOLDOWN — static stretches for ALL muscles trained
-  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  // PHASE E: COOLDOWN — static stretches for ALL muscles trained (per NASM: static stretching in cooldown only)
+  // Filter to static stretch_type only (excludes dynamic cooldown exercises like 90/90 hip switch)
+  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type !== "dynamic" && (e.phaseEligibility || []).includes(phase) && locOk(e));
   const trainedBps = new Set((mainExercises || []).map(e => e.bodyPart).filter(Boolean));
   const cooldownStretches = [];
   // Stretch every trained muscle
@@ -666,11 +714,17 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
       if (ex && locOk(ex) && !cooldownStretches.find(x => x.id === ex.id)) { cooldownStretches.push({ ...ex, _reason: `${comp.name} — corrective stretch`, _duration: "30s", _compensationProtocol: true }); compCooldownAdded++; }
     }
   }
-  // ROM-limited joints: stretches even if body part wasn't trained today
-  romLimitedBps.forEach(bp => {
-    if (cooldownStretches.length >= 8) return;
+  // ROM-limited joints: static stretches in cooldown (per NASM — static stretching goes in cooldown only)
+  // T4/T5 get extended holds; T2/T3 get normal holds
+  romDailyBps.forEach(bp => {
+    if (cooldownStretches.length >= 10) return;
     const romStr = stretchPool.find(e => e.bodyPart === bp && !cooldownStretches.find(x => x.id === e.id));
-    if (romStr) cooldownStretches.push({ ...romStr, _reason: `ROM: ${bp} assessed as limited — extra flexibility`, _duration: "45s (extended — limited ROM)" });
+    if (romStr) cooldownStretches.push({ ...romStr, _reason: romPainfulBps.has(bp) ? `ROM: ${bp} pain-limited — gentle extended stretch` : `ROM: ${bp} severely limited — daily stretch (priority)`, _duration: "45s (extended — T4/T5 ROM)" });
+  });
+  romLimitedBps.forEach(bp => {
+    if (romDailyBps.has(bp) || cooldownStretches.length >= 10) return;
+    const romStr = stretchPool.find(e => e.bodyPart === bp && !cooldownStretches.find(x => x.id === e.id));
+    if (romStr) cooldownStretches.push({ ...romStr, _reason: (romTierBps[bp] === 2) ? `ROM: ${bp} slight tightness — maintenance stretch` : `ROM: ${bp} moderate limitation — focused stretch`, _duration: "30s" });
   });
   // Maintenance rotation: stretch body parts not hit in 3+ days (ACSM: all major groups 2-3x/week)
   try {
@@ -745,8 +799,12 @@ function buildStretchSession(location = "gym") {
   const assessment = getAssessment();
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const rom = assessment?.rom || {};
-  const romToBodyPart = { neck: "neck", thoracic: "back", lumbar: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
-  const romLimitedBps = new Set(Object.entries(rom).filter(([, v]) => v === "limited" || v === "mod_limited").map(([j]) => romToBodyPart[j]).filter(Boolean));
+  const romToBodyPart = { neck: "neck", cervical_retraction: "neck", thoracic: "back", lumbar: "back", lumbar_ext: "back", lumbar_flex: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hip_flexion: "hips", hip_ir: "hips", hip_er: "hips", hip_ext: "hips", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
+  const _tierNum = v => v === "slight" ? 2 : v === "limited" ? 3 : v === "mod_limited" ? 4 : v === "painful" ? 5 : 1;
+  const _romTierBps = {};
+  Object.entries(rom).forEach(([j, v]) => { const bp = romToBodyPart[j]; const t = _tierNum(v); if (bp && t > 1) _romTierBps[bp] = Math.max(_romTierBps[bp] || 0, t); });
+  const romLimitedBps = new Set(Object.keys(_romTierBps));
+  const _romDailyBps = new Set(Object.entries(_romTierBps).filter(([, t]) => t >= 4).map(([bp]) => bp));
   const userComps = (assessment?.compensations || []).map(id => _compensationsDB.find(c => c.id === id)).filter(Boolean);
   const stretchTracker = getStretchTracker();
   const today = new Date();
@@ -754,19 +812,21 @@ function buildStretchSession(location = "gym") {
 
   const foamPool = exerciseDB.filter(e => e.category === "foam_roll" && (e.phaseEligibility || []).includes(1) && locOk(e));
   const mobPool = exerciseDB.filter(e => (e.category === "warmup" || e.category === "mobility") && e.type === "mobility" && (e.phaseEligibility || []).includes(1) && locOk(e));
-  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(1) && locOk(e));
+  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type !== "dynamic" && (e.phaseEligibility || []).includes(1) && locOk(e));
   const usedIds = new Set();
   const add = (arr, ex, reason) => { if (ex && !usedIds.has(ex.id)) { arr.push({ ...ex, _reason: reason }); usedIds.add(ex.id); } };
 
-  // Foam rolling (3-4): injury areas, ROM-limited, stalest
+  // Foam rolling (3-5): injury areas, T4/T5 daily priority, ROM-limited, stalest
   const foam = [];
-  injuries.forEach(inj => { const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders")); if (f && foam.length < 4) add(foam, f, `${inj.area} — recovery foam roll`); });
-  romLimitedBps.forEach(bp => { if (foam.length >= 4) return; const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (f) add(foam, f, `ROM: ${bp} limited — tissue prep`); });
+  injuries.forEach(inj => { const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders")); if (f && foam.length < 5) add(foam, f, `${inj.area} — recovery foam roll`); });
+  _romDailyBps.forEach(bp => { if (foam.length >= 5) return; const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (f) add(foam, f, `ROM: ${bp} severely limited — daily tissue prep`); });
+  romLimitedBps.forEach(bp => { if (_romDailyBps.has(bp) || foam.length >= 5) return; const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (f) add(foam, f, `ROM: ${bp} limited — tissue prep`); });
   foamPool.forEach(e => { if (foam.length < 3 && !usedIds.has(e.id)) add(foam, e, "General tissue prep"); });
 
-  // Mobility (3-4): ROM-limited, compensation protocols, general
+  // Mobility (3-5): T4/T5 daily priority, ROM-limited, compensation protocols, general
   const mob = [];
-  romLimitedBps.forEach(bp => { if (mob.length >= 4) return; const m = mobPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (m) add(mob, m, `ROM: ${bp} limited — mobility`); });
+  _romDailyBps.forEach(bp => { const exes = mobPool.filter(e => !usedIds.has(e.id) && e.bodyPart === bp); for (const m of exes.slice(0, 2)) { if (mob.length < 6) add(mob, m, `ROM: ${bp} severely limited — daily mobility`); } });
+  romLimitedBps.forEach(bp => { if (_romDailyBps.has(bp) || mob.length >= 5) return; const m = mobPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (m) add(mob, m, `ROM: ${bp} limited — mobility`); });
   for (const comp of userComps) {
     for (const exId of [...(comp.protocol?.lengthen?.exercises || []), ...(comp.protocol?.activate?.exercises || [])].slice(0, 2)) {
       if (mob.length >= 4) break;
@@ -776,9 +836,10 @@ function buildStretchSession(location = "gym") {
   }
   mobPool.forEach(e => { if (mob.length < 3 && !usedIds.has(e.id)) add(mob, e, "Dynamic joint prep"); });
 
-  // Static stretches (5-6): ROM-limited, stalest body parts, general
+  // Static stretches (5-7): T4/T5 daily priority, ROM-limited, stalest body parts, general
   const stretches = [];
-  romLimitedBps.forEach(bp => { if (stretches.length >= 6) return; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `ROM: ${bp} limited — flexibility`); });
+  _romDailyBps.forEach(bp => { if (stretches.length >= 7) return; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `ROM: ${bp} severely limited — daily stretch (extended 45s)`); });
+  romLimitedBps.forEach(bp => { if (_romDailyBps.has(bp) || stretches.length >= 7) return; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `ROM: ${bp} limited — flexibility`); });
   const ALL_BPS = ["legs", "hips", "glutes", "back", "chest", "shoulders", "neck", "calves", "arms"];
   const staleBps = ALL_BPS.filter(bp => daysSince(bp) >= 2).sort((a, b) => daysSince(b) - daysSince(a));
   for (const bp of staleBps) { if (stretches.length >= 6) break; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `Maintenance: ${bp} not stretched in ${daysSince(bp)}+ days`); }
@@ -1426,11 +1487,19 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   {/* Feedback trend indicator */}
   {feedback.trend!=="insufficient_data"&&feedback.trend!=="on_track"&&<div style={{marginTop:8,padding:"6px 10px",background:(feedback.trend==="regressing"?C.danger:feedback.trend==="holding"?C.warning:C.success)+"10",borderRadius:6,fontSize:10,color:feedback.trend==="regressing"?C.danger:feedback.trend==="holding"?C.warning:C.success}}>{feedback.trend==="regressing"?"Auto-adjusting — recent sessions suggest regression needed":feedback.trend==="holding"?"Holding current parameters — progression paused this week":"Trending well — considering advancement"}</div>}
   </Card>
-  {/* Phase progression cards */}
-  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:8}}>{[{n:"Phase 1",s:"Foundation",p:1},{n:"Phase 2",s:"Strength",p:2},{n:"Phase 3",s:"Hypertrophy",p:3}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:14,borderColor:p.p===CURRENT_PHASE?C.teal+"40":C.border,background:p.p===CURRENT_PHASE?C.tealBg:C.bgCard}}><div style={{fontSize:14,fontWeight:700,color:p.p===CURRENT_PHASE?C.text:p.p<CURRENT_PHASE?C.success:C.textDim}}>{p.p<CURRENT_PHASE?"✅ ":""}{p.n}</div><div style={{fontSize:11,color:p.p===CURRENT_PHASE?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div>
+  {/* Phase progression cards — all 5 NASM OPT phases */}
+  <div style={{display:"flex",gap:6,marginBottom:8,overflowX:"auto",paddingBottom:4}}>{[{n:"P1",s:"Stabilization",p:1},{n:"P2",s:"Strength",p:2},{n:"P3",s:"Hypertrophy",p:3},{n:"P4",s:"Max Strength",p:4},{n:"P5",s:"Power",p:5}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:"10px 8px",minWidth:64,flex:"0 0 auto",borderColor:p.p===CURRENT_PHASE?C.teal+"40":C.border,background:p.p===CURRENT_PHASE?C.tealBg:C.bgCard}}><div style={{fontSize:12,fontWeight:700,color:p.p===CURRENT_PHASE?C.text:p.p<CURRENT_PHASE?C.success:C.textDim}}>{p.p<CURRENT_PHASE?"✅ ":""}{p.n}</div><div style={{fontSize:9,color:p.p===CURRENT_PHASE?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}{isInContinuousCycling()&&<Card style={{textAlign:"center",padding:"10px 8px",minWidth:64,flex:"0 0 auto",borderColor:C.purple+"40",background:C.purple+"08"}}><div style={{fontSize:12,fontWeight:700,color:C.purple}}>♾️</div><div style={{fontSize:9,color:C.purple,marginTop:2}}>Cycling</div></Card>}</div>
+  {/* Continuous cycling indicator */}
+  {isInContinuousCycling()&&meso?.cycleEmphasis&&<Card style={{padding:10,borderColor:C.purple+"30",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:18}}>{meso.cycleIcon||"♾️"}</span><div><div style={{fontSize:12,fontWeight:700,color:C.purple}}>Continuous Cycling: {meso.cycleLabel||"Active"}</div><div style={{fontSize:10,color:C.textMuted}}>{meso.cycleDesc||"Alternating training emphases for long-term progress"}</div></div></div></Card>}
+  {/* Competition periodization */}
+  {(()=>{const cp=getCompetitionPlan();if(!cp)return null;return<Card style={{padding:10,borderColor:C.orange+"30",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:16}}>🏆</span><div><div style={{fontSize:12,fontWeight:700,color:C.orange}}>{cp.label}</div><div style={{fontSize:10,color:C.textMuted}}>{cp.weeksOut>0?`${cp.weeksOut} weeks to competition`:"Competition complete — entering recovery"}</div></div></div></Card>;})()}
+  {/* 8-week fitness reassessment prompt */}
+  {(()=>{const rp=shouldPromptFitnessReassessment();if(!rp?.prompt)return null;return<Card style={{padding:12,borderColor:C.info+"40",background:C.info+"08",marginBottom:8}}><div style={{fontSize:12,fontWeight:700,color:C.info,marginBottom:4}}>📊 8-Week Check-In Available</div><div style={{fontSize:11,color:C.textMuted,lineHeight:1.5}}>{rp.message}</div><div style={{fontSize:10,color:C.textDim,marginTop:4}}>{rp.sessionsSince} sessions since last check · {rp.daysSince} days</div></Card>;})()}
+  {/* Plateau detection */}
+  {(()=>{const pl=detectPlateau();if(!pl?.detected)return null;return<Card style={{padding:12,borderColor:C.warning+"40",background:C.warning+"08",marginBottom:8}}><div style={{fontSize:12,fontWeight:700,color:C.warning,marginBottom:4}}>📈 Performance Plateau Detected</div><div style={{fontSize:11,color:C.textMuted,lineHeight:1.5,marginBottom:6}}>{pl.message}</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>{pl.options.map(o=><div key={o.id} style={{padding:"6px 8px",background:C.bgElevated,borderRadius:6,fontSize:10,cursor:"pointer",border:`1px solid ${C.border}`}}><span style={{fontSize:12}}>{o.icon}</span> <span style={{fontWeight:600,color:C.text}}>{o.label}</span><div style={{fontSize:9,color:C.textDim,marginTop:2}}>{o.desc}</div></div>)}</div></Card>;})()}
   {/* Phase 2 Readiness Dashboard */}
   {CURRENT_PHASE===1&&<Card style={{borderColor:C.info+"30",padding:14}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{fontSize:11,fontWeight:700,color:C.info,letterSpacing:2}}>PHASE 2 READINESS</div><Badge color={readiness.ready?C.success:C.info}>{readiness.metCount}/{readiness.totalCount}</Badge></div>{readiness.checks.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:i<readiness.checks.length-1?`1px solid ${C.border}`:undefined}}><span style={{fontSize:12,width:20,textAlign:"center"}}>{c.icon}</span><div style={{flex:1}}><div style={{fontSize:11,fontWeight:600,color:c.met?C.success:C.text}}>{c.label}</div><div style={{fontSize:9,color:C.textDim}}>{c.current}</div></div></div>))}{readiness.estimateWeeks&&!readiness.ready&&<div style={{marginTop:8,padding:"6px 10px",background:C.tealBg,borderRadius:6,fontSize:10,color:C.teal}}>Estimated: {readiness.estimateWeeks} more week(s). Keep going — you're close.</div>}{readiness.ready&&<div style={{marginTop:8,padding:"6px 10px",background:C.success+"10",borderRadius:6,fontSize:10,color:C.success,fontWeight:600}}>All criteria met — ready for Phase 2!</div>}</Card>}
-  </div>);}catch(e){console.warn("Mesocycle render error:",e);return(<div><SectionTitle icon="🗓️" title="Your Plan"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:"Phase 1",s:"Foundation",a:CURRENT_PHASE===1},{n:"Phase 2",s:"Strength",a:CURRENT_PHASE===2},{n:"Phase 3",s:"Hypertrophy",a:CURRENT_PHASE===3}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:14,borderColor:p.a?C.teal+"40":C.border,background:p.a?C.tealBg:C.bgCard}}><div style={{fontSize:14,fontWeight:700,color:p.a?C.text:C.textDim}}>{p.n}</div><div style={{fontSize:11,color:p.a?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div></div>);}})()}
+  </div>);}catch(e){console.warn("Mesocycle render error:",e);return(<div><SectionTitle icon="🗓️" title="Your Plan"/><div style={{display:"flex",gap:6,overflowX:"auto"}}>{[{n:"P1",s:"Stabilization",a:CURRENT_PHASE===1},{n:"P2",s:"Strength",a:CURRENT_PHASE===2},{n:"P3",s:"Hypertrophy",a:CURRENT_PHASE===3},{n:"P4",s:"Max Strength",a:CURRENT_PHASE===4},{n:"P5",s:"Power",a:CURRENT_PHASE===5}].map(p=>(<Card key={p.n} style={{textAlign:"center",padding:"10px 8px",minWidth:64,flex:"0 0 auto",borderColor:p.a?C.teal+"40":C.border,background:p.a?C.tealBg:C.bgCard}}><div style={{fontSize:12,fontWeight:700,color:p.a?C.text:C.textDim}}>{p.n}</div><div style={{fontSize:9,color:p.a?C.textMuted:C.textDim,marginTop:2}}>{p.s}</div></Card>))}</div></div>);}})()}
   <div><SectionTitle icon="📋" title="Daily Health Guidelines" sub="General recommendations for overall wellness"/><Card>{[{i:"👟",l:"Steps",v:"7,000-10,000 daily",note:"General health guideline. Walk when you can — every bit counts."},{i:"🫀",l:"Cardio",v:rx?.duration||"20-30 min",note:rx?.guidance||"Build your aerobic base."},{i:"🧘",l:"Stretching",v:"10-15 min",note:"Daily mobility work for injury prevention."}].map(d=>(<div key={d.l} style={{padding:"10px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><span>{d.i}</span><span style={{fontSize:14,color:C.text,fontWeight:600}}>{d.l}</span><span style={{fontSize:12,color:C.textMuted}}>— {d.v}</span></div><div style={{fontSize:10,color:C.textDim,marginLeft:30,marginTop:2}}>{d.note}</div></div>))}</Card></div>
   <CardioFitnessCard phase={CURRENT_PHASE} onTestFitness={()=>setShowVO2Test(true)} onLogCardio={()=>setShowCardioLog(true)} key={cardioRev}/>
   {showVO2Test&&<VO2TestModal onClose={()=>setShowVO2Test(false)} onSaved={()=>setCardioRev(r=>r+1)}/>}
@@ -2536,12 +2605,15 @@ function AppInner(){
     {screen==="auth"&&authView==="login"&&<LogInScreen onBack={()=>setAuthView("landing")} onForgot={()=>setAuthView("forgot")} onSuccess={()=>{/* Don't setScreen here — let the routing useEffect decide based on profile.assessment_completed after profile loads */}}/>}
     {screen==="auth"&&authView==="forgot"&&<ForgotPasswordScreen onBack={()=>setAuthView("login")}/>}
     {/* App screens (authenticated) */}
-    {screen==="onboarding"&&<OnboardingFlow onComplete={(data)=>{
+    {screen==="onboarding"&&<OnboardingFlow initialData={reassessSnap ? getAssessment() : null} onComplete={(data)=>{
       if(reassessSnap){
         // REASSESSMENT: process diff, preserve data, show comparison
         const diff=processReassessment(reassessSnap,data);
         setReassessDiff(diff);
         if(data&&user){saveAssessmentToSupabase(user.id,data).catch(()=>{});}
+        // Clear stale workout data so new assessment takes effect
+        localStorage.removeItem("apex_paused_workout");
+        try{clearDailyWorkout();}catch{}
         // Rebuild workout with new assessment
         setWorkout(buildWorkoutList(diff.phaseChange?diff.phaseChange.newPhase:CURRENT_PHASE,"gym"));
         setReassessSnap(null);

@@ -26,30 +26,39 @@ const TIERS = {
 };
 
 export function determineTrainingTier(assessment, injuries, baseline) {
-  if (!assessment) return { tier: 2, ...TIERS[2], reasons: ["No assessment — defaulting to Cautious"] };
+  if (!assessment) return { tier: 2, ...TIERS[2], reasons: ["No assessment — defaulting to Cautious"], progressionRate: "standard" };
 
   const conditions = injuries || [];
   const activeConditions = conditions.filter(c => c.status !== "resolved");
   const maxSeverity = Math.max(0, ...activeConditions.map(c => c.severity || 0));
   const conditionCount = activeConditions.length;
   const fitnessLevel = assessment.fitnessLevel || "beginner";
+  const progressionRate = assessment.progressionRate || "standard";
   const baselineScore = baseline?.overallScore || 0;
   const capabilities = baseline?.capabilityTags || [];
+
+  // Training recency/history for detraining-aware tier (NASM guidelines)
+  const recency = assessment.trainingRecency || null;
+  const experience = assessment.trainingExperience || null;
+  const history = assessment.trainingHistory || null;
+  const isDeconditioned = recency === "none" || recency === "occasional";
+  const hasDeepHistory = history === "6_plus_months" || history === "years";
+  const isExperienced = experience === "performance" || experience === "professional";
 
   const reasons = [];
 
   // ── TIER 1: PROTECTED ──
   if (maxSeverity >= 3) {
     reasons.push(`Condition severity ${maxSeverity}/5 — requires protected approach`);
-    return { tier: 1, ...TIERS[1], reasons };
+    return { tier: 1, ...TIERS[1], reasons, progressionRate };
   }
   if (conditionCount >= 3) {
     reasons.push(`${conditionCount} active conditions — multi-condition protection`);
-    return { tier: 1, ...TIERS[1], reasons };
+    return { tier: 1, ...TIERS[1], reasons, progressionRate };
   }
   if (baselineScore > 0 && baselineScore < 20) {
     reasons.push(`Baseline score ${baselineScore}/100 — below 20th percentile`);
-    return { tier: 1, ...TIERS[1], reasons };
+    return { tier: 1, ...TIERS[1], reasons, progressionRate };
   }
   // Post-surgical <6 months check
   const postSurgical = activeConditions.some(c =>
@@ -59,40 +68,50 @@ export function determineTrainingTier(assessment, injuries, baseline) {
   );
   if (postSurgical && maxSeverity >= 2) {
     reasons.push("Post-surgical condition — protected approach");
-    return { tier: 1, ...TIERS[1], reasons };
+    return { tier: 1, ...TIERS[1], reasons, progressionRate };
   }
   if (fitnessLevel === "beginner" && conditionCount >= 2) {
     reasons.push("Foundation fitness with multiple conditions");
-    return { tier: 1, ...TIERS[1], reasons };
+    return { tier: 1, ...TIERS[1], reasons, progressionRate };
   }
 
   // ── TIER 4: ACCELERATED ──
+  // Requires BOTH experience AND recent consistent training (no detraining)
   if (
     fitnessLevel === "advanced" &&
-    baselineScore >= 60 &&
+    !isDeconditioned &&
+    (baselineScore === 0 || baselineScore >= 60) &&
     maxSeverity <= 1 &&
     conditionCount <= 1
   ) {
-    reasons.push("Advanced fitness, strong baseline, minimal conditions");
-    return { tier: 4, ...TIERS[4], reasons };
+    reasons.push("Advanced fitness, currently training, minimal conditions");
+    return { tier: 4, ...TIERS[4], reasons, progressionRate: "standard" };
   }
 
   // ── TIER 3: STANDARD ──
   if (
     (fitnessLevel === "intermediate" || fitnessLevel === "advanced") &&
+    !isDeconditioned &&
     maxSeverity <= 1 &&
     conditionCount <= 1 &&
     (baselineScore === 0 || baselineScore >= 40)
   ) {
-    reasons.push("Good fitness base, minor or no conditions");
-    return { tier: 3, ...TIERS[3], reasons };
+    reasons.push("Good fitness base, currently training, minor or no conditions");
+    return { tier: 3, ...TIERS[3], reasons, progressionRate: "standard" };
   }
 
   // ── TIER 2: CAUTIOUS (default) ──
+  // Experienced but deconditioned → Tier 2 with accelerated progression
+  if (isDeconditioned && isExperienced) {
+    reasons.push("Experienced but deconditioned — returning athlete protocol");
+    if (hasDeepHistory) reasons.push("Deep training history — muscle memory enables faster progression");
+    return { tier: 2, ...TIERS[2], reasons, progressionRate: "accelerated" };
+  }
   if (conditionCount >= 1) reasons.push(`${conditionCount} active condition(s) with manageable severity`);
   if (fitnessLevel === "beginner") reasons.push("Foundation fitness level — building base");
-  if (reasons.length === 0) reasons.push("Standard cautious approach for returning trainers");
-  return { tier: 2, ...TIERS[2], reasons };
+  if (isDeconditioned && !isExperienced) reasons.push("Recent detraining — rebuilding base");
+  if (reasons.length === 0) reasons.push("Standard cautious approach");
+  return { tier: 2, ...TIERS[2], reasons, progressionRate };
 }
 
 // ══════���═════════════════════════════���══════════════════════════
@@ -872,7 +891,8 @@ export function createMesocycle(phase, tier, tierInfo) {
     phase,
     tier,
     tierName: tierInfo.name,
-    mesoLength: tierInfo.mesoLength,
+    mesoLength: tierInfo.progressionRate === "accelerated" ? Math.max(3, tierInfo.mesoLength - 2) : tierInfo.mesoLength,
+    progressionRate: tierInfo.progressionRate || "standard",
     currentWeek: 1,
     startDate: new Date().toISOString().split("T")[0],
 
@@ -921,7 +941,26 @@ export function getOrCreateMesocycle(phase) {
   const baseline = getLatestBaseline();
   const tierInfo = determineTrainingTier(assessment, injuries, baseline);
 
-  return createMesocycle(phase, tierInfo.tier, tierInfo);
+  const newMeso = createMesocycle(phase, tierInfo.tier, tierInfo);
+
+  // Continuous cycling: tag with emphasis if post-Phase-5
+  if (isInContinuousCycling()) {
+    const emphasis = getNextCycleEmphasis();
+    newMeso.cycleEmphasis = emphasis.id;
+    newMeso.cycleLabel = emphasis.label;
+    newMeso.cycleDesc = emphasis.desc;
+    newMeso.cycleIcon = emphasis.icon;
+    if (emphasis.weeks !== newMeso.mesoLength) newMeso.mesoLength = emphasis.weeks;
+  }
+
+  // Competition periodization override
+  const compPlan = getCompetitionPlan();
+  if (compPlan && compPlan.mesoPhase) {
+    newMeso.competitionPhase = compPlan.phase;
+    newMeso.competitionLabel = compPlan.label;
+  }
+
+  return newMeso;
 }
 
 export function advanceMesocycleWeek(meso) {
@@ -1027,11 +1066,165 @@ export function getMesocycleContext(phase) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 9. EXPORTS
-// ═══════════════════════��═══════════════════════════════════════
+// 9. LIFETIME PERIODIZATION — CONTINUOUS CYCLING BEYOND PHASE 5
+// ═══════════════════════════════════════════════════════════════
+
+// After completing Phase 5, the app enters continuous cycling mode.
+// Each 6-week block alternates emphasis to prevent staleness and overtraining.
+const CYCLE_EMPHASES = [
+  { id: "strength", label: "Strength Focus", weeks: 6, phase: 4, icon: "🏋️", desc: "Heavy compound lifts, lower reps, progressive overload" },
+  { id: "hypertrophy", label: "Hypertrophy Focus", weeks: 6, phase: 3, icon: "💪", desc: "Moderate load, higher volume, muscle development" },
+  { id: "power", label: "Power / Performance", weeks: 6, phase: 5, icon: "⚡", desc: "Explosive movements, plyometrics, sport-specific" },
+  { id: "recovery", label: "Recovery / Deload", weeks: 3, phase: 2, icon: "🔄", desc: "Lighter loads, mobility focus, weak point work" },
+];
+
+// Get the next cycle emphasis based on archived mesocycle history
+export function getNextCycleEmphasis() {
+  try {
+    const archive = JSON.parse(localStorage.getItem(LS_MESOCYCLE_ARCHIVE) || "[]");
+    const pastEmphases = archive.filter(m => m.cycleEmphasis).map(m => m.cycleEmphasis);
+    const lastEmphasis = pastEmphases[pastEmphases.length - 1] || null;
+    const idx = CYCLE_EMPHASES.findIndex(e => e.id === lastEmphasis);
+    return CYCLE_EMPHASES[(idx + 1) % CYCLE_EMPHASES.length];
+  } catch {
+    return CYCLE_EMPHASES[0];
+  }
+}
+
+// Check if user has completed all 5 phases (lifetime mode)
+export function isInContinuousCycling() {
+  try {
+    const archive = JSON.parse(localStorage.getItem(LS_MESOCYCLE_ARCHIVE) || "[]");
+    const completedPhases = new Set(archive.map(m => m.phase));
+    return completedPhases.has(4) || completedPhases.has(5) || archive.length >= 4;
+  } catch { return false; }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 10. AUTOMATIC PERIODIC REASSESSMENT (per NASM: every 4-8 weeks)
+// ═══════════════════════════════════════════════════════════════
+
+export function shouldPromptFitnessReassessment() {
+  try {
+    const sessions = getSessions() || [];
+    if (sessions.length < 16) return null; // Need at least 16 sessions first
+    const lastReassess = localStorage.getItem("apex_last_fitness_reassessment");
+    const daysSince = lastReassess ? Math.floor((Date.now() - new Date(lastReassess).getTime()) / 86400000) : 999;
+    // Every 8 weeks (~56 days) or every 24 sessions, whichever comes first
+    const sessionsSinceReassess = lastReassess
+      ? sessions.filter(s => new Date(s.date) > new Date(lastReassess)).length
+      : sessions.length;
+    if (daysSince >= 56 || sessionsSinceReassess >= 24) {
+      return {
+        prompt: true,
+        daysSince,
+        sessionsSince: sessionsSinceReassess,
+        message: "Time for your 8-week check-in! Let's see how much you've improved. This takes about 10 minutes.",
+      };
+    }
+    return null;
+  } catch { return null; }
+}
+
+export function markFitnessReassessmentDone() {
+  localStorage.setItem("apex_last_fitness_reassessment", new Date().toISOString());
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 11. PLATEAU DETECTION
+// ═══════════════════════════════════════════════════════════════
+
+export function detectPlateau() {
+  try {
+    const archive = JSON.parse(localStorage.getItem(LS_MESOCYCLE_ARCHIVE) || "[]");
+    if (archive.length < 2) return null;
+
+    const sessions = getSessions() || [];
+    if (sessions.length < 30) return null;
+
+    const recent = sessions.slice(-20);
+    const older = sessions.slice(-40, -20);
+    if (older.length < 15) return null;
+
+    // Check weight/load progression plateauing
+    const avgLoad = arr => {
+      const loads = arr.flatMap(s => (s.exercises_completed || []).flatMap(e => (e.sets || []).map(st => st.weight || 0).filter(w => w > 0)));
+      return loads.length > 0 ? loads.reduce((a, b) => a + b, 0) / loads.length : 0;
+    };
+    const recentAvg = avgLoad(recent);
+    const olderAvg = avgLoad(older);
+    const loadChange = olderAvg > 0 ? ((recentAvg - olderAvg) / olderAvg) * 100 : 0;
+
+    // Check RPE trending (are they working as hard but not improving?)
+    const avgRPE = arr => {
+      const rpes = arr.map(s => s.reflection?.difficulty).filter(d => typeof d === "number");
+      return rpes.length > 0 ? rpes.reduce((a, b) => a + b, 0) / rpes.length : 0;
+    };
+    const recentRPE = avgRPE(recent);
+    const olderRPE = avgRPE(older);
+
+    // Plateau: loads stagnant (<3% change) AND RPE staying high (>6) for 2+ mesocycles
+    const isPlateaued = Math.abs(loadChange) < 3 && recentRPE >= 6 && archive.length >= 2;
+
+    if (isPlateaued) {
+      return {
+        detected: true,
+        loadChangePct: Math.round(loadChange * 10) / 10,
+        avgRPE: Math.round(recentRPE * 10) / 10,
+        mesocyclesAtPlateau: archive.length,
+        message: "You've reached a performance plateau — this is normal and means you're approaching your current peak.",
+        options: [
+          { id: "maintain", label: "Maintain", desc: "Hold current fitness with 2-3 sessions/week, lower volume", icon: "🏖️" },
+          { id: "specialize", label: "Specialize", desc: "Pick one area to push further (strength, size, endurance, sport)", icon: "🎯" },
+          { id: "new_challenge", label: "New Challenge", desc: "Introduce new training modality or sport-specific phase", icon: "🆕" },
+          { id: "recovery_block", label: "Recovery Block", desc: "2-3 week active recovery, then restart with fresh programming", icon: "🔄" },
+        ],
+      };
+    }
+    return null;
+  } catch { return null; }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 12. COMPETITION PERIODIZATION
+// ═══════════════════════════════════════════════════════════════
+
+const LS_COMPETITION = "apex_competition_date";
+
+export function getCompetitionDate() {
+  try { return localStorage.getItem(LS_COMPETITION) || null; } catch { return null; }
+}
+
+export function setCompetitionDate(dateStr) {
+  if (dateStr) localStorage.setItem(LS_COMPETITION, dateStr);
+  else localStorage.removeItem(LS_COMPETITION);
+}
+
+// Build backward-periodized plan from competition date
+export function getCompetitionPlan() {
+  const dateStr = getCompetitionDate();
+  if (!dateStr) return null;
+  const compDate = new Date(dateStr);
+  const today = new Date();
+  const weeksOut = Math.floor((compDate - today) / (7 * 86400000));
+  if (weeksOut <= 0) return { phase: "post_competition", weeksOut, label: "Post-Competition — Active Recovery" };
+
+  // Backward periodization: peak week → taper → intensification → accumulation → base
+  if (weeksOut <= 1) return { phase: "peak_week", weeksOut, label: "Peak Week — Taper & Mental Prep", mesoPhase: 5 };
+  if (weeksOut <= 3) return { phase: "taper", weeksOut, label: "Taper — Reducing Volume, Maintaining Intensity", mesoPhase: 4 };
+  if (weeksOut <= 8) return { phase: "intensification", weeksOut, label: "Intensification — Sport-Specific Power", mesoPhase: 5 };
+  if (weeksOut <= 14) return { phase: "accumulation", weeksOut, label: "Accumulation — Building Volume & Strength", mesoPhase: 3 };
+  if (weeksOut <= 20) return { phase: "pre_season", weeksOut, label: "Pre-Season — Base Strength & Conditioning", mesoPhase: 2 };
+  return { phase: "off_season", weeksOut, label: "Off-Season — Hypertrophy & General Fitness", mesoPhase: 3 };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 13. EXPORTS
+// ═══════════════════════════════════════════════════════════════
 
 export {
   TIERS,
   TIER_PROGRESSIONS,
   INJURY_ADJUSTMENTS,
+  CYCLE_EMPHASES,
 };

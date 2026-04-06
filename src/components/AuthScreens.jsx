@@ -3,6 +3,7 @@ import { useAuth } from "./AuthProvider.jsx";
 import { supabase } from "../utils/supabase.js";
 import { getSportPrefs, saveSportPrefs } from "../utils/storage.js";
 import { getAssessment } from "./Onboarding.jsx";
+import { exportProfile, exportWorkout, isDevExportEnabled, exportDevDiagnostic } from "../utils/dataExport.js";
 
 // ═══════════════════════════════════════════════════════════════
 // Landing Page + Sign Up + Log In + Forgot Password
@@ -462,6 +463,47 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
             cursor: "pointer", fontFamily: "inherit", opacity: 0.7, textDecoration: "underline",
           }}>Erase all data and start over</button>
         </div>
+      </div>
+
+      {/* ═══ DATA EXPORT ═══ */}
+      <div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.textDim, letterSpacing: 2, marginBottom: 8 }}>EXPORT MY DATA</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <button onClick={() => { try { exportProfile(); } catch (e) { console.warn("Profile export error:", e); } }} style={{
+            width: "100%", padding: "12px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
+            background: C.bgCard, border: `1px solid ${C.border}`, color: C.text,
+            display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 600, textAlign: "left",
+          }}>
+            <span style={{ fontSize: 16 }}>📋</span>
+            <div>
+              <div>Export Profile & Assessment</div>
+              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Conditions, goals, ROM, baseline, preferences — JSON + readable summary</div>
+            </div>
+          </button>
+          <button onClick={() => { try { exportWorkout(); } catch (e) { console.warn("Workout export error:", e); } }} style={{
+            width: "100%", padding: "12px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
+            background: C.bgCard, border: `1px solid ${C.border}`, color: C.text,
+            display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 600, textAlign: "left",
+          }}>
+            <span style={{ fontSize: 16 }}>🏋️</span>
+            <div>
+              <div>Export Workout Plan</div>
+              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Weekly plan, exercises, volume, PT protocols, adaptations — JSON + readable summary</div>
+            </div>
+          </button>
+        </div>
+        <div style={{ fontSize: 9, color: C.textDim, marginTop: 6, textAlign: "center" }}>Downloads 2 files each: structured JSON + readable markdown summary</div>
+        {isDevExportEnabled() && <button onClick={() => { try { exportDevDiagnostic(); } catch (e) { console.warn("Dev export error:", e); } }} style={{
+          width: "100%", padding: "12px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit", marginTop: 6,
+          background: C.bgElevated, border: `1px solid ${C.purple}40`, color: C.purple,
+          display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 600, textAlign: "left",
+        }}>
+          <span style={{ fontSize: 16 }}>🔧</span>
+          <div>
+            <div>Developer Diagnostic Export</div>
+            <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Full raw data, exercise schemas, overload history, substitutions, overtraining signals</div>
+          </div>
+        </button>}
       </div>
 
       {/* ═══ CONDITION HISTORY ═══ */}

@@ -73,15 +73,24 @@ export function getHypertrophyVolume(experience = "intermediate", muscle = null,
   const base = VOLUME_BY_EXPERIENCE[experience] || VOLUME_BY_EXPERIENCE.intermediate;
   let multiplier = 1.0;
 
-  // Weak point priority: +30%
-  if (weakPoints.includes(muscle)) multiplier += 0.3;
+  // Ranked weak point volume: #1 gets most, #3 gets least
+  // weakPoints is an ordered array — index 0 = top priority
+  const wpIndex = weakPoints.indexOf(muscle);
+  if (wpIndex !== -1) {
+    const wpCount = weakPoints.length;
+    // 1 selected: +40% | 2 selected: +35%/+20% | 3 selected: +30%/+20%/+10%
+    const wpBoost = wpCount === 1 ? [0.40]
+      : wpCount === 2 ? [0.35, 0.20]
+      : [0.30, 0.20, 0.10];
+    multiplier += wpBoost[wpIndex] || 0.10;
+  }
 
   // Category emphasis
   const catEmphasis = CATEGORY_EMPHASIS[physiqueCategory] || {};
   if (catEmphasis[muscle]) multiplier *= catEmphasis[muscle];
 
   // Maintenance muscles: -20% if not a weak point and not category-emphasized
-  if (!weakPoints.includes(muscle) && (!catEmphasis[muscle] || catEmphasis[muscle] < 1)) {
+  if (wpIndex === -1 && (!catEmphasis[muscle] || catEmphasis[muscle] < 1)) {
     multiplier *= 0.8;
   }
 
@@ -92,6 +101,7 @@ export function getHypertrophyVolume(experience = "intermediate", muscle = null,
     multiplier,
     isPriority: multiplier > 1.1,
     isMaintenance: multiplier < 0.9,
+    weakPointRank: wpIndex !== -1 ? wpIndex + 1 : null,
   };
 }
 
@@ -374,14 +384,16 @@ export function hasHypertrophyGoals() {
 
 // Get volume explanation text for user
 export function getVolumeExplanation(muscle, volume, weakPoints = [], category = "general") {
-  const isWeak = weakPoints.includes(muscle);
+  const wpRank = weakPoints.indexOf(muscle);
+  const isWeak = wpRank !== -1;
+  const rankLabel = wpRank === 0 ? "#1 priority" : wpRank === 1 ? "#2 priority" : wpRank === 2 ? "#3 priority" : "";
   const catEmphasis = CATEGORY_EMPHASIS[category]?.[muscle];
 
   if (isWeak && catEmphasis > 1) {
-    return `${muscle} is getting ${volume.max} sets/week (priority weak point + category emphasis) to maximize development.`;
+    return `${muscle} is getting ${volume.max} sets/week (${rankLabel} weak point + category emphasis) to maximize development.`;
   }
   if (isWeak) {
-    return `${muscle} is getting ${volume.max} sets/week (priority — flagged as weak point) to bring it up.`;
+    return `${muscle} is getting ${volume.max} sets/week (${rankLabel} weak point) to bring it up.`;
   }
   if (catEmphasis > 1) {
     return `${muscle} gets ${volume.max} sets/week (emphasis for ${category.replace(/_/g, " ")}).`;
@@ -524,8 +536,14 @@ export function getReadyPhysiqueMuscles(assessment, phase, mesoWeek, completedSe
     }
     if (blocked) continue;
 
-    const isWeakPoint = weakPoints.includes(muscle);
+    const wpRank = weakPoints.indexOf(muscle); // -1 = not a weak point, 0 = #1, 1 = #2, 2 = #3
+    const isWeakPoint = wpRank !== -1;
     const isCategoryPriority = (PHYSIQUE_PRIORITY_MUSCLES[category] || []).includes(muscle);
+
+    // Priority scoring: weak point rank matters (lower rank = higher priority)
+    // WP#1 + category = 6, WP#1 = 5, category = 3, WP#2 = 4, WP#3 = 3
+    const wpPriority = isWeakPoint ? (3 - wpRank) + 2 : 0; // #1=5, #2=4, #3=3, none=0
+    const catPriority = isCategoryPriority ? 3 : 0;
 
     ready.push({
       muscle,
@@ -533,9 +551,9 @@ export function getReadyPhysiqueMuscles(assessment, phase, mesoWeek, completedSe
       hints: PRIORITY_EXERCISE_HINTS[muscle] || [],
       maxSafetyTier,
       isWeakPoint,
+      weakPointRank: isWeakPoint ? wpRank + 1 : null,
       isCategoryPriority,
-      // 3 = both weak + category, 2 = category emphasis, 1 = weak point only
-      priority: (isWeakPoint && isCategoryPriority) ? 3 : (isCategoryPriority ? 2 : 1),
+      priority: Math.max(wpPriority, catPriority) + (isWeakPoint && isCategoryPriority ? 1 : 0),
     });
   }
 

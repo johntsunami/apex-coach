@@ -46,6 +46,121 @@ const CONDITION_CATEGORIES = [
 
 const CONDITION_TYPES = ["Chronic Pain","Acute Injury","Post-Surgical","Managing"];
 
+// ── Per-condition anatomically correct locations ─────────────
+const CONDITION_LOCATIONS = {
+  // Spinal — lumbar
+  A1:["Lower Back","Left Side","Right Side"], A3:["Lower Back","Left Side","Right Side"],
+  A4:["Lower Back","Left Side","Right Side"], A7:["Lower Back"], A8:["Lower Back"],
+  A12:["Lower Back","Left Side","Right Side"], A16:["Lower Back"],
+  A19:["Lower Back","Left Side","Right Side"], A21:["Lower Back","Left Side","Right Side"],
+  // Spinal — cervical
+  A2:["Neck","Left Side","Right Side"], A5:["Neck","Left Side","Right Side"],
+  A10:["Neck","Left Side","Right Side"], A11:["Neck"],
+  // Spinal — multi-region
+  A6:["Cervical","Thoracic","Lumbar"], A9:["Cervical","Thoracic","Lumbar"],
+  A14:["Cervical","Thoracic","Lumbar","Full Spine"],
+  A15:["Upper Back","Mid Back"], A17:["Upper Back","Mid Back","Lower Back"],
+  A20:["Neck","Upper Back","Left Side","Right Side"],
+  // Spinal — specific
+  A13:["Left Side","Right Side"], A18:["Tailbone"],
+  // Joint — knee
+  B1:["Left Knee","Right Knee"], B2:["Left Knee","Right Knee"], B3:["Left Knee","Right Knee"],
+  B4:["Left Knee","Right Knee"], B5:["Left Knee","Right Knee"], B30:["Left Knee","Right Knee"],
+  // Joint — shoulder
+  B6:["Left Shoulder","Right Shoulder"], B7:["Left Shoulder","Right Shoulder"],
+  B8:["Left Shoulder","Right Shoulder"], B9:["Left Shoulder","Right Shoulder"],
+  B10:["Left Shoulder","Right Shoulder"], B26:["Left Shoulder","Right Shoulder"],
+  B27:["Left Shoulder","Right Shoulder"], B28:["Left Shoulder","Right Shoulder"],
+  // Joint — hip
+  B11:["Left Hip","Right Hip"], B12:["Left Hip","Right Hip"], B13:["Left Hip","Right Hip"],
+  B14:["Left Hip","Right Hip"], B15:["Left Hip","Right Hip"],
+  // Joint — ankle
+  B16:["Left Ankle","Right Ankle"], B17:["Left Ankle","Right Ankle"], B23:["Left Ankle","Right Ankle"],
+  // Joint — elbow
+  B18:["Left Elbow","Right Elbow"], B19:["Left Elbow","Right Elbow"],
+  // Joint — wrist
+  B20:["Left Wrist","Right Wrist"], B21:["Left Wrist","Right Wrist"],
+  // Joint — foot
+  B22:["Left Foot","Right Foot"],
+  // Joint — jaw
+  B24:["Left Side","Right Side","Both"],
+  // Joint — hand
+  B25:["Left Hand","Right Hand"], B29:["Left Hand","Right Hand"],
+  // Climbing — finger
+  CLIMB1:["Left Index","Left Middle","Left Ring","Left Pinky","Right Index","Right Middle","Right Ring","Right Pinky"],
+  CLIMB2:["Left Index","Left Middle","Left Ring","Left Pinky","Right Index","Right Middle","Right Ring","Right Pinky"],
+  CLIMB3:["Left Index","Left Middle","Left Ring","Left Pinky","Right Index","Right Middle","Right Ring","Right Pinky"],
+  CLIMB4:["Left Index","Left Middle","Left Ring","Left Pinky","Right Index","Right Middle","Right Ring","Right Pinky"],
+  CLIMB5:["Left Index","Left Middle","Left Ring","Left Pinky","Right Index","Right Middle","Right Ring","Right Pinky"],
+  // Amputation
+  J1:["Left Leg","Right Leg","Below Knee","Above Knee"],
+  J2:["Left Arm","Right Arm","Below Elbow","Above Elbow"],
+};
+
+// ── Category-specific sub-question configs ───────────────────
+const CATEGORY_SUBQUESTIONS = {
+  spinal: {
+    statusLabel: "Status", statusOptions: ["Post-Surgical","Rehabilitating","Managing","Resolved but monitoring"],
+    showSeverity: true,
+  },
+  joint: {
+    statusLabel: "Status", statusOptions: ["Post-Surgical","Rehabilitating","Managing","Resolved but monitoring"],
+    showSeverity: true,
+  },
+  climbing_finger: {
+    statusLabel: "Status", statusOptions: ["Post-Surgical","Rehabilitating","Managing","Resolved but monitoring"],
+    showSeverity: true,
+  },
+  neurological: {
+    statusLabel: "Status", statusOptions: ["Newly diagnosed","Stable on medication","Progressive","In remission"],
+    showSeverity: true,
+  },
+  mental_health: {
+    statusLabel: "Status", statusOptions: ["Currently experiencing","Managing with treatment","In recovery","Mild-occasional"],
+    extraFields: [
+      { label:"Impact on exercise", key:"impact", options:["Affects my motivation","Affects my energy","Affects my sleep","Minimal impact"] },
+    ],
+    showSeverity: false,
+  },
+  systemic: {
+    statusLabel: "Status", statusOptions: ["Active flare","Stable","In remission","Newly diagnosed"],
+    extraFields: [
+      { label:"Flare frequency", key:"flareFreq", options:["Daily","Weekly","Monthly","Rarely"] },
+    ],
+    showSeverity: true,
+  },
+  cardiopulmonary: {
+    statusLabel: "Status", statusOptions: ["Controlled with medication","Uncontrolled","Newly diagnosed","Stable"],
+    extraFields: [
+      { label:"Medical clearance", key:"clearance", options:["Cleared for exercise","Awaiting clearance","No clearance yet"] },
+      { label:"Medication affecting HR", key:"hrMeds", options:["Beta-blockers","Other cardiac meds","None"] },
+    ],
+    showSeverity: false,
+  },
+  metabolic: {
+    statusLabel: "Status", statusOptions: ["Well controlled","Partially controlled","Uncontrolled"],
+    extraFields: [
+      { label:"Monitoring", key:"monitoring", options:["Blood glucose","A1C","Thyroid levels"] },
+    ],
+    showSeverity: false,
+  },
+  pregnancy: {
+    statusLabel: "Status", statusOptions: ["Currently pregnant","Postpartum < 6 weeks","Postpartum 6+ weeks","Planning pregnancy"],
+    showSeverity: false,
+  },
+  age_related: {
+    statusLabel: "Status", statusOptions: ["Mild","Moderate","Significant","Progressive"],
+    showSeverity: true,
+  },
+  amputation: {
+    statusLabel: "Status", statusOptions: ["Recent (< 1 year)","Established (1+ years)","With prosthetic","Without prosthetic"],
+    showSeverity: false,
+  },
+};
+
+// Categories where pain behavior / pain timeline screens apply
+const PAIN_APPLICABLE_CATEGORIES = new Set(["spinal","joint","climbing_finger"]);
+
 const MENTAL_HEALTH_CONDITIONS = [
   "Depression","Generalized Anxiety","Social Anxiety","Panic Disorder","PTSD","ADHD","OCD",
   "Bipolar Disorder","Insomnia","Chronic Stress","Burnout","Grief","Eating Disorder (in recovery)",
@@ -143,12 +258,15 @@ const FAVORITE_GRID = [
 
 // ═══════════════════════════════════════════════════════════════
 
-export default function OnboardingFlow({ onComplete }) {
+export default function OnboardingFlow({ onComplete, initialData }) {
+  const isReassessment = !!initialData;
+  const _d = initialData || {};
+  const _p = _d.preferences || {};
   const [screen, _setScreen] = useState(0);
   const setScreen = (s) => { _setScreen(s); window.scrollTo(0, 0); };
-  const [parq, setParq] = useState(PARQ_QUESTIONS.map(() => null));
-  const [parqWarning, setParqWarning] = useState(false);
-  const [conditions, setConditions] = useState([]); // [{conditionId, severity}]
+  const [parq, setParq] = useState(_d.parq?.answers || PARQ_QUESTIONS.map(() => null));
+  const [parqWarning, setParqWarning] = useState(!!_d.parq?.clearedWithCaution);
+  const [conditions, setConditions] = useState(_d.conditions || []); // [{conditionId, severity}]
   const [condCatOpen, setCondCatOpen] = useState(null);
   const [condSearch, setCondSearch] = useState("");
   const [customCondText, setCustomCondText] = useState("");
@@ -158,37 +276,96 @@ export default function OnboardingFlow({ onComplete }) {
     const fromMH = MENTAL_HEALTH_CONDITIONS.map(mh => ({ id: "mh_" + mh.toLowerCase().replace(/[^a-z]/g, "_"), name: mh, category: "mental_health" }));
     return [...fromDB, ...fromMH];
   }, []);
-  const [compensations, setCompensations] = useState({}); // {comp_id: true/false}
-  const [rom, setRom] = useState({ neck:"full", thoracic:"full", lumbar:"full", shoulders:"full", elbows:"full", wrists:"full", hips:"full", knee_left:"full", knee_right:"full", ankles:"full", feet:"full" });
-  const [goals, setGoals] = useState({}); // {muscle: ["size","injury_prevention",...]}
-  const [physiqueCategory, setPhysiqueCategory] = useState(null);
-  const [hypertrophyExperience, setHypertrophyExperience] = useState(null);
-  const [weakPoints, setWeakPoints] = useState([]);
-  const [prefs, setPrefs] = useState({ daysPerWeek: 3, sessionTime: 45, homeEquipment: [], favorites: [], blacklist: [], blacklistCustom: "", sports: [], customSport: "" });
+  const [compensations, setCompensations] = useState(() => {
+    if (_d.compensations?.length) { const m = {}; _d.compensations.forEach(id => { m[id] = true; }); return m; }
+    return {};
+  }); // {comp_id: true/false}
+  const _romDefault = { neck:"full", cervical_retraction:"full", thoracic:"full", lumbar:"full", lumbar_ext:"full", lumbar_flex:"full", shoulders:"full", elbows:"full", wrists:"full", hip_flexion:"full", hip_ir:"full", hip_er:"full", hip_ext:"full", knee_left:"full", knee_right:"full", ankles:"full", feet:"full" };
+  const [rom, setRom] = useState(_d.rom ? { ..._romDefault, ..._d.rom } : _romDefault);
+  const [goals, setGoals] = useState(_d.goals || {}); // {muscle: ["size","injury_prevention",...]}
+  const [physiqueCategory, setPhysiqueCategory] = useState(_d.physiqueCategory || null);
+  const [hypertrophyExperience, setHypertrophyExperience] = useState(_d.hypertrophyExperience || null);
+  const [weakPoints, setWeakPoints] = useState(_d.weakPoints || []);
+  const [prefs, setPrefs] = useState({
+    daysPerWeek: _p.daysPerWeek || 3, sessionTime: _p.sessionTime || 45,
+    homeEquipment: _p.homeEquipment || [], favorites: _p.favorites || [],
+    blacklist: _p.blacklist || [], blacklistCustom: "", sports: _p.sports || [], customSport: "",
+    ..._p.strengthLevel ? { strengthLevel: _p.strengthLevel } : {},
+  });
   const [search, setSearch] = useState("");
 
+  // ── Training experience + recency (detraining assessment) ──
+  const [trainingExperience, setTrainingExperience] = useState(_d.trainingExperience || null);
+  const [trainingRecency, setTrainingRecency] = useState(_d.trainingRecency || null);
+  const [trainingHistory, setTrainingHistory] = useState(_d.trainingHistory || null);
+
   // ── New clinical assessment state ──────────────────────────
-  const [painBehaviors, setPainBehaviors] = useState({}); // {conditionId: {painType, worstTime, triggers[], relievers[], trend}}
-  const [directionalPrefs, setDirectionalPrefs] = useState({}); // {conditionId: {extension, flexion, centralization}}
-  const [painTimelines, setPainTimelines] = useState({}); // {conditionId: {onset, injuryType, surgery, surgeryTimeAgo}}
-  const [funcLimitations, setFuncLimitations] = useState({});
-  const [treatmentHistory, setTreatmentHistory] = useState({ seenPT: null, whatHelped: "", whatWorse: "", currentPT: null, doctorCleared: null });
-  const [medications, setMedications] = useState([]);
-  const [redFlags, setRedFlags] = useState([]);
-  const [redFlagCleared, setRedFlagCleared] = useState(false);
+  const [painBehaviors, setPainBehaviors] = useState(_d.painBehaviors || {}); // {conditionId: {painType, worstTime, triggers[], relievers[], trend}}
+  const [directionalPrefs, setDirectionalPrefs] = useState(_d.directionalPreferences || {}); // {conditionId: {extension, flexion, centralization}}
+  const [painTimelines, setPainTimelines] = useState(_d.painTimelines || {}); // {conditionId: {onset, injuryType, surgery, surgeryTimeAgo}}
+  const [funcLimitations, setFuncLimitations] = useState(_d.functionalLimitations || {});
+  const [treatmentHistory, setTreatmentHistory] = useState(_d.treatmentHistory || { seenPT: null, whatHelped: "", whatWorse: "", currentPT: null, doctorCleared: null });
+  const [medications, setMedications] = useState(_d.medications || []);
+  const [redFlags, setRedFlags] = useState(_d.redFlags || []);
+  const [redFlagCleared, setRedFlagCleared] = useState(!!_d.redFlagCleared);
 
   const anyParqYes = parq.some(a => a === true);
   const detectedComps = Object.entries(compensations).filter(([, v]) => v).map(([k]) => compensationsDB.find(c => c.id === k)).filter(Boolean);
 
-  // Determine fitness level from answers
-  const fitnessLevel = useMemo(() => {
+  // Determine fitness level + progression rate from experience, recency, conditions
+  // NASM detraining: recency matters more than history for starting point
+  const { fitnessLevel, progressionRate, detrainingNote } = useMemo(() => {
     const condCount = conditions.length;
     const compCount = detectedComps.length;
-    const romLimited = Object.values(rom).filter(v => v !== "full").length;
-    if (condCount >= 3 || compCount >= 4 || romLimited >= 2) return "beginner";
-    if (condCount >= 1 || compCount >= 2) return "intermediate";
-    return "advanced";
-  }, [conditions, detectedComps, rom]);
+
+    // Experience score: 0-3
+    const expScore = trainingExperience === "professional" ? 3 : trainingExperience === "performance" ? 2 : trainingExperience === "building" ? 1 : 0;
+    // Recency score: 0-4 (recent training is the dominant factor)
+    const recScore = trainingRecency === "very_consistent" ? 4 : trainingRecency === "consistent" ? 3 : trainingRecency === "somewhat" ? 2 : trainingRecency === "occasional" ? 1 : 0;
+    // History score: 0-4 (affects progression speed, not starting point)
+    const histScore = trainingHistory === "years" ? 4 : trainingHistory === "6_plus_months" ? 3 : trainingHistory === "3_6_months" ? 2 : trainingHistory === "1_3_months" ? 1 : 0;
+
+    // Conditions/compensations cap the level regardless of experience
+    const condCap = condCount >= 3 || compCount >= 4 ? "beginner" : condCount >= 2 || compCount >= 3 ? "intermediate" : null;
+
+    let level, rate, note;
+
+    // NASM detraining rules applied to recency:
+    // recScore 0 (none in 6wk = 6+ weeks off) → significant detraining, near-beginner start
+    // recScore 1 (occasional) → 4+ weeks off effectively, measurable strength loss
+    // recScore 2+ → currently training, credit for experience
+
+    if (recScore >= 3 && expScore >= 2) {
+      // Currently consistent + experienced → full credit
+      level = "advanced"; rate = "standard"; note = null;
+    } else if (recScore >= 2 && expScore >= 1) {
+      // Somewhat consistent + some experience → intermediate
+      level = "intermediate"; rate = "standard"; note = null;
+    } else if (recScore <= 1 && expScore >= 2) {
+      // Experienced but NOT training recently → detraining applies
+      // Start at intermediate but with accelerated progression (muscle memory)
+      level = "intermediate";
+      rate = "accelerated"; // Faster phase progression: 3-4 weeks instead of 6-8
+      note = expScore >= 3
+        ? "You have professional experience but haven't trained consistently recently. Starting moderate with accelerated progression — your body remembers the movements."
+        : "You have solid experience but need to rebuild your base. Progressing faster than a beginner — you'll be back in 4-6 weeks.";
+    } else if (recScore <= 1 && expScore <= 1) {
+      // Limited experience AND not training → true beginner approach
+      level = "beginner"; rate = "standard";
+      note = histScore >= 2 ? "Some training history detected — we'll progress at a steady pace as your body adapts." : null;
+    } else {
+      // Default: somewhat active with some background
+      level = "intermediate"; rate = "standard"; note = null;
+    }
+
+    // Condition/compensation cap overrides
+    if (condCap === "beginner" || (condCap === "intermediate" && level === "advanced")) {
+      if (level === "advanced" || level === "intermediate") rate = rate === "accelerated" ? "accelerated" : "standard";
+      level = condCap;
+    }
+
+    return { fitnessLevel: level, progressionRate: rate, detrainingNote: note };
+  }, [conditions, detectedComps, trainingExperience, trainingRecency, trainingHistory]);
 
   const startingPhase = fitnessLevel === "beginner" ? 1 : fitnessLevel === "intermediate" ? 1 : 2;
 
@@ -229,6 +406,11 @@ export default function OnboardingFlow({ onComplete }) {
       weakPoints,
       compensatoryAdditions: compensatoryAdds,
       fitnessLevel,
+      progressionRate,
+      detrainingNote,
+      trainingExperience,
+      trainingRecency,
+      trainingHistory,
       startingPhase,
       preferences: prefs,
     };
@@ -237,6 +419,8 @@ export default function OnboardingFlow({ onComplete }) {
   };
 
   const hasConditions = conditions.length > 0;
+  const hasPainConditions = conditions.some(c => PAIN_APPLICABLE_CATEGORIES.has(c.category));
+  const painConditions = conditions.filter(c => PAIN_APPLICABLE_CATEGORIES.has(c.category));
   const hasSpinalConditions = conditions.some(c => c.category === "spinal");
   const hasRedFlags = redFlags.length > 0;
 
@@ -245,9 +429,9 @@ export default function OnboardingFlow({ onComplete }) {
   // 9=Movement, 10=ROM, 11=Goals, 12=Preferences, 13=Summary
   const totalScreens = 14;
   const shouldSkip = (s) => {
-    if (s === 2 && !hasConditions) return true; // Pain behavior — only if conditions
+    if (s === 2 && !hasPainConditions) return true; // Pain behavior — only musculoskeletal
     if (s === 3 && !hasSpinalConditions) return true; // Directional pref — only spinal
-    if (s === 4 && !hasConditions) return true; // Pain timeline — only if conditions
+    if (s === 4 && !hasPainConditions) return true; // Pain timeline — only musculoskeletal
     return false;
   };
   const next = () => setScreen(s => { let n = s + 1; while (n < totalScreens && shouldSkip(n)) n++; return Math.min(n, totalScreens - 1); });
@@ -286,7 +470,7 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 0: PAR-Q+ ──────────────────────────────── */}
       {screen === 0 && <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>WELCOME TO APEX</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Let's build your profile. First: a quick health screen.</div></div>
+        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>{isReassessment ? "REASSESSMENT" : "WELCOME TO APEX"}</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>{isReassessment ? "Your current selections are pre-filled. Change anything that's different — everything else stays as-is." : "Let's build your profile. First: a quick health screen."}</div></div>
         <WhyHelper screenNum={0} />
         <Card><div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 2, marginBottom: 10 }}>PAR-Q+ HEALTH SCREENING</div>
           {PARQ_QUESTIONS.map((q, i) => (
@@ -414,22 +598,36 @@ export default function OnboardingFlow({ onComplete }) {
                       }} style={{ background: "none", border: "none", fontSize: 16, color: sel ? C.teal : C.textMuted, cursor: "pointer", textAlign: "left" }}>
                         {sel ? "✅ " : "○ "}{cond.name}
                       </button>
-                      {sel && <div style={{ paddingLeft: 20, marginTop: 4 }}>
-                        {/* Location sub-select */}
-                        {cat.locations && <div style={{ marginBottom: 6 }}>
+                      {sel && (() => {
+                        const condLocs = CONDITION_LOCATIONS[cond.id];
+                        const catCfg = CATEGORY_SUBQUESTIONS[cond.category || cat.id] || CATEGORY_SUBQUESTIONS.joint;
+                        return <div style={{ paddingLeft: 20, marginTop: 4 }}>
+                        {/* Location sub-select — condition-specific */}
+                        {condLocs && <div style={{ marginBottom: 6 }}>
                           <span style={{ fontSize: 14, color: C.textDim }}>Location: </span>
                           <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 2 }}>
-                            {cat.locations.map(loc => <button key={loc} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, bodyArea: loc } : c))}
+                            {condLocs.map(loc => <button key={loc} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, bodyArea: loc } : c))}
                               style={{ padding: "2px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel.bodyArea === loc ? C.tealBg : "transparent", border: `1px solid ${sel.bodyArea === loc ? C.teal : C.border}`, color: sel.bodyArea === loc ? C.teal : C.textDim }}>{loc}</button>)}
                           </div>
                         </div>}
-                        {/* Condition type */}
-                        <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
-                          {CONDITION_TYPES.map(ct => <button key={ct} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, condType: ct } : c))}
-                            style={{ padding: "3px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel.condType === ct ? C.info + "20" : "transparent", border: `1px solid ${sel.condType === ct ? C.info : C.border}`, color: sel.condType === ct ? C.info : C.textDim }}>{ct}</button>)}
+                        {/* Status — category-specific */}
+                        <div style={{ marginBottom: 6 }}>
+                          <span style={{ fontSize: 14, color: C.textDim }}>{catCfg.statusLabel}: </span>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 2 }}>
+                            {catCfg.statusOptions.map(ct => <button key={ct} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, condType: ct } : c))}
+                              style={{ padding: "3px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel.condType === ct ? C.info + "20" : "transparent", border: `1px solid ${sel.condType === ct ? C.info : C.border}`, color: sel.condType === ct ? C.info : C.textDim }}>{ct}</button>)}
+                          </div>
                         </div>
-                        {/* Severity */}
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        {/* Extra fields — category-specific (impact, flare freq, clearance, HR meds, monitoring) */}
+                        {catCfg.extraFields && catCfg.extraFields.map(ef => <div key={ef.key} style={{ marginBottom: 6 }}>
+                          <span style={{ fontSize: 14, color: C.textDim }}>{ef.label}: </span>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 2 }}>
+                            {ef.options.map(opt => <button key={opt} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, [ef.key]: opt } : c))}
+                              style={{ padding: "3px 6px", borderRadius: 4, fontSize: 14, cursor: "pointer", background: sel[ef.key] === opt ? C.purple + "20" : "transparent", border: `1px solid ${sel[ef.key] === opt ? C.purple : C.border}`, color: sel[ef.key] === opt ? C.purple : C.textDim }}>{opt}</button>)}
+                          </div>
+                        </div>)}
+                        {/* Severity — only for categories that use it */}
+                        {catCfg.showSeverity && <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <span style={{ fontSize: 14, color: C.textDim }}>Severity:</span>
                           {[1, 2, 3, 4, 5].map(s => (
                             <button key={s} onClick={() => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, severity: s } : c))}
@@ -438,8 +636,9 @@ export default function OnboardingFlow({ onComplete }) {
                                 border: `1px solid ${sel.severity === s ? (s <= 2 ? C.success : s <= 3 ? C.warning : C.danger) : C.border}`,
                                 color: sel.severity === s ? C.text : C.textDim }}>{s}</button>
                           ))}
-                        </div>
-                      </div>}
+                        </div>}
+                      </div>;
+                      })()}
                     </div>
                   );
                 })}
@@ -448,13 +647,13 @@ export default function OnboardingFlow({ onComplete }) {
           );
         })}
         {conditions.length > 0 && <div style={{ fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length !== 1 ? "s" : ""} selected</div>}
-        <Btn onClick={next}>{hasConditions ? "Next — Pain Assessment →" : "Next — Functional Screen →"}</Btn>
+        <Btn onClick={next}>{hasPainConditions ? "Next — Pain Assessment →" : hasConditions ? "Next — Functional Screen →" : "Next — Functional Screen →"}</Btn>
       </div>}
 
-      {/* ── SCREEN 2: PAIN BEHAVIOR (per condition) ────────── */}
-      {screen === 2 && hasConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* ── SCREEN 2: PAIN BEHAVIOR (per condition — musculoskeletal only) */}
+      {screen === 2 && hasPainConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN BEHAVIOR</div><div style={{ fontSize: 15, color: C.textMuted }}>Tell us about your pain patterns for each condition.</div></div>
-        {conditions.map(cond => {
+        {painConditions.map(cond => {
           const pb = painBehaviors[cond.conditionId] || {};
           const update = (field, val) => setPainBehaviors(p => ({ ...p, [cond.conditionId]: { ...p[cond.conditionId], [field]: val } }));
           const toggleArr = (field, val) => {
@@ -577,9 +776,9 @@ export default function OnboardingFlow({ onComplete }) {
       </div>}
 
       {/* ── SCREEN 4: PAIN TIMELINE (per condition) ─────────── */}
-      {screen === 4 && hasConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {screen === 4 && hasPainConditions && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>PAIN TIMELINE</div><div style={{ fontSize: 15, color: C.textMuted }}>When did each condition start? This determines PT session frequency.</div></div>
-        {conditions.map(cond => {
+        {painConditions.map(cond => {
           const pt = painTimelines[cond.conditionId] || {};
           const update = (field, val) => setPainTimelines(p => ({ ...p, [cond.conditionId]: { ...p[cond.conditionId], [field]: val } }));
           return (
@@ -837,41 +1036,92 @@ export default function OnboardingFlow({ onComplete }) {
       </div>}
 
       {/* ── SCREEN 10: ROM SELF-ASSESSMENT (was 3) ───────── */}
-      {screen === 10 && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Try each self-test and pick the closest result. Limited or painful areas get adapted exercises.</div><div style={{ fontSize: 11, color: C.textDim, marginTop: 4, fontStyle: "italic" }}>For the most accurate assessment, have someone watch you or record yourself.</div></div>
-        <WhyHelper screenNum={10} />
-        {[
-          { id:"neck", label:"Neck", icon:"😐", test:"Slowly turn your head fully left, then fully right. Then look up and down.", opts:[{v:"full",l:"Full rotation, no issue",c:C.success},{v:"limited",l:"Slightly restricted",c:C.warning},{v:"mod_limited",l:"Can't turn past 45°",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"thoracic", label:"Upper Back", icon:"🔄", test:"Sit in a chair, cross arms on chest. Rotate your upper body left and right while keeping hips still.", opts:[{v:"full",l:"Rotated easily both ways",c:C.success},{v:"limited",l:"Slightly stiff one side",c:C.warning},{v:"mod_limited",l:"Significantly limited",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"lumbar", label:"Lower Back", icon:"🙇", test:"Stand with feet together. Bend forward and reach for your toes. How far did you get?", opts:[{v:"full",l:"Touched toes easily",c:C.success},{v:"limited",l:"Reached shins",c:C.warning},{v:"mod_limited",l:"Only reached knees",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"shoulders", label:"Shoulders", icon:"🤸", test:"Stand facing a wall, arms straight. Raise both arms overhead and try to touch the wall with your thumbs.", opts:[{v:"full",l:"Touched wall easily",c:C.success},{v:"limited",l:"Almost touched",c:C.warning},{v:"mod_limited",l:"Couldn't reach",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"elbows", label:"Elbows", icon:"💪", test:"Fully straighten both arms, then bend them to touch your shoulders.", opts:[{v:"full",l:"Full range both ways",c:C.success},{v:"limited",l:"Slightly restricted",c:C.warning},{v:"mod_limited",l:"Can't fully straighten or bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"wrists", label:"Wrists", icon:"🤲", test:"Place palms together in prayer position. Push hands down while keeping palms flat. Then reverse (backs of hands together).", opts:[{v:"full",l:"Both directions comfortable",c:C.success},{v:"limited",l:"Some stiffness",c:C.warning},{v:"mod_limited",l:"Very limited bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"hips", label:"Hips", icon:"🧘", test:"Lying on your back, pull one knee to your chest. How far does it go?", opts:[{v:"full",l:"Knee touches chest",c:C.success},{v:"limited",l:"Close but not there",c:C.warning},{v:"mod_limited",l:"Significantly limited",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"knee_left", label:"Left Knee", icon:"🦵", test:"Stand on one leg. Slowly bend your left knee as deep as you can (hold a wall for balance).", opts:[{v:"full",l:"Deep bend, no issue",c:C.success},{v:"limited",l:"Moderate bend only",c:C.warning},{v:"mod_limited",l:"Very shallow bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"knee_right", label:"Right Knee", icon:"🦵", test:"Same test — right leg.", opts:[{v:"full",l:"Deep bend, no issue",c:C.success},{v:"limited",l:"Moderate bend only",c:C.warning},{v:"mod_limited",l:"Very shallow bend",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"ankles", label:"Ankles", icon:"🦶", test:"Face a wall, foot 4 inches away. Push your knee toward the wall while keeping heel down.", opts:[{v:"full",l:"Knee touched wall",c:C.success},{v:"limited",l:"Close but not there",c:C.warning},{v:"mod_limited",l:"Heel lifted",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-          { id:"feet", label:"Toes / Feet", icon:"🦶", test:"Sitting, pull your toes up toward your shin as far as you can (dorsiflexion).", opts:[{v:"full",l:"Good pull-up range",c:C.success},{v:"limited",l:"Slightly limited",c:C.warning},{v:"mod_limited",l:"Very stiff",c:C.orange||"#f97316"},{v:"painful",l:"Pain prevented it",c:C.danger}] },
-        ].map(joint => (
-          <Card key={joint.id} style={{ padding: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}><span style={{ fontSize: 14 }}>{joint.icon}</span><div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{joint.label}</div></div>
-            <div style={{ fontSize: 12, color: C.info, lineHeight: 1.5, marginBottom: 8, padding: "6px 8px", background: C.info + "08", borderRadius: 8, borderLeft: `2px solid ${C.info}30` }}>{joint.test}</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-              {joint.opts.map(opt => (
-                <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: p[joint.id] === opt.v ? "full" : opt.v }))}
-                  style={{ padding: "8px 6px", borderRadius: 8, fontSize: 11, fontWeight: 600, textAlign: "center", cursor: "pointer", lineHeight: 1.3,
-                    background: rom[joint.id] === opt.v ? opt.c + "15" : "transparent",
-                    border: `1px solid ${rom[joint.id] === opt.v ? opt.c : C.border}`,
-                    color: rom[joint.id] === opt.v ? opt.c : C.textDim }}>{opt.l}</button>
-              ))}
-            </div>
-            {(rom[joint.id] === "painful" || rom[joint.id] === "mod_limited") && <div style={{ fontSize: 11, color: C.danger, marginTop: 4 }}>We'll modify exercises to protect your {joint.label.toLowerCase()}</div>}
-            {rom[joint.id] === "limited" && <div style={{ fontSize: 11, color: C.warning, marginTop: 4 }}>Exercises will be adapted for your {joint.label.toLowerCase()} range</div>}
-          </Card>
-        ))}
-        {Object.values(rom).some(v => v !== "full") && <div style={{ fontSize: 12, color: C.warning }}>{Object.values(rom).filter(v => v !== "full").length} area{Object.values(rom).filter(v => v !== "full").length !== 1 ? "s" : ""} flagged — exercises requiring that ROM will be blocked until improved.</div>}
-        <Btn onClick={next}>Next — Goals →</Btn>
-      </div>}
+      {screen === 10 && (() => {
+        const ROM_TESTS = [
+          // ── NECK ──
+          { id:"neck", label:"Neck Rotation", icon:"😐", group:"Neck & Cervical", test:"Slowly turn your head fully left, then fully right. Then look up and down.",
+            opts:[{v:"full",l:"Full rotation easily"},{v:"slight",l:"Full rotation with difficulty"},{v:"limited",l:"Noticeably restricted"},{v:"mod_limited",l:"Can't turn past 45°"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"cervical_retraction", label:"Cervical Retraction", icon:"😐", group:"Neck & Cervical", test:"Sitting tall, pull your chin straight back (make a double chin). How far does it go?",
+            opts:[{v:"full",l:"Full retraction easily"},{v:"slight",l:"Retraction with difficulty"},{v:"limited",l:"Moderate retraction"},{v:"mod_limited",l:"Minimal movement"},{v:"painful",l:"Pain prevented it"}] },
+          // ── UPPER BACK ──
+          { id:"thoracic", label:"Upper Back Rotation", icon:"🔄", group:"Thoracic Spine", test:"Sit in a chair, cross arms on chest. Rotate your upper body left and right while keeping hips still.",
+            opts:[{v:"full",l:"Rotated easily both ways"},{v:"slight",l:"Rotated with some effort"},{v:"limited",l:"Noticeably stiff one side"},{v:"mod_limited",l:"Significantly limited"},{v:"painful",l:"Pain prevented it"}] },
+          // ── LOWER BACK / McKENZIE ──
+          { id:"lumbar", label:"Lower Back — Forward Bend", icon:"🙇", group:"Lumbar Spine", test:"Stand with feet together. Bend forward and reach for your toes. How far did you get?",
+            opts:[{v:"full",l:"Touched toes easily"},{v:"slight",l:"Touched toes with difficulty"},{v:"limited",l:"Reached shins"},{v:"mod_limited",l:"Only reached knees"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"lumbar_ext", label:"Lumbar Extension (McKenzie)", icon:"🐍", group:"Lumbar Spine", test:"Lying face down, press up through your hands (cobra position). How far can you go?",
+            opts:[{v:"full",l:"Full press-up easily"},{v:"slight",l:"Press-up with difficulty"},{v:"limited",l:"Halfway up"},{v:"mod_limited",l:"Barely off the ground"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"lumbar_flex", label:"Lumbar Flexion (Seated)", icon:"🙇", group:"Lumbar Spine", test:"Seated, bend forward and reach toward your toes. How far?",
+            opts:[{v:"full",l:"Past toes easily"},{v:"slight",l:"Reached toes with difficulty"},{v:"limited",l:"Reached shins"},{v:"mod_limited",l:"Only reached knees"},{v:"painful",l:"Pain prevented it"}] },
+          // ── SHOULDERS ──
+          { id:"shoulders", label:"Shoulder Flexion", icon:"🤸", group:"Shoulders", test:"Stand facing a wall, arms straight. Raise both arms overhead and try to touch the wall with your thumbs.",
+            opts:[{v:"full",l:"Touched wall easily"},{v:"slight",l:"Touched wall with difficulty"},{v:"limited",l:"Almost touched"},{v:"mod_limited",l:"Couldn't reach"},{v:"painful",l:"Pain prevented it"}] },
+          // ── ELBOWS ──
+          { id:"elbows", label:"Elbow Flexion/Extension", icon:"💪", group:"Elbows & Wrists", test:"Fully straighten both arms, then bend them to touch your shoulders.",
+            opts:[{v:"full",l:"Full range both ways"},{v:"slight",l:"Full range with effort"},{v:"limited",l:"Slightly restricted"},{v:"mod_limited",l:"Can't fully straighten or bend"},{v:"painful",l:"Pain prevented it"}] },
+          // ── WRISTS ──
+          { id:"wrists", label:"Wrist Flexion/Extension", icon:"🤲", group:"Elbows & Wrists", test:"Place palms together in prayer position. Push hands down while keeping palms flat. Then reverse (backs of hands together).",
+            opts:[{v:"full",l:"Both directions comfortable"},{v:"slight",l:"Comfortable with some effort"},{v:"limited",l:"Some stiffness"},{v:"mod_limited",l:"Very limited bend"},{v:"painful",l:"Pain prevented it"}] },
+          // ── HIPS (4 sub-tests) ──
+          { id:"hip_flexion", label:"Hip Flexion", icon:"🧘", group:"Hips", test:"Lying on your back, pull one knee toward your chest. How far does it go?",
+            opts:[{v:"full",l:"Knee touches chest easily"},{v:"slight",l:"Touches with difficulty"},{v:"limited",l:"Close but not there"},{v:"mod_limited",l:"Significantly limited"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"hip_ir", label:"Hip Internal Rotation", icon:"🔄", group:"Hips", test:"Sitting with knee bent 90°, let your foot swing outward (rotating shin out). How far does it go?",
+            opts:[{v:"full",l:"Full rotation easily"},{v:"slight",l:"Rotates with difficulty"},{v:"limited",l:"Noticeably limited"},{v:"mod_limited",l:"Very limited"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"hip_er", label:"Hip External Rotation", icon:"🔄", group:"Hips", test:"Sitting with knee bent 90°, let your foot swing inward (rotating shin in). How far?",
+            opts:[{v:"full",l:"Full rotation easily"},{v:"slight",l:"Rotates with difficulty"},{v:"limited",l:"Noticeably limited"},{v:"mod_limited",l:"Very limited"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"hip_ext", label:"Hip Extension", icon:"🦵", group:"Hips", test:"Lying face down, lift one straight leg up behind you. How high?",
+            opts:[{v:"full",l:"Good lift easily"},{v:"slight",l:"Lifts with difficulty"},{v:"limited",l:"Moderate lift only"},{v:"mod_limited",l:"Barely lifts"},{v:"painful",l:"Pain prevented it"}] },
+          // ── KNEES ──
+          { id:"knee_left", label:"Left Knee", icon:"🦵", group:"Knees", test:"Stand on one leg. Slowly bend your left knee as deep as you can (hold a wall for balance).",
+            opts:[{v:"full",l:"Deep bend easily"},{v:"slight",l:"Deep bend with difficulty"},{v:"limited",l:"Moderate bend only"},{v:"mod_limited",l:"Very shallow bend"},{v:"painful",l:"Pain prevented it"}] },
+          { id:"knee_right", label:"Right Knee", icon:"🦵", group:"Knees", test:"Same test — right leg.",
+            opts:[{v:"full",l:"Deep bend easily"},{v:"slight",l:"Deep bend with difficulty"},{v:"limited",l:"Moderate bend only"},{v:"mod_limited",l:"Very shallow bend"},{v:"painful",l:"Pain prevented it"}] },
+          // ── ANKLES ──
+          { id:"ankles", label:"Ankle Dorsiflexion", icon:"🦶", group:"Ankles & Feet", test:"Face a wall, foot 4 inches away. Push your knee toward the wall while keeping heel down.",
+            opts:[{v:"full",l:"Knee touched wall easily"},{v:"slight",l:"Touched wall with difficulty"},{v:"limited",l:"Close but not there"},{v:"mod_limited",l:"Heel lifted"},{v:"painful",l:"Pain prevented it"}] },
+          // ── FEET ──
+          { id:"feet", label:"Toe / Foot Dorsiflexion", icon:"🦶", group:"Ankles & Feet", test:"Sitting, pull your toes up toward your shin as far as you can.",
+            opts:[{v:"full",l:"Good pull-up range"},{v:"slight",l:"Full range with effort"},{v:"limited",l:"Slightly limited"},{v:"mod_limited",l:"Very stiff"},{v:"painful",l:"Pain prevented it"}] },
+        ];
+        const optColor = v => v === "full" ? C.success : v === "slight" ? "#4ade80" : v === "limited" ? C.warning : v === "mod_limited" ? (C.orange || "#f97316") : C.danger;
+        const tierMsg = v => v === "slight" ? { color: "#4ade80", text: "Light tightness detected — adding mobility work to maintain and improve." }
+          : v === "limited" ? { color: C.warning, text: "Moderate limitation — adding focused mobility work. You'll see improvement in 4-6 weeks." }
+          : v === "mod_limited" ? { color: C.orange || "#f97316", text: "Significant limitation — daily mobility work prescribed. This is priority for your joint health." }
+          : v === "painful" ? { color: C.danger, text: "Pain is limiting your ROM. We're adding gentle mobility work. If pain persists after 2 weeks, consider seeing a PT." }
+          : null;
+        const flagged = Object.entries(rom).filter(([, v]) => v !== "full");
+        const groups = [...new Set(ROM_TESTS.map(t => t.group))];
+        return <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>RANGE OF MOTION</div><div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Try each self-test and pick the closest result. Limited areas get mobility work added — exercises are modified, not removed.</div><div style={{ fontSize: 11, color: C.textDim, marginTop: 4, fontStyle: "italic" }}>For the most accurate assessment, have someone watch you or record yourself.</div></div>
+          <WhyHelper screenNum={10} />
+          {groups.map(grp => <div key={grp}>
+            <div style={{ fontSize: 11, color: C.textDim, letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, margin: "6px 0 4px" }}>{grp}</div>
+            {ROM_TESTS.filter(t => t.group === grp).map(joint => {
+              const msg = tierMsg(rom[joint.id]);
+              return <Card key={joint.id} style={{ padding: 12, marginBottom: 6 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}><span style={{ fontSize: 14 }}>{joint.icon}</span><div style={{ fontSize: 14, fontWeight: 700, color: C.text }}>{joint.label}</div></div>
+                <div style={{ fontSize: 12, color: C.info, lineHeight: 1.5, marginBottom: 8, padding: "6px 8px", background: C.info + "08", borderRadius: 8, borderLeft: `2px solid ${C.info}30` }}>{joint.test}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                  {joint.opts.map(opt => {
+                    const oc = optColor(opt.v);
+                    return <button key={opt.v} onClick={() => setRom(p => ({ ...p, [joint.id]: p[joint.id] === opt.v ? "full" : opt.v }))}
+                      style={{ padding: "7px 10px", borderRadius: 8, fontSize: 12, fontWeight: 600, textAlign: "left", cursor: "pointer", lineHeight: 1.3,
+                        background: rom[joint.id] === opt.v ? oc + "15" : "transparent",
+                        border: `1px solid ${rom[joint.id] === opt.v ? oc : C.border}`,
+                        color: rom[joint.id] === opt.v ? oc : C.textDim }}>{opt.l}</button>;
+                  })}
+                </div>
+                {msg && <div style={{ fontSize: 11, color: msg.color, marginTop: 6, lineHeight: 1.4 }}>{msg.text}</div>}
+              </Card>;
+            })}
+          </div>)}
+          {flagged.length > 0 && <Card style={{ padding: 10, borderColor: C.info + "40", background: C.info + "08" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.info, marginBottom: 4 }}>{flagged.length} area{flagged.length !== 1 ? "s" : ""} flagged for mobility work</div>
+            <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5 }}>Limited ROM won't block exercises — we modify movements to work within your current range and add targeted mobility to improve it.</div>
+          </Card>}
+          <Btn onClick={next}>Next — Goals →</Btn>
+        </div>;
+      })()}
 
       {/* ── SCREEN 11: GOALS (was 4) ─────────────────────── */}
       {screen === 11 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -958,19 +1208,37 @@ export default function OnboardingFlow({ onComplete }) {
             </div>
           </Card>
           <Card style={{ borderColor: C.danger + "30" }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 8 }}>WEAK POINTS</div>
-            <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 10 }}>Any areas you want to prioritize? (multi-select)</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, letterSpacing: 1.5, marginBottom: 4 }}>PICK UP TO 3 PRIORITY WEAK POINTS</div>
+            <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8, lineHeight: 1.5 }}>Which muscles need the most attention? We'll add extra volume for these areas while keeping your training balanced. Rank them — #1 gets the most focus.</div>
+            {/* Selected weak points with rank badges */}
+            {weakPoints.length > 0 && <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+              {weakPoints.map((wpId, i) => {
+                const rankColors = ["#FFD700", "#C0C0C0", "#CD7F32"];
+                const rankLabels = weakPoints.length === 1 ? ["TOP PRIORITY — 100% extra volume"] : weakPoints.length === 2 ? ["TOP PRIORITY — 70% extra volume", "HIGH PRIORITY — 30% extra volume"] : ["TOP PRIORITY — 50% extra volume", "HIGH PRIORITY — 30% extra volume", "MODERATE — 20% extra volume"];
+                const wpLabel = wpId.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+                return <div key={wpId} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", background: C.bgElevated, borderRadius: 8, border: `1px solid ${rankColors[i] || C.border}30` }}>
+                  <span style={{ width: 20, height: 20, borderRadius: 10, background: (rankColors[i] || C.textDim) + "30", color: rankColors[i] || C.textDim, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>#{i + 1}</span>
+                  <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: C.text }}>{wpLabel}</span>
+                  <span style={{ fontSize: 8, color: rankColors[i] || C.textDim, fontWeight: 700, letterSpacing: 0.5 }}>{rankLabels[i] || ""}</span>
+                  <button onClick={() => setWeakPoints(p => p.filter(x => x !== wpId))} style={{ width: 20, height: 20, borderRadius: 6, border: "none", background: "#ef444415", color: "#ef4444", cursor: "pointer", fontSize: 11, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+                </div>;
+              })}
+              <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>Order = priority. First selected = #1 (most extra volume).</div>
+            </div>}
+            {weakPoints.length >= 3 && <div style={{ fontSize: 11, color: C.warning, marginBottom: 6 }}>3 maximum. Remove one to add a different area.</div>}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
               {["Chest","Back Width","Back Thickness","Front Delts","Side Delts","Rear Delts","Biceps","Triceps","Forearms","Quads","Hamstrings","Glutes","Calves","Abs","Traps"].map(wp => {
                 const id = wp.toLowerCase().replace(/\s+/g, "_");
                 const active = weakPoints.includes(id);
-                return <button key={id} onClick={() => setWeakPoints(p => active ? p.filter(x => x !== id) : [...p, id])} style={{ padding: "5px 9px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+                const maxed = weakPoints.length >= 3 && !active;
+                return <button key={id} disabled={maxed} onClick={() => setWeakPoints(p => active ? p.filter(x => x !== id) : [...p, id])} style={{ padding: "5px 9px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: maxed ? "not-allowed" : "pointer", opacity: maxed ? 0.35 : 1,
                   background: active ? C.danger + "15" : "transparent",
                   border: `1px solid ${active ? C.danger + "60" : C.border}`,
                   color: active ? C.danger : C.textDim }}>{active ? "✓ " : ""}{wp}</button>;
               })}
             </div>
-            {weakPoints.length > 0 && <div style={{ fontSize: 11, color: C.teal, marginTop: 6 }}>Priority muscles will get +30% volume to bring them up.</div>}
+            {weakPoints.length > 0 && <div style={{ fontSize: 11, color: C.teal, marginTop: 6 }}>Priority muscles get +3-4 extra sets/week (#1), +2-3 (#2), or +1-2 (#3) from accessory slots.</div>}
+            <div style={{ fontSize: 10, color: C.textDim, marginTop: 6, lineHeight: 1.5, fontStyle: "italic" }}>Why only 3? Training everything as a priority means nothing is a priority. Focusing extra volume on 3 areas produces faster visible results. You can change these anytime.</div>
           </Card>
         </>}
         <Btn onClick={next}>Next — Preferences →</Btn>
@@ -980,17 +1248,52 @@ export default function OnboardingFlow({ onComplete }) {
       {screen === 12 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>TRAINING PREFERENCES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>How do you want to train? We'll build your plan around these choices.</div></div>
         <WhyHelper screenNum={12} />
-        {/* Current strength level self-assessment (Fix #10) */}
+        {/* Training experience + recency (detraining-aware) */}
         <Card>
-          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>Current strength level</div>
-          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This sets your starting exercise difficulty. You can take a detailed fitness test from the Home screen later.</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-            {[{ v: "never", l: "Never trained" }, { v: "beginner", l: "Beginner" }, { v: "some", l: "Some experience" }, { v: "intermediate", l: "Intermediate" }, { v: "advanced", l: "Advanced" }].map(opt => {
-              const sel = prefs.strengthLevel === opt.v;
-              return <button key={opt.v} onClick={() => setPrefs(p => ({ ...p, strengthLevel: opt.v }))} style={{ padding: "7px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", background: sel ? C.teal + "20" : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>{sel ? "✓ " : ""}{opt.l}</button>;
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>What's your training experience?</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>Your overall history with structured exercise.</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {[{v:"foundation",l:"Foundation — new to structured exercise"},{v:"building",l:"Building — 1-3 years experience"},{v:"performance",l:"Performance — 3+ years experience"},{v:"professional",l:"Professional / Competitive athlete"}].map(opt => {
+              const sel = trainingExperience === opt.v;
+              return <button key={opt.v} onClick={() => setTrainingExperience(opt.v)} style={{ padding: "8px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left", background: sel ? C.teal + "20" : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>{sel ? "✓ " : ""}{opt.l}</button>;
             })}
           </div>
         </Card>
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>How consistently have you trained in the LAST 6 WEEKS?</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>Recent training matters more than history for where we start you.</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {[{v:"none",l:"Not at all (0 sessions in 6 weeks)"},{v:"occasional",l:"Occasionally (1-4 sessions total)"},{v:"somewhat",l:"Somewhat consistent (1-2x per week)"},{v:"consistent",l:"Consistent (3-4x per week)"},{v:"very_consistent",l:"Very consistent (5+ per week)"}].map(opt => {
+              const sel = trainingRecency === opt.v;
+              return <button key={opt.v} onClick={() => setTrainingRecency(opt.v)} style={{ padding: "8px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left", background: sel ? C.teal + "20" : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>{sel ? "✓ " : ""}{opt.l}</button>;
+            })}
+          </div>
+        </Card>
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>Before these last 6 weeks, how long were you training consistently?</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This tells us how much muscle memory you have to draw on.</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {[{v:"months_off",l:"Haven't been consistent for months"},{v:"1_3_months",l:"Was consistent for 1-3 months before slowing"},{v:"3_6_months",l:"Was consistent for 3-6 months"},{v:"6_plus_months",l:"Was consistent for 6+ months"},{v:"years",l:"Was consistent for years"}].map(opt => {
+              const sel = trainingHistory === opt.v;
+              return <button key={opt.v} onClick={() => setTrainingHistory(opt.v)} style={{ padding: "8px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left", background: sel ? C.teal + "20" : "transparent", border: `1px solid ${sel ? C.teal + "60" : C.border}`, color: sel ? C.teal : C.textDim }}>{sel ? "✓ " : ""}{opt.l}</button>;
+            })}
+          </div>
+        </Card>
+        {/* Detraining insight message */}
+        {trainingExperience && trainingRecency && (() => {
+          const expHigh = trainingExperience === "performance" || trainingExperience === "professional";
+          const recentLow = trainingRecency === "none" || trainingRecency === "occasional";
+          const historyHigh = trainingHistory === "6_plus_months" || trainingHistory === "years";
+          if (expHigh && recentLow) return <Card style={{ padding: 10, borderColor: C.info + "40", background: C.info + "08" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.info, marginBottom: 4 }}>Returning athlete detected</div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5 }}>You have {trainingExperience === "professional" ? "professional" : "advanced"} experience but haven't trained consistently recently. We're starting you at a moderate level and progressing faster than a beginner because your body remembers the movements. {historyHigh ? "With your training history, you'll be back to your level in 4-6 weeks." : "You'll rebuild your base quickly."}</div>
+          </Card>;
+          if (!expHigh && recentLow) return <Card style={{ padding: 10, borderColor: C.warning + "40", background: C.warning + "08" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.warning, marginBottom: 4 }}>Building your foundation</div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5 }}>We'll start with movement quality and build intensity gradually. Consistency is more important than intensity right now.</div>
+          </Card>;
+          return null;
+        })()}
         {/* Days per week */}
         <Card>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Days per week available</div>
@@ -1138,16 +1441,17 @@ export default function OnboardingFlow({ onComplete }) {
 
       {/* ── SCREEN 13: SUMMARY (was 6) ─────────────────── */}
       {screen === 13 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>YOUR ASSESSMENT</div><div style={{ fontSize: 15, color: C.textMuted }}>Here's what we found. Your first plan is ready.</div></div>
+        <div><div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3 }}>{isReassessment ? "UPDATED ASSESSMENT" : "YOUR ASSESSMENT"}</div><div style={{ fontSize: 15, color: C.textMuted }}>{isReassessment ? "Your changes are ready. Plan will be updated immediately." : "Here's what we found. Your first plan is ready."}</div></div>
 
-        {/* Fitness level */}
+        {/* Fitness level + progression rate */}
         <Card glow={C.tealGlow} style={{ textAlign: "center" }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: C.teal, letterSpacing: 2, marginBottom: 6 }}>STARTING LEVEL</div>
           <div style={{ fontSize: 36, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{fitnessLevel === "beginner" ? "FOUNDATION" : fitnessLevel === "intermediate" ? "BUILDING" : "PERFORMANCE"}</div>
-          <div style={{ fontSize: 16, color: C.textMuted, marginTop: 4 }}>Starting Phase {startingPhase} — {startingPhase === 1 ? "Stabilization Endurance" : "Strength"}</div>
+          <div style={{ fontSize: 16, color: C.textMuted, marginTop: 4 }}>Starting Phase {startingPhase} — {startingPhase === 1 ? "Stabilization Endurance" : "Strength"}{progressionRate === "accelerated" ? " (accelerated progression)" : ""}</div>
           <div style={{ fontSize: 14, color: C.textDim, marginTop: 8, padding: "8px 10px", background: C.bgGlass, borderRadius: 8, textAlign: "left", lineHeight: 1.6 }}>
-            Based on: {conditions.length > 0 ? `${conditions.length} active condition${conditions.length > 1 ? "s" : ""}` : "no conditions"} · {detectedComps.length > 0 ? `${detectedComps.length} compensation${detectedComps.length > 1 ? "s" : ""}` : "no compensations"} · {Object.values(rom).filter(v => v !== "full").length} limited ROM areas. This is about protecting you, not ranking you.
+            Based on: {trainingExperience ? `${trainingExperience} experience` : "experience"} · {trainingRecency === "none" || trainingRecency === "occasional" ? "recent detraining" : "currently training"} · {conditions.length > 0 ? `${conditions.length} condition${conditions.length > 1 ? "s" : ""}` : "no conditions"} · {Object.values(rom).filter(v => v !== "full").length} ROM areas flagged. This is about protecting you, not ranking you.
           </div>
+          {detrainingNote && <div style={{ fontSize: 12, color: C.info, marginTop: 8, padding: "8px 10px", background: C.info + "08", borderRadius: 8, textAlign: "left", lineHeight: 1.5, borderLeft: `3px solid ${C.info}` }}>{detrainingNote}</div>}
         </Card>
 
         {/* PAR-Q */}
@@ -1219,7 +1523,7 @@ export default function OnboardingFlow({ onComplete }) {
         <Card style={{ borderColor: C.teal + "30" }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>WEEK 1 PREVIEW</div>
           <div style={{ fontSize: 15, color: C.textMuted }}>
-            Phase {startingPhase} · {prefs.daysPerWeek} sessions · 1-2 sets per exercise (neural adaptation)
+            Phase {startingPhase} · {prefs.daysPerWeek} sessions · 1-2 sets per exercise{progressionRate === "accelerated" ? " (accelerated — muscle memory)" : " (neural adaptation)"}
           </div>
           <div style={{ fontSize: 14, color: C.textMuted, marginTop: 4 }}>
             Focus: Movement quality, core activation, injury-safe patterns.
@@ -1234,7 +1538,7 @@ export default function OnboardingFlow({ onComplete }) {
             Your plan is built by our algorithm that cross-references your goals, conditions, ROM, and 300+ exercises through 12 safety checks. Every exercise is verified safe for <b style={{ color: C.text }}>your specific situation</b> before you see it.
           </div>
         </Card>
-        <Btn onClick={handleComplete} icon="🚀" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3, fontSize: 18 }}>BUILD MY FIRST PLAN</Btn>
+        <Btn onClick={handleComplete} icon="🚀" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3, fontSize: 18 }}>{isReassessment ? "UPDATE MY PLAN" : "BUILD MY FIRST PLAN"}</Btn>
       </div>}
 
       <div style={{ height: 40 }} />
