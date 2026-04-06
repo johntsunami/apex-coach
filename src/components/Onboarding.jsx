@@ -303,8 +303,9 @@ export default function OnboardingFlow({ onComplete, initialData }) {
   const [trainingRecency, setTrainingRecency] = useState(_d.trainingRecency || null);
   const [trainingHistory, setTrainingHistory] = useState(_d.trainingHistory || null);
 
-  // ── Age + Senior screening state ────────────────────────────
+  // ── Age + Body composition state ────────────────────────────
   const [userAge, setUserAge] = useState(_d.userAge || null);
+  const [bodyComp, setBodyComp] = useState(_d.bodyComp || { heightFt: null, heightIn: null, heightCm: null, weightLbs: null, weightKg: null, unit: "imperial", goalType: null, goalWeightLbs: null, goalWeightKg: null, weeklyGoal: null });
   const [seniorScreening, setSeniorScreening] = useState(_d.seniorScreening || {});
 
   // ── New clinical assessment state ──────────────────────────
@@ -408,6 +409,14 @@ export default function OnboardingFlow({ onComplete, initialData }) {
       redFlagCleared,
       compensations: detectedComps.map(c => c.id),
       userAge,
+      bodyComp: {
+        heightCm: bodyComp.unit === "imperial" ? Math.round(((bodyComp.heightFt || 0) * 30.48) + ((bodyComp.heightIn || 0) * 2.54)) : (bodyComp.heightCm || null),
+        weightKg: bodyComp.unit === "imperial" ? Math.round((bodyComp.weightLbs || 0) * 0.4536 * 10) / 10 : (bodyComp.weightKg || null),
+        goalType: bodyComp.goalType,
+        goalWeightKg: bodyComp.goalType === "lose" || bodyComp.goalType === "gain" ? (bodyComp.unit === "imperial" ? Math.round((bodyComp.goalWeightLbs || 0) * 0.4536 * 10) / 10 : (bodyComp.goalWeightKg || null)) : null,
+        weeklyGoalKg: bodyComp.weeklyGoal ? (bodyComp.unit === "imperial" ? Math.round(bodyComp.weeklyGoal * 0.4536 * 100) / 100 : bodyComp.weeklyGoal) : null,
+        unit: bodyComp.unit,
+      },
       seniorScreening,
       rom,
       goals,
@@ -564,6 +573,86 @@ export default function OnboardingFlow({ onComplete, initialData }) {
           <input type="number" min="16" max="99" value={userAge || ""} onChange={e => { const v = parseInt(e.target.value); if (v >= 16 && v <= 99) setUserAge(v); else if (!e.target.value) setUserAge(null); }}
             placeholder="Enter your age" style={{ width: 120, padding: "10px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${userAge ? C.teal + "60" : C.border}`, color: C.text, fontSize: 16, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
           {userAge >= 65 && <div style={{ fontSize: 12, color: C.info, marginTop: 8, padding: "6px 10px", background: C.info + "08", borderRadius: 8, lineHeight: 1.5 }}>We'll add a brief balance and mobility screen on the next page to customize your plan for strength, stability, and independence.</div>}
+        </Card>
+        {/* Height + Weight + Body Goal */}
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>Height & Weight</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>Used for BMI context and caloric/protein guidance. Not used to restrict exercises.</div>
+          {/* Unit toggle */}
+          <div style={{ display: "flex", gap: 4, marginBottom: 10 }}>
+            {["imperial", "metric"].map(u => <button key={u} onClick={() => setBodyComp(p => ({ ...p, unit: u }))}
+              style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+                background: bodyComp.unit === u ? C.teal + "15" : "transparent", border: `1px solid ${bodyComp.unit === u ? C.teal + "60" : C.border}`, color: bodyComp.unit === u ? C.teal : C.textDim }}>{u === "imperial" ? "ft/in · lbs" : "cm · kg"}</button>)}
+          </div>
+          {/* Height */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+            <span style={{ fontSize: 12, color: C.textDim, width: 50 }}>Height:</span>
+            {bodyComp.unit === "imperial" ? <>
+              <input type="number" min="3" max="8" value={bodyComp.heightFt || ""} onChange={e => setBodyComp(p => ({ ...p, heightFt: parseInt(e.target.value) || null }))} placeholder="ft"
+                style={{ width: 50, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>ft</span>
+              <input type="number" min="0" max="11" value={bodyComp.heightIn ?? ""} onChange={e => setBodyComp(p => ({ ...p, heightIn: parseInt(e.target.value) ?? null }))} placeholder="in"
+                style={{ width: 50, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>in</span>
+            </> : <>
+              <input type="number" min="100" max="250" value={bodyComp.heightCm || ""} onChange={e => setBodyComp(p => ({ ...p, heightCm: parseInt(e.target.value) || null }))} placeholder="cm"
+                style={{ width: 80, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>cm</span>
+            </>}
+          </div>
+          {/* Weight */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ fontSize: 12, color: C.textDim, width: 50 }}>Weight:</span>
+            {bodyComp.unit === "imperial" ? <>
+              <input type="number" min="50" max="600" step="0.1" value={bodyComp.weightLbs || ""} onChange={e => setBodyComp(p => ({ ...p, weightLbs: parseFloat(e.target.value) || null }))} placeholder="lbs"
+                style={{ width: 80, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>lbs</span>
+            </> : <>
+              <input type="number" min="25" max="300" step="0.1" value={bodyComp.weightKg || ""} onChange={e => setBodyComp(p => ({ ...p, weightKg: parseFloat(e.target.value) || null }))} placeholder="kg"
+                style={{ width: 80, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>kg</span>
+            </>}
+          </div>
+        </Card>
+        {/* Body weight goal */}
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>Body weight goal</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+            {[{v:"lose",l:"Lose weight"},{v:"maintain",l:"Maintain weight"},{v:"gain",l:"Gain weight (muscle)"},{v:"none",l:"No preference"}].map(o => (
+              <button key={o.v} onClick={() => setBodyComp(p => ({ ...p, goalType: o.v }))} style={{ padding: "8px 12px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left", fontFamily: "inherit",
+                background: bodyComp.goalType === o.v ? C.teal + "15" : "transparent", border: `1px solid ${bodyComp.goalType === o.v ? C.teal + "60" : C.border}`, color: bodyComp.goalType === o.v ? C.teal : C.textDim }}>{o.l}</button>
+            ))}
+          </div>
+          {/* Target weight */}
+          {(bodyComp.goalType === "lose" || bodyComp.goalType === "gain") && <div style={{ marginBottom: 8 }}>
+            <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 4 }}>Target weight:</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <input type="number" min="50" max="600" step="0.1" value={bodyComp.unit === "imperial" ? (bodyComp.goalWeightLbs || "") : (bodyComp.goalWeightKg || "")}
+                onChange={e => { const v = parseFloat(e.target.value) || null; setBodyComp(p => bodyComp.unit === "imperial" ? { ...p, goalWeightLbs: v } : { ...p, goalWeightKg: v }); }}
+                placeholder={bodyComp.unit === "imperial" ? "lbs" : "kg"}
+                style={{ width: 90, padding: "8px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+              <span style={{ fontSize: 12, color: C.textDim }}>{bodyComp.unit === "imperial" ? "lbs" : "kg"}</span>
+            </div>
+          </div>}
+          {/* Weekly rate */}
+          {bodyComp.goalType === "lose" && <div>
+            <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 4 }}>Weekly loss goal:</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {[{v:0.5,l:"0.5 lb/wk",d:"Slow, sustainable"},{v:1,l:"1 lb/wk",d:"Moderate"},{v:1.5,l:"1.5 lb/wk",d:"Aggressive"}].map(o => (
+                <button key={o.v} onClick={() => setBodyComp(p => ({ ...p, weeklyGoal: o.v }))} style={{ flex: 1, padding: "6px 4px", borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: "pointer", textAlign: "center", fontFamily: "inherit",
+                  background: bodyComp.weeklyGoal === o.v ? C.teal + "15" : "transparent", border: `1px solid ${bodyComp.weeklyGoal === o.v ? C.teal + "60" : C.border}`, color: bodyComp.weeklyGoal === o.v ? C.teal : C.textDim }}>{o.l}</button>
+              ))}
+            </div>
+          </div>}
+          {bodyComp.goalType === "gain" && <div>
+            <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 4 }}>Weekly gain goal:</div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {[{v:0.25,l:"0.25 lb/wk",d:"Lean bulk"},{v:0.5,l:"0.5 lb/wk",d:"Standard bulk"}].map(o => (
+                <button key={o.v} onClick={() => setBodyComp(p => ({ ...p, weeklyGoal: o.v }))} style={{ flex: 1, padding: "6px 8px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", textAlign: "center", fontFamily: "inherit",
+                  background: bodyComp.weeklyGoal === o.v ? C.teal + "15" : "transparent", border: `1px solid ${bodyComp.weeklyGoal === o.v ? C.teal + "60" : C.border}`, color: bodyComp.weeklyGoal === o.v ? C.teal : C.textDim }}>{o.l}</button>
+              ))}
+            </div>
+          </div>}
         </Card>
         <Btn onClick={next} disabled={parq.some(a => a === null) || (anyParqYes && !parqWarning) || !userAge}>Next — Conditions →</Btn>
       </div>}
