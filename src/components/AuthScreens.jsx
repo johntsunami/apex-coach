@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabase.js";
 import { getSportPrefs, saveSportPrefs } from "../utils/storage.js";
 import { getAssessment } from "./Onboarding.jsx";
 import { exportProfile, exportWorkout, isDevExportEnabled, exportDevDiagnostic } from "../utils/dataExport.js";
+import { isDeveloper } from "./BugReport.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // Landing Page + Sign Up + Log In + Forgot Password
@@ -280,7 +281,7 @@ export function ForgotPasswordScreen({ onBack }) {
 // ── Profile / Settings ────────────────────────────────────────
 const ALL_SPORTS = ["Basketball","Soccer","Baseball/Softball","Tennis","Golf","Swimming","Running/Track","Cycling","Hiking","Rock Climbing","CrossFit","Boxing/Kickboxing","MMA/BJJ","Wrestling","Volleyball","Football","Yoga","Pilates","Dance","Rowing","Skiing/Snowboarding","Surfing","Skateboarding","Pickleball","Martial Arts","Muay Thai"];
 
-export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan, onStartFresh, onSportChange }) {
+export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan, onStartFresh, onSportChange, onDevBugs }) {
   const { user, profile, signOut } = useAuth();
   const [showFreshConfirm, setShowFreshConfirm] = useState(false);
   const [freshInput, setFreshInput] = useState("");
@@ -505,6 +506,22 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
           </div>
         </button>}
       </div>
+
+      {/* ═══ DEVELOPER TOOLS (whitelisted emails only) ═══ */}
+      {isDeveloper(user) && <div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: 2, marginBottom: 8 }}>DEVELOPER TOOLS</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {onDevBugs && <button onClick={onDevBugs} style={{ width: "100%", padding: "12px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
+            background: C.bgCard, border: `1px solid ${C.danger}30`, color: C.text, display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 600, textAlign: "left" }}>
+            <span style={{ fontSize: 16 }}>🐛</span><div><div>Bug Report Dashboard</div><div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>View and manage all user-submitted bug reports</div></div>
+          </button>}
+          <div style={{ display: "flex", gap: 6 }}>
+            <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: "8px 10px", borderRadius: 8, background: C.bgCard, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 10, textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>Supabase</a>
+            <a href="https://vercel.com/dashboard" target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: "8px 10px", borderRadius: 8, background: C.bgCard, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 10, textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>Vercel</a>
+            <a href="https://github.com/johntsunami/apex-coach" target="_blank" rel="noopener noreferrer" style={{ flex: 1, padding: "8px 10px", borderRadius: 8, background: C.bgCard, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 10, textAlign: "center", textDecoration: "none", fontFamily: "inherit" }}>GitHub</a>
+          </div>
+        </div>
+      </div>}
 
       {/* ═══ CONDITION HISTORY ═══ */}
       {resolvedEntries.length > 0 && <div>
