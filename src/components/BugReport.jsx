@@ -320,7 +320,7 @@ function PlanQualityPanel() {
       const { validatePlan } = await import("../utils/planValidator.js");
       const plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null");
       const weeklyPlan = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null");
-      if (!plan) { setLiveResult({ error: "No daily workout in localStorage — navigate to Home first to generate one." }); setRunning(false); return; }
+      if (!plan) { setLiveResult({ error: "No daily workout cached yet. Tap the Home tab first to generate today's workout, then come back and run the audit." }); setRunning(false); return; }
       const result = validatePlan(plan, weeklyPlan);
       // Also log to console for developer visibility
       console.log("═══ PLAN AUDIT RESULTS ═══");
