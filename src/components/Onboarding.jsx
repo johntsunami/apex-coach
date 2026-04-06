@@ -3,6 +3,7 @@ import conditionsDB from "../data/conditions.json";
 import compensationsDB from "../data/compensations.json";
 import exerciseDB from "../data/exercises.json";
 import ExerciseImage from "./ExerciseImage.jsx";
+import { saveSeniorProfile, computeFallRisk, getAgeTier } from "../utils/seniorFitness.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX Coach — Onboarding Assessment (14 screens)
@@ -302,6 +303,10 @@ export default function OnboardingFlow({ onComplete, initialData }) {
   const [trainingRecency, setTrainingRecency] = useState(_d.trainingRecency || null);
   const [trainingHistory, setTrainingHistory] = useState(_d.trainingHistory || null);
 
+  // ── Age + Senior screening state ────────────────────────────
+  const [userAge, setUserAge] = useState(_d.userAge || null);
+  const [seniorScreening, setSeniorScreening] = useState(_d.seniorScreening || {});
+
   // ── New clinical assessment state ──────────────────────────
   const [painBehaviors, setPainBehaviors] = useState(_d.painBehaviors || {}); // {conditionId: {painType, worstTime, triggers[], relievers[], trend}}
   const [directionalPrefs, setDirectionalPrefs] = useState(_d.directionalPreferences || {}); // {conditionId: {extension, flexion, centralization}}
@@ -402,6 +407,8 @@ export default function OnboardingFlow({ onComplete, initialData }) {
       redFlags,
       redFlagCleared,
       compensations: detectedComps.map(c => c.id),
+      userAge,
+      seniorScreening,
       rom,
       goals,
       physiqueCategory,
@@ -418,6 +425,11 @@ export default function OnboardingFlow({ onComplete, initialData }) {
       preferences: prefs,
     };
     saveAssessment(data);
+    // Save senior profile if age 65+
+    if (userAge >= 65) {
+      const fallRisk = computeFallRisk(seniorScreening);
+      saveSeniorProfile({ age: userAge, ageTier: getAgeTier(userAge), ...seniorScreening, fallRiskLevel: fallRisk.level, fallRiskScore: fallRisk.score, fallRiskFlags: fallRisk.flags, referOut: fallRisk.referOut });
+    }
     onComplete(data);
   };
 
@@ -545,12 +557,89 @@ export default function OnboardingFlow({ onComplete, initialData }) {
             {parqWarning ? "✅ Continuing with caution" : "I understand — continue with caution →"}
           </button>
         </Card>}
-        <Btn onClick={next} disabled={parq.some(a => a === null) || (anyParqYes && !parqWarning)}>Next — Conditions →</Btn>
+        {/* Age input */}
+        <Card>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>How old are you?</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This helps us tailor exercise selection, safety thresholds, and recovery protocols to your age.</div>
+          <input type="number" min="16" max="99" value={userAge || ""} onChange={e => { const v = parseInt(e.target.value); if (v >= 16 && v <= 99) setUserAge(v); else if (!e.target.value) setUserAge(null); }}
+            placeholder="Enter your age" style={{ width: 120, padding: "10px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${userAge ? C.teal + "60" : C.border}`, color: C.text, fontSize: 16, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+          {userAge >= 65 && <div style={{ fontSize: 12, color: C.info, marginTop: 8, padding: "6px 10px", background: C.info + "08", borderRadius: 8, lineHeight: 1.5 }}>We'll add a brief balance and mobility screen on the next page to customize your plan for strength, stability, and independence.</div>}
+        </Card>
+        <Btn onClick={next} disabled={parq.some(a => a === null) || (anyParqYes && !parqWarning) || !userAge}>Next — Conditions →</Btn>
       </div>}
 
       {/* ── SCREEN 1: CONDITIONS ───────────────────────────── */}
       {screen === 1 && <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div><div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>CONDITIONS & INJURIES</div><div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.5, marginTop: 4 }}>Search for your condition or browse by category. Select all that apply.</div></div>
+        {/* Senior screening — shown for 65+ users at top of conditions screen */}
+        {userAge >= 65 && <Card style={{ borderColor: C.info + "40", background: C.info + "06" }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: C.info, letterSpacing: 1.5, marginBottom: 8 }}>BALANCE & FALL RISK SCREEN</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 10, lineHeight: 1.5 }}>These questions help us build a plan that keeps you strong, steady, and independent.</div>
+          {[
+            { id: "fallCount", q: "Have you fallen in the past 12 months?", opts: [{v:0,l:"No"},{v:1,l:"Yes, once"},{v:2,l:"Yes, twice"},{v:3,l:"Yes, 3 or more"}] },
+            { id: "unsteadiness", q: "Do you feel unsteady when standing or walking?", opts: [{v:"never",l:"Never"},{v:"sometimes",l:"Sometimes"},{v:"often",l:"Often"},{v:"almost_always",l:"Almost always"}] },
+            { id: "fearOfFalling", q: "Are you worried about falling?", opts: [{v:"not_at_all",l:"Not at all"},{v:"a_little",l:"A little"},{v:"moderately",l:"Moderately"},{v:"very_much",l:"Very much"}] },
+            { id: "assistiveDevice", q: "Do you use a walking device?", opts: [{v:"no",l:"No"},{v:"cane",l:"Cane"},{v:"walker",l:"Walker"},{v:"wheelchair",l:"Wheelchair"}] },
+            { id: "chairRise", q: "Can you get up from a chair without using your hands?", opts: [{v:"easily",l:"Yes, easily"},{v:"difficulty",l:"With some difficulty"},{v:"hands_only",l:"Only using my hands"},{v:"unable",l:"I'm unable to"}] },
+            { id: "walkingTolerance", q: "Can you walk for 10 minutes continuously?", opts: [{v:"easily",l:"Yes, easily"},{v:"effort",l:"Yes but with effort"},{v:"few_minutes",l:"Only a few minutes"},{v:"no",l:"No"}] },
+            { id: "dizziness", q: "Do you experience dizziness when standing up, turning, or walking?", opts: [{v:"never",l:"Never"},{v:"sometimes",l:"Sometimes"},{v:"often",l:"Often"}] },
+          ].map(q => (
+            <div key={q.id} style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}` }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 6 }}>{q.q}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                {q.opts.map(o => {
+                  const sel = seniorScreening[q.id] === o.v;
+                  return <button key={o.v} onClick={() => setSeniorScreening(p => ({ ...p, [q.id]: o.v }))}
+                    style={{ padding: "6px 10px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+                      background: sel ? C.info + "15" : "transparent", border: `1px solid ${sel ? C.info + "60" : C.border}`, color: sel ? C.info : C.textDim }}>{o.l}</button>;
+                })}
+              </div>
+            </div>
+          ))}
+          {/* Objective tests */}
+          <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.border}` }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: C.info, marginBottom: 8 }}>QUICK PHYSICAL TESTS (optional)</div>
+            <div style={{ padding: "6px 0" }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.text, marginBottom: 4 }}>Timed Up and Go (TUG)</div>
+              <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 6, lineHeight: 1.5 }}>Sit in a chair. Stand up, walk 10 feet, turn, walk back, and sit down. Record your time.</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <input type="number" min="1" max="120" value={seniorScreening.tugSeconds || ""} onChange={e => setSeniorScreening(p => ({ ...p, tugSeconds: parseInt(e.target.value) || null }))}
+                  placeholder="seconds" style={{ width: 90, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+                <span style={{ fontSize: 11, color: C.textDim }}>seconds</span>
+                {seniorScreening.tugSeconds && <span style={{ fontSize: 10, fontWeight: 600, color: seniorScreening.tugSeconds < 12 ? C.success : seniorScreening.tugSeconds <= 20 ? C.warning : C.danger }}>{seniorScreening.tugSeconds < 12 ? "Low risk" : seniorScreening.tugSeconds <= 20 ? "Moderate" : "Elevated"}</span>}
+              </div>
+            </div>
+            <div style={{ padding: "6px 0" }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.text, marginBottom: 4 }}>30-Second Chair Stand</div>
+              <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 6, lineHeight: 1.5 }}>Sit with arms folded. Count how many times you fully stand and sit in 30 seconds.</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <input type="number" min="0" max="50" value={seniorScreening.chairStandReps || ""} onChange={e => setSeniorScreening(p => ({ ...p, chairStandReps: parseInt(e.target.value) || null }))}
+                  placeholder="reps" style={{ width: 90, padding: "8px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+                <span style={{ fontSize: 11, color: C.textDim }}>reps in 30s</span>
+              </div>
+            </div>
+            <div style={{ padding: "6px 0" }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.text, marginBottom: 4 }}>4-Stage Balance Test</div>
+              <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 6, lineHeight: 1.5 }}>Hold each position for 10 seconds: 1) Side-by-side 2) Semi-tandem 3) Tandem 4) Single-leg. What's the furthest stage you held?</div>
+              <div style={{ display: "flex", gap: 4 }}>
+                {[1,2,3,4].map(s => <button key={s} onClick={() => setSeniorScreening(p => ({ ...p, balanceStage: s }))}
+                  style={{ width: 36, height: 36, borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit",
+                    background: seniorScreening.balanceStage === s ? C.info + "20" : "transparent", border: `1px solid ${seniorScreening.balanceStage === s ? C.info : C.border}`,
+                    color: seniorScreening.balanceStage === s ? C.info : C.textDim }}>Stage {s}</button>)}
+              </div>
+            </div>
+          </div>
+          {/* Fall risk result preview */}
+          {seniorScreening.fallCount !== undefined && seniorScreening.unsteadiness && (() => {
+            const riskScore = (seniorScreening.fallCount >= 2 ? 3 : seniorScreening.fallCount || 0) + (seniorScreening.unsteadiness === "often" || seniorScreening.unsteadiness === "almost_always" ? 2 : 0) + (seniorScreening.assistiveDevice === "walker" || seniorScreening.assistiveDevice === "wheelchair" ? 3 : 0) + ((seniorScreening.tugSeconds || 0) > 20 ? 2 : 0);
+            const level = riskScore >= 5 ? "HIGH" : riskScore >= 2 ? "MODERATE" : "LOW";
+            const color = level === "HIGH" ? C.danger : level === "MODERATE" ? C.warning : C.success;
+            return <div style={{ marginTop: 10, padding: "8px 12px", background: color + "10", borderRadius: 8, borderLeft: `3px solid ${color}` }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color }}>Fall Risk: {level}</div>
+              <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{level === "LOW" ? "Great stability — your plan will include strength, mobility, and light balance work." : level === "MODERATE" ? "We'll add dedicated balance training alongside your strength work to build stability." : "Your plan will prioritize balance and supported strength work. You're building confidence and capacity."}</div>
+            </div>;
+          })()}
+        </Card>}
         <WhyHelper screenNum={1} />
         {conditions.length > 0 && <div style={{ padding: "6px 10px", background: C.tealBg, borderRadius: 8, fontSize: 15, color: C.teal }}>{conditions.length} condition{conditions.length > 1 ? "s" : ""} selected — {conditions.length * 8}+ exercises will be adapted for your safety</div>}
         {/* Search/autocomplete */}

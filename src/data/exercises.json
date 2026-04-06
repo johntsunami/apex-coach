@@ -122,7 +122,8 @@
       "nasm_phase1",
       "lower_body",
       "inhibit",
-      "calves"
+      "calves",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calves-SMR/0.jpg",
@@ -257,7 +258,8 @@
       "nasm_phase1",
       "lower_body",
       "inhibit",
-      "it_band"
+      "it_band",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/0.jpg",
@@ -393,7 +395,8 @@
       "nasm_phase1",
       "lower_body",
       "inhibit",
-      "adductors"
+      "adductors",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Adductor/0.jpg",
@@ -525,7 +528,8 @@
       "nasm_phase1",
       "upper_body",
       "inhibit",
-      "lats"
+      "lats",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Latissimus_Dorsi-SMR/0.jpg",
@@ -661,7 +665,8 @@
       "upper_body",
       "inhibit",
       "thoracic",
-      "spine"
+      "spine",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Rhomboids-SMR/0.jpg",
@@ -798,7 +803,8 @@
       "anti_extension",
       "mcgill_big_3",
       "core_anti_extension_chain",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
@@ -940,7 +946,8 @@
       "nasm_phase1",
       "anti_extension",
       "core_anti_extension_chain",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
@@ -1078,7 +1085,8 @@
       "nasm_phase1",
       "anti_flexion",
       "mcgill_big_3",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Push_Up_to_Side_Plank/0.jpg",
@@ -1216,7 +1224,8 @@
       "nasm_phase1",
       "anti_rotation",
       "mcgill_big_3",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1572/3d14e761-a73d-49da-8804-f3016a7573ff.png",
@@ -1349,7 +1358,8 @@
       "nasm_phase1",
       "anti_extension",
       "mcgill_big_3",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
@@ -1486,7 +1496,8 @@
       "nasm_phase1",
       "stabilization",
       "proprioception",
-      "balance_progression"
+      "balance_progression",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
@@ -1625,7 +1636,8 @@
       "nasm_phase1",
       "stabilization",
       "proprioception",
-      "balance_progression"
+      "balance_progression",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Push-off/0.jpg",
@@ -1900,7 +1912,8 @@
       "squat",
       "nasm_phase1",
       "stabilization",
-      "beginner"
+      "beginner",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -2043,7 +2056,8 @@
       "nasm_phase1",
       "glutes",
       "hip_hinge_chain",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
@@ -2179,7 +2193,8 @@
       "hinge",
       "glutes",
       "hip_hinge_chain",
-      "unilateral"
+      "unilateral",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Single_Leg_Glute_Bridge/0.jpg",
@@ -2793,7 +2808,8 @@
       "horizontal_push_chain",
       "chest",
       "beginner",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
@@ -2931,7 +2947,8 @@
       "push",
       "horizontal_push_chain",
       "chest",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
@@ -3676,7 +3693,8 @@
       "horizontal_pull_chain",
       "shoulders",
       "isolation",
-      "shoulder_safe"
+      "shoulder_safe",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
@@ -3818,7 +3836,8 @@
       "horizontal_pull_chain",
       "back",
       "compound",
-      "back_safe"
+      "back_safe",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Incline_Row/0.jpg",
@@ -3966,7 +3985,8 @@
       "horizontal_pull_chain",
       "back",
       "compound",
-      "unilateral"
+      "unilateral",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg",
@@ -4112,7 +4132,8 @@
       "pull",
       "horizontal_pull_chain",
       "back",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
@@ -4263,7 +4284,8 @@
       "horizontal_pull_chain",
       "back",
       "compound",
-      "bodyweight"
+      "bodyweight",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inverted_Row/0.jpg",
@@ -4406,7 +4428,8 @@
       "squat_chain",
       "legs",
       "compound",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -4554,7 +4577,8 @@
       "squat",
       "squat_chain",
       "legs",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
@@ -5146,7 +5170,8 @@
       "isolation",
       "shoulder_safe",
       "shoulder_rehab_chain",
-      "mandatory"
+      "mandatory",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
@@ -5278,7 +5303,8 @@
       "shoulder_rehab_chain",
       "mandatory",
       "rehab",
-      "pt_shoulder"
+      "pt_shoulder",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/0.jpg",
@@ -5410,7 +5436,8 @@
     "tags": [
       "isolation",
       "arms",
-      "biceps"
+      "biceps",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
@@ -5539,7 +5566,8 @@
     "tags": [
       "isolation",
       "arms",
-      "triceps"
+      "triceps",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
@@ -5813,7 +5841,8 @@
     "tags": [
       "isolation",
       "calves",
-      "ankle"
+      "ankle",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
@@ -5947,7 +5976,8 @@
       "pt_knee",
       "knee_rehab_chain",
       "isolation",
-      "VMO"
+      "VMO",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -6079,7 +6109,8 @@
       "pt_knee",
       "knee_rehab_chain",
       "isolation",
-      "VMO"
+      "VMO",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -6213,7 +6244,8 @@
       "core",
       "anti_rotation",
       "core_anti_rotation_chain",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/0.jpg",
@@ -6348,7 +6380,8 @@
       "core",
       "anti_rotation",
       "core_anti_rotation_chain",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pallof_Press_With_Rotation/0.jpg",
@@ -6627,7 +6660,8 @@
       "anti_extension",
       "core_anti_extension_chain",
       "advanced",
-      "phase2"
+      "phase2",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ab_Roller/0.jpg",
@@ -6766,7 +6800,8 @@
       "carry",
       "core_anti_rotation_chain",
       "core",
-      "functional"
+      "functional",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
@@ -8001,7 +8036,8 @@
       "rehab",
       "mobility",
       "neck",
-      "mckenzie_neck_chain"
+      "mckenzie_neck_chain",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
@@ -8137,7 +8173,8 @@
       "rehab",
       "mobility",
       "neck",
-      "mckenzie_neck_chain"
+      "mckenzie_neck_chain",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Neck-SMR/0.jpg",
@@ -8953,7 +8990,8 @@
       "knee_rehab_chain",
       "isolation",
       "VMO",
-      "isometric"
+      "isometric",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -9088,7 +9126,8 @@
       "rehab",
       "pt_knee",
       "knee_rehab_chain",
-      "isolation"
+      "isolation",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg",
@@ -9652,7 +9691,8 @@
       "pt_shoulder",
       "shoulder_rehab_chain",
       "isolation",
-      "isometric"
+      "isometric",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation_with_Band/0.jpg",
@@ -10201,7 +10241,8 @@
       "rehab",
       "pt_shoulder",
       "scapular",
-      "isolation"
+      "isolation",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -10333,7 +10374,8 @@
       "mobility",
       "warmup",
       "spine",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/0.jpg",
@@ -10468,7 +10510,8 @@
     "tags": [
       "mobility",
       "cooldown",
-      "hips"
+      "hips",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -10608,7 +10651,8 @@
       "mobility",
       "warmup",
       "full_body",
-      "dynamic"
+      "dynamic",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/World_s_Greatest_Stretch/0.jpg",
@@ -10743,7 +10787,8 @@
       "warmup",
       "thoracic",
       "spine",
-      "rotation"
+      "rotation",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Crossover/0.jpg",
@@ -10878,7 +10923,8 @@
     "tags": [
       "mobility",
       "warmup",
-      "ankle"
+      "ankle",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
@@ -11020,7 +11066,8 @@
       "mobility",
       "warmup",
       "shoulders",
-      "shoulder_rom"
+      "shoulder_rom",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -11155,7 +11202,8 @@
       "flexibility",
       "cooldown",
       "hamstrings",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/0.jpg",
@@ -11289,7 +11337,8 @@
       "cooldown",
       "hip_flexors",
       "static_stretch",
-      "lower_crossed_syndrome"
+      "lower_crossed_syndrome",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
@@ -11425,7 +11474,8 @@
       "cooldown",
       "back",
       "decompression",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
@@ -11564,7 +11614,8 @@
       "chest",
       "pectorals",
       "static_stretch",
-      "upper_crossed_syndrome"
+      "upper_crossed_syndrome",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dynamic_Chest_Stretch/0.jpg",
@@ -11699,7 +11750,8 @@
       "neck",
       "upper_traps",
       "static_stretch",
-      "upper_crossed_syndrome"
+      "upper_crossed_syndrome",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg",
@@ -11836,7 +11888,8 @@
       "cooldown",
       "glutes",
       "piriformis",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_On_The_Knee/0.jpg",
@@ -11972,7 +12025,8 @@
       "flexibility",
       "cooldown",
       "quadriceps",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/On_Your_Side_Quad_Stretch/0.jpg",
@@ -12111,7 +12165,8 @@
       "flexibility",
       "cooldown",
       "shoulders",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Stretch/0.jpg",
@@ -12654,7 +12709,8 @@
       "nasm_phase1",
       "lower_body",
       "inhibit",
-      "quadriceps"
+      "quadriceps",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Quadriceps-SMR/0.jpg",
@@ -12789,7 +12845,8 @@
       "nasm_phase1",
       "lower_body",
       "inhibit",
-      "hamstrings"
+      "hamstrings",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hamstring-SMR/0.jpg",
@@ -12919,7 +12976,8 @@
       "foam_roll",
       "lower_body",
       "inhibit",
-      "glutes"
+      "glutes",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg",
@@ -13050,7 +13108,8 @@
       "lower_body",
       "inhibit",
       "piriformis",
-      "hip"
+      "hip",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Piriformis-SMR/0.jpg",
@@ -13184,7 +13243,8 @@
       "foam_roll",
       "upper_body",
       "inhibit",
-      "upper_back"
+      "upper_back",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
@@ -13316,7 +13376,8 @@
       "upper_body",
       "inhibit",
       "pectorals",
-      "upper_crossed_syndrome"
+      "upper_crossed_syndrome",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_Stretch_on_Stability_Ball/0.jpg",
@@ -13447,7 +13508,8 @@
       "lower_body",
       "inhibit",
       "tfl",
-      "lower_crossed_syndrome"
+      "lower_crossed_syndrome",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Iliotibial_Tract-SMR/0.jpg",
@@ -13579,7 +13641,8 @@
       "lower_body",
       "inhibit",
       "peroneals",
-      "ankle"
+      "ankle",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Peroneals-SMR/0.jpg",
@@ -13712,7 +13775,8 @@
       "upper_body",
       "inhibit",
       "forearms",
-      "biceps"
+      "biceps",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
@@ -13843,7 +13907,8 @@
       "lower_body",
       "inhibit",
       "feet",
-      "plantar_fascia"
+      "plantar_fascia",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Foot-SMR/0.jpg",
@@ -13994,7 +14059,8 @@
       "posture",
       "neck",
       "activate",
-      "beginner"
+      "beginner",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -14150,7 +14216,8 @@
       "posture",
       "activate",
       "lower_traps",
-      "scapular_stability"
+      "scapular_stability",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
@@ -14466,7 +14533,8 @@
       "posture",
       "lengthen",
       "pecs",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dynamic_Chest_Stretch/0.jpg",
@@ -14618,7 +14686,8 @@
       "lengthen",
       "upper_traps",
       "stretch",
-      "neck"
+      "neck",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg",
@@ -14769,7 +14838,8 @@
       "lengthen",
       "levator_scapulae",
       "stretch",
-      "neck"
+      "neck",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1861/0ffe4e99-71ad-47fb-b98c-1f243faa0499.png",
@@ -14926,7 +14996,8 @@
       "posture",
       "integrate",
       "rhomboids",
-      "scapular_stability"
+      "scapular_stability",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
@@ -15242,7 +15313,8 @@
       "posture",
       "lengthen",
       "hip_flexors",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
@@ -15398,7 +15470,8 @@
       "posture",
       "lengthen",
       "hip_flexors",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
@@ -15553,7 +15626,8 @@
       "activate",
       "tva",
       "core",
-      "pelvic_control"
+      "pelvic_control",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
@@ -15709,7 +15783,8 @@
       "activate",
       "glutes",
       "pelvic_control",
-      "anti_rotation"
+      "anti_rotation",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
@@ -15862,7 +15937,8 @@
       "posture",
       "activate",
       "glute_med",
-      "hip_stability"
+      "hip_stability",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -16015,7 +16091,8 @@
       "posture",
       "activate",
       "glute_med",
-      "hip_stability"
+      "hip_stability",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1748/923a3ff7-c269-49bd-9f03-697151a40f06.jpg",
@@ -16172,7 +16249,8 @@
       "integrate",
       "glute_med",
       "hip_stability",
-      "functional"
+      "functional",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/0.jpg",
@@ -16480,7 +16558,8 @@
       "rehab",
       "mobility",
       "hip_rotation",
-      "assessment"
+      "assessment",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -16634,7 +16713,8 @@
       "rehab",
       "mobility",
       "hip_circles",
-      "joint_mobilization"
+      "joint_mobilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/All_Fours_Quad_Stretch/0.jpg",
@@ -16786,7 +16866,8 @@
       "flexibility",
       "hip_rotation",
       "stretch",
-      "piriformis"
+      "piriformis",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -16939,7 +17020,8 @@
       "flexibility",
       "it_band",
       "tfl",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/IT_Band_and_Glute_Stretch/0.jpg",
@@ -17077,7 +17159,8 @@
       "cooldown",
       "hips",
       "piriformis",
-      "hip_flexibility"
+      "hip_flexibility",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_On_The_Knee/0.jpg",
@@ -17217,7 +17300,8 @@
       "rehab",
       "hip",
       "isolation",
-      "hip_flexor"
+      "hip_flexor",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -17351,7 +17435,8 @@
       "glute_med",
       "hip",
       "isolation",
-      "activation"
+      "activation",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/957/0fd94587-6021-4763-856e-7227f5fcba2a.png",
@@ -17489,7 +17574,8 @@
       "hip",
       "isolation",
       "functional",
-      "pt_knee"
+      "pt_knee",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Monster_Walk/0.jpg",
@@ -17622,7 +17708,8 @@
       "rehab",
       "ankle",
       "mobility",
-      "pt_ankle"
+      "pt_ankle",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Ankle_Circles/0.jpg",
@@ -17754,7 +17841,8 @@
       "rehab",
       "foot",
       "intrinsic",
-      "plantar_fascia"
+      "plantar_fascia",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": null,
@@ -18159,7 +18247,8 @@
       "rehab",
       "foot",
       "intrinsic",
-      "toe_control"
+      "toe_control",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -18291,7 +18380,8 @@
       "shin",
       "ankle",
       "tibialis",
-      "prevention"
+      "prevention",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -18426,7 +18516,8 @@
       "wrist",
       "forearm",
       "stretch",
-      "tennis_elbow"
+      "tennis_elbow",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -18562,7 +18653,8 @@
       "wrist",
       "forearm",
       "stretch",
-      "golfers_elbow"
+      "golfers_elbow",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -18699,7 +18791,8 @@
       "elbow",
       "eccentric",
       "tennis_elbow",
-      "tyler_twist"
+      "tyler_twist",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -18969,7 +19062,8 @@
       "rehab",
       "grip",
       "forearm",
-      "hand"
+      "hand",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -19642,7 +19736,8 @@
       "williams_flexion",
       "core",
       "spine",
-      "flexion"
+      "flexion",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
@@ -19780,7 +19875,8 @@
       "williams_flexion",
       "flexibility",
       "spine",
-      "flexion"
+      "flexion",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/0.jpg",
@@ -19921,7 +20017,8 @@
       "williams_flexion",
       "flexibility",
       "spine",
-      "flexion"
+      "flexion",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Tuck_Jump/0.jpg",
@@ -20200,7 +20297,8 @@
       "williams_flexion",
       "flexibility",
       "spine",
-      "flexion"
+      "flexion",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
@@ -20763,7 +20861,8 @@
       "balance",
       "gait",
       "balance_progression",
-      "functional"
+      "functional",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
@@ -20909,7 +21008,8 @@
       "warmup",
       "functional",
       "full_body",
-      "dynamic"
+      "dynamic",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -21054,7 +21154,8 @@
       "functional",
       "full_body",
       "dynamic",
-      "core"
+      "core",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg",
@@ -21494,7 +21595,8 @@
       "full_body",
       "functional",
       "grip",
-      "core"
+      "core",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
@@ -21626,7 +21728,8 @@
       "flexibility",
       "cooldown",
       "lats",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1861/0ffe4e99-71ad-47fb-b98c-1f243faa0499.png",
@@ -21764,7 +21867,8 @@
       "cooldown",
       "adductors",
       "hips",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Groin_and_Back_Stretch/0.jpg",
@@ -21899,7 +22003,8 @@
       "flexibility",
       "cooldown",
       "glutes",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Glute/0.jpg",
@@ -22036,7 +22141,8 @@
       "flexibility",
       "cooldown",
       "chest",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Behind_Head_Chest_Stretch/0.jpg",
@@ -22172,7 +22278,8 @@
       "flexibility",
       "cooldown",
       "shoulders",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chest_And_Front_Of_Shoulder_Stretch/0.jpg",
@@ -22305,7 +22412,8 @@
       "cooldown",
       "wrist",
       "forearm",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Forearm_Stretch/0.jpg",
@@ -22439,7 +22547,8 @@
       "flexibility",
       "cooldown",
       "neck",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg",
@@ -22575,7 +22684,8 @@
       "flexibility",
       "cooldown",
       "calves",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Gastrocnemius_Calf_Stretch/0.jpg",
@@ -22710,7 +22820,8 @@
       "core",
       "parasympathetic",
       "foundation",
-      "warmup"
+      "warmup",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -22841,7 +22952,8 @@
     "tags": [
       "breathing",
       "parasympathetic",
-      "stress_regulation"
+      "stress_regulation",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -22972,7 +23084,8 @@
       "breathing",
       "core",
       "diaphragm",
-      "foundation"
+      "foundation",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -23101,7 +23214,8 @@
       "breathing",
       "parasympathetic",
       "acute_stress",
-      "fast_acting"
+      "fast_acting",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -23237,7 +23351,8 @@
       "seated",
       "wheelchair_accessible",
       "chest",
-      "band"
+      "band",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Chest_Press/0.jpg",
@@ -23383,7 +23498,8 @@
       "push",
       "seated",
       "shoulders",
-      "overhead"
+      "overhead",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Press/0.jpg",
@@ -23522,7 +23638,8 @@
     "tags": [
       "isolation",
       "seated",
-      "shoulders"
+      "shoulders",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Side_Lateral_Raise/0.jpg",
@@ -23657,7 +23774,8 @@
       "seated",
       "back",
       "band",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
@@ -23790,7 +23908,8 @@
       "seated",
       "arms",
       "biceps",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Dumbbell_Curl/0.jpg",
@@ -23926,7 +24045,8 @@
       "isolation",
       "seated",
       "arms",
-      "triceps"
+      "triceps",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Triceps_Press/0.jpg",
@@ -24059,7 +24179,8 @@
       "seated",
       "shoulders",
       "band",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Band_Pull_Apart/0.jpg",
@@ -24197,7 +24318,8 @@
       "seated",
       "core",
       "thoracic",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/0.jpg",
@@ -24334,7 +24456,8 @@
       "cardio",
       "seated",
       "boxing",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -24478,7 +24601,8 @@
       "push",
       "triceps",
       "bodyweight",
-      "arms"
+      "arms",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
@@ -24613,7 +24737,8 @@
     "tags": [
       "core",
       "seated",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
@@ -24753,7 +24878,8 @@
       "seated",
       "rotation",
       "obliques",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Barbell_Twist/0.jpg",
@@ -24883,7 +25009,8 @@
       "isolation",
       "seated",
       "quadriceps",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg",
@@ -25016,7 +25143,8 @@
       "cardio",
       "seated",
       "wheelchair_accessible",
-      "low_impact"
+      "low_impact",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -25146,7 +25274,8 @@
       "knee",
       "rom",
       "seated",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -25280,7 +25409,8 @@
       "ankle",
       "dvt_prevention",
       "seated",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -25414,7 +25544,8 @@
       "seated",
       "glute_med",
       "hip",
-      "wheelchair_accessible"
+      "wheelchair_accessible",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/0.jpg",
@@ -25556,7 +25687,8 @@
       "push",
       "seated",
       "full_body",
-      "advanced"
+      "advanced",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Hip_Raise_On_Parallel_Bars/0.jpg",
@@ -25687,7 +25819,8 @@
       "rehab",
       "ankle",
       "dvt_prevention",
-      "bed_bound"
+      "bed_bound",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": null,
@@ -25819,7 +25952,8 @@
       "rehab",
       "knee",
       "rom",
-      "bed_bound"
+      "bed_bound",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": null,
@@ -25950,7 +26084,8 @@
       "rehab",
       "core",
       "bed_bound",
-      "foundation"
+      "foundation",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
@@ -26083,7 +26218,8 @@
       "rehab",
       "hip",
       "rom",
-      "bed_bound"
+      "bed_bound",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": null,
@@ -26216,7 +26352,8 @@
       "rehab",
       "shoulder",
       "rom",
-      "bed_bound"
+      "bed_bound",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Rear_Delt_Raise/0.jpg",
@@ -26346,7 +26483,8 @@
       "core",
       "bed_bound",
       "foundation",
-      "parasympathetic"
+      "parasympathetic",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": null,
@@ -26481,7 +26619,8 @@
       "neck",
       "rom",
       "bed_bound",
-      "gentle"
+      "gentle",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": null,
@@ -26613,7 +26752,8 @@
       "glutes",
       "isometric",
       "bed_bound",
-      "activation"
+      "activation",
+      "senior_safe"
     ],
     "abilityLevel": "bed_bound",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
@@ -26881,7 +27021,8 @@
       "push",
       "aquatic",
       "chest",
-      "low_impact"
+      "low_impact",
+      "senior_safe"
     ],
     "abilityLevel": "aquatic",
     "imageUrl": null,
@@ -27152,7 +27293,8 @@
     "tags": [
       "core",
       "aquatic",
-      "hip_flexors"
+      "hip_flexors",
+      "senior_safe"
     ],
     "abilityLevel": "aquatic",
     "imageUrl": null,
@@ -27283,7 +27425,8 @@
       "rehab",
       "aquatic",
       "shoulder",
-      "rom"
+      "rom",
+      "senior_safe"
     ],
     "abilityLevel": "aquatic",
     "imageUrl": null,
@@ -27419,7 +27562,8 @@
       "squat",
       "aquatic",
       "legs",
-      "low_impact"
+      "low_impact",
+      "senior_safe"
     ],
     "abilityLevel": "aquatic",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -27567,7 +27711,8 @@
       "squat",
       "kettlebell",
       "legs",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
@@ -28308,7 +28453,8 @@
       "kettlebell",
       "back",
       "compound",
-      "unilateral"
+      "unilateral",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternating_Kettlebell_Row/0.jpg",
@@ -28449,7 +28595,8 @@
       "mobility",
       "warmup",
       "kettlebell",
-      "shoulders"
+      "shoulders",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Arnold_Press/0.jpg",
@@ -28590,7 +28737,8 @@
       "kettlebell",
       "full_body",
       "grip",
-      "core"
+      "core",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
@@ -28728,7 +28876,8 @@
       "trx",
       "back",
       "compound",
-      "bodyweight"
+      "bodyweight",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Suspended_Row/0.jpg",
@@ -29003,7 +29152,8 @@
       "squat",
       "trx",
       "legs",
-      "assisted"
+      "assisted",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -29694,7 +29844,8 @@
       "trx",
       "shoulders",
       "rotator_cuff",
-      "shoulder_rehab_chain"
+      "shoulder_rehab_chain",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
@@ -29839,7 +29990,8 @@
       "push",
       "band",
       "shoulders",
-      "overhead"
+      "overhead",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Dumbbell_Press/0.jpg",
@@ -29980,7 +30132,8 @@
       "squat",
       "band",
       "legs",
-      "home_friendly"
+      "home_friendly",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -30125,7 +30278,8 @@
       "band",
       "legs",
       "home_friendly",
-      "hip_hinge_chain"
+      "hip_hinge_chain",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
@@ -30263,7 +30417,8 @@
       "push",
       "band",
       "chest",
-      "home_friendly"
+      "home_friendly",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Chest_Press/0.jpg",
@@ -30407,7 +30562,8 @@
       "band",
       "back",
       "vertical_pull",
-      "home_friendly"
+      "home_friendly",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1635/b8c34e3a-7474-41ea-99e3-8d7fdb1e12d6.png",
@@ -30541,7 +30697,8 @@
       "band",
       "triceps",
       "arms",
-      "home_friendly"
+      "home_friendly",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
@@ -30673,7 +30830,8 @@
       "band",
       "hamstrings",
       "legs",
-      "home_friendly"
+      "home_friendly",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
@@ -30807,7 +30965,8 @@
       "hinge",
       "band",
       "glutes",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
@@ -30942,7 +31101,8 @@
       "push",
       "chest",
       "acute_pain",
-      "rehab"
+      "rehab",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
@@ -31079,7 +31239,8 @@
       "squat",
       "legs",
       "rehab",
-      "acute_pain"
+      "acute_pain",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -31214,7 +31375,8 @@
       "pull",
       "back",
       "posture",
-      "rehab"
+      "rehab",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
@@ -31353,7 +31515,8 @@
       "isometric",
       "core",
       "plank",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
@@ -31485,7 +31648,8 @@
       "isometric",
       "shoulders",
       "rehab",
-      "acute_pain"
+      "acute_pain",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
@@ -31619,7 +31783,8 @@
       "hip",
       "adductors",
       "pelvic_floor",
-      "rehab"
+      "rehab",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
@@ -31754,7 +31919,8 @@
       "warmup",
       "dynamic",
       "hips",
-      "mobility"
+      "mobility",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Leg_Raises/0.jpg",
@@ -31887,7 +32053,8 @@
       "warmup",
       "dynamic",
       "shoulders",
-      "mobility"
+      "mobility",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/0.jpg",
@@ -32031,7 +32198,8 @@
       "warmup",
       "dynamic",
       "lunge",
-      "legs"
+      "legs",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
@@ -32312,7 +32480,8 @@
       "warmup",
       "dynamic",
       "legs",
-      "quadriceps"
+      "quadriceps",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Double_Leg_Butt_Kick/0.jpg",
@@ -32591,7 +32760,8 @@
       "lateral",
       "rotation",
       "coordination",
-      "phase2"
+      "phase2",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Carioca_Quick_Step/0.jpg",
@@ -32732,7 +32902,8 @@
       "warmup",
       "dynamic",
       "hamstrings",
-      "legs"
+      "legs",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -33278,7 +33449,8 @@
       "reaction",
       "coordination",
       "hand_eye",
-      "phase2"
+      "phase2",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -33694,7 +33866,8 @@
       "grip",
       "forearm",
       "isolation",
-      "phase2"
+      "phase2",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plate_Pinch/0.jpg",
@@ -33971,7 +34144,8 @@
       "grip",
       "forearm",
       "isolation",
-      "phase2"
+      "phase2",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Roller/0.jpg",
@@ -34105,7 +34279,8 @@
       "grip",
       "hand",
       "forearm",
-      "comprehensive"
+      "comprehensive",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": null,
@@ -34373,7 +34548,8 @@
       "restorative",
       "parasympathetic",
       "pain_management",
-      "cooldown"
+      "cooldown",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -34503,7 +34679,8 @@
       "stress_management",
       "pain_management",
       "parasympathetic",
-      "cooldown"
+      "cooldown",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -34782,7 +34959,8 @@
       "cognitive",
       "gait",
       "falls_prevention",
-      "balance"
+      "balance",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
@@ -34925,7 +35103,8 @@
       "cardio",
       "coordination",
       "seated_option",
-      "low_impact"
+      "low_impact",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -35062,7 +35241,8 @@
       "rehab",
       "passive_rom",
       "neuroplasticity",
-      "shoulder_rom"
+      "shoulder_rom",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": null,
@@ -35205,7 +35385,8 @@
       "rehab",
       "bilateral",
       "neuroplasticity",
-      "mirror_therapy"
+      "mirror_therapy",
+      "senior_safe"
     ],
     "abilityLevel": "seated_only",
     "imageUrl": null,
@@ -35343,7 +35524,8 @@
       "squat_pattern",
       "beginner",
       "independence",
-      "rehab"
+      "rehab",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
@@ -35476,7 +35658,8 @@
       "breathing",
       "stress_management",
       "warm_up",
-      "recovery"
+      "recovery",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -36040,7 +36223,8 @@
       "core",
       "anti_extension",
       "beginner",
-      "scalable"
+      "scalable",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
@@ -36172,7 +36356,8 @@
       "pelvic_floor",
       "core",
       "daily",
-      "beginner"
+      "beginner",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -36306,7 +36491,8 @@
       "glute_med",
       "corrective",
       "knee_valgus_prevention",
-      "beginner"
+      "beginner",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -36444,7 +36630,8 @@
       "daily",
       "joint_health",
       "morning_routine",
-      "mobility"
+      "mobility",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -36577,7 +36764,8 @@
       "vmo",
       "isometric",
       "daily",
-      "pain_free"
+      "pain_free",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -36713,7 +36901,8 @@
       "warm_up",
       "wheelchair_accessible",
       "gentle",
-      "daily"
+      "daily",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/0.jpg",
@@ -36854,7 +37043,8 @@
       "cooldown",
       "wheelchair_accessible",
       "gentle",
-      "relaxation"
+      "relaxation",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
@@ -36993,7 +37183,8 @@
       "cooldown",
       "wheelchair_accessible",
       "gentle",
-      "spinal_mobility"
+      "spinal_mobility",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -37136,7 +37327,8 @@
       "upper_back",
       "cooldown",
       "wheelchair_accessible",
-      "posture"
+      "posture",
+      "senior_safe"
     ],
     "abilityLevel": "wheelchair_accessible",
     "imageUrl": null,
@@ -37269,7 +37461,8 @@
       "rehab",
       "daily",
       "progressive",
-      "endurance"
+      "endurance",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -37401,7 +37594,8 @@
       "fast_twitch",
       "rehab",
       "core",
-      "reactive_stability"
+      "reactive_stability",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -37537,7 +37731,8 @@
       "core_canister",
       "breathing",
       "foundation",
-      "daily"
+      "daily",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -37672,7 +37867,8 @@
       "rehab",
       "mobility",
       "daily",
-      "facial"
+      "facial",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -37807,7 +38003,8 @@
       "jaw",
       "rehab",
       "mobility",
-      "lateral_movement"
+      "lateral_movement",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -37945,7 +38142,8 @@
       "rehab",
       "isometric",
       "strengthening",
-      "stabilization"
+      "stabilization",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -39522,7 +39720,8 @@
       "chest",
       "beginner",
       "park",
-      "scalable"
+      "scalable",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
@@ -40265,7 +40464,8 @@
       "frozen_shoulder",
       "passive_rom",
       "daily",
-      "gentle"
+      "gentle",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://wger.de/media/exercise-images/1639/8927346e-f5ca-4795-bdf1-5ac9309401e7.webp",
@@ -40404,7 +40604,8 @@
       "shoulder_rehab",
       "dyskinesis",
       "motor_control",
-      "corrective"
+      "corrective",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -40539,7 +40740,8 @@
       "rehab",
       "deep_flexors",
       "posture",
-      "forward_head"
+      "forward_head",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -40677,7 +40879,8 @@
       "mobility",
       "self_mobilization",
       "mulligan",
-      "stiffness"
+      "stiffness",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -40816,7 +41019,8 @@
       "extension",
       "post_fusion",
       "adjacent_segment",
-      "daily"
+      "daily",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": null,
@@ -40955,7 +41159,8 @@
       "spinal_safe",
       "beginner",
       "daily",
-      "foundation"
+      "foundation",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
@@ -41093,7 +41298,8 @@
       "awareness",
       "gentle",
       "foundation",
-      "daily"
+      "daily",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pelvic_Tilt_Into_Bridge/0.jpg",
@@ -41233,7 +41439,8 @@
       "hip_integration",
       "kneeling",
       "progression",
-      "spinal_safe"
+      "spinal_safe",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Hip_Flexor/0.jpg",
@@ -41528,7 +41735,8 @@
       "band",
       "spanish_squat",
       "vertical_tibia",
-      "vmo"
+      "vmo",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg",
@@ -41663,7 +41871,8 @@
       "scapular_stability",
       "shoulder_rehab",
       "protraction",
-      "pressing_safety"
+      "pressing_safety",
+      "senior_safe"
     ],
     "abilityLevel": "supine_only",
     "imageUrl": null,
@@ -41797,7 +42006,8 @@
       "foam_roller",
       "daily",
       "posture",
-      "compensatory_prevention"
+      "compensatory_prevention",
+      "senior_safe"
     ],
     "abilityLevel": "any",
     "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Rhomboids-SMR/0.jpg",
@@ -41938,7 +42148,8 @@
       "band",
       "balance",
       "functional",
-      "gait_improvement"
+      "gait_improvement",
+      "senior_safe"
     ],
     "abilityLevel": "standing",
     "imageUrl": null,
@@ -42073,7 +42284,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "mobility"
+      "mobility",
+      "senior_safe"
     ],
     "youtubeVideoId": "QF_ubbr_RUE",
     "methodology": [
@@ -42204,7 +42416,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "rom"
+      "rom",
+      "senior_safe"
     ],
     "youtubeVideoId": "V7-M7UONtwI",
     "methodology": [
@@ -42336,7 +42549,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "rom"
+      "rom",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -42467,7 +42681,8 @@
       "mckenzie_shoulder",
       "rehab",
       "shoulder",
-      "mckenzie_shoulder_chain"
+      "mckenzie_shoulder_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -42600,7 +42815,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "youtubeVideoId": "-YFWrYkJVBs",
     "methodology": [
@@ -42730,7 +42946,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "youtubeVideoId": "-YFWrYkJVBs",
     "methodology": [
@@ -42864,7 +43081,8 @@
       "rehab",
       "shoulder",
       "mckenzie_shoulder_chain",
-      "isometric"
+      "isometric",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -42996,7 +43214,8 @@
       "mckenzie_shoulder",
       "rehab",
       "shoulder",
-      "mckenzie_shoulder_chain"
+      "mckenzie_shoulder_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43122,7 +43341,8 @@
       "mckenzie_knee",
       "rehab",
       "knee",
-      "mckenzie_knee_chain"
+      "mckenzie_knee_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43250,7 +43470,8 @@
       "mckenzie_knee",
       "rehab",
       "knee",
-      "mckenzie_knee_chain"
+      "mckenzie_knee_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43379,7 +43600,8 @@
       "mckenzie_knee",
       "rehab",
       "knee",
-      "mckenzie_knee_chain"
+      "mckenzie_knee_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43508,7 +43730,8 @@
       "rehab",
       "knee",
       "mckenzie_knee_chain",
-      "vmo"
+      "vmo",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43638,7 +43861,8 @@
       "mckenzie_knee",
       "rehab",
       "knee",
-      "mckenzie_knee_chain"
+      "mckenzie_knee_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43770,7 +43994,8 @@
       "mckenzie_knee",
       "rehab",
       "knee",
-      "mckenzie_knee_chain"
+      "mckenzie_knee_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -43899,7 +44124,8 @@
       "mckenzie_hip",
       "rehab",
       "hips",
-      "mckenzie_hip_chain"
+      "mckenzie_hip_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44029,7 +44255,8 @@
       "mckenzie_hip",
       "rehab",
       "hips",
-      "mckenzie_hip_chain"
+      "mckenzie_hip_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44159,7 +44386,8 @@
       "mckenzie_hip",
       "rehab",
       "hips",
-      "mckenzie_hip_chain"
+      "mckenzie_hip_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44289,7 +44517,8 @@
       "rehab",
       "hips",
       "mckenzie_hip_chain",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44418,7 +44647,8 @@
       "mckenzie_hip",
       "rehab",
       "hips",
-      "mckenzie_hip_chain"
+      "mckenzie_hip_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44548,7 +44778,8 @@
       "rehab",
       "hips",
       "mckenzie_hip_chain",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44680,7 +44911,8 @@
       "mckenzie_hip",
       "rehab",
       "hips",
-      "mckenzie_hip_chain"
+      "mckenzie_hip_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44810,7 +45042,8 @@
       "mckenzie_ankle",
       "rehab",
       "ankles",
-      "mckenzie_ankle_chain"
+      "mckenzie_ankle_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -44938,7 +45171,8 @@
       "rehab",
       "ankles",
       "mckenzie_ankle_chain",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45066,7 +45300,8 @@
       "mckenzie_ankle",
       "rehab",
       "ankles",
-      "mckenzie_ankle_chain"
+      "mckenzie_ankle_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45196,7 +45431,8 @@
       "rehab",
       "ankles",
       "mckenzie_ankle_chain",
-      "foot"
+      "foot",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45326,7 +45562,8 @@
       "rehab",
       "calves",
       "mckenzie_ankle_chain",
-      "eccentric"
+      "eccentric",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45457,7 +45694,8 @@
       "rehab",
       "ankles",
       "mckenzie_ankle_chain",
-      "balance"
+      "balance",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45589,7 +45827,8 @@
       "mckenzie_ankle",
       "rehab",
       "ankles",
-      "mckenzie_ankle_chain"
+      "mckenzie_ankle_chain",
+      "senior_safe"
     ],
     "youtubeVideoId": null,
     "methodology": [
@@ -45714,7 +45953,8 @@
       "beginner",
       "back",
       "stretch",
-      "decompression"
+      "decompression",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
@@ -45841,7 +46081,8 @@
       "beginner",
       "back",
       "mobility",
-      "spine"
+      "spine",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
@@ -45969,7 +46210,8 @@
       "yoga",
       "beginner",
       "back",
-      "rotation"
+      "rotation",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
@@ -46095,7 +46337,8 @@
       "yoga",
       "beginner",
       "legs",
-      "restorative"
+      "restorative",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "legs",
@@ -46221,7 +46464,8 @@
       "yoga",
       "beginner",
       "back",
-      "hamstrings"
+      "hamstrings",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
@@ -46348,7 +46592,8 @@
       "yoga",
       "beginner",
       "glutes",
-      "hips"
+      "hips",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "hips",
@@ -46474,7 +46719,8 @@
       "yoga",
       "beginner",
       "hips",
-      "restorative"
+      "restorative",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "hips",
@@ -46600,7 +46846,8 @@
       "beginner",
       "full_body",
       "restorative",
-      "breathing"
+      "breathing",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "full_body",
@@ -46726,7 +46973,8 @@
       "yoga",
       "beginner",
       "back",
-      "relief"
+      "relief",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "back",
@@ -46853,7 +47101,8 @@
       "beginner",
       "shoulders",
       "thoracic",
-      "rotation"
+      "rotation",
+      "senior_safe"
     ],
     "_yogaLevel": "beginner",
     "_yogaTarget": "shoulders",
@@ -46981,7 +47230,8 @@
       "yoga",
       "intermediate",
       "full_body",
-      "stretch"
+      "stretch",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "full_body",
@@ -47109,7 +47359,8 @@
       "intermediate",
       "hips",
       "balance",
-      "lunge"
+      "lunge",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
@@ -47237,7 +47488,8 @@
       "intermediate",
       "hips",
       "legs",
-      "balance"
+      "balance",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
@@ -47365,7 +47617,8 @@
       "yoga",
       "intermediate",
       "full_body",
-      "lateral"
+      "lateral",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "full_body",
@@ -47494,7 +47747,8 @@
       "yoga",
       "intermediate",
       "hips",
-      "hip_opener"
+      "hip_opener",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
@@ -47620,7 +47874,8 @@
       "yoga",
       "intermediate",
       "hips",
-      "hip_flexor"
+      "hip_flexor",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "hips",
@@ -47746,7 +48001,8 @@
       "yoga",
       "intermediate",
       "back",
-      "extension"
+      "extension",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "back",
@@ -47874,7 +48130,8 @@
       "intermediate",
       "legs",
       "squat",
-      "endurance"
+      "endurance",
+      "senior_safe"
     ],
     "_yogaLevel": "intermediate",
     "_yogaTarget": "legs",
@@ -48011,7 +48268,8 @@
       "advanced",
       "arms",
       "core",
-      "balance"
+      "balance",
+      "senior_safe"
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
@@ -48148,7 +48406,8 @@
       "advanced",
       "back",
       "extension",
-      "flexibility"
+      "flexibility",
+      "senior_safe"
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "back",
@@ -48280,7 +48539,8 @@
       "yoga",
       "advanced",
       "full_body",
-      "inversion"
+      "inversion",
+      "senior_safe"
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
@@ -48407,7 +48667,8 @@
       "yoga",
       "advanced",
       "full_body",
-      "balance"
+      "balance",
+      "senior_safe"
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "full_body",
@@ -48534,7 +48795,8 @@
       "yoga",
       "advanced",
       "core",
-      "shoulders"
+      "shoulders",
+      "senior_safe"
     ],
     "_yogaLevel": "advanced",
     "_yogaTarget": "core",
@@ -50590,7 +50852,8 @@
       "stability_ball",
       "pull",
       "back",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -50684,7 +50947,8 @@
     "tags": [
       "stability_ball",
       "back_extension",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -50973,7 +51237,8 @@
       "plank",
       "core",
       "nasm_phase1",
-      "anti_extension"
+      "anti_extension",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -51070,7 +51335,8 @@
       "shoulders",
       "scapular",
       "nasm_phase1",
-      "posture"
+      "posture",
+      "senior_safe"
     ],
     "methodology": [
       "cpt",
@@ -51641,7 +51907,8 @@
       "bosu",
       "plank",
       "core",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -52129,7 +52396,8 @@
       "pull",
       "cable",
       "balance",
-      "nasm_phase2"
+      "nasm_phase2",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -52321,7 +52589,8 @@
       "isolation",
       "biceps",
       "balance",
-      "nasm_phase1"
+      "nasm_phase1",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -52737,7 +53006,8 @@
       "pull",
       "back",
       "compound",
-      "row"
+      "row",
+      "senior_safe"
     ],
     "methodology": [
       "cpt",
@@ -52838,7 +53108,8 @@
       "back",
       "compound",
       "row",
-      "thickness"
+      "thickness",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -53722,7 +53993,8 @@
       "pull",
       "anti_rotation",
       "plank",
-      "compound"
+      "compound",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -54225,7 +54497,8 @@
       "integrated",
       "hip",
       "thoracic",
-      "nasm_cex"
+      "nasm_cex",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -54325,7 +54598,8 @@
       "mobility",
       "integrated",
       "dynamic",
-      "nasm_cex"
+      "nasm_cex",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -54425,7 +54699,8 @@
       "mobility",
       "integrated",
       "squat",
-      "dynamic"
+      "dynamic",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -54526,7 +54801,8 @@
       "integrated",
       "nasm_specific",
       "hip",
-      "ankle"
+      "ankle",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -54817,7 +55093,8 @@
       "core",
       "ace",
       "kneeling",
-      "stability"
+      "stability",
+      "senior_safe"
     ],
     "methodology": [
       "ace",
@@ -54948,7 +55225,8 @@
       "cooldown",
       "arms",
       "static_stretch",
-      "biceps"
+      "biceps",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -55079,7 +55357,8 @@
       "cooldown",
       "arms",
       "static_stretch",
-      "triceps"
+      "triceps",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -55207,7 +55486,8 @@
       "cooldown",
       "arms",
       "wrist",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -55339,7 +55619,8 @@
       "back",
       "thoracic",
       "static_stretch",
-      "posture"
+      "posture",
+      "senior_safe"
     ],
     "methodology": [
       "cpt",
@@ -55470,7 +55751,8 @@
       "calves",
       "static_stretch",
       "soleus",
-      "ankle_mobility"
+      "ankle_mobility",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -55600,7 +55882,8 @@
       "cooldown",
       "hips",
       "it_band",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "methodology": [
       "cpt",
@@ -55728,7 +56011,8 @@
       "arms",
       "forearm",
       "wrist",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -55855,7 +56139,8 @@
       "cooldown",
       "calves",
       "ankle",
-      "static_stretch"
+      "static_stretch",
+      "senior_safe"
     ],
     "methodology": [
       "cpt"
@@ -56015,7 +56300,8 @@
       "combat_sports",
       "mobility",
       "ground_movement",
-      "hip_mobility"
+      "hip_mobility",
+      "senior_safe"
     ],
     "methodology": [
       "pes"
@@ -56177,7 +56463,8 @@
       "combat_sports",
       "mobility",
       "ground_movement",
-      "hip_extension"
+      "hip_extension",
+      "senior_safe"
     ],
     "methodology": [
       "pes"
@@ -56497,7 +56784,8 @@
       "combat_sports",
       "cardio",
       "coordination",
-      "warmup"
+      "warmup",
+      "senior_safe"
     ],
     "methodology": [
       "pes"
@@ -57762,7 +58050,8 @@
       "paddle",
       "back",
       "endurance",
-      "swimming"
+      "swimming",
+      "senior_safe"
     ],
     "methodology": [
       "pes"
@@ -58245,7 +58534,8 @@
       "shoulder_stability",
       "back",
       "hang",
-      "decompression"
+      "decompression",
+      "senior_safe"
     ],
     "methodology": [
       "pes"
@@ -58403,7 +58693,8 @@
       "finger_rehab",
       "tendon_glide",
       "mobility",
-      "rehab_level_1"
+      "rehab_level_1",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -58563,7 +58854,8 @@
       "finger_rehab",
       "rom",
       "mobility",
-      "rehab_level_1"
+      "rehab_level_1",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -58725,7 +59017,8 @@
       "finger_rehab",
       "isometric",
       "loading",
-      "rehab_level_2"
+      "rehab_level_2",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -58894,7 +59187,8 @@
       "finger_rehab",
       "putty",
       "loading",
-      "rehab_level_2"
+      "rehab_level_2",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -59382,7 +59676,8 @@
       "eccentric",
       "tendinopathy",
       "forearm",
-      "rehab"
+      "rehab",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -59542,7 +59837,8 @@
       "finger_rehab",
       "self_massage",
       "recovery",
-      "cooldown"
+      "cooldown",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -59702,7 +59998,8 @@
       "finger_rehab",
       "contrast_therapy",
       "recovery",
-      "cooldown"
+      "cooldown",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -59865,7 +60162,8 @@
       "finger_rehab",
       "injury_prevention",
       "extensor",
-      "daily_mandatory"
+      "daily_mandatory",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -60027,7 +60325,8 @@
       "finger_strength",
       "grip_endurance",
       "foundational",
-      "hang"
+      "hang",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -60346,7 +60645,8 @@
       "hangboard",
       "sub_max",
       "daily_protocol",
-      "tendon_health"
+      "tendon_health",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -60819,7 +61119,8 @@
       "prehab",
       "forearm_balance",
       "warm_up",
-      "daily_protocol"
+      "daily_protocol",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -60972,7 +61273,8 @@
       "pinch_strength",
       "grip",
       "thumb",
-      "climbing_specific"
+      "climbing_specific",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -62058,7 +62360,8 @@
       "hanging_core",
       "anti_extension",
       "progressive",
-      "climbing_specific"
+      "climbing_specific",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -62222,7 +62525,8 @@
       "core",
       "stabilization",
       "foundational",
-      "no_equipment"
+      "no_equipment",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -62380,7 +62684,8 @@
       "pes",
       "balance",
       "climbing_technique",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -62542,7 +62847,8 @@
       "push",
       "injury_prevention",
       "rock_climbing",
-      "mandatory"
+      "mandatory",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -62850,7 +63156,8 @@
       "antagonist",
       "wrist",
       "injury_prevention",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63006,7 +63313,8 @@
       "antagonist",
       "scapular",
       "shoulder_health",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63164,7 +63472,8 @@
       "antagonist",
       "scapular",
       "shoulder_health",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63320,7 +63629,8 @@
       "mobility",
       "hip",
       "flexibility",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63477,7 +63787,8 @@
       "mobility",
       "thoracic",
       "posture",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63636,7 +63947,8 @@
       "mobility",
       "shoulder",
       "rom",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63793,7 +64105,8 @@
       "wrist",
       "injury_prevention",
       "rock_climbing",
-      "mandatory"
+      "mandatory",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -63947,7 +64260,8 @@
       "recovery",
       "forearm",
       "self_massage",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -64106,7 +64420,8 @@
       "mobility",
       "ankle",
       "footwork",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -64263,7 +64578,8 @@
       "mobility",
       "hip_flexor",
       "posture",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -64428,7 +64744,8 @@
       "shoulder_stability",
       "scapular",
       "warmup",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",
@@ -64584,7 +64901,8 @@
       "rotator_cuff",
       "shoulder_health",
       "injury_prevention",
-      "rock_climbing"
+      "rock_climbing",
+      "senior_safe"
     ],
     "methodology": [
       "pes",

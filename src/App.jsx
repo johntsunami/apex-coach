@@ -16,6 +16,7 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
+import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing, isSeniorUser, getAgeTier } from "./utils/seniorFitness.js";
 
 // Expose audit + buildWorkoutList on window for console + dev dashboard use
 if (typeof window !== "undefined") {
@@ -709,6 +710,33 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     }
   } catch (e) { console.warn("Climbing protocol injection error:", e); }
 
+  // ── SENIOR BALANCE BLOCK (injected for 65+ users) ─────────────
+  // Balance exercises woven into warm-up based on fall risk level
+  const _seniorProfile = getSeniorProfile();
+  const _seniorAge = _seniorProfile?.age || _assessment?.userAge;
+  const _isSenior = _seniorAge >= 65;
+  if (_isSenior) {
+    try {
+      const _fallRisk = computeFallRisk(_seniorProfile || _assessment?.seniorScreening || {});
+      const balanceCount = _fallRisk.level === "high" ? 4 : _fallRisk.level === "moderate" ? 3 : 2;
+      const balancePool = exerciseDB.filter(e =>
+        (e.tags || []).some(t => t === "senior_balance_static" || t === "senior_balance_dynamic" || t === "balance") &&
+        (e.phaseEligibility || []).includes(phase) && locOk(e) && !lengthen.find(x => x.id === e.id)
+      );
+      // Fallback: use stability exercises if no balance-tagged ones found
+      const pool = balancePool.length > 0 ? balancePool : exerciseDB.filter(e =>
+        e.type === "stabilization" && e.category === "warmup" &&
+        (e.phaseEligibility || []).includes(phase) && locOk(e) && !lengthen.find(x => x.id === e.id)
+      );
+      let balAdded = 0;
+      for (const ex of pool) {
+        if (balAdded >= balanceCount) break;
+        lengthen.push({ ...ex, _reason: `Senior balance — ${_fallRisk.level} fall risk`, _seniorBalance: true });
+        balAdded++;
+      }
+    } catch (e) { console.warn("Senior balance injection error:", e); }
+  }
+
   // PHASE E: COOLDOWN — static stretches for ALL muscles trained (per NASM: static stretching in cooldown only)
   // Filter to static stretch_type only (excludes dynamic cooldown exercises like 90/90 hip switch)
   const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type !== "dynamic" && (e.phaseEligibility || []).includes(phase) && locOk(e));
@@ -920,21 +948,45 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Add finger-blocked exercises to the blacklist
   for (const id of _fingerBlocked) blacklist.add(id);
 
+  // Senior mode: prefer senior_safe exercises, exclude red+yellow safety tiers for 75+
+  const _seniorAssessment = assessment?.userAge || getSeniorProfile()?.age;
+  const _isSeniorPick = _seniorAssessment >= 65;
+  const _isSeniorAdvanced = _seniorAssessment >= 75;
+
   const pick = (category, limit, excludeStarters) => {
-    const pool = exerciseDB.filter(e =>
+    let pool = exerciseDB.filter(e =>
       e.category === category &&
       !blacklist.has(e.id) &&
       !recentPainIds.has(e.id) && // exclude yesterday's painful exercises
       (e.phaseEligibility || []).includes(phase) &&
       (category !== "main" || e.safetyTier !== "red") &&
+      // Senior Advanced (75+): exclude yellow safety tier for main exercises
+      (category !== "main" || !_isSeniorAdvanced || e.safetyTier !== "yellow") &&
       // Sharp pain filter: block exercises targeting sharp-pain body parts
       (category !== "main" || !sharpPainParts.has(e.bodyPart)) &&
       // Two-a-day: exclude muscle groups trained in first session
       (!excludeMuscles || !excludeMuscles.has(e.bodyPart))
     );
+    // Senior mode: sort senior_safe tagged exercises to front
+    if (_isSeniorPick && category === "main") {
+      pool.sort((a, b) => {
+        const aS = (a.tags || []).includes("senior_safe") ? 1 : 0;
+        const bS = (b.tags || []).includes("senior_safe") ? 1 : 0;
+        return bS - aS;
+      });
+    }
     // Shuffle pool for variety — different exercises each session (Fix #14)
+    // For seniors: shuffle WITHIN the senior_safe group, then within non-senior group (preserves priority)
     const sessionSeed = (getSessions()?.length || 0) + new Date().getDate();
-    for (let i = pool.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    if (_isSeniorPick && category === "main") {
+      const safe = pool.filter(e => (e.tags || []).includes("senior_safe"));
+      const other = pool.filter(e => !(e.tags || []).includes("senior_safe"));
+      for (let i = safe.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [safe[i], safe[j]] = [safe[j], safe[i]]; }
+      for (let i = other.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [other[i], other[j]] = [other[j], other[i]]; }
+      pool = [...safe, ...other];
+    } else {
+      for (let i = pool.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    }
     // Sport prioritization — sort sport-relevant exercises to front of shuffled pool
     // Uses ranked sport preferences (new system) or falls back to legacy assessment array
     const sportPrefs = getSportPrefs();
