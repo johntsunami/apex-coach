@@ -17,13 +17,15 @@ import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileSc
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
 
-// Expose audit function on window for console use: window.runAudit()
+// Expose audit + buildWorkoutList on window for console + dev dashboard use
 if (typeof window !== "undefined") {
+  window._buildWorkoutList = () => buildWorkoutList(getCurrentPhase(), "gym");
   window.runAudit = () => {
     try {
-      const plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null");
+      let plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null")?.workout || null;
+      if (!plan) plan = buildWorkoutList(getCurrentPhase(), "gym");
       const wp = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null");
-      if (!plan) { console.error("No daily workout found. Navigate to Home to generate one first."); return null; }
+      if (!plan) { console.error("Could not generate workout plan."); return null; }
       const result = _validatePlan(plan, wp);
       console.log("═══════════ PLAN AUDIT ═══════════");
       console.log(`Score: ${result.score}% | Phase ${result.phase} | ${result.goalTier}`);

@@ -316,11 +316,21 @@ function PlanQualityPanel() {
   const runLiveAudit = async () => {
     setRunning(true);
     try {
-      // Dynamically import to avoid circular deps
       const { validatePlan } = await import("../utils/planValidator.js");
-      const plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null");
+      // Try cached daily workout first, otherwise generate fresh
+      let plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null")?.workout || null;
+      if (!plan) {
+        // Generate a fresh plan on the fly
+        try {
+          const { buildWorkoutList } = await import("../utils/planValidator.js").then(() => import("../utils/planValidator.js")).catch(() => ({}));
+          // buildWorkoutList is in App.jsx scope, not importable — use window
+          if (typeof window !== "undefined" && window._buildWorkoutList) {
+            plan = window._buildWorkoutList();
+          }
+        } catch {}
+      }
+      if (!plan) { setLiveResult({ error: "No workout plan available. Start a workout from the Home screen first (press 'Start Today's Workout'), then come back and run the audit." }); setRunning(false); return; }
       const weeklyPlan = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null");
-      if (!plan) { setLiveResult({ error: "No daily workout cached yet. Tap the Home tab first to generate today's workout, then come back and run the audit." }); setRunning(false); return; }
       const result = validatePlan(plan, weeklyPlan);
       // Also log to console for developer visibility
       console.log("═══ PLAN AUDIT RESULTS ═══");
