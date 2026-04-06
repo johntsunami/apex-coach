@@ -2232,7 +2232,9 @@ function QuickModeScreen({workout,onComplete}){
   useEffect(()=>{saveDailyWorkout(w,checked,null,splitMode);},[checked,splitMode]);
 
   const toggleCheck=(id)=>{
-    setChecked(p=>{const next={...p,[id]:!p[id]};if(!p[id]){markExerciseDone(id);try{CelebrationAPI.exerciseComplete();}catch{}}return next;});
+    setChecked(p=>{const next={...p,[id]:!p[id]};if(!p[id])markExerciseDone(id);return next;});
+    // Celebration fires outside the state updater to avoid nested setState
+    try{const prev=checked||{};if(!prev[id])setTimeout(()=>CelebrationAPI.exerciseComplete(),50);}catch{}
   };
   const startRest=(ex)=>{const ep2=exParams(ex);const r=ep2.rest||60;setTl(r);setTimerFor(ex.id);setTimerOn(true);};
 
