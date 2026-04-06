@@ -1533,19 +1533,53 @@ export default function OnboardingFlow({ onComplete, initialData }) {
             ))}
           </div>
         </Card>
-        {/* Session time */}
-        <Card>
-          <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Session duration (minutes)</div>
-          <div style={{ display: "flex", gap: 8 }}>
-            {[30, 45, 60, 90].map(t => (
-              <button key={t} onClick={() => setPrefs(p => ({ ...p, sessionTime: t }))}
-                style={{ flex: 1, padding: "10px 4px", borderRadius: 10, fontSize: 16, fontWeight: 600, cursor: "pointer",
-                  background: prefs.sessionTime === t ? C.tealBg : "transparent",
-                  border: `1px solid ${prefs.sessionTime === t ? C.teal : C.border}`,
-                  color: prefs.sessionTime === t ? C.teal : C.textDim }}>{t}</button>
-            ))}
-          </div>
-        </Card>
+        {/* Session time with education panel */}
+        {(() => {
+          const TIME_INFO = {
+            20: { icon: "⚡", title: "Quick hit session", sub: "Short, focused, effective", msg: "20 minutes of real training beats zero minutes of planning the perfect session. You'll get a proper warmup, core activation, and one solid main movement. Not every day has to be epic — showing up IS the workout.", tags: ["Warmup & activation","1-2 main exercises","Core work","Mobility & stretch","Great for busy days"], nudge: "The habit of showing up is worth more than any single session. You're building something real.", upsell: "Got 10 more minutes? A 30-min session adds a full extra training block." },
+            30: { icon: "🎯", title: "Focused session", sub: "Tight, intentional, results-driven", msg: "30 minutes is a completely legitimate training session — don't let anyone tell you otherwise. You'll hit a proper warmup, 3-4 main exercises, your injury protocols, and a full cooldown. This is what sustainable consistency actually looks like.", tags: ["Full warmup","3-4 main exercises","Injury protocol","Cooldown & stretch","Movement pattern coverage"], nudge: "Most people who are in great shape train consistently in 30-45 minute sessions. You're in good company.", upsell: "15 more minutes unlocks a full extra movement pattern and meaningful additional volume." },
+            45: { icon: "🔥", title: "The sweet spot", sub: "Where most results happen", badge: "Most recommended", msg: "45 minutes is where the science and the real world meet. Research consistently shows this window drives strong adaptation without excessive fatigue. You'll cover every major movement pattern, hit your PT protocols, and walk out feeling accomplished — not wrecked.", tags: ["Full movement pattern coverage","5-6 main exercises","PT & rehab protocols","Sport-specific work","Complete cooldown","Progressive overload tracking"], nudge: "This is the default for a reason — enough stimulus to drive real change, enough recovery to keep coming back.", upsell: "15 more minutes adds accessory work and advanced techniques for faster results." },
+            60: { icon: "💪", title: "Full power session", sub: "More volume, faster progress", msg: "60 minutes gives you room to go deeper, add meaningful volume, and work on the details. You'll get more sets on your main lifts, proper accessory work, and real time for recovery protocols. This is where serious, consistent progress happens.", tags: ["7-8 main exercises","Accessory & isolation work","Full sport conditioning","Advanced techniques","Comprehensive recovery","Maximum phase volume"], nudge: "More volume = more adaptation stimulus. If you can commit to 60 minutes consistently, your results will compound faster.", upsell: "30 more minutes is our elite tier — but 60 minutes already captures most of the benefit." },
+            90: { icon: "🏆", title: "Elite training block", sub: "Maximum stimulus, maximum results", msg: "90 minutes is a full athlete session. You'll hit everything — comprehensive warmup, multiple movement patterns, accessory work, sport-specific conditioning, and a deep recovery protocol. Make sure your recovery matches the effort — sleep, nutrition, and rest days matter even more at this volume.", tags: ["Complete movement coverage","10+ exercises","Full sport conditioning","Advanced techniques","Deep recovery protocol","Maximum weekly volume","Competition tracks"], nudge: "This is the full package. Commit to this consistently and your results will be undeniable.", upsell: null, recovery: "Recovery tip: 90-min sessions require 7-9 hrs sleep and adequate protein to deliver full results." },
+          };
+          const info = TIME_INFO[prefs.sessionTime] || TIME_INFO[45];
+          return <Card style={{ padding: 0, overflow: "hidden" }}>
+            <div style={{ padding: 14 }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>How long can you train?</div>
+              <div style={{ fontSize: 12, color: C.textDim, marginBottom: 10 }}>Be honest — consistency beats heroics every time.</div>
+              <div style={{ display: "flex", gap: 6 }}>
+                {[20, 30, 45, 60, 90].map(t => (
+                  <button key={t} onClick={() => setPrefs(p => ({ ...p, sessionTime: t }))}
+                    style={{ flex: 1, padding: "10px 4px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "center",
+                      background: prefs.sessionTime === t ? C.tealBg : "transparent",
+                      border: prefs.sessionTime === t ? `2px solid ${C.teal}` : `1.5px solid ${C.border}`,
+                      color: prefs.sessionTime === t ? C.teal : C.textDim }}>
+                    <div style={{ fontSize: 20, fontWeight: 500 }}>{t}</div>
+                    <div style={{ fontSize: 11, color: prefs.sessionTime === t ? C.teal : C.textDim }}>min</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Education panel */}
+            <div style={{ padding: "12px 14px 14px", borderTop: `1px solid ${C.border}`, transition: "opacity 180ms ease" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                <span style={{ fontSize: 22 }}>{info.icon}</span>
+                <div>
+                  {info.badge && <span style={{ fontSize: 9, fontWeight: 700, color: C.teal, background: C.tealBg, padding: "2px 6px", borderRadius: 4, letterSpacing: 0.5, marginBottom: 2, display: "inline-block" }}>{info.badge}</span>}
+                  <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{info.title}</div>
+                  <div style={{ fontSize: 11, color: C.textDim }}>{info.sub}</div>
+                </div>
+              </div>
+              <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.6, marginBottom: 10 }}>{info.msg}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
+                {info.tags.map((tag, i) => <span key={tag} style={{ fontSize: 10, padding: "3px 8px", borderRadius: 6, background: C.bgElevated, color: C.textMuted, border: `1px solid ${C.border}` }}>{tag}</span>)}
+              </div>
+              <div style={{ fontSize: 12, color: C.teal, lineHeight: 1.5, fontStyle: "italic" }}>{info.nudge}</div>
+              {info.upsell && <div style={{ fontSize: 11, color: C.textDim, marginTop: 6, lineHeight: 1.4 }}>{info.upsell}</div>}
+              {info.recovery && <div style={{ fontSize: 11, color: C.warning, marginTop: 6, lineHeight: 1.4, padding: "4px 8px", background: C.warning + "08", borderRadius: 6 }}>{info.recovery}</div>}
+            </div>
+          </Card>;
+        })()}
         {/* Home equipment */}
         <Card>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 8 }}>Equipment at home</div>
