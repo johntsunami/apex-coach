@@ -262,6 +262,9 @@ export default function OnboardingFlow({ onComplete, initialData }) {
   const isReassessment = !!initialData;
   const _d = initialData || {};
   const _p = _d.preferences || {};
+  // Intro screen: show only for first-time users who haven't seen it
+  const _introSeen = isReassessment || !!localStorage.getItem("apex_intro_seen");
+  const [showIntro, setShowIntro] = useState(!_introSeen);
   const [screen, _setScreen] = useState(0);
   const setScreen = (s) => { _setScreen(s); window.scrollTo(0, 0); };
   const [parq, setParq] = useState(_d.parq?.answers || PARQ_QUESTIONS.map(() => null));
@@ -461,6 +464,51 @@ export default function OnboardingFlow({ onComplete, initialData }) {
 
   return (
     <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+
+      {/* ── INTRO / WELCOME SCREEN (first-time only) ──────── */}
+      {showIntro && <div className="stagger" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ textAlign: "center", paddingTop: 8 }}>
+          <div style={{ fontSize: 36, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 6 }}>APEX COACH</div>
+          <div style={{ fontSize: 16, color: C.text, fontWeight: 600, marginTop: 6 }}>This isn't your average workout app.</div>
+        </div>
+        <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.7, textAlign: "center", padding: "0 4px" }}>
+          Most fitness apps give everyone the same generic plan. APEX builds a plan scientifically designed around <em>your</em> body — factoring in your conditions, goals, movement limitations, and sport.
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {[
+            { icon: "🧬", title: "Adaptive Programming", desc: "Workouts change based on how you feel each day — sleep, energy, and soreness shape your session in real time." },
+            { icon: "🏥", title: "Injury-Intelligent", desc: "Report any condition from a bad knee to a spinal fusion — the app filters unsafe exercises and adds rehab protocols." },
+            { icon: "📐", title: "Evidence-Based", desc: "Every exercise follows the NASM Optimum Performance Training model — the same system used by pro sports teams." },
+            { icon: "🎯", title: "Built For You", desc: "Your ROM limitations, movement compensations, and sport demands all feed into a plan that's uniquely yours." },
+            { icon: "📈", title: "Continuously Evolving", desc: "Your plan adapts every session, every week, every cycle. This isn't a 30-day program — it's a long-term training system." },
+          ].map((f, i) => (
+            <Card key={f.title} style={{ padding: 12, display: "flex", alignItems: "flex-start", gap: 10, animationDelay: `${i * 0.15}s` }}>
+              <span style={{ fontSize: 22, flexShrink: 0, marginTop: 1 }}>{f.icon}</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{f.title}</div>
+                <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5, marginTop: 2 }}>{f.desc}</div>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <Card style={{ padding: 12, background: C.bgGlass, borderColor: C.teal + "20" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 6 }}>To build your plan, we need to learn about you.</div>
+          <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This assessment takes about 10-15 minutes and covers:</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {["Health screening & conditions", "Movement & range of motion check", "Fitness baseline", "Your goals & sport interests", "Equipment & schedule"].map(item => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.textMuted }}>
+                <span style={{ color: C.teal, fontSize: 11 }}>✓</span>{item}
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: C.textDim, marginTop: 8, lineHeight: 1.5 }}>Your answers are private and stored securely. You can update any of these anytime from Settings.</div>
+        </Card>
+        <Btn onClick={() => { localStorage.setItem("apex_intro_seen", "1"); setShowIntro(false); }} icon="→" style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3, fontSize: 18, padding: "16px 20px" }}>LET'S BUILD YOUR PLAN</Btn>
+        <div style={{ textAlign: "center", fontSize: 11, color: C.textDim }}>You can pause and come back anytime — your progress saves automatically.</div>
+      </div>}
+
+      {/* ── ASSESSMENT FLOW (hidden during intro) ──────────── */}
+      {!showIntro && <>
       {/* Progress */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontSize: 15, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>STEP {screen + 1} OF {totalScreens}</div>
@@ -1542,6 +1590,7 @@ export default function OnboardingFlow({ onComplete, initialData }) {
       </div>}
 
       <div style={{ height: 40 }} />
+      </>}
     </div>
   );
 }
