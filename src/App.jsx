@@ -16,6 +16,25 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
+
+// Expose audit function on window for console use: window.runAudit()
+if (typeof window !== "undefined") {
+  window.runAudit = () => {
+    try {
+      const plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null");
+      const wp = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null");
+      if (!plan) { console.error("No daily workout found. Navigate to Home to generate one first."); return null; }
+      const result = _validatePlan(plan, wp);
+      console.log("═══════════ PLAN AUDIT ═══════════");
+      console.log(`Score: ${result.score}% | Phase ${result.phase} | ${result.goalTier}`);
+      console.log(`Passed: ${result.checksPassed}/${result.checksTotal} | Critical: ${result.criticalCount} | Warnings: ${result.warningCount} | Info: ${result.infoCount}`);
+      if (result.violations.length === 0) console.log("✅ All checks passed.");
+      else result.violations.forEach(v => console.log(`${v.severity === "critical" ? "❌" : v.severity === "warning" ? "⚠️" : "ℹ️"} [${v.check}] ${v.message}`));
+      console.log("══════════════════════════════════");
+      return result;
+    } catch (e) { console.error("Audit failed:", e); return null; }
+  };
+}
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";

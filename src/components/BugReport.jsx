@@ -305,10 +305,44 @@ export function DevBugDashboard({ onClose }) {
 function PlanQualityPanel() {
   const [validations, setValidations] = useState([]);
   const [expanded, setExpanded] = useState(null);
+  const [liveResult, setLiveResult] = useState(null);
+  const [running, setRunning] = useState(false);
 
   useEffect(() => {
     try { setValidations(JSON.parse(localStorage.getItem("apex_plan_validations") || "[]")); } catch {}
   }, []);
+
+  // Run a live audit against current user's plan right now
+  const runLiveAudit = async () => {
+    setRunning(true);
+    try {
+      // Dynamically import to avoid circular deps
+      const { validatePlan } = await import("../utils/planValidator.js");
+      const plan = JSON.parse(localStorage.getItem("apex_daily_workout") || "null");
+      const weeklyPlan = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null");
+      if (!plan) { setLiveResult({ error: "No daily workout in localStorage — navigate to Home first to generate one." }); setRunning(false); return; }
+      const result = validatePlan(plan, weeklyPlan);
+      // Also log to console for developer visibility
+      console.log("═══ PLAN AUDIT RESULTS ═══");
+      console.log(`Score: ${result.score}% | Phase: ${result.phase} | Tier: ${result.goalTier}`);
+      console.log(`Passed: ${result.checksPassed}/${result.checksTotal} | Critical: ${result.criticalCount} | Warnings: ${result.warningCount} | Info: ${result.infoCount}`);
+      if (result.violations.length === 0) { console.log("✅ All checks passed."); }
+      else {
+        result.violations.forEach(v => {
+          const icon = v.severity === "critical" ? "❌" : v.severity === "warning" ? "⚠️" : "ℹ️";
+          console.log(`${icon} [${v.check}] ${v.message}`);
+        });
+      }
+      console.log("═══ END AUDIT ═══");
+      setLiveResult(result);
+      // Refresh validations list
+      try { setValidations(JSON.parse(localStorage.getItem("apex_plan_validations") || "[]")); } catch {}
+    } catch (e) {
+      console.error("Audit error:", e);
+      setLiveResult({ error: e.message });
+    }
+    setRunning(false);
+  };
 
   const recent = validations.slice(-10);
   const avgScore = recent.length > 0 ? Math.round(recent.reduce((s, v) => s + v.score, 0) / recent.length) : 0;
@@ -338,6 +372,60 @@ function PlanQualityPanel() {
           <div style={{ fontSize: 9, color: C.textDim, letterSpacing: 1 }}>INFO</div>
         </div>
       </div>
+
+      {/* Run audit button */}
+      <button onClick={runLiveAudit} disabled={running} style={{ width: "100%", padding: "12px 16px", borderRadius: 12, cursor: running ? "wait" : "pointer", fontFamily: "inherit",
+        background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 14, fontWeight: 700, opacity: running ? 0.5 : 1 }}>
+        {running ? "Running Audit..." : "Run Audit Now — Current User"}
+      </button>
+
+      {/* Live audit result (detailed check-by-check) */}
+      {liveResult && !liveResult.error && <div style={{ background: C.bgCard, border: `1px solid ${(liveResult.score >= 90 ? C.success : liveResult.score >= 70 ? C.warning : C.danger)}30`, borderRadius: 14, padding: 14 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <div style={{ fontSize: 18, fontWeight: 800, color: liveResult.score >= 90 ? C.success : liveResult.score >= 70 ? C.warning : C.danger, fontFamily: "'Bebas Neue',sans-serif" }}>LIVE AUDIT: {liveResult.score}%</div>
+          <div style={{ fontSize: 11, color: C.textDim }}>Phase {liveResult.phase} · {liveResult.goalTier}</div>
+        </div>
+        {/* All 14 checks — show passed and failed */}
+        {(() => {
+          const ALL_CHECKS = [
+            { id: "BODY_PART_MIN", label: "Body part minimums per week" },
+            { id: "SESSION_BP_MAX", label: "Session body part maximums" },
+            { id: "WEEK_BP_MAX", label: "Weekly body part maximums" },
+            { id: "VOLUME_ABSOLUTE_CAP", label: "30-set absolute volume ceiling" },
+            { id: "VOLUME_HIGH", label: "High volume warning (25+)" },
+            { id: "DUPLICATE", label: "Duplicate exercises in session" },
+            { id: "TIME_EXCEEDED", label: "Session time compliance" },
+            { id: "STRETCH_TYPE", label: "Warm-up/cooldown stretch types (NASM)" },
+            { id: "SPORT_MISMATCH", label: "Sport bias verification" },
+            { id: "ROM_GAP", label: "ROM exercise frequency" },
+            { id: "WEAK_POINT_IGNORED", label: "Weak point volume priority" },
+            { id: "CARDIO_MISSING", label: "Cardio inclusion" },
+            { id: "DELOAD_MISSING", label: "Deload compliance" },
+          ];
+          const violByCheck = {};
+          (liveResult.violations || []).forEach(v => { if (!violByCheck[v.check]) violByCheck[v.check] = []; violByCheck[v.check].push(v); });
+          return ALL_CHECKS.map(chk => {
+            const viols = violByCheck[chk.id] || [];
+            const passed = viols.length === 0;
+            const hasCrit = viols.some(v => v.severity === "critical");
+            const hasWarn = viols.some(v => v.severity === "warning");
+            const icon = passed ? "✅" : hasCrit ? "❌" : hasWarn ? "⚠️" : "ℹ️";
+            const color = passed ? C.success : hasCrit ? C.danger : hasWarn ? C.warning : C.info;
+            return <div key={chk.id} style={{ padding: "5px 0", borderBottom: `1px solid ${C.border}` }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
+                <span>{icon}</span>
+                <span style={{ fontWeight: 600, color }}>{chk.id}</span>
+                <span style={{ color: C.textMuted, flex: 1 }}>— {chk.label}</span>
+                <span style={{ fontSize: 10, color }}>{passed ? "PASSED" : `${viols.length} issue${viols.length > 1 ? "s" : ""}`}</span>
+              </div>
+              {viols.length > 0 && <div style={{ paddingLeft: 24, marginTop: 2 }}>
+                {viols.map((v, i) => <div key={i} style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.4 }}>{v.message}</div>)}
+              </div>}
+            </div>;
+          });
+        })()}
+      </div>}
+      {liveResult?.error && <div style={{ background: C.danger + "10", border: `1px solid ${C.danger}30`, borderRadius: 10, padding: 12, fontSize: 12, color: C.danger }}>{liveResult.error}</div>}
 
       <div style={{ fontSize: 11, color: C.textDim }}>Last {recent.length} plan validations (most recent first)</div>
 
