@@ -15,6 +15,7 @@ import { getInjuries, saveInjuries, conditionToGateKey, updatePainTracking, getS
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
+import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
 import { checkExerciseImages, validateExerciseDB, testWorkoutEngine, getLocalStorageStats, checkSupabaseConnection, getErrorLog, clearErrorLog, log as debugLog } from "./utils/debug.js";
 import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols } from "./components/PTSystem.jsx";
@@ -1288,7 +1289,10 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Attach sport focus metadata to the workout for UI display (Rule 7)
   const sportMeta = _sportFocus ? { sport: _sportFocus.sport, label: _sportFocus.label, rank: _sportFocus.rank } : null;
 
-  return { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  const _plan = { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  // Run plan validation (non-blocking)
+  try { const wp = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null"); const vr = _validatePlan(_plan, wp); _saveValidation(vr); _plan._validation = vr; } catch {}
+  return _plan;
 }
 
 // Default workout for backward compat with session flow

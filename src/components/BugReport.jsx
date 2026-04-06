@@ -175,6 +175,7 @@ export function isDeveloper(user) {
 
 export function DevBugDashboard({ onClose }) {
   const { user } = useAuth();
+  const [dashTab, setDashTab] = useState("bugs"); // "bugs" | "quality"
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, new, in_progress, resolved
@@ -211,10 +212,27 @@ export function DevBugDashboard({ onClose }) {
   return (
     <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>BUG REPORTS</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>DEVELOPER</div>
         <button onClick={onClose} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 14, cursor: "pointer", padding: 8, fontFamily: "inherit" }}>← Back</button>
       </div>
 
+      {/* Dashboard tabs */}
+      <div style={{ display: "flex", gap: 6 }}>
+        <button onClick={() => setDashTab("bugs")} style={{ flex: 1, padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textAlign: "center",
+          background: dashTab === "bugs" ? C.danger + "15" : C.bgCard, border: `1px solid ${dashTab === "bugs" ? C.danger + "40" : C.border}`, color: dashTab === "bugs" ? C.danger : C.textDim }}>
+          🐛 Bug Reports{counts.new > 0 ? ` (${counts.new})` : ""}
+        </button>
+        <button onClick={() => setDashTab("quality")} style={{ flex: 1, padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textAlign: "center",
+          background: dashTab === "quality" ? C.teal + "15" : C.bgCard, border: `1px solid ${dashTab === "quality" ? C.teal + "40" : C.border}`, color: dashTab === "quality" ? C.teal : C.textDim }}>
+          📊 Plan Quality
+        </button>
+      </div>
+
+      {/* ═══ PLAN QUALITY TAB ═══ */}
+      {dashTab === "quality" && <PlanQualityPanel />}
+
+      {/* ═══ BUG REPORTS TAB ═══ */}
+      {dashTab === "bugs" && <>
       {/* Counts */}
       <div style={{ display: "flex", gap: 6 }}>
         {[{ id: "all", label: `All (${reports.length})` }, { id: "new", label: `New (${counts.new})`, color: C.danger }, { id: "in_progress", label: `In Progress (${counts.in_progress})`, color: C.warning }, { id: "resolved", label: `Resolved (${counts.resolved})`, color: C.success }].map(f => (
@@ -274,7 +292,91 @@ export function DevBugDashboard({ onClose }) {
           </div>
         );
       })}
+      </>}
       <div style={{ height: 60 }} />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PLAN QUALITY PANEL (embedded in Dev Dashboard)
+// ═══════════════════════════════════════════════════════════════
+
+function PlanQualityPanel() {
+  const [validations, setValidations] = useState([]);
+  const [expanded, setExpanded] = useState(null);
+
+  useEffect(() => {
+    try { setValidations(JSON.parse(localStorage.getItem("apex_plan_validations") || "[]")); } catch {}
+  }, []);
+
+  const recent = validations.slice(-10);
+  const avgScore = recent.length > 0 ? Math.round(recent.reduce((s, v) => s + v.score, 0) / recent.length) : 0;
+  const totalCritical = recent.reduce((s, v) => s + v.criticalCount, 0);
+  const totalWarnings = recent.reduce((s, v) => s + v.warningCount, 0);
+  const totalInfo = recent.reduce((s, v) => s + v.infoCount, 0);
+  const scoreColor = avgScore >= 90 ? C.success : avgScore >= 70 ? C.warning : C.danger;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {/* Overview cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6 }}>
+        <div style={{ background: C.bgCard, border: `1px solid ${scoreColor}30`, borderRadius: 10, padding: 10, textAlign: "center" }}>
+          <div style={{ fontSize: 24, fontWeight: 800, color: scoreColor, fontFamily: "'Bebas Neue',sans-serif" }}>{avgScore}%</div>
+          <div style={{ fontSize: 9, color: C.textDim, letterSpacing: 1 }}>AVG SCORE</div>
+        </div>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 10, padding: 10, textAlign: "center" }}>
+          <div style={{ fontSize: 24, fontWeight: 800, color: totalCritical > 0 ? C.danger : C.success, fontFamily: "'Bebas Neue',sans-serif" }}>{totalCritical}</div>
+          <div style={{ fontSize: 9, color: C.textDim, letterSpacing: 1 }}>CRITICAL</div>
+        </div>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 10, padding: 10, textAlign: "center" }}>
+          <div style={{ fontSize: 24, fontWeight: 800, color: C.warning, fontFamily: "'Bebas Neue',sans-serif" }}>{totalWarnings}</div>
+          <div style={{ fontSize: 9, color: C.textDim, letterSpacing: 1 }}>WARNINGS</div>
+        </div>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 10, padding: 10, textAlign: "center" }}>
+          <div style={{ fontSize: 24, fontWeight: 800, color: C.info, fontFamily: "'Bebas Neue',sans-serif" }}>{totalInfo}</div>
+          <div style={{ fontSize: 9, color: C.textDim, letterSpacing: 1 }}>INFO</div>
+        </div>
+      </div>
+
+      <div style={{ fontSize: 11, color: C.textDim }}>Last {recent.length} plan validations (most recent first)</div>
+
+      {recent.length === 0 && <div style={{ textAlign: "center", padding: 20, color: C.textDim }}>No validations yet — generate a workout to see results.</div>}
+
+      {[...recent].reverse().map((v, i) => {
+        const isExp = expanded === i;
+        const sc = v.score >= 90 ? C.success : v.score >= 70 ? C.warning : C.danger;
+        const date = new Date(v.generatedAt).toLocaleString("en-US", { dateStyle: "short", timeStyle: "short" });
+        return (
+          <div key={i} onClick={() => setExpanded(isExp ? null : i)} style={{ background: C.bgCard, border: `1px solid ${sc}25`, borderRadius: 12, padding: 12, cursor: "pointer" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 18, fontWeight: 800, color: sc, fontFamily: "'Bebas Neue',sans-serif" }}>{v.score}%</span>
+                <span style={{ fontSize: 11, color: C.textDim }}>{date}</span>
+                <span style={{ fontSize: 10, color: C.textDim }}>Phase {v.phase} · {v.goalTier}</span>
+              </div>
+              <div style={{ display: "flex", gap: 4 }}>
+                {v.criticalCount > 0 && <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 4, background: C.danger + "15", color: C.danger, fontWeight: 700 }}>{v.criticalCount}C</span>}
+                {v.warningCount > 0 && <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 4, background: C.warning + "15", color: C.warning, fontWeight: 700 }}>{v.warningCount}W</span>}
+                {v.infoCount > 0 && <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 4, background: C.info + "15", color: C.info, fontWeight: 700 }}>{v.infoCount}I</span>}
+              </div>
+            </div>
+            {isExp && v.violations.length > 0 && <div style={{ marginTop: 8, paddingTop: 8, borderTop: `1px solid ${C.border}` }}>
+              {v.violations.map((viol, j) => {
+                const vc = viol.severity === "critical" ? C.danger : viol.severity === "warning" ? C.warning : C.info;
+                return <div key={j} style={{ display: "flex", gap: 6, padding: "4px 0", borderBottom: j < v.violations.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 4, background: vc, flexShrink: 0, marginTop: 4 }} />
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: vc }}>{viol.check}</div>
+                    <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.4 }}>{viol.message}</div>
+                  </div>
+                </div>;
+              })}
+            </div>}
+            {isExp && v.violations.length === 0 && <div style={{ marginTop: 8, fontSize: 11, color: C.success }}>All checks passed.</div>}
+          </div>
+        );
+      })}
     </div>
   );
 }
