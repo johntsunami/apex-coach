@@ -2122,28 +2122,28 @@ function LibraryScreen(){
     if(search.trim()) { const q=search.toLowerCase(); list=list.filter(e=>e.name.toLowerCase().includes(q)||(e.tags||[]).some(t=>t.includes(q))); }
     return list;
   },[catFilter,bodyFilter,abilityFilter,phaseFilter,locFilter,safetyFilter,search,blockedMap]);
-  const FilterRow=({label,items,value,onChange,color=C.teal})=>(<div><div style={{fontSize:10,fontWeight:700,color:C.textDim,letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{label}</div><div style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:4}}>{items.map(p=>(<button key={p} onClick={()=>onChange(p)} style={{padding:"5px 10px",borderRadius:16,border:`1px solid ${value===p?color+"60":C.border}`,background:value===p?color+"15":"transparent",color:value===p?color:C.textDim,fontSize:10,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{p==="All"?"All":p.replace(/_/g," ")}</button>))}</div></div>);
-  return(<div style={{display:"flex",flexDirection:"column",gap:12}}>
-    <div><div style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4}}>EXERCISE LIBRARY</div><div style={{fontSize:12,color:C.textMuted}}>{exerciseDB.length} total · {filtered.length} shown</div></div>
-    <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="🔍 Search exercises or tags..." style={{padding:"10px 14px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontFamily:"inherit",outline:"none"}}/>
-    {/* Safety filter — shows blocked exercises for user's conditions */}
-    {userInjuries.length>0&&<div style={{display:"flex",gap:6}}>
-      {[{id:"all",label:"All Exercises",icon:"📋",c:C.teal},{id:"safe",label:`Safe for You (${exerciseDB.length-blockedCount})`,icon:"✅",c:C.success},{id:"blocked",label:`Blocked (${blockedCount})`,icon:"🚫",c:C.danger}].map(f=>(<button key={f.id} onClick={()=>setSafetyFilter(f.id)} style={{flex:1,padding:"8px 6px",borderRadius:10,cursor:"pointer",background:safetyFilter===f.id?f.c+"15":"transparent",border:`1px solid ${safetyFilter===f.id?f.c+"60":C.border}`,color:safetyFilter===f.id?f.c:C.textDim,textAlign:"center",fontSize:10,fontWeight:700}}><div>{f.icon}</div>{f.label}</button>))}
+  const _pillStyle=(sel,color=C.teal)=>({height:34,padding:"0 14px",borderRadius:17,fontSize:13,fontWeight:sel?500:400,whiteSpace:"nowrap",cursor:"pointer",transition:"all 0.15s ease",background:sel?color+"15":"transparent",border:sel?`1.5px solid ${color}`:"1px solid rgba(255,255,255,0.15)",color:sel?color:"rgba(255,255,255,0.55)",fontFamily:"inherit",display:"inline-flex",alignItems:"center"});
+  const _scrollRow={display:"flex",gap:6,overflowX:"auto",paddingBottom:2,paddingRight:24,scrollbarWidth:"none",msOverflowStyle:"none",WebkitMaskImage:"linear-gradient(to right,black calc(100% - 32px),transparent 100%)",maskImage:"linear-gradient(to right,black calc(100% - 32px),transparent 100%)"};
+  const _label=(first)=>({fontSize:11,fontWeight:500,letterSpacing:"0.08em",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",marginBottom:8,...(first?{}:{marginTop:16})});
+  const FilterRow=({label,items,value,onChange,color=C.teal,first})=>(<div><div style={_label(first)}>{label}</div><div style={_scrollRow} className="filter-scroll-row">{items.map(p=>(<button key={p} onClick={()=>onChange(p)} style={_pillStyle(value===p,color)}>{p==="All"?"All":p.replace(/_/g," ")}</button>))}</div></div>);
+  return(<div style={{display:"flex",flexDirection:"column",gap:4}}>
+    <style>{`.filter-scroll-row::-webkit-scrollbar{display:none}`}</style>
+    <div><div style={{fontSize:22,fontWeight:500,color:"rgba(255,255,255,0.92)"}}>Exercise Library</div><div style={{fontSize:13,color:"rgba(255,255,255,0.4)"}}>{exerciseDB.length} exercises</div></div>
+    <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search exercises or tags..." style={{padding:"10px 14px",borderRadius:12,background:C.bgCard,border:`1px solid ${C.border}`,color:C.text,fontSize:13,fontFamily:"inherit",outline:"none",marginTop:4}}/>
+    {/* Safety filter */}
+    {userInjuries.length>0&&<div style={{display:"flex",gap:6,marginTop:8}}>
+      {[{id:"all",label:"All",c:C.teal},{id:"safe",label:`Safe (${exerciseDB.length-blockedCount})`,c:C.success},{id:"blocked",label:`Blocked (${blockedCount})`,c:C.danger}].map(f=>(<button key={f.id} onClick={()=>setSafetyFilter(f.id)} style={_pillStyle(safetyFilter===f.id,f.c)}>{f.label}</button>))}
     </div>}
-    <FilterRow label="Category" items={CATEGORIES} value={catFilter} onChange={setCatFilter} color={C.teal}/>
+    <FilterRow label="Category" items={CATEGORIES} value={catFilter} onChange={setCatFilter} color={C.teal} first/>
     <FilterRow label="Body Part" items={BODY_GROUPS} value={bodyFilter} onChange={setBodyFilter} color={C.purple}/>
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-      <FilterRow label="Phase" items={["All","1","2","3","4","5"]} value={phaseFilter} onChange={setPhaseFilter} color={C.success}/>
-      <FilterRow label="Location" items={["All","gym","home","outdoor"]} value={locFilter} onChange={setLocFilter} color={C.orange}/>
-      <FilterRow label="Level" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
-    </div>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 4px"}}><span style={{fontSize:13,fontWeight:700,color:C.teal}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</span><span style={{fontSize:11,color:C.textDim}}>of {exerciseDB.length} total</span></div>
-    {filtered.length>50&&<div style={{fontSize:11,color:C.warning,padding:8,background:C.warning+"10",borderRadius:8}}>Showing first 50 of {filtered.length}. Use filters to narrow.</div>}
-    {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const em2=exMuscles(ex);const isBlocked=!!blockedMap[ex.id];const blockReasons=blockedMap[ex.id]||[];return(<Card key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:sel===ex.id?18:14,opacity:isBlocked?0.7:1,borderColor:isBlocked?C.danger+"30":undefined}}>
+    <FilterRow label="Phase" items={["All","1","2","3","4","5"]} value={phaseFilter} onChange={setPhaseFilter} color={C.success}/>
+    <FilterRow label="Location" items={["All","gym","home","outdoor"]} value={locFilter} onChange={setLocFilter} color={C.orange}/>
+    <FilterRow label="Level" items={ABILITY_LEVELS} value={abilityFilter} onChange={setAbilityFilter} color={C.warning}/>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0"}}><span style={{fontSize:14,fontWeight:500,color:C.teal}}>{filtered.length} exercise{filtered.length!==1?"s":""}</span>{filtered.length>50&&<span style={{fontSize:12,color:"rgba(255,255,255,0.35)"}}>showing 50 of {filtered.length} — use filters to see more</span>}</div>
+    {filtered.slice(0,50).map(ex=>{const ep2=exParams(ex);const isBlocked=!!blockedMap[ex.id];const blockReasons=blockedMap[ex.id]||[];const dotColor=isBlocked?"#C87E7E":ex.safetyTier==="yellow"?"#C8C87E":"#8BC8A0";return(<div key={ex.id} onClick={()=>setSel(sel===ex.id?null:ex.id)} style={{cursor:"pointer",padding:"12px 14px",marginBottom:8,opacity:isBlocked?0.7:1,borderRadius:12,background:"rgba(255,255,255,0.04)",border:`0.5px solid ${isBlocked?"rgba(200,126,126,0.3)":"rgba(255,255,255,0.08)"}`}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <ExerciseImage exercise={ex} size="thumb"/>
-        <div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:isBlocked?C.danger:C.text}}>{isBlocked?"🚫 ":""}{ex.name}</div><div style={{fontSize:11,color:C.textDim}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {ex.bodyPart?.replace(/_/g," ")}{ep2.intensity?` · ${ep2.intensity}`:""}</div>{isBlocked&&<div style={{fontSize:10,color:C.danger,marginTop:2}}>{blockReasons[0]}</div>}</div>
-        <Badge color={isBlocked?C.danger:ex.safetyTier==="green"?C.success:ex.safetyTier==="yellow"?C.warning:C.danger}>{isBlocked?"BLOCKED":ex.safetyTier||"—"}</Badge>
+        <div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{width:6,height:6,borderRadius:3,background:dotColor,flexShrink:0}}/><span style={{fontSize:15,fontWeight:500,color:isBlocked?"#C87E7E":"rgba(255,255,255,0.92)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.name}</span></div><div style={{fontSize:12,color:"rgba(255,255,255,0.45)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ep2.sets}×{ep2.reps}{ep2.tempo?` · ${ep2.tempo}`:""} · {ex.bodyPart?.replace(/_/g," ")}</div>{isBlocked&&<div style={{fontSize:10,color:"#C87E7E",marginTop:2}}>{blockReasons[0]}</div>}</div>
       </div>
       {sel===ex.id&&<div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${C.border}`}}>
         {/* Image */}
@@ -2176,7 +2176,7 @@ function LibraryScreen(){
         {ex.progressionChain?.progressTo&&<div style={{fontSize:9,color:C.purple,marginTop:2}}>Progresses to: {exerciseDB.find(e2=>e2.id===ex.progressionChain.progressTo)?.name||ex.progressionChain.progressTo}</div>}
         {ex.progressionChain?.chainFamily&&<div style={{marginTop:6}}><ProgressionRoadmapCard targetId={ex.id}/></div>}
       </div>}
-    </Card>);})}
+    </div>);})}
     <div style={{height:90}}/>
   </div>);
 }
