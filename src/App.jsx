@@ -2712,6 +2712,9 @@ function AppInner(){
         const diff=processReassessment(reassessSnap,data);
         setReassessDiff(diff);
         if(data&&user){saveAssessmentToSupabase(user.id,data).catch(()=>{});}
+        // Rebuild injuries from updated conditions
+        const rConds=data.conditions||[];
+        if(rConds.length){const rBuilt=rConds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));saveInjuries(rBuilt);}
         // Clear stale workout data so new assessment takes effect
         localStorage.removeItem("apex_paused_workout");
         try{clearDailyWorkout();}catch{}
@@ -2723,6 +2726,12 @@ function AppInner(){
         // FIRST ASSESSMENT: normal flow
         if(data&&user){
           saveAssessmentToSupabase(user.id,data).catch(()=>{});
+          // Build injuries from assessment conditions (same as Supabase restore flow)
+          const conds=data.conditions||[];
+          if(conds.length){
+            const built=conds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));
+            saveInjuries(built);
+          }
           const protocols=generateProtocols(data);
           if(protocols.length){saveLocalProtocols(protocols);saveProtocolsToSupabase(user.id,protocols).catch(()=>{});}
         }
