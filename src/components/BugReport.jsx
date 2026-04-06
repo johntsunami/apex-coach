@@ -40,7 +40,7 @@ export function BugReportButton({ screen, tab }) {
       zIndex: 201, background: "none", border: "none", outline: "none", borderRadius: 0,
       color: "rgba(255,255,255,0.25)", fontSize: 11, cursor: "pointer",
       fontFamily: "inherit", padding: 0, letterSpacing: 0.3 }}>
-      Report Issue
+      Share Feedback
     </button>
     {open && <BugReportModal screen={screen} tab={tab} onClose={() => setOpen(false)} />}
   </>;
