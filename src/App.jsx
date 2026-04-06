@@ -41,6 +41,7 @@ import { getDailyWorkout, saveDailyWorkout, markExerciseDone, markExerciseStarte
 import { getOrCreateWeeklyPlan, getTodayFromPlan, getTomorrowFromPlan, updateDayStatus, adjustPlanForCheckIn, shouldRegeneratePlan, regenerateWeeklyPlan, generateWeeklyPlan, archiveWeeklyPlan, ADDON_TYPES, DAY_NAMES, getDayOfWeek, getWeeklyPlan, saveWeeklyPlan } from "./utils/weeklyPlanner.js";
 import { getTodayWorkoutStatus, saveSupplementalSession, restoreSessionsFromSupabase, backfillSessionsToSupabase, getFirstSessionMuscles, getTodaySessionCompletionTime } from "./utils/storage.js";
 import { determineTrainingTier, checkPhaseReadiness, getOrCreateMesocycle, getMesocycleContext, getMesocycle, analyzeFeedback, TIERS, TIER_PROGRESSIONS } from "./utils/mesocycle.js";
+import { fullSyncCycle, syncCriticalDataToSupabase } from "./utils/dataSync.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX COACH V13 — Inline SVG exercise illustrations, Train page,
@@ -2459,8 +2460,7 @@ function AppInner(){
     }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
-  // ── DEFENSIVE: Always try to restore sessions if localStorage is empty ──
-  // This catches the case where _clearUserLocalStorage wiped sessions but restore didn't run
+  // ── DEFENSIVE: Restore sessions + sync critical data on auth ──
   useEffect(() => {
     if (!user || loading) return;
     const local = getSessions();
@@ -2469,9 +2469,10 @@ function AppInner(){
         if (restored) { setSessionsRestored(true); console.log("APEX: Defensive session restore succeeded"); }
       }).catch(() => {});
     } else if (local.length > 0) {
-      // Backfill: ensure any local sessions are also in Supabase
       backfillSessionsToSupabase().catch(() => {});
     }
+    // Full sync cycle: restore critical data from Supabase, then sync local to remote
+    fullSyncCycle().catch(() => {});
   }, [user, loading, sessionsRestored]);
 
   // Check for paused workout on mount
@@ -2523,7 +2524,9 @@ function AppInner(){
     // Mark today as completed in weekly plan
     const wp=getWeeklyPlan();if(wp)updateDayStatus(wp,getDayOfWeek(),"completed");
     // Update pain-free streaks for all active injuries based on this session
-    try{const activeInj=getInjuries().filter(i=>i.status!=="resolved");const painAreas=new Set();(completedExercises||[]).forEach(ec=>{if(ec.pain_during||(ec.sets||[]).some(s=>s.pain)){const ex=exerciseDB.find(e=>e.id===ec.exercise_id);if(ex?.bodyPart)painAreas.add(ex.bodyPart);}});for(const inj of activeInj){const bp=(inj.area||"").toLowerCase();const hadPain=painAreas.has(bp)||painAreas.has(bp.replace(/left |right |l\. |r\. /g,""));updatePainTracking(inj.id,hadPain);}}catch(e){console.warn("Pain tracking update error:",e);}const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);try{const hsp=localStorage.getItem("apex_home_screen_prompt");if(hsp==="remind_later"){const sc=(getSessions()||[]).length;if(sc>=3){localStorage.removeItem("apex_home_screen_prompt");setShowHomeScreenPrompt(true);}}}catch{}};
+    try{const activeInj=getInjuries().filter(i=>i.status!=="resolved");const painAreas=new Set();(completedExercises||[]).forEach(ec=>{if(ec.pain_during||(ec.sets||[]).some(s=>s.pain)){const ex=exerciseDB.find(e=>e.id===ec.exercise_id);if(ex?.bodyPart)painAreas.add(ex.bodyPart);}});for(const inj of activeInj){const bp=(inj.area||"").toLowerCase();const hadPain=painAreas.has(bp)||painAreas.has(bp.replace(/left |right |l\. |r\. /g,""));updatePainTracking(inj.id,hadPain);}}catch(e){console.warn("Pain tracking update error:",e);}const a=getAssessment();const favs=a?.preferences?.favorites||[];if(favs.length)checkAutoAdvancements(favs);try{const hsp=localStorage.getItem("apex_home_screen_prompt");if(hsp==="remind_later"){const sc=(getSessions()||[]).length;if(sc>=3){localStorage.removeItem("apex_home_screen_prompt");setShowHomeScreenPrompt(true);}}}catch{}
+    // Sync all critical data to Supabase after session completion
+    syncCriticalDataToSupabase().catch(()=>{});};
   // Loading spinner
   if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
   return(<>

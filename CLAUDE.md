@@ -72,6 +72,15 @@ Never mention "NASM" by name. Use evidence-based exercise science principles.
 - Store in localStorage or storage API
 - User is the test subject — their data matters
 
+### Rule 9: Supabase is Source of Truth — localStorage is Cache Only
+- **NEVER store critical user data in localStorage alone** — it can be cleared by the browser, cache wipes, or the user-switching protection code
+- All critical data MUST be synced to Supabase via `syncCriticalDataToSupabase()` from `src/utils/dataSync.js`
+- Use `saveUserData` pattern: write to Supabase FIRST, then cache to localStorage
+- On login/mount, `fullSyncCycle()` restores all critical data from Supabase → localStorage
+- Critical data includes: injuries, preferences, baseline tests, power records, exercise effort, sport selections, finger health log, hypertrophy settings, HR settings
+- Ephemeral data (paused workout, daily plan, rotation indices, last screen, stats) can stay localStorage-only
+- When adding new data persistence: add the localStorage key to `CRITICAL_KEYS` in `src/utils/dataSync.js` if the data is user-created and not easily regenerated
+
 ---
 
 ## SCORING FORMULAS (from V7 spec)

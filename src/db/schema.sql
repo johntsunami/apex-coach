@@ -24,6 +24,11 @@ CREATE TABLE IF NOT EXISTS profiles (
   medical_clearance boolean DEFAULT false
 );
 
+-- client_data: JSON blob for all critical localStorage data (injuries, prefs, baseline, etc.)
+-- This ensures data survives cache clears, device changes, and browser updates.
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS client_data jsonb DEFAULT '{}'::jsonb;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS assessment_data jsonb;
+
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
