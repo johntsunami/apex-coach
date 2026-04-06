@@ -1640,14 +1640,11 @@ function TrainScreen({onStart,resumePrompt,workout,mode,onModeChange,onExtraWork
       return sections.map(section=>(
         <div key={section.label}>
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:8,height:8,borderRadius:4,background:section.color}}/><div><span style={{fontSize:11,fontWeight:700,color:section.color,letterSpacing:1.5}}>{section.label}</span><div style={{fontSize:9,color:C.textDim}}>{section.desc} · {section.exercises.length} exercises</div></div></div>
-          {section.exercises.map(ex=>{const p=exParams(ex);const mu=exMuscles(ex);return(<Card key={ex.id+(ex._reason||"")} style={{padding:10,marginBottom:4}}>
+          {section.exercises.map(ex=>{const p=exParams(ex);return(<Card key={ex.id+(ex._reason||"")} style={{padding:10,marginBottom:4}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <ExerciseImage exercise={ex} size="thumb"/>
-              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps}{p.tempo?` · ${p.tempo}`:""} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.info,marginTop:1}}>{ex._reason}</div>}</div>
-              <div style={{display:"flex",alignItems:"center",gap:4}}>
-                <div style={{display:"flex",flexWrap:"wrap",gap:2,maxWidth:50}}>{mu.primary.slice(0,1).map(m=><span key={m} style={{fontSize:8,color:C.teal,background:C.tealBg,padding:"1px 4px",borderRadius:3}}>{m}</span>)}</div>
-                <button onClick={(e)=>{e.stopPropagation();setSwapTarget(ex);}} style={{width:26,height:26,borderRadius:8,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}} title="Request Alternative">🔄</button>
-              </div>
+              <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps}{p.tempo?` · ${p.tempo}`:""} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.teal,marginTop:1}}>{ex._reason}</div>}</div>
+              <button onClick={(e)=>{e.stopPropagation();setSwapTarget(ex);}} style={{width:28,height:28,borderRadius:8,background:"transparent",border:"none",color:C.textDim,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:0.5}} title="Options">⋯</button>
             </div>
             {ex._swappedFor&&<div style={{marginTop:4,padding:"4px 8px",background:C.warning+"10",borderRadius:6,borderLeft:`2px solid ${C.warning}`}}><span style={{fontSize:9,color:C.warning,fontWeight:700}}>🔄</span><span style={{fontSize:9,color:C.textMuted}}> Swapped for {ex._swappedFor}</span></div>}
             {ex._buildingTowardId&&<div style={{marginTop:4,padding:"4px 8px",background:C.purple+"10",borderRadius:6,borderLeft:`2px solid ${C.purple}`}}><span style={{fontSize:9,color:C.purple,fontWeight:700}}>🎯 {getProgressPercent(ex._buildingTowardId)}%</span><span style={{fontSize:9,color:C.textMuted}}> toward {ex._buildingToward}</span></div>}
