@@ -478,7 +478,7 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
             <span style={{ fontSize: 16 }}>📋</span>
             <div>
               <div>Export Profile & Assessment</div>
-              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Conditions, goals, ROM, baseline, preferences — JSON + readable summary</div>
+              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Conditions, goals, ROM, baseline, preferences — easy-to-read summary</div>
             </div>
           </button>
           <button onClick={() => { try { exportWorkout(); } catch (e) { console.warn("Workout export error:", e); } }} style={{
@@ -489,11 +489,11 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
             <span style={{ fontSize: 16 }}>🏋️</span>
             <div>
               <div>Export Workout Plan</div>
-              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Weekly plan, exercises, volume, PT protocols, adaptations — JSON + readable summary</div>
+              <div style={{ fontSize: 9, fontWeight: 400, color: C.textMuted }}>Weekly plan, exercises, volume, PT protocols, adaptations — easy-to-read summary</div>
             </div>
           </button>
         </div>
-        <div style={{ fontSize: 9, color: C.textDim, marginTop: 6, textAlign: "center" }}>Downloads 2 files each: structured JSON + readable markdown summary</div>
+        <div style={{ fontSize: 9, color: C.textDim, marginTop: 6, textAlign: "center" }}>Downloads a readable summary of your data</div>
         {isDevExportEnabled() && <button onClick={() => { try { exportDevDiagnostic(); } catch (e) { console.warn("Dev export error:", e); } }} style={{
           width: "100%", padding: "12px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit", marginTop: 6,
           background: C.bgElevated, border: `1px solid ${C.purple}40`, color: C.purple,

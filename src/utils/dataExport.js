@@ -165,12 +165,14 @@ export function exportProfile() {
   const name = getUserName();
   const ds = datestamp();
 
-  // Download JSON
-  downloadFile(JSON.stringify(data, null, 2), `apex_profile_${name}_${ds}.json`);
-
-  // Build and download readable markdown
+  // Build readable markdown (always)
   const md = buildProfileMarkdown(data, name);
   downloadFile(md, `apex_profile_${name}_${ds}.md`, "text/markdown");
+
+  // JSON only for developers
+  if (isDevExportEnabled()) {
+    downloadFile(JSON.stringify(data, null, 2), `apex_profile_${name}_${ds}.json`);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -274,12 +276,14 @@ export function exportWorkout() {
   const name = getUserName();
   const ds = datestamp();
 
-  // Download JSON
-  downloadFile(JSON.stringify(data, null, 2), `apex_workout_${name}_${ds}.json`);
-
-  // Build and download readable markdown
+  // Build readable markdown (always)
   const md = buildWorkoutMarkdown(data, name);
   downloadFile(md, `apex_workout_${name}_${ds}.md`, "text/markdown");
+
+  // JSON only for developers
+  if (isDevExportEnabled()) {
+    downloadFile(JSON.stringify(data, null, 2), `apex_workout_${name}_${ds}.json`);
+  }
 }
 
 // ── Exercise summary helper ─────────────────────────────────────
