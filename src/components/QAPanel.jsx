@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // APEX Coach — Developer QA Panel
-// Access: ?qa=true + PIN 7291
+// Access: ?qa=true + PIN 4260
 // Tests workout generation across simulated user profiles
 // Self-contained — no Supabase, no real user data touched
 // ═══════════════════════════════════════════════════════════════
@@ -8,7 +8,7 @@
 import { useState, useCallback } from "react";
 
 const C={bg:"#060b18",bgCard:"#0d1425",bgElevated:"#162040",border:"rgba(255,255,255,0.08)",text:"#e8ecf4",textMuted:"#7a8ba8",textDim:"#4a5a78",teal:"#00d2c8",tealDark:"#00a89f",tealBg:"rgba(0,210,200,0.08)",success:"#22c55e",danger:"#ef4444",warning:"#eab308",info:"#3b82f6",orange:"#f97316",purple:"#a855f7"};
-const QA_PIN = "7291";
+const QA_PIN = "4260";
 
 // ═══════════════════════════════════════════════════════════════
 // TEST PROFILES
@@ -153,7 +153,7 @@ export function isQAEnabled() {
 // QA PANEL COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
-export default function QAPanel() {
+export default function QAPanel({ onClose }) {
   const [pin, setPin] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -190,8 +190,11 @@ export default function QAPanel() {
       if (profile.assessment.seniorScreening) localStorage.setItem("apex_senior_profile", JSON.stringify({ age: profile.assessment.userAge, ...profile.assessment.seniorScreening, fallRiskLevel: "high" }));
       if (profile.assessment.startingPhase) localStorage.setItem("apex_mesocycle", JSON.stringify({ phase: profile.assessment.startingPhase, tier: 2, tierName: "Cautious", mesoLength: 6, currentWeek: 2 }));
 
-      // Call real buildWorkoutList via window
-      const plan = window._buildWorkoutList ? window._buildWorkoutList() : null;
+      // Call real buildWorkoutList via window — may not be available if QA panel
+      // intercepted before main app mounted. Show clear error if so.
+      let plan = null;
+      if (window._buildWorkoutList) { plan = window._buildWorkoutList(); }
+      else { return { plan: null, audit: (profile.checks || []).map(c => ({ ...c, passed: false, error: "buildWorkoutList not available — open app normally first, then navigate to ?qa=true" })), exerciseCount: 0, mainCount: 0, error: "Open the app normally first (without ?qa=true), let it load, then add ?qa=true to the URL. The QA panel needs the workout engine to be initialized." }; }
 
       // Run audit checks
       const audit = (profile.checks || []).map(chk => {
@@ -258,7 +261,7 @@ export default function QAPanel() {
         <div style={{ display: "flex", gap: 6 }}>
           <button onClick={handleRunAll} disabled={runningAll} style={{ padding: "8px 14px", borderRadius: 10, background: C.teal, border: "none", color: "#000", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", opacity: runningAll ? 0.5 : 1 }}>{runningAll ? "Running..." : "Run All Profiles"}</button>
           <button onClick={handleExport} style={{ padding: "8px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Export Report</button>
-          <button onClick={() => window.location.href = window.location.pathname} style={{ padding: "8px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Close</button>
+          <button onClick={() => { if (onClose) onClose(); else window.location.href = window.location.pathname; }} style={{ padding: "8px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Close</button>
         </div>
       </div>
 
