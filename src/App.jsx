@@ -20,6 +20,8 @@ import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing
 import { getWeightTrend, shouldShowWeightNudge, dismissWeightNudge, logWeight, displayWeight, getWeightUnit, lbsToKg, calculateBMI } from "./utils/weightTracking.js";
 import WellnessScreen, { StressResetCard } from "./components/WellnessModule.jsx";
 import { CelebrationLayer, CelebrationAPI } from "./components/CelebrationSystem.jsx";
+import PowerRingsCard from "./components/PowerRings.jsx";
+import { checkAndApplyDecay, addSessionGains, getRings, getReturnVolumeMultiplier, getPhaseRegression } from "./utils/detraining.js";
 
 // Expose audit + buildWorkoutList on window for console + dev dashboard use
 if (typeof window !== "undefined") {
@@ -1040,6 +1042,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // ── ENERGY/SLEEP/STRESS VOLUME MODIFIERS ─────────────────────
   // These actually reduce volume based on check-in data (not just display text)
   let volumeModifier = 1.0; // 1.0 = full volume
+  // Return-to-training ramp (detraining protocol)
+  try { const _rings = getRings(); if (_rings.daysOff >= 14) { const _sessions = (getSessions() || []).length; const _rtm = getReturnVolumeMultiplier(_sessions, _rings.daysOff); volumeModifier *= _rtm; } } catch {}
   if (checkInData) {
     if (checkInData.energy <= 3) volumeModifier *= 0.7;        // Low energy: -30%
     else if (checkInData.energy <= 5) volumeModifier *= 0.85;  // Moderate: -15%
@@ -1542,6 +1546,8 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   {(()=>{try{const sp=getSportPrefs();if(!sp||sp.length===0)return null;const sportEmojis={"Basketball":"🏀","Soccer":"⚽","Baseball/Softball":"⚾","Tennis":"🎾","Golf":"⛳","Swimming":"🏊","Running/Track":"🏃","Cycling":"🚴","Hiking":"🥾","Rock Climbing":"🧗","CrossFit":"🏋️","Boxing/Kickboxing":"🥊","MMA/BJJ":"🥋","Wrestling":"🤼","Volleyball":"🏐","Football":"🏈","Yoga":"🧘","Pilates":"🧘","Dance":"💃","Rowing":"🚣","Skiing/Snowboarding":"⛷️","Surfing":"🏄","Skateboarding":"🛹","Pickleball":"🏓","Martial Arts":"🥋","Muay Thai":"🥊"};const rankColors=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{sp.slice(0,3).map((s,i)=>(<div key={s.sport} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${rankColors[i]}25`,fontSize:11}}><span>{sportEmojis[s.sport]||"🏅"}</span><span style={{color:rankColors[i],fontWeight:700}}>#{i+1}</span><span style={{color:C.textMuted}}>{s.sport}</span></div>))}</div>);}catch{return null;}})()}
   <DevBugBadge onClick={onDevBugs}/>
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
+  {/* Power Rings */}
+  <PowerRingsCard onStartWorkout={onStart}/>
   {/* Stress reset card — shown when today's check-in reported high stress */}
   {(()=>{try{const ci=JSON.parse(localStorage.getItem("apex_daily_progress")||"{}");const stress=ci?.checkInData?.stress;if(!stress||stress<7)return null;return<StressResetCard stressLevel={stress} onStartTechnique={(id)=>{setScreen("wellness");}} onSkip={()=>{}} onWellness={()=>{setTab("wellness");setScreen("wellness");}}/>;}catch{return null;}})()}
   {/* Daily workout progress card */}
@@ -2781,7 +2787,7 @@ function AppInner(){
     {/* Pause overlay */}
     {showPause&&<div style={{position:"fixed",inset:0,background:"rgba(6,11,24,0.95)",zIndex:500,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20}}><div style={{fontSize:64}}>⏸️</div><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>WORKOUT PAUSED</div><div style={{fontSize:13,color:C.textMuted}}>Exercise {exIdx+1}/{wxAll.length} · {completedExercises.length} completed</div>{sessionStart&&<div style={{fontSize:12,color:C.textDim}}>{formatDuration(sessionStart)} elapsed</div>}<Btn onClick={()=>{setShowPause(false);}} style={{maxWidth:300}} icon="▶">Resume Workout</Btn><Btn variant="dark" onClick={()=>{setShowPause(false);setShowEndConfirm(true);}} style={{maxWidth:300}} icon="🛑">End Workout</Btn><button onClick={()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setShowPause(false);setScreen("home");setTab("home");}} style={{background:"none",border:"none",color:C.textDim,fontSize:12,cursor:"pointer",marginTop:8,fontFamily:"inherit"}}>Save & exit — resume later</button></div>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
-    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");try{const s=getStats();CelebrationAPI.workoutComplete({exerciseCount:completedExercises.length,totalSets:completedExercises.reduce((a,e)=>a+(e.sets_done||1),0),durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,phase:CURRENT_PHASE,streak:s.streak,safetyLevel:checkInData?.readiness>=70?"CLEAR":"CAUTION",injuryModified:getInjuries().some(i=>i.status!=="resolved"),isFloorSession:difficulty==="floor"});if(s.totalSessions===1)CelebrationAPI.milestone("first_workout");if(s.streak===7)CelebrationAPI.milestone("streak_7");if(s.totalSessions===30)CelebrationAPI.milestone("sessions_30");}catch{}}}/>}
+    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");try{const s=getStats();CelebrationAPI.workoutComplete({exerciseCount:completedExercises.length,totalSets:completedExercises.reduce((a,e)=>a+(e.sets_done||1),0),durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,phase:CURRENT_PHASE,streak:s.streak,safetyLevel:checkInData?.readiness>=70?"CLEAR":"CAUTION",injuryModified:getInjuries().some(i=>i.status!=="resolved"),isFloorSession:difficulty==="floor"});if(s.totalSessions===1)CelebrationAPI.milestone("first_workout");if(s.streak===7)CelebrationAPI.milestone("streak_7");if(s.totalSessions===30)CelebrationAPI.milestone("sessions_30");addSessionGains({exercisesCompleted:completedExercises.length,exercisesPlanned:workout?.all?.length||completedExercises.length,warmupCompleted:true,cooldownCompleted:true,cardioMinutes:0,cardioTarget:20},CURRENT_PHASE);const updRings=getRings();if(updRings.ascended)CelebrationAPI.milestone("phase_complete",{from:CURRENT_PHASE,to:1});}catch{}}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
     {screen==="wellness"&&<WellnessScreen/>}
     {screen==="coach"&&<CoachScreen/>}

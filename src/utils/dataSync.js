@@ -22,6 +22,7 @@ const CRITICAL_KEYS = [
   "apex_mesocycle",
   "apex_unlock_notifications",
   "apex_senior_profile",
+  "apex_power_rings",
 ];
 
 // Keys that are ephemeral or derived — safe to stay localStorage-only
