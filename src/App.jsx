@@ -2474,7 +2474,7 @@ function AppInner(){
   const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding","baseline"]);
   const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);if(!_noRestore.has(s))try{localStorage.setItem("apex_last_screen",s);}catch{}},[]);const _savedTab=(()=>{try{return localStorage.getItem("apex_last_tab")||"home";}catch{return"home";}})();const[tab,_setTab]=useState(_savedTab);const setTab=(t)=>{_setTab(t);try{localStorage.setItem("apex_last_tab",t);}catch{}};
   const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
-  const[sessionsRestored,setSessionsRestored]=useState(false); // tracks Supabase session restore completion
+  const[sessionsRestored,setSessionsRestored]=useState(0); // counter — increments on each Supabase session restore to force HomeScreen remount
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);
   const[checkInData,setCheckInData]=useState(null);
   const[completedExercises,setCompletedExercises]=useState([]);
@@ -2524,7 +2524,7 @@ function AppInner(){
       }
       // Restore workout sessions from Supabase — await to ensure stats render correctly
       restoreSessionsFromSupabase().then(restored => {
-        if (restored) { setSessionsRestored(true); console.log("APEX: Sessions restored from Supabase — stats will update"); }
+        if (restored) { setSessionsRestored(n => n + 1); console.log("APEX: Sessions restored from Supabase — stats will update"); }
       }).catch(() => {});
     }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
@@ -2535,7 +2535,7 @@ function AppInner(){
     const local = getSessions();
     if (local.length === 0 && !sessionsRestored) {
       restoreSessionsFromSupabase().then(restored => {
-        if (restored) { setSessionsRestored(true); console.log("APEX: Defensive session restore succeeded"); }
+        if (restored) { setSessionsRestored(n => n + 1); console.log("APEX: Defensive session restore succeeded"); }
       }).catch(() => {});
     } else if (local.length > 0) {
       backfillSessionsToSupabase().catch(() => {});
@@ -2543,6 +2543,20 @@ function AppInner(){
     // Full sync cycle: restore critical data from Supabase, then sync local to remote
     fullSyncCycle().catch(() => {});
   }, [user, loading, sessionsRestored]);
+
+  // ── Refresh stats when tab regains focus (cross-device sync) ──
+  useEffect(() => {
+    if (!user) return;
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        restoreSessionsFromSupabase().then(restored => {
+          if (restored) setSessionsRestored(n => n + 1); // increment to force HomeScreen remount
+        }).catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [user]);
 
   // Check for paused workout on mount
   const[resumePrompt,setResumePrompt]=useState(null);
@@ -2636,7 +2650,7 @@ function AppInner(){
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onSportChange={()=>{/* Sport priorities changed — clear cached daily workout so next session uses new bias */try{localStorage.removeItem("apex_daily_workout");}catch{}}} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover","apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive","apex_mesocycle","apex_mesocycle_archive","apex_sports","apex_finger_health","apex_finger_log"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
     {/* Resume paused workout prompt */}
     {resumePrompt&&screen==="home"&&<Card glow={C.tealGlow} style={{margin:"0 0 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Unfinished Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} exercises done · {formatTimeAgo(resumePrompt.pausedAt)}</div></div></div><div style={{display:"flex",gap:8}}><Btn onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");}} style={{flex:3}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}} style={{flex:1,padding:"8px 10px",fontSize:11}}>Discard</Btn></div></Card>}
-    {screen==="home"&&<HomeScreen onStart={()=>{const _s=getTodayWorkoutStatus();if(_s==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}/* If workout is in progress (daily tracker) but no resume prompt, skip check-in and rebuild from daily state */const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")} onAddOn={(type)=>{if(type==="pt"){const protocols=JSON.parse(localStorage.getItem("apex_pt_protocols")||"[]");if(protocols.length>0){setPtProtocol(protocols[0]);setScreen("pt_session");}return;}if(type==="cardio"){setScreen("extra_work");return;}/* For ROM, foam, stretch — go to extra work screen */setScreen("extra_work");}} onStartSecondary={()=>{setIsSecondarySession(true);setScreen("checkin");}}/>}
+    {screen==="home"&&<HomeScreen key={"home_"+sessionsRestored} onStart={()=>{const _s=getTodayWorkoutStatus();if(_s==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}/* If workout is in progress (daily tracker) but no resume prompt, skip check-in and rebuild from daily state */const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")} onAddOn={(type)=>{if(type==="pt"){const protocols=JSON.parse(localStorage.getItem("apex_pt_protocols")||"[]");if(protocols.length>0){setPtProtocol(protocols[0]);setScreen("pt_session");}return;}if(type==="cardio"){setScreen("extra_work");return;}/* For ROM, foam, stretch — go to extra work screen */setScreen("extra_work");}} onStartSecondary={()=>{setIsSecondarySession(true);setScreen("checkin");}}/>}
     {screen==="baseline"&&<BaselineTestFlow onComplete={()=>{setScreen("home");setTab("home");}} onClose={()=>{setScreen("home");setTab("home");}}/>}
     {/* Resume prompt on Train page too (Fix #18) */}
     {resumePrompt&&screen==="train"&&<Card glow={C.tealGlow} style={{margin:"0 16px 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Resume Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} of {resumePrompt.workout?.all?.length||"?"} done · {formatTimeAgo(resumePrompt.pausedAt)}</div></div></div><div style={{display:"flex",gap:8}}><Btn onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");}} style={{flex:3}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}} style={{flex:1,padding:"8px 10px",fontSize:11}}>Discard</Btn></div></Card>}
