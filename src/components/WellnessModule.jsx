@@ -414,13 +414,34 @@ function getGuidanceText(inhale, exhale) {
 function BreathingSetup({ technique, onStart, onClose }) {
   const hasHolds = technique.phases?.some(p => p.label === "HOLD");
   const defaults = getConditionDefaults(technique);
-  const saved = getBreathPrefs()[technique.id];
   const techDefaults = { inhale: technique.phases?.find(p => p.label === "INHALE")?.seconds || 4, holdFull: technique.phases?.find(p => p.label === "HOLD")?.seconds || 0, exhale: technique.phases?.find(p => p.label === "EXHALE")?.seconds || 6, holdEmpty: technique.phases?.filter(p => p.label === "HOLD")?.[1]?.seconds || 0 };
   const reducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  // Load saved prefs with 2s timeout fallback — never block the user
+  const [saved, setSaved] = useState(() => { try { return getBreathPrefs()[technique.id] || null; } catch { return null; } });
+  const [loadNotice, setLoadNotice] = useState(null); // amber notice if load failed
+  const [saveNotice, setSaveNotice] = useState(null); // notice if save failed
 
   // View states: "saved" (has prefs) | "instructions" | "testing" | "results"
   const [view, setView] = useState(saved ? "saved" : "instructions");
   const [showAdjust, setShowAdjust] = useState(false);
+
+  // Timeout: if saved is null and we suspect Supabase sync hasn't completed, fall through after 2s
+  useEffect(() => {
+    if (saved) return;
+    const timer = setTimeout(() => {
+      // Re-check after sync may have completed
+      try {
+        const fresh = getBreathPrefs()[technique.id];
+        if (fresh) { setSaved(fresh); setView("saved"); return; }
+      } catch {}
+      // Still no saved data — show notice and use defaults
+      if (view === "instructions") return; // already on instructions, no notice needed
+      setLoadNotice("Couldn't load your saved rhythm — using recommended settings.");
+      setTimeout(() => setLoadNotice(null), 4000);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Test state
   const [testState, setTestState] = useState(0); // 0=ready, 1=inhale, 2=exhale
@@ -475,17 +496,28 @@ function BreathingSetup({ technique, onStart, onClose }) {
 
   const handleLaunch = () => {
     const customPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
-    saveBreathPref(technique.id, { inhale, holdFull, exhale, holdEmpty, duration, baseline_inhale_raw: rawInhale, baseline_exhale_raw: rawExhale, baseline_tested_at: new Date().toISOString() });
+    // Save — but never block session start on failure
+    try { saveBreathPref(technique.id, { inhale, holdFull, exhale, holdEmpty, duration, baseline_inhale_raw: rawInhale, baseline_exhale_raw: rawExhale, baseline_tested_at: new Date().toISOString() }); }
+    catch { setSaveNotice("Couldn't save your settings — they'll apply this session only."); setTimeout(() => setSaveNotice(null), 3000); }
     onStart({ customPhases, customDuration: duration });
   };
 
-  const useDefaults = () => { const d = defaults || techDefaults; setInhale(d.inhale); setExhale(d.exhale); setHoldFull(d.holdFull || 0); setHoldEmpty(d.holdEmpty || 0); setView("results"); };
+  // Skip test at any point → condition-aware defaults → ready to start
+  const useDefaults = () => { const d = defaults || techDefaults; setInhale(d.inhale); setExhale(d.exhale); setHoldFull(d.holdFull || 0); setHoldEmpty(d.holdEmpty || 0); setTestState(0); cancelAnimationFrame(rafRef.current); setView("results"); };
   const guidance = getGuidanceText(inhale, exhale);
+
+  // Shared notices
+  const NoticeBar = () => <>
+    {loadNotice && <div style={{ fontSize: 12, color: "#C8A87E", padding: "6px 10px", background: "rgba(200,168,126,0.08)", borderRadius: 8, textAlign: "center" }}>{loadNotice}</div>}
+    {saveNotice && <div style={{ fontSize: 12, color: "#C8A87E", padding: "6px 10px", background: "rgba(200,168,126,0.08)", borderRadius: 8, textAlign: "center" }}>{saveNotice}</div>}
+  </>;
+  const SkipLink = () => <button onClick={useDefaults} style={{ background: "none", border: "none", color: "#6B7A8D", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "center", width: "100%", padding: "4px 0" }}>Skip — use recommended settings</button>;
 
   // ── SAVED VIEW (returning user) ──
   if (view === "saved") {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <NoticeBar />
         <div><div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{technique.desc}</div></div>
         <Card style={{ padding: 14 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 6 }}>Your rhythm</div>
@@ -514,6 +546,7 @@ function BreathingSetup({ technique, onStart, onClose }) {
   if (view === "instructions") {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <NoticeBar />
         <div style={{ textAlign: "center", fontSize: 28, marginTop: 8 }}>🌬️</div>
         <div style={{ fontSize: 20, fontWeight: 700, color: C.text, textAlign: "center" }}>Find your natural rhythm</div>
         <div style={{ fontSize: 13, color: C.textMuted, textAlign: "center", lineHeight: 1.6 }}>We'll measure one comfortable breath so your session matches what feels natural to you.</div>
@@ -559,6 +592,7 @@ function BreathingSetup({ technique, onStart, onClose }) {
         <div style={{ fontSize: 13, color: C.textMuted, textAlign: "center" }}>{instruction}</div>
         {tooFast && <div style={{ fontSize: 12, color: "#C8A87E", textAlign: "center" }}>That felt quick — let's try once more with a full natural breath.</div>}
         <button onClick={handleTestTap} style={{ width: 120, height: 120, borderRadius: 60, background: btnBg, border: "none", color: "#0D1117", fontSize: 18, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "pre-line", lineHeight: 1.3, animation: testState === 0 ? "pulse 2s ease-in-out infinite" : "none" }}>{btnText}</button>
+        <SkipLink />
         <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
       </div>
     );
@@ -567,6 +601,7 @@ function BreathingSetup({ technique, onStart, onClose }) {
   // ── RESULTS VIEW ──
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <NoticeBar />
       <div style={{ fontSize: 20, fontWeight: 700, color: C.text }}>Your natural rhythm</div>
       <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
       {rawInhale && <div style={{ fontSize: 10, color: "#6B7A8D", marginTop: -8, paddingLeft: 98 }}>measured: {rawInhale}s</div>}
