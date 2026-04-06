@@ -19,6 +19,7 @@ import { validatePlan as _validatePlan, saveValidation as _saveValidation, getVa
 import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing, isSeniorUser, getAgeTier } from "./utils/seniorFitness.js";
 import { getWeightTrend, shouldShowWeightNudge, dismissWeightNudge, logWeight, displayWeight, getWeightUnit, lbsToKg, calculateBMI } from "./utils/weightTracking.js";
 import WellnessScreen, { StressResetCard } from "./components/WellnessModule.jsx";
+import { CelebrationLayer, CelebrationAPI } from "./components/CelebrationSystem.jsx";
 
 // Expose audit + buildWorkoutList on window for console + dev dashboard use
 if (typeof window !== "undefined") {
@@ -2231,7 +2232,7 @@ function QuickModeScreen({workout,onComplete}){
   useEffect(()=>{saveDailyWorkout(w,checked,null,splitMode);},[checked,splitMode]);
 
   const toggleCheck=(id)=>{
-    setChecked(p=>{const next={...p,[id]:!p[id]};if(!p[id])markExerciseDone(id);return next;});
+    setChecked(p=>{const next={...p,[id]:!p[id]};if(!p[id]){markExerciseDone(id);try{CelebrationAPI.exerciseComplete();}catch{}}return next;});
   };
   const startRest=(ex)=>{const ep2=exParams(ex);const r=ep2.rest||60;setTl(r);setTimerFor(ex.id);setTimerOn(true);};
 
@@ -2771,7 +2772,7 @@ function AppInner(){
     {/* Pause overlay */}
     {showPause&&<div style={{position:"fixed",inset:0,background:"rgba(6,11,24,0.95)",zIndex:500,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20}}><div style={{fontSize:64}}>⏸️</div><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>WORKOUT PAUSED</div><div style={{fontSize:13,color:C.textMuted}}>Exercise {exIdx+1}/{wxAll.length} · {completedExercises.length} completed</div>{sessionStart&&<div style={{fontSize:12,color:C.textDim}}>{formatDuration(sessionStart)} elapsed</div>}<Btn onClick={()=>{setShowPause(false);}} style={{maxWidth:300}} icon="▶">Resume Workout</Btn><Btn variant="dark" onClick={()=>{setShowPause(false);setShowEndConfirm(true);}} style={{maxWidth:300}} icon="🛑">End Workout</Btn><button onClick={()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setShowPause(false);setScreen("home");setTab("home");}} style={{background:"none",border:"none",color:C.textDim,fontSize:12,cursor:"pointer",marginTop:8,fontFamily:"inherit"}}>Save & exit — resume later</button></div>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
-    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");}}/>}
+    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");try{const s=getStats();CelebrationAPI.workoutComplete({exerciseCount:completedExercises.length,totalSets:completedExercises.reduce((a,e)=>a+(e.sets_done||1),0),durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,phase:CURRENT_PHASE,streak:s.streak,safetyLevel:checkInData?.readiness>=70?"CLEAR":"CAUTION",injuryModified:getInjuries().some(i=>i.status!=="resolved"),isFloorSession:difficulty==="floor"});if(s.totalSessions===1)CelebrationAPI.milestone("first_workout");if(s.streak===7)CelebrationAPI.milestone("streak_7");if(s.totalSessions===30)CelebrationAPI.milestone("sessions_30");}catch{}}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
     {screen==="wellness"&&<WellnessScreen/>}
     {screen==="coach"&&<CoachScreen/>}
@@ -2796,5 +2797,6 @@ export default function ApexCoach(){
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
     <AppInner/>
+    <CelebrationLayer/>
   </div></AuthProvider>);
 }
