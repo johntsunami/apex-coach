@@ -997,7 +997,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Respect user's session time preference (Fix #8)
   const sessionTime = excludeMuscles ? 30 : (getAssessment()?.preferences?.sessionTime || 45); // Secondary workouts capped at 30 min
   const baseWarmup = sessionTime <= 30 ? 3 : sessionTime <= 45 ? 4 : 5;
-  const baseMain = sessionTime <= 30 ? 4 : sessionTime <= 45 ? 6 : 8;
+  const baseMain = sessionTime <= 30 ? 4 : sessionTime <= 45 ? 6 : sessionTime <= 60 ? 7 : 8;
   const baseCooldown = sessionTime <= 30 ? 2 : 3;
   // Apply volume modifier to main exercise count
   const warmupLimit = baseWarmup;
@@ -1057,7 +1057,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     // Track favorites added per body part to prevent imbalance
     const favBpCount = {};
     for (const add of rotatedAdditions) {
-      if (!mainIds.has(add.id) && main.length < mainLimit + 2) {
+      if (!mainIds.has(add.id) && main.length < mainLimit + 1) {
         const bp = add.bodyPart || "other";
         if ((favBpCount[bp] || 0) >= 2) continue; // Max 2 favorites per body part
         const addSets = parseInt(add.phaseParams?.[String(phase)]?.sets) || 1;
