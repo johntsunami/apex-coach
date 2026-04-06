@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "./AuthProvider.jsx";
 import { supabase } from "../utils/supabase.js";
+import { getSportPrefs, saveSportPrefs } from "../utils/storage.js";
+import { getAssessment } from "./Onboarding.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // Landing Page + Sign Up + Log In + Forgot Password
@@ -275,7 +277,9 @@ export function ForgotPasswordScreen({ onBack }) {
 }
 
 // ── Profile / Settings ────────────────────────────────────────
-export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan, onStartFresh }) {
+const ALL_SPORTS = ["Basketball","Soccer","Baseball/Softball","Tennis","Golf","Swimming","Running/Track","Cycling","Hiking","Rock Climbing","CrossFit","Boxing/Kickboxing","MMA/BJJ","Wrestling","Volleyball","Football","Yoga","Pilates","Dance","Rowing","Skiing/Snowboarding","Surfing","Skateboarding","Pickleball","Martial Arts","Muay Thai"];
+
+export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onViewSummary, onViewPlan, onStartFresh, onSportChange }) {
   const { user, profile, signOut } = useAuth();
   const [showFreshConfirm, setShowFreshConfirm] = useState(false);
   const [freshInput, setFreshInput] = useState("");
@@ -283,6 +287,64 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
   const [deleting, setDeleting] = useState(false);
+
+  // ── Sport preferences state ──
+  const [sportList, setSportList] = useState([]);
+  const [showAddSport, setShowAddSport] = useState(false);
+  const [sportSearch, setSportSearch] = useState("");
+  const [customSport, setCustomSport] = useState("");
+
+  // Initialize from localStorage or migrate from assessment
+  useEffect(() => {
+    let saved = getSportPrefs();
+    if (saved.length === 0) {
+      const assessment = getAssessment();
+      const legacy = assessment?.preferences?.sports || [];
+      if (legacy.length > 0) {
+        saved = legacy.filter(s => s !== "None").map((s, i) => ({ sport: s, rank: i + 1 }));
+        saveSportPrefs(saved);
+      }
+    }
+    setSportList(saved);
+  }, []);
+
+  const updateSports = (newList) => {
+    // Re-rank
+    const ranked = newList.map((s, i) => ({ sport: s.sport, rank: i + 1 }));
+    setSportList(ranked);
+    saveSportPrefs(ranked);
+    if (onSportChange) onSportChange();
+  };
+
+  const moveSport = (idx, dir) => {
+    const next = [...sportList];
+    const target = idx + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[idx], next[target]] = [next[target], next[idx]];
+    updateSports(next);
+  };
+
+  const removeSport = (idx) => {
+    const next = sportList.filter((_, i) => i !== idx);
+    updateSports(next);
+  };
+
+  const addSport = (name) => {
+    if (sportList.some(s => s.sport === name)) return;
+    if (sportList.length >= 3) return; // Hard cap at 3
+    updateSports([...sportList, { sport: name, rank: sportList.length + 1 }]);
+    setShowAddSport(false);
+    setSportSearch("");
+  };
+
+  const atMax = sportList.length >= 3;
+  const rankColors = ["#FFD700", "#C0C0C0", "#CD7F32"]; // gold, silver, bronze
+  const rankLabel = (rank) => {
+    if (sportList.length === 1) return "PRIMARY — 100% focus";
+    if (sportList.length === 2) return rank === 1 ? "PRIMARY — 70% focus" : "SECONDARY — 30% focus";
+    return rank === 1 ? "PRIMARY — 60% focus" : rank === 2 ? "SECONDARY — 30% focus" : "TERTIARY — 10% focus";
+  };
+  const rankColor = (rank) => rankColors[rank - 1] || C.textDim;
 
   // Condition history from localStorage
   let condHistory = [];
@@ -306,6 +368,58 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
       {/* Quick actions */}
       {onViewSummary && <Btn variant="dark" onClick={onViewSummary} icon="📊">Review My Assessment</Btn>}
       {onViewPlan && <Btn variant="dark" onClick={onViewPlan} icon="📋">View 12-Month Plan</Btn>}
+
+      {/* ═══ MY SPORTS & ACTIVITIES ═══ */}
+      <div style={{ marginTop: 8 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.textDim, letterSpacing: 2, marginBottom: 8 }}>MY SPORTS & ACTIVITIES</div>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 16, padding: 14 }}>
+          {sportList.length === 0 ? (
+            <div style={{ fontSize: 12, color: C.textMuted, textAlign: "center", padding: "8px 0" }}>No sports selected. Add your sports to get sport-specific training.</div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {sportList.map((sp, idx) => (
+                <div key={sp.sport} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", background: C.bgElevated, borderRadius: 10, border: `1px solid ${rankColor(sp.rank)}30` }}>
+                  <div style={{ width: 22, height: 22, borderRadius: 6, background: rankColor(sp.rank) + "30", color: rankColor(sp.rank), fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>#{sp.rank}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{sp.sport}</div>
+                    <div style={{ fontSize: 8, color: rankColor(sp.rank), fontWeight: 700, letterSpacing: 0.5 }}>{rankLabel(sp.rank)}</div>
+                  </div>
+                  <div style={{ display: "flex", gap: 2 }}>
+                    <button onClick={() => moveSport(idx, -1)} disabled={idx === 0} style={{ width: 24, height: 24, borderRadius: 6, border: "none", background: idx === 0 ? "transparent" : C.bgCard, color: idx === 0 ? C.textDim : C.text, cursor: idx === 0 ? "default" : "pointer", fontSize: 12, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>▲</button>
+                    <button onClick={() => moveSport(idx, 1)} disabled={idx === sportList.length - 1} style={{ width: 24, height: 24, borderRadius: 6, border: "none", background: idx === sportList.length - 1 ? "transparent" : C.bgCard, color: idx === sportList.length - 1 ? C.textDim : C.text, cursor: idx === sportList.length - 1 ? "default" : "pointer", fontSize: 12, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>▼</button>
+                  </div>
+                  <button onClick={() => removeSport(idx)} style={{ width: 24, height: 24, borderRadius: 6, border: "none", background: C.danger + "15", color: C.danger, cursor: "pointer", fontSize: 12, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+          <button onClick={() => { if (!atMax) setShowAddSport(true); }} disabled={atMax} style={{ width: "100%", marginTop: 10, padding: "10px 14px", borderRadius: 10, background: atMax ? C.bgElevated : C.teal + "10", border: `1px dashed ${atMax ? C.border : C.teal + "40"}`, color: atMax ? C.textDim : C.teal, fontSize: 12, fontWeight: 600, cursor: atMax ? "default" : "pointer", fontFamily: "inherit", opacity: atMax ? 0.5 : 1 }}>{atMax ? "3 sport maximum reached" : "+ Add Sport"}</button>
+          {sportList.length > 0 && <div style={{ fontSize: 9, color: C.textDim, marginTop: 8, lineHeight: 1.5 }}>{sportList.length === 1 ? "All sport-specific training focused on " + sportList[0].sport + ". This gives you the fastest improvement." : "Reorder to change priority. #1 gets the most training focus."}</div>}
+        </div>
+      </div>
+
+      {/* ── Add Sport Modal ── */}
+      {showAddSport && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 500, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={() => { setShowAddSport(false); setSportSearch(""); setCustomSport(""); }}>
+          <div style={{ background: C.bg, borderRadius: "20px 20px 0 0", padding: 20, width: "100%", maxWidth: 420, maxHeight: "70vh", display: "flex", flexDirection: "column" }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2, marginBottom: 10 }}>ADD SPORT</div>
+            <input value={sportSearch} onChange={e => setSportSearch(e.target.value)} placeholder="Search sports..." style={{ width: "100%", padding: "10px 14px", borderRadius: 10, background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, fontSize: 13, fontFamily: "inherit", outline: "none", boxSizing: "border-box", marginBottom: 10 }} />
+            <div style={{ flex: 1, overflowY: "auto", display: "flex", flexWrap: "wrap", gap: 6, alignContent: "flex-start" }}>
+              {ALL_SPORTS.filter(s => {
+                const q = sportSearch.toLowerCase();
+                return (!q || s.toLowerCase().includes(q)) && !sportList.some(sp => sp.sport === s);
+              }).map(s => (
+                <button key={s} onClick={() => addSport(s)} style={{ padding: "8px 14px", borderRadius: 20, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>{s}</button>
+              ))}
+            </div>
+            {/* Custom sport */}
+            <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+              <input value={customSport} onChange={e => setCustomSport(e.target.value)} placeholder="Custom sport..." style={{ flex: 1, padding: "10px 12px", borderRadius: 10, background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, fontSize: 12, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+              <button onClick={() => { if (customSport.trim()) { addSport(customSport.trim()); setCustomSport(""); } }} disabled={!customSport.trim()} style={{ padding: "10px 16px", borderRadius: 10, background: customSport.trim() ? C.teal : C.bgElevated, color: customSport.trim() ? "#000" : C.textDim, border: "none", fontWeight: 700, fontSize: 12, cursor: customSport.trim() ? "pointer" : "default", fontFamily: "inherit" }}>+ Add</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ═══ THREE UPDATE OPTIONS ═══ */}
       <div style={{ marginTop: 4 }}>

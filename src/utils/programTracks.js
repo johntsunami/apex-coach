@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import exerciseDB from "../data/exercises.json";
+import { getSportProfile, getMergedSportProfile, getSportPreventionIds, getRotatedPreventionIds, PATTERN_TO_PLANE } from "../data/sportProfiles.js";
 
 // ── Sport-specific movement pattern priorities ──────────────
 
@@ -20,6 +21,12 @@ const SPORT_TEMPLATES = {
 };
 
 export function getSportTemplate(sportName) {
+  // Check rich NASM PES profile first, fall back to simple templates
+  const profile = getSportProfile(sportName);
+  if (profile && profile.movementPatterns) {
+    const topTraining = Object.entries(profile.priorityTraining || {}).filter(([,v]) => Array.isArray(v) && v.length > 0).slice(0, 3).map(([k]) => k.replace(/_/g, " "));
+    return { label: profile.label, patterns: profile.movementPatterns, focus: topTraining.join(", ") || profile.label + " training", unlockPhase: profile.unlockPhase || 3 };
+  }
   return SPORT_TEMPLATES[sportName] || { label: sportName, patterns: ["push", "pull", "squat", "hinge", "carry"], focus: "Balanced SAQ + power development", unlockPhase: 3 };
 }
 
@@ -161,33 +168,58 @@ const SPORT_NAME_MAP = {
   "MMA/BJJ": null, // mapped via SPORT_TEMPLATES.BJJ
 };
 
-function getSportPatterns(sports) {
+function getSportPatterns(sports, sportPrefs) {
   if (!sports || sports.length === 0) return null;
-  const allPatterns = new Map(); // pattern -> weight (how many sports need it)
-  for (const sport of sports) {
-    // Check SPORT_TEMPLATES first (exact match), then SPORT_NAME_MAP
-    const template = SPORT_TEMPLATES[sport] || SPORT_NAME_MAP[sport] ||
-      (sport.includes("BJJ") || sport.includes("MMA") ? SPORT_TEMPLATES.BJJ : null) ||
-      (sport.includes("Skiing") || sport.includes("Snowboard") ? SPORT_TEMPLATES.Snowboarding : null) ||
-      (sport.includes("Muay") || sport.includes("Kickbox") ? SPORT_TEMPLATES["Muay Thai"] : null);
+  const allPatterns = new Map(); // pattern -> weight
+  const allMuscles = new Set();
+  const allPlanes = new Set();
+
+  // If we have ranked preferences, use weighted scoring
+  const sorted = sportPrefs ? [...sportPrefs].sort((a, b) => a.rank - b.rank) : sports.map((s, i) => ({ sport: s, rank: i + 1 }));
+  for (let i = 0; i < sorted.length; i++) {
+    const sportName = sorted[i].sport || sorted[i];
+    const weight = i === 0 ? 3 : i === 1 ? 2 : 1; // Primary=3x, Secondary=2x, rest=1x
+
+    // Try rich profile first, then fall back to templates
+    const profile = getSportProfile(sportName);
+    if (profile?.movementPatterns) {
+      for (const p of profile.movementPatterns) {
+        allPatterns.set(p, (allPatterns.get(p) || 0) + weight);
+      }
+      for (const m of (profile.primaryMuscles || [])) allMuscles.add(m);
+      for (const pl of (profile.dominantPlanes || [])) allPlanes.add(pl);
+      continue;
+    }
+
+    // Legacy fallback
+    const template = SPORT_TEMPLATES[sportName] || SPORT_NAME_MAP[sportName] ||
+      (sportName.includes("BJJ") || sportName.includes("MMA") ? SPORT_TEMPLATES.BJJ : null) ||
+      (sportName.includes("Skiing") || sportName.includes("Snowboard") ? SPORT_TEMPLATES.Snowboarding : null) ||
+      (sportName.includes("Muay") || sportName.includes("Kickbox") ? SPORT_TEMPLATES["Muay Thai"] : null);
     if (!template?.patterns) continue;
     for (const p of template.patterns) {
-      allPatterns.set(p, (allPatterns.get(p) || 0) + 1);
+      allPatterns.set(p, (allPatterns.get(p) || 0) + weight);
     }
   }
-  return allPatterns.size > 0 ? allPatterns : null;
+  if (allPatterns.size === 0) return null;
+  return { patterns: allPatterns, muscles: allMuscles, planes: allPlanes };
 }
 
-// Score an exercise based on how well it matches the user's sport patterns
-function sportScore(exercise, sportPatterns) {
-  if (!sportPatterns) return 0;
+// Score an exercise based on how well it matches the user's sport profile
+function sportScore(exercise, sportData) {
+  if (!sportData) return 0;
+  const patterns = sportData.patterns || sportData; // backward compat: accept raw Map
+  const muscles = sportData.muscles || new Set();
+  const planes = sportData.planes || new Set();
   const mp = (exercise.movementPattern || "").toLowerCase();
   const bp = (exercise.bodyPart || "").toLowerCase();
   const name = (exercise.name || "").toLowerCase();
+  const exMuscles = (exercise.primaryMuscles || []).map(m => m.toLowerCase());
   let score = 0;
-  for (const [pattern, weight] of sportPatterns) {
+
+  // Movement pattern match (highest weight)
+  for (const [pattern, weight] of patterns) {
     if (mp.includes(pattern)) score += weight * 3;
-    // Body part relevance (shoulders for surfing/climbing, legs for hiking/skiing)
     if (pattern === "pull" && (bp === "back" || bp === "arms")) score += weight;
     if (pattern === "push" && (bp === "chest" || bp === "shoulders")) score += weight;
     if (pattern === "squat" && (bp === "legs" || bp === "glutes")) score += weight;
@@ -196,18 +228,30 @@ function sportScore(exercise, sportPatterns) {
     if (pattern === "carry" && (bp === "core" || bp === "arms")) score += weight;
     if (pattern === "anti_extension" && bp === "core") score += weight;
     if (pattern === "anti_rotation" && bp === "core") score += weight;
-    // Name bonus for sport-specific exercises
-    if (name.includes("sport") || name.includes("agility") || name.includes("power")) score += weight;
   }
+
+  // Primary muscle match from sport profile
+  for (const m of muscles) {
+    if (exMuscles.some(em => em.includes(m.toLowerCase()) || m.toLowerCase().includes(em))) score += 2;
+  }
+
+  // Plane of motion match
+  const exPlane = PATTERN_TO_PLANE[mp];
+  if (exPlane && planes.has(exPlane)) score += 2;
+
+  // Name bonus for sport-specific exercises
+  if (name.includes("sport") || name.includes("agility") || name.includes("power")) score += 2;
+
   return score;
 }
 
 // Prioritize exercises in a pool based on sport selections.
 // Returns the same exercises but sorted so sport-relevant ones come first.
-export function prioritizeBySport(exercises, sports) {
-  const patterns = getSportPatterns(sports);
-  if (!patterns) return exercises;
-  return [...exercises].sort((a, b) => sportScore(b, patterns) - sportScore(a, patterns));
+// When sportPrefs (ranked array) is provided, uses weighted scoring.
+export function prioritizeBySport(exercises, sports, sportPrefs = null) {
+  const sportData = getSportPatterns(sports, sportPrefs);
+  if (!sportData) return exercises;
+  return [...exercises].sort((a, b) => sportScore(b, sportData) - sportScore(a, sportData));
 }
 
 // Get a summary of how sports affect the user's training
@@ -220,6 +264,25 @@ export function getSportTrainingSummary(sports, currentPhase) {
     summaries.push({ sport, message: msg, patterns: template.patterns, focus: template.focus, active: currentPhase >= template.unlockPhase });
   }
   return summaries;
+}
+
+// ── Sport Injury Prevention Exercise Resolver ───────────────
+// Returns actual exercise objects from the DB for sport-specific injury prevention.
+// Filters by phase eligibility and location compatibility.
+// Uses rotated deduplication: max per-session cap, rotates excess across the week.
+export function getSportPreventionExercises(sportPrefs, db, phase, location, maxPerSession = 3, sessionIdx = 0) {
+  const prevItems = getRotatedPreventionIds(sportPrefs, maxPerSession, sessionIdx);
+  if (prevItems.length === 0) return [];
+  const results = [];
+  for (const { id, area } of prevItems) {
+    const ex = (db || exerciseDB).find(e => e.id === id);
+    if (!ex) continue;
+    if (!(ex.phaseEligibility || []).includes(phase)) continue;
+    if (location === "home" && !(ex.locationCompatible || []).includes("home")) continue;
+    if (location === "outdoor" && !(ex.locationCompatible || []).includes("outdoor")) continue;
+    results.push({ ...ex, _sportArea: area, _sportPrevention: true, _reason: `Sport injury prevention — ${area}` });
+  }
+  return results;
 }
 
 export { SPORT_TEMPLATES, getSportPatterns };

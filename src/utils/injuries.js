@@ -233,6 +233,8 @@ function conditionToGateKey(condCategoryOrId) {
   if (id.includes("hip") || id.includes("trochanteric") || id.includes("bursitis") && id.includes("hip")) return "knee"; // hip maps to knee gate (closest lower body gate)
   // Ankle/foot conditions
   if (id.includes("ankle") || id.includes("plantar") || id.includes("achilles") || id.includes("foot")) return "ankle";
+  // Finger/pulley conditions (climbing-specific — separate from wrist)
+  if (id.includes("finger_pulley") || id.includes("finger_flexor") || id.includes("finger_tenosynov") || id.includes("pulley_strain") || id.includes("pulley_rupture")) return "finger";
   // Wrist/hand conditions
   if (id.includes("wrist") || id.includes("carpal") || id.includes("quervain") || id.includes("trigger_finger") || id.includes("dupuytren")) return "wrist";
   // Spinal conditions

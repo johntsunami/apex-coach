@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import exerciseDB from "./data/exercises.json";
 import _conditionsDB from "./data/conditions.json";
-import { getSessions, saveSession, getStats, isTodayComplete, getPrefs, setPref, computeSessionVolume } from "./utils/storage.js";
+import _compensationsDB from "./data/compensations.json";
+import { getSessions, saveSession, getStats, isTodayComplete, getPrefs, setPref, computeSessionVolume, getStretchTracker, updateStretchTracker, getSportPrefs } from "./utils/storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, findVolumeSub, capExerciseParams, getVolumeSummary, getTrainingWeek } from "./utils/volumeTracker.js";
 import { getWorkoutOverloads } from "./utils/overload.js";
 import OnboardingFlow, { hasCompletedAssessment, getAssessment, saveAssessment } from "./components/Onboarding.jsx";
@@ -27,7 +28,9 @@ import OvertrainingCard from "./components/OvertrainingCard.jsx";
 import { assessOvertraining, applyOvertrainingModifiers } from "./utils/overtrainingDetector.js";
 import { capturePreReassessmentSnapshot, processReassessment } from "./utils/reassessment.js";
 import ReassessmentSummary from "./components/ReassessmentSummary.jsx";
-import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage, prioritizeBySport, getSportTrainingSummary } from "./utils/programTracks.js";
+import { getPESSuperset, PROGRAM_FILTERS, filterByProgram, detectPrograms, getSportMessage, prioritizeBySport, getSportTrainingSummary, getSportPreventionExercises } from "./utils/programTracks.js";
+import { capSportPrefs, getTodaySportFocus, getSportSlotLimit, getSportDrillExercises, getEnergySystemForSession, getClimbingProtocols } from "./data/sportProfiles.js";
+import { isClimber, computeFingerReadiness, getFingerBlockedExercises, getFingerRehabExercises, annotateStrapsForPulling, logFingerCheck, CLIMBING_PREVENTION_RULES } from "./utils/fingerHealth.js";
 import { getGreeting, getSetMessage, getRestTip, getRestTimerMessage, getSkipRestMessage, getRecapHeadline, getWorkoutCompleteMessage, getStreakMessage, getStreakEmoji, getCheckInSummary, checkEasterEgg, formatTimeAgo, formatDuration } from "./utils/personality.js";
 import BaselineTestFlow, { BaselineProgressCard, PowerRecordsCard } from "./components/BaselineTest.jsx";
 import { getBaselineCapabilities, getLatestBaseline, getCoreMovementSelections } from "./utils/baselineTest.js";
@@ -36,7 +39,7 @@ import { hasHypertrophyGoals, getHypertrophyVolume, getRecommendedSplit, getCurr
 import { buildCardioBlock, CARDIO_EXERCISES, getWeeklyCardioProgress } from "./utils/cardioEngine.js";
 import { getDailyWorkout, saveDailyWorkout, markExerciseDone, markExerciseStarted, getDailyProgress, getMiniSessions, getPhaseGroupedExercises, clearDailyWorkout, endDay, getCarryover, clearCarryover, estimateExerciseTime } from "./utils/splitWorkout.js";
 import { getOrCreateWeeklyPlan, getTodayFromPlan, getTomorrowFromPlan, updateDayStatus, adjustPlanForCheckIn, shouldRegeneratePlan, regenerateWeeklyPlan, generateWeeklyPlan, archiveWeeklyPlan, ADDON_TYPES, DAY_NAMES, getDayOfWeek, getWeeklyPlan, saveWeeklyPlan } from "./utils/weeklyPlanner.js";
-import { getTodayWorkoutStatus, saveSupplementalSession, restoreSessionsFromSupabase, getFirstSessionMuscles, getTodaySessionCompletionTime } from "./utils/storage.js";
+import { getTodayWorkoutStatus, saveSupplementalSession, restoreSessionsFromSupabase, backfillSessionsToSupabase, getFirstSessionMuscles, getTodaySessionCompletionTime } from "./utils/storage.js";
 import { determineTrainingTier, checkPhaseReadiness, getOrCreateMesocycle, getMesocycleContext, getMesocycle, analyzeFeedback, TIERS, TIER_PROGRESSIONS } from "./utils/mesocycle.js";
 
 // ═══════════════════════════════════════════════════════════════
@@ -473,15 +476,37 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const locOk = e => locationFilter(e, location);
 
+  // ── Shared data: assessment, compensations, ROM, tightness ──
+  const _assessment = getAssessment();
+  const userComps = (_assessment?.compensations || []).map(id => _compensationsDB.find(c => c.id === id)).filter(Boolean);
+  const rom = _assessment?.rom || {};
+  const romToBodyPart = { neck: "neck", thoracic: "back", lumbar: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
+  const romLimitedBps = new Set(Object.entries(rom).filter(([, v]) => v === "limited" || v === "mod_limited").map(([j]) => romToBodyPart[j]).filter(Boolean));
+  // Tightness from check-in (separate from soreness per NASM)
+  const soreMap = { lowerback: "back", upperback: "back", hips: "hips", lknee: "legs", rknee: "legs", calves: "calves", hamstrings: "legs", lquad: "legs", rquad: "legs", lshoulder: "shoulders", rshoulder: "shoulders" };
+  const tightAreas = soreAreas.filter(a => checkInData?.painTypes?.[a] === "tightness");
+  const tightBps = new Set(tightAreas.map(s => soreMap[s]).filter(Boolean));
+
   // PHASE A: INHIBIT — foam rolling for sore areas + overactive muscles
   const foamPool = exerciseDB.filter(e => e.category === "foam_roll" && (e.phaseEligibility || []).includes(phase) && locOk(e));
   const inhibit = [];
   // Prioritize sore area foam rolls
-  const soreMap = { lowerback: "back", upperback: "back", hips: "hips", lknee: "legs", rknee: "legs", calves: "calves", hamstrings: "legs", lquad: "legs", rquad: "legs", lshoulder: "shoulders", rshoulder: "shoulders" };
   const soreBps = new Set(soreAreas.map(s => soreMap[s]).filter(Boolean));
   foamPool.forEach(e => { if (inhibit.length < 5 && soreBps.has(e.bodyPart)) inhibit.push({ ...e, _reason: "Targets sore area — extra attention" }); });
   // Fill remaining with general foam rolling
   foamPool.forEach(e => { if (inhibit.length < 3 && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: "General tissue prep" }); });
+  // Compensation protocol: foam roll overactive muscles (NASM CES)
+  let compInhibitAdded = 0;
+  for (const comp of userComps) {
+    if (compInhibitAdded >= 3) break;
+    for (const exId of (comp.protocol?.inhibit?.exercises || [])) {
+      if (compInhibitAdded >= 3 || inhibit.length >= 6) break;
+      const ex = exerciseDB.find(e => e.id === exId);
+      if (ex && locOk(ex) && !inhibit.find(x => x.id === ex.id)) { inhibit.push({ ...ex, _reason: `${comp.name} — corrective foam roll`, _compensationProtocol: true }); compInhibitAdded++; }
+    }
+  }
+  // ROM-limited & tight areas: extra foam rolling
+  foamPool.forEach(e => { if (inhibit.length < 6 && (romLimitedBps.has(e.bodyPart) || tightBps.has(e.bodyPart)) && !inhibit.find(x => x.id === e.id)) inhibit.push({ ...e, _reason: tightBps.has(e.bodyPart) ? "Reported tight — tissue prep" : "ROM-limited — tissue prep" }); });
 
   // PHASE B: LENGTHEN — mobility + ROM for joints
   const mobPool = exerciseDB.filter(e => (e.category === "warmup" || e.category === "mobility") && e.type === "mobility" && (e.phaseEligibility || []).includes(phase) && locOk(e));
@@ -493,6 +518,20 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   });
   // Sore area mobility
   mobPool.forEach(e => { if (lengthen.length < 5 && soreBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Extra ROM for sore area" }); });
+  // Tightness-reported areas: extra mobility (does NOT reduce volume like soreness)
+  mobPool.forEach(e => { if (lengthen.length < 6 && tightBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Reported tight — extra mobility" }); });
+  // ROM-limited joints: extra mobility even if not sore
+  mobPool.forEach(e => { if (lengthen.length < 6 && romLimitedBps.has(e.bodyPart) && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "ROM-limited — mobility work" }); });
+  // Compensation protocol: lengthen + activate exercises (NASM CES)
+  let compLengthenAdded = 0;
+  for (const comp of userComps) {
+    if (compLengthenAdded >= 3) break;
+    for (const exId of [...(comp.protocol?.lengthen?.exercises || []), ...(comp.protocol?.activate?.exercises || [])]) {
+      if (compLengthenAdded >= 3 || lengthen.length >= 7) break;
+      const ex = exerciseDB.find(e => e.id === exId);
+      if (ex && locOk(ex) && !lengthen.find(x => x.id === ex.id)) { lengthen.push({ ...ex, _reason: `${comp.name} — corrective ${(comp.protocol?.lengthen?.exercises || []).includes(exId) ? "stretch" : "activation"}`, _compensationProtocol: true }); compLengthenAdded++; }
+    }
+  }
   // Fill to 3-5 with general mobility
   mobPool.forEach(e => { if (lengthen.length < 4 && !lengthen.find(x => x.id === e.id)) lengthen.push({ ...e, _reason: "Dynamic joint prep" }); });
 
@@ -554,6 +593,51 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     } catch (e) { console.warn("PT protocol injection error:", e); }
   }
 
+  // ── SPORT INJURY PREVENTION (non-negotiable per NASM PES) ──
+  // Rule 4: Deduplicated across sports, max 2-3 per session, rotated weekly
+  try {
+    const _sportPrefs = capSportPrefs(getSportPrefs());
+    const _sportSports = _sportPrefs.length > 0 ? _sportPrefs : (assessment?.preferences?.sports || []).filter(s => s !== "None").map((s, i) => ({ sport: s, rank: i + 1 }));
+    if (_sportSports.length > 0) {
+      const _sessIdx = (getSessions() || []).length % (assessment?.preferences?.daysPerWeek || 3);
+      const prevExercises = getSportPreventionExercises(_sportSports, exerciseDB, phase, location, 3, _sessIdx);
+      const addedIds = new Set([...inhibit, ...lengthen].map(e => e.id));
+      let prevAdded = 0;
+      for (const prevEx of prevExercises) {
+        if (prevAdded >= 3 || lengthen.length >= 8) break;
+        if (addedIds.has(prevEx.id)) continue;
+        lengthen.push(prevEx);
+        addedIds.add(prevEx.id);
+        prevAdded++;
+      }
+    }
+  } catch (e) { console.warn("Sport prevention injection error:", e); }
+
+  // ── CLIMBING-SPECIFIC PROTOCOLS ──
+  // Injects climbing warm-up (pre-climb) exercises into lengthen/activation
+  // and climbing cooldown (post-climb) into cooldown section.
+  // Also enforces antagonist push work for climbers in every session.
+  try {
+    const _climbProto = getClimbingProtocols(capSportPrefs(getSportPrefs()));
+    if (_climbProto?.isClimber) {
+      const _addedIds = new Set([...inhibit, ...lengthen].map(e => e.id));
+      // Pre-climb warm-up exercises
+      const preClimbIds = _climbProto.preClimb?.exercises || [];
+      let preAdded = 0;
+      for (const exId of preClimbIds) {
+        if (preAdded >= 3 || lengthen.length >= 10) break;
+        if (_addedIds.has(exId)) continue;
+        const ex = exerciseDB.find(e => e.id === exId);
+        if (!ex) continue;
+        if (!(ex.phaseEligibility || []).includes(phase)) continue;
+        if (!locOk(ex)) continue;
+        lengthen.push({ ...ex, _reason: "Climbing pre-climb protocol", _climbingProtocol: true });
+        _addedIds.add(exId);
+        preAdded++;
+      }
+    }
+  } catch (e) { console.warn("Climbing protocol injection error:", e); }
+
   // PHASE E: COOLDOWN — static stretches for ALL muscles trained
   const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(phase) && locOk(e));
   const trainedBps = new Set((mainExercises || []).map(e => e.bodyPart).filter(Boolean));
@@ -565,6 +649,43 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     const injStr = stretchPool.find(e => e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders") && !cooldownStretches.find(x => x.id === e.id));
     if (injStr) cooldownStretches.push({ ...injStr, _reason: `${inj.area} — injury recovery stretch`, _duration: "60s (double — injury area)" });
   });
+  // Tightness-reported areas: extra stretches (NASM: tightness needs stretching, not rest)
+  tightBps.forEach(bp => {
+    if (cooldownStretches.length >= 8) return;
+    const tightStr = stretchPool.find(e => e.bodyPart === bp && !cooldownStretches.find(x => x.id === e.id));
+    if (tightStr) cooldownStretches.push({ ...tightStr, _reason: `Reported tight — extra stretching`, _duration: "45s (extended — tightness)" });
+  });
+  // Compensation protocol: static stretches for overactive muscles (NASM CES)
+  let compCooldownAdded = 0;
+  for (const comp of userComps) {
+    if (compCooldownAdded >= 2 || cooldownStretches.length >= 8) break;
+    for (const exId of (comp.protocol?.lengthen?.exercises || [])) {
+      if (compCooldownAdded >= 2 || cooldownStretches.length >= 8) break;
+      const ex = exerciseDB.find(e => e.id === exId);
+      if (ex && locOk(ex) && !cooldownStretches.find(x => x.id === ex.id)) { cooldownStretches.push({ ...ex, _reason: `${comp.name} — corrective stretch`, _duration: "30s", _compensationProtocol: true }); compCooldownAdded++; }
+    }
+  }
+  // ROM-limited joints: stretches even if body part wasn't trained today
+  romLimitedBps.forEach(bp => {
+    if (cooldownStretches.length >= 8) return;
+    const romStr = stretchPool.find(e => e.bodyPart === bp && !cooldownStretches.find(x => x.id === e.id));
+    if (romStr) cooldownStretches.push({ ...romStr, _reason: `ROM: ${bp} assessed as limited — extra flexibility`, _duration: "45s (extended — limited ROM)" });
+  });
+  // Maintenance rotation: stretch body parts not hit in 3+ days (ACSM: all major groups 2-3x/week)
+  try {
+    const ALL_STRETCH_BPS = ["legs", "hips", "glutes", "back", "chest", "shoulders", "neck", "calves", "arms"];
+    const stretchTracker = getStretchTracker();
+    const today = new Date();
+    const daysSince = (bp) => { if (!stretchTracker[bp]) return 99; return Math.floor((today - new Date(stretchTracker[bp])) / 86400000); };
+    const coveredBps = new Set(cooldownStretches.map(e => e.bodyPart).filter(Boolean));
+    const staleBps = ALL_STRETCH_BPS.filter(bp => !coveredBps.has(bp) && daysSince(bp) >= 3).sort((a, b) => daysSince(b) - daysSince(a));
+    let maintenanceAdded = 0;
+    for (const bp of staleBps) {
+      if (maintenanceAdded >= 2 || cooldownStretches.length >= 8) break;
+      const mStr = stretchPool.find(e => e.bodyPart === bp && !cooldownStretches.find(x => x.id === e.id));
+      if (mStr) { cooldownStretches.push({ ...mStr, _reason: `Maintenance: ${bp} not stretched in ${daysSince(bp)}+ days`, _duration: "30s" }); maintenanceAdded++; }
+    }
+  } catch (e) { /* maintenance rotation non-critical */ }
   // Fill to minimum 3
   stretchPool.forEach(e => { if (cooldownStretches.length < 3 && !cooldownStretches.find(x => x.id === e.id)) cooldownStretches.push({ ...e, _reason: "General recovery", _duration: "30s" }); });
   // Inject PT cooldown exercises (therapeutic recovery from protocol injection above)
@@ -584,6 +705,27 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     }
   }
 
+  // ── CLIMBING POST-CLIMB COOLDOWN INJECTION ──
+  try {
+    const _climbProto2 = getClimbingProtocols(capSportPrefs(getSportPrefs()));
+    if (_climbProto2?.isClimber) {
+      const postClimbIds = _climbProto2.postClimb?.exercises || [];
+      const _cdIds = new Set(cooldownStretches.map(e => e.id));
+      let postAdded = 0;
+      for (const exId of postClimbIds) {
+        if (postAdded >= 3 || cooldownStretches.length >= 10) break;
+        if (_cdIds.has(exId)) continue;
+        const ex = exerciseDB.find(e => e.id === exId);
+        if (!ex) continue;
+        if (!(ex.phaseEligibility || []).includes(phase)) continue;
+        if (!locOk(ex)) continue;
+        cooldownStretches.push({ ...ex, _reason: "Climbing post-climb protocol — antagonist/recovery", _climbingProtocol: true });
+        _cdIds.add(exId);
+        postAdded++;
+      }
+    }
+  } catch (e) { console.warn("Climbing post-climb injection error:", e); }
+
   // OPTIONAL: Foam rolling add-on
   const foamAddOn = foamPool.filter(e => !inhibit.find(x => x.id === e.id)).slice(0, 4).map(e => ({ ...e, _reason: "Optional recovery foam rolling" }));
 
@@ -594,6 +736,58 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   const cardio = cardioBlock ? [cardioBlock.exercise] : [];
 
   return { inhibit, lengthen, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
+}
+
+// ── Standalone stretch session for rest days (15-min ROM + stretch) ──
+function buildStretchSession(location = "gym") {
+  const locOk = e => locationFilter(e, location);
+  const assessment = getAssessment();
+  const injuries = getInjuries().filter(i => i.status !== "resolved");
+  const rom = assessment?.rom || {};
+  const romToBodyPart = { neck: "neck", thoracic: "back", lumbar: "back", shoulders: "shoulders", elbows: "arms", wrists: "arms", hips: "hips", knee_left: "legs", knee_right: "legs", ankles: "calves", feet: "calves" };
+  const romLimitedBps = new Set(Object.entries(rom).filter(([, v]) => v === "limited" || v === "mod_limited").map(([j]) => romToBodyPart[j]).filter(Boolean));
+  const userComps = (assessment?.compensations || []).map(id => _compensationsDB.find(c => c.id === id)).filter(Boolean);
+  const stretchTracker = getStretchTracker();
+  const today = new Date();
+  const daysSince = (bp) => { if (!stretchTracker[bp]) return 99; return Math.floor((today - new Date(stretchTracker[bp])) / 86400000); };
+
+  const foamPool = exerciseDB.filter(e => e.category === "foam_roll" && (e.phaseEligibility || []).includes(1) && locOk(e));
+  const mobPool = exerciseDB.filter(e => (e.category === "warmup" || e.category === "mobility") && e.type === "mobility" && (e.phaseEligibility || []).includes(1) && locOk(e));
+  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && (e.phaseEligibility || []).includes(1) && locOk(e));
+  const usedIds = new Set();
+  const add = (arr, ex, reason) => { if (ex && !usedIds.has(ex.id)) { arr.push({ ...ex, _reason: reason }); usedIds.add(ex.id); } };
+
+  // Foam rolling (3-4): injury areas, ROM-limited, stalest
+  const foam = [];
+  injuries.forEach(inj => { const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === (inj.gateKey === "lower_back" ? "back" : inj.gateKey === "knee" ? "legs" : "shoulders")); if (f && foam.length < 4) add(foam, f, `${inj.area} — recovery foam roll`); });
+  romLimitedBps.forEach(bp => { if (foam.length >= 4) return; const f = foamPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (f) add(foam, f, `ROM: ${bp} limited — tissue prep`); });
+  foamPool.forEach(e => { if (foam.length < 3 && !usedIds.has(e.id)) add(foam, e, "General tissue prep"); });
+
+  // Mobility (3-4): ROM-limited, compensation protocols, general
+  const mob = [];
+  romLimitedBps.forEach(bp => { if (mob.length >= 4) return; const m = mobPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (m) add(mob, m, `ROM: ${bp} limited — mobility`); });
+  for (const comp of userComps) {
+    for (const exId of [...(comp.protocol?.lengthen?.exercises || []), ...(comp.protocol?.activate?.exercises || [])].slice(0, 2)) {
+      if (mob.length >= 4) break;
+      const ex = exerciseDB.find(e => e.id === exId && locOk(e));
+      if (ex) add(mob, ex, `${comp.name} — corrective`);
+    }
+  }
+  mobPool.forEach(e => { if (mob.length < 3 && !usedIds.has(e.id)) add(mob, e, "Dynamic joint prep"); });
+
+  // Static stretches (5-6): ROM-limited, stalest body parts, general
+  const stretches = [];
+  romLimitedBps.forEach(bp => { if (stretches.length >= 6) return; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `ROM: ${bp} limited — flexibility`); });
+  const ALL_BPS = ["legs", "hips", "glutes", "back", "chest", "shoulders", "neck", "calves", "arms"];
+  const staleBps = ALL_BPS.filter(bp => daysSince(bp) >= 2).sort((a, b) => daysSince(b) - daysSince(a));
+  for (const bp of staleBps) { if (stretches.length >= 6) break; const s = stretchPool.find(e => !usedIds.has(e.id) && e.bodyPart === bp); if (s) add(stretches, s, `Maintenance: ${bp} not stretched in ${daysSince(bp)}+ days`); }
+  stretchPool.forEach(e => { if (stretches.length < 5 && !usedIds.has(e.id)) add(stretches, e, "Full-body flexibility"); });
+
+  // Breathing (1)
+  const breathingPool = exerciseDB.filter(e => (e.type === "breathing" || (e.name || "").toLowerCase().includes("breath")) && locOk(e));
+  const breathing = breathingPool.length > 0 ? [{ ...breathingPool[0], _reason: "Cool-down breathing" }] : [];
+
+  return { foam, mob, stretches, breathing, estimatedMinutes: (foam.length + mob.length + stretches.length) * 2 + 2, label: "ROM + Stretch Session" };
 }
 
 function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkInData=null, excludeMuscles=null) {
@@ -634,6 +828,13 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     });
   } catch {}
 
+  // ── FINGER HEALTH AUTO-RESPONSE (climbing users) ────────────
+  const _fingerData = checkInData?.fingerHealth || null;
+  const _fingerReadiness = _fingerData ? computeFingerReadiness(_fingerData) : { level: "full", score: 5, modifications: [] };
+  const _fingerBlocked = getFingerBlockedExercises(_fingerReadiness.level, exerciseDB);
+  // Add finger-blocked exercises to the blacklist
+  for (const id of _fingerBlocked) blacklist.add(id);
+
   const pick = (category, limit, excludeStarters) => {
     const pool = exerciseDB.filter(e =>
       e.category === category &&
@@ -650,9 +851,11 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     const sessionSeed = (getSessions()?.length || 0) + new Date().getDate();
     for (let i = pool.length - 1; i > 0; i--) { const j = (sessionSeed * (i + 1) * 7 + 13) % (i + 1); [pool[i], pool[j]] = [pool[j], pool[i]]; }
     // Sport prioritization — sort sport-relevant exercises to front of shuffled pool
-    const userSports = assessment?.preferences?.sports || [];
+    // Uses ranked sport preferences (new system) or falls back to legacy assessment array
+    const sportPrefs = getSportPrefs();
+    const userSports = sportPrefs.length > 0 ? sportPrefs.map(sp => sp.sport) : (assessment?.preferences?.sports || []);
     if (userSports.length > 0 && category === "main") {
-      const prioritized = prioritizeBySport(pool, userSports);
+      const prioritized = prioritizeBySport(pool, userSports, sportPrefs.length > 0 ? sportPrefs : null);
       pool.length = 0; pool.push(...prioritized);
     }
     const result = [];
@@ -716,6 +919,16 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const mainLimit = Math.max(3, Math.round(baseMain * volumeModifier));
   const cooldownLimit = baseCooldown;
 
+  // ── MULTI-SPORT VOLUME MANAGEMENT ─────────────────────────────
+  // Rule 6: Cap active sports at 3
+  const _cappedSports = capSportPrefs(getSportPrefs());
+  const daysPerWeek = getAssessment()?.preferences?.daysPerWeek || 3;
+  const _sessionIdx = (getSessions() || []).length % daysPerWeek;
+  // Rule 3: Determine today's sport focus (one sport per session)
+  const _sportFocus = _cappedSports.length > 0 ? getTodaySportFocus(_cappedSports, _sessionIdx, daysPerWeek) : null;
+  // Rule 2: Sport-specific slot limit based on session time
+  const _sportSlotLimit = getSportSlotLimit(sessionTime);
+
   // First exercise variety: exclude starters from last 3 sessions
   const recentSessions = getSessions() || [];
   const last3Starters = new Set(recentSessions.slice(-3).map(s => (s.exercises_completed || [])[0]?.exercise_id).filter(Boolean));
@@ -723,6 +936,27 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const warmup = pick("warmup", warmupLimit, last3Starters);
   let main = pick("main", mainLimit);
   const cooldown = pick("cooldown", cooldownLimit);
+
+  // ── Rule 1: Sport exercises REPLACE generic ones — they don't add ──
+  // Rule 2: Add dedicated sport drills carved from main slots (not extra)
+  if (_sportFocus?.profile) {
+    const drills = getSportDrillExercises(_sportFocus, exerciseDB, phase, location);
+    const mainIds = new Set(main.map(e => e.id));
+    let drillsAdded = 0;
+    for (const drill of drills) {
+      if (drillsAdded >= _sportSlotLimit) break;
+      if (mainIds.has(drill.id)) continue;
+      // Replace the LAST generic exercise in main (preserves core patterns at front)
+      if (main.length > 3) {
+        const replaced = main.pop();
+        drill._replacedExercise = replaced.name;
+        drill._reason = `${_sportFocus.label} drill — replaces ${replaced.name} for sport-specific training`;
+      }
+      main.push(drill);
+      mainIds.add(drill.id);
+      drillsAdded++;
+    }
+  }
 
   // Prioritize favorited exercises — include ready ones, cap per session for balance (Fix #5)
   const favs = assessment?.preferences?.favorites || [];
@@ -823,6 +1057,26 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     }
   }
 
+  // ── CLIMBING ANTAGONIST ENFORCEMENT ───────────────────────────
+  // Every climbing-focused session MUST include push work (Dr. Vagy framework)
+  // 93% of climbing injuries are overuse from pull/push imbalance
+  try {
+    const _climbCheck = getClimbingProtocols(capSportPrefs(getSportPrefs()));
+    if (_climbCheck?.isClimber) {
+      const hasPush = main.some(e => {
+        const mp = (e.movementPattern || "").toLowerCase();
+        return mp.includes("push") || e.bodyPart === "chest" || e.bodyPart === "shoulders";
+      });
+      if (!hasPush) {
+        const pushEx = exerciseDB.find(e => e.id === "climb_pushup_antagonist") || exerciseDB.find(e => e.category === "main" && (e.movementPattern || "").includes("push") && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location) && !mainIds.has(e.id));
+        if (pushEx) {
+          main.push({ ...pushEx, _reason: "Climbing antagonist — push work prevents shoulder injury from pull dominance", _climbingAntagonist: true });
+          mainIds.add(pushEx.id);
+        }
+      }
+    }
+  } catch (e) { console.warn("Climbing antagonist enforcement error:", e); }
+
   // ── POWER DEVELOPMENT INTEGRATION (Phase 4-5) ───────────────
   // Add power elements based on goals and phase
   const assessmentGoals = assessment?.goals?.types || [];
@@ -882,9 +1136,96 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   if (blocks.cooldownStretches) blocks.cooldownStretches = blocks.cooldownStretches.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
   if (blocks.cardio) blocks.cardio = blocks.cardio.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
 
-  const eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
+  let eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
 
-  return { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks };
+  // ── Rule 7: Sport transparency — annotate sport-biased exercises ──
+  if (_sportFocus) {
+    const sportPatterns = new Set(_sportFocus.profile?.movementPatterns || []);
+    const sportMuscles = new Set((_sportFocus.profile?.primaryMuscles || []).map(m => m.toLowerCase()));
+    eMain = eMain.map(ex => {
+      if (ex._sportDrill || ex._reason) return ex; // already annotated
+      const mp = (ex.movementPattern || "").toLowerCase();
+      const exMuscles = (ex.primaryMuscles || []).map(m => m.toLowerCase());
+      const matchesPattern = [...sportPatterns].some(p => mp.includes(p));
+      const matchesMuscle = exMuscles.some(m => [...sportMuscles].some(sm => m.includes(sm) || sm.includes(m)));
+      if (matchesPattern || matchesMuscle) {
+        return { ...ex, _sportBiased: _sportFocus.sport, _sportNote: `Selected for ${_sportFocus.label}: matches ${matchesPattern ? mp + " pattern" : "target muscles"}` };
+      }
+      return ex;
+    });
+  }
+
+  // ── Rule 8: Session time budget enforcement ──
+  // Estimate total time and trim if exceeding user's selected session time
+  try {
+    const estTime = (arr) => arr.reduce((sum, ex) => {
+      const cat = ex.category || "";
+      if (cat === "foam_roll") return sum + 2;
+      if (cat === "mobility" || cat === "warmup") return sum + 2;
+      if (cat === "cooldown") return sum + 1.5;
+      if (cat === "cardio") return sum + 15;
+      const params = ex.phaseParams?.[String(phase)] || {};
+      const sets = parseInt(params.sets) || 2;
+      return sum + Math.round(sets * 1.5 + 0.5);
+    }, 0);
+    const blockTime = (blocks.inhibit?.length || 0) * 2 + (blocks.lengthen?.length || 0) * 2 + (blocks.cooldownStretches?.length || 0) * 1.5 + (blocks.cardio?.length || 0) * 15;
+    let totalEst = estTime(eWarmup) + estTime(eMain) + estTime(eCooldown) + blockTime;
+
+    if (totalEst > sessionTime) {
+      // Step 1: Remove non-sport, non-core isolations from end of main
+      while (totalEst > sessionTime && eMain.length > 4) {
+        const lastIdx = eMain.length - 1;
+        const last = eMain[lastIdx];
+        if (last._sportDrill || last._sportPrevention) break; // never cut sport or prevention
+        const mp = (last.movementPattern || "").toLowerCase();
+        const isCore = ["push", "pull", "hinge", "squat", "core", "anti_extension", "anti_rotation"].some(p => mp.includes(p));
+        if (isCore && eMain.filter(e => (e.movementPattern || "").toLowerCase().includes(mp)).length <= 1) break; // don't break core pattern coverage
+        const removedTime = estTime([last]);
+        eMain.splice(lastIdx, 1);
+        totalEst -= removedTime;
+      }
+      // Step 2: Reduce sport drill count if still over
+      if (totalEst > sessionTime) {
+        const sportDrills = eMain.filter(e => e._sportDrill);
+        while (totalEst > sessionTime && sportDrills.length > 1) {
+          const drill = sportDrills.pop();
+          const idx = eMain.indexOf(drill);
+          if (idx >= 0) { totalEst -= estTime([drill]); eMain.splice(idx, 1); }
+        }
+      }
+      // Step 3-4: Trim warmup/cooldown blocks (minimum safe retained)
+      if (totalEst > sessionTime && blocks.inhibit && blocks.inhibit.length > 2) {
+        const excess = blocks.inhibit.length - 2;
+        blocks.inhibit = blocks.inhibit.slice(0, 2);
+        totalEst -= excess * 2;
+      }
+      if (totalEst > sessionTime && blocks.cardio && blocks.cardio.length > 0) {
+        // Reduce cardio to 10 min minimum (already capped in cardio engine)
+        blocks.cardio = blocks.cardio.slice(0, 1);
+      }
+    }
+  } catch (e) { console.warn("Time budget enforcement error:", e); }
+
+  // ── FINGER HEALTH: Add rehab exercises & strap annotations ──
+  if (_fingerReadiness.level !== "full" && _fingerData) {
+    // Add finger rehab exercises to warm-up
+    const rehabExercises = getFingerRehabExercises(_fingerReadiness.level, exerciseDB, phase);
+    const warmupIds = new Set(eWarmup.map(e => e.id));
+    for (const rx of rehabExercises) {
+      if (warmupIds.has(rx.id)) continue;
+      eWarmup.push(rx);
+      warmupIds.add(rx.id);
+      if (eWarmup.length >= warmupLimit + 3) break; // allow up to 3 extra rehab exercises
+    }
+    // Annotate pulling exercises with straps cue
+    eMain = annotateStrapsForPulling(eMain, _fingerReadiness.level);
+  }
+  const fingerMeta = _fingerData ? { level: _fingerReadiness.level, score: _fingerReadiness.score, modifications: _fingerReadiness.modifications } : null;
+
+  // Attach sport focus metadata to the workout for UI display (Rule 7)
+  const sportMeta = _sportFocus ? { sport: _sportFocus.sport, label: _sportFocus.label, rank: _sportFocus.rank } : null;
+
+  return { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
 }
 
 // Default workout for backward compat with session flow
@@ -1053,10 +1394,12 @@ function DebugPanel({onClose}){
 // ── HOME ────────────────────────────────────────────────────────
 function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline,onAddOn,onStartSecondary}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
+  {/* Sport priority badges */}
+  {(()=>{try{const sp=getSportPrefs();if(!sp||sp.length===0)return null;const sportEmojis={"Basketball":"🏀","Soccer":"⚽","Baseball/Softball":"⚾","Tennis":"🎾","Golf":"⛳","Swimming":"🏊","Running/Track":"🏃","Cycling":"🚴","Hiking":"🥾","Rock Climbing":"🧗","CrossFit":"🏋️","Boxing/Kickboxing":"🥊","MMA/BJJ":"🥋","Wrestling":"🤼","Volleyball":"🏐","Football":"🏈","Yoga":"🧘","Pilates":"🧘","Dance":"💃","Rowing":"🚣","Skiing/Snowboarding":"⛷️","Surfing":"🏄","Skateboarding":"🛹","Pickleball":"🏓","Martial Arts":"🥋","Muay Thai":"🥊"};const rankColors=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{sp.slice(0,3).map((s,i)=>(<div key={s.sport} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${rankColors[i]}25`,fontSize:11}}><span>{sportEmojis[s.sport]||"🏅"}</span><span style={{color:rankColors[i],fontWeight:700}}>#{i+1}</span><span style={{color:C.textMuted}}>{s.sport}</span></div>))}</div>);}catch{return null;}})()}
   <div style={{padding:"12px 16px",background:C.bgGlass,borderRadius:12,borderLeft:`3px solid ${C.teal}30`}}><p style={{fontSize:13,color:C.textMuted,fontStyle:"italic",margin:0}}>"{QUOTES[new Date().getDate()%QUOTES.length]}"</p></div>
   {/* Daily workout progress card */}
   {(()=>{const dp=getDailyProgress();if(!dp.hasWorkout||dp.doneCount===0)return null;return(<Card style={{borderColor:dp.pct>=100?C.success+"40":C.teal+"30"}} onClick={onStart}><div style={{display:"flex",alignItems:"center",gap:12}}><div style={{position:"relative",width:48,height:48,flexShrink:0}}><svg viewBox="0 0 36 36" style={{width:48,height:48,transform:"rotate(-90deg)"}}><circle cx="18" cy="18" r="15.5" fill="none" stroke={C.border} strokeWidth="3"/><circle cx="18" cy="18" r="15.5" fill="none" stroke={dp.pct>=100?C.success:C.teal} strokeWidth="3" strokeDasharray={`${dp.pct} ${100-dp.pct}`} strokeLinecap="round"/></svg><div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:dp.pct>=100?C.success:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{dp.pct}%</div></div><div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:C.text}}>{dp.pct>=100?"Workout Complete!":"Today's Workout"}</div><div style={{fontSize:11,color:C.textMuted}}>{dp.doneCount} of {dp.total} exercises · {dp.totalMinutes} min{dp.sessionCount>1?` across ${dp.sessionCount} sessions`:""}</div>{dp.remainingCount>0&&<div style={{fontSize:10,color:C.teal,marginTop:2}}>~{dp.estimatedRemaining} min remaining · Tap to continue</div>}</div></div></Card>);})()}
-  {(()=>{const todayDone=isTodayComplete();const weekPlan=getWeeklyPlan();const todayPlan=weekPlan?getTodayFromPlan(weekPlan):null;const todayLabel=todayPlan?.label||"UPPER BODY + CORE";const tw=getTrainingWeek();const dp=getDailyProgress();const inProgress=!todayDone&&(resumePrompt||(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100));const progressDone=resumePrompt?.completedExercises?.length||dp.doneCount||0;const progressTotal=resumePrompt?.workout?.all?.length||dp.total||0;return(<Card glow={todayDone?C.success+"15":C.tealGlow} style={todayDone?{borderColor:C.success+"40"}:undefined}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge color={todayDone?C.success:inProgress?C.teal:undefined}>{todayDone?"COMPLETED":inProgress?"IN PROGRESS":`WEEK ${tw.week} · ${DAY_NAMES[getDayOfWeek()]?.toUpperCase()?.slice(0,3)}`}</Badge><span style={{fontSize:32}}>{todayDone?"✅":inProgress?"🔥":"💪"}</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{todayDone?"TODAY'S WORKOUT: COMPLETE":todayLabel.toUpperCase()}</h2>{todayDone?<><div style={{display:"flex",gap:16,fontSize:12,color:C.textMuted,marginBottom:8}}><span>{todayDone.exerciseCount} exercises</span><span>{todayDone.durationMinutes} min</span>{todayDone.sessionCount>1&&<span>{todayDone.sessionCount} sessions</span>}</div><ProgressBar value={100} max={100} color={C.success} height={4}/><div style={{fontSize:11,color:C.success,marginTop:4,fontWeight:600}}>Great work today!</div></>:inProgress?<><ProgressBar value={progressDone} max={progressTotal||1} color={C.teal} height={4}/><div style={{fontSize:11,color:C.teal,marginTop:4}}>{progressDone} of {progressTotal||"?"} exercises done{resumePrompt?` · ${formatTimeAgo(resumePrompt.pausedAt)}`:""}</div><Btn onClick={onStart} style={{marginTop:12}} icon="▶">Continue Today's Workout</Btn></>:<><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~{todayPlan?.estimatedMinutes||45} min</span><span>🏋️ Gym</span><span>Phase {CURRENT_PHASE}</span></div>{todayPlan?.exercises?.length>0&&<div style={{fontSize:10,color:C.textDim,marginBottom:4}}>{todayPlan.exercises.slice(0,4).map(e=>e.name).join(", ")}{todayPlan.exercises.length>4?` +${todayPlan.exercises.length-4} more`:""}</div>}<ProgressBar value={0} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase {CURRENT_PHASE} · {todayPlan?.type==="rest"?"Rest Day — Recovery":"Stabilization Endurance"}</div>{todayPlan?.type==="rest"?<div style={{padding:"10px 12px",background:C.info+"10",borderRadius:8,marginTop:12,fontSize:12,color:C.info}}>Rest day — your muscles grow during recovery. Stay active with walking or gentle ROM.</div>:<Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn>}</>}</Card>);})()}
+  {(()=>{const todayDone=isTodayComplete();const weekPlan=getWeeklyPlan();const todayPlan=weekPlan?getTodayFromPlan(weekPlan):null;const todayLabel=todayPlan?.label||"UPPER BODY + CORE";const tw=getTrainingWeek();const dp=getDailyProgress();const inProgress=!todayDone&&(resumePrompt||(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100));const progressDone=resumePrompt?.completedExercises?.length||dp.doneCount||0;const progressTotal=resumePrompt?.workout?.all?.length||dp.total||0;return(<Card glow={todayDone?C.success+"15":C.tealGlow} style={todayDone?{borderColor:C.success+"40"}:undefined}><div style={{display:"flex",justifyContent:"space-between",marginBottom:12}}><Badge color={todayDone?C.success:inProgress?C.teal:undefined}>{todayDone?"COMPLETED":inProgress?"IN PROGRESS":`WEEK ${tw.week} · ${DAY_NAMES[getDayOfWeek()]?.toUpperCase()?.slice(0,3)}`}</Badge><span style={{fontSize:32}}>{todayDone?"✅":inProgress?"🔥":"💪"}</span></div><h2 style={{fontSize:22,fontWeight:800,color:C.text,margin:"0 0 8px",fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>{todayDone?"TODAY'S WORKOUT: COMPLETE":todayLabel.toUpperCase()}</h2>{todayDone?<><div style={{display:"flex",gap:16,fontSize:12,color:C.textMuted,marginBottom:8}}><span>{todayDone.exerciseCount} exercises</span><span>{todayDone.durationMinutes} min</span>{todayDone.sessionCount>1&&<span>{todayDone.sessionCount} sessions</span>}</div><ProgressBar value={100} max={100} color={C.success} height={4}/><div style={{fontSize:11,color:C.success,marginTop:4,fontWeight:600}}>Great work today!</div></>:inProgress?<><ProgressBar value={progressDone} max={progressTotal||1} color={C.teal} height={4}/><div style={{fontSize:11,color:C.teal,marginTop:4}}>{progressDone} of {progressTotal||"?"} exercises done{resumePrompt?` · ${formatTimeAgo(resumePrompt.pausedAt)}`:""}</div><Btn onClick={onStart} style={{marginTop:12}} icon="▶">Continue Today's Workout</Btn></>:<><div style={{display:"flex",gap:12,fontSize:12,color:C.textMuted,marginBottom:4}}><span>⏱ ~{todayPlan?.estimatedMinutes||45} min</span><span>🏋️ Gym</span><span>Phase {CURRENT_PHASE}</span></div>{todayPlan?.exercises?.length>0&&<div style={{fontSize:10,color:C.textDim,marginBottom:4}}>{todayPlan.exercises.slice(0,4).map(e=>e.name).join(", ")}{todayPlan.exercises.length>4?` +${todayPlan.exercises.length-4} more`:""}</div>}<ProgressBar value={0} max={100} height={3} bg={C.bgElevated}/><div style={{fontSize:11,color:C.textDim,marginTop:4}}>Phase {CURRENT_PHASE} · {todayPlan?.type==="rest"?"Rest Day — Recovery":"Stabilization Endurance"}</div>{todayPlan?.type==="rest"?<><div style={{padding:"10px 12px",background:C.info+"10",borderRadius:8,marginTop:12,fontSize:12,color:C.info}}>Rest day — your muscles grow during recovery. Try the stretch session below to maintain flexibility.</div><Btn variant="dark" onClick={onStart} style={{marginTop:10}} icon="🧘">15-Min ROM + Stretch Session</Btn></>:<Btn onClick={onStart} style={{marginTop:16}} icon="→">Start Today's Workout</Btn>}</>}</Card>);})()}
   {/* Add-on options after completing today's workout */}
   {(()=>{const todayDone=isTodayComplete();if(!todayDone)return null;return(<Card style={{borderColor:C.purple+"30"}}><div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:2,marginBottom:8}}>WANT TO DO MORE?</div><div style={{fontSize:10,color:C.textMuted,marginBottom:10}}>Your primary workout is done. Add-ons are tracked separately and won't count toward tomorrow's volume — but we'll factor them into your weekly plan if you're pushing extra.</div>{ADDON_TYPES.map(a=>(<div key={a.id} onClick={()=>onAddOn?.(a.id)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:`1px solid ${C.border}`,cursor:"pointer"}}><span style={{fontSize:20}}>{a.icon}</span><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{a.label}</div><div style={{fontSize:10,color:C.textDim}}>{a.description} · {a.duration}</div></div><span style={{fontSize:12,color:C.textDim}}>→</span></div>))}</Card>);})()}
   {/* Second workout option — shows when safe to do two-a-day */}
@@ -1184,13 +1527,28 @@ function CheckInScreen({onComplete}){
   const todayStatus=getTodayWorkoutStatus();
   if(todayStatus==="completed"){return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,paddingTop:60,textAlign:"center"}}><span style={{fontSize:64}}>💪</span><h2 style={{fontSize:24,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>YOU ALREADY CRUSHED IT!</h2><p style={{fontSize:14,color:C.textMuted,maxWidth:300}}>Today's workout is complete. See you tomorrow for a fresh session!</p><Btn onClick={()=>onComplete?.(null)} icon="🏠">Back to Home</Btn></div>);}
   // "completed_can_add" falls through to normal check-in (secondary workout flow)
-  const[step,setStep]=useState(0);const[location,setLocation]=useState(null);const[sleep,setSleep]=useState(null);const[sore,setSore]=useState([]);const[painTypes,setPainTypes]=useState({});const[energy,setEnergy]=useState(5);const[stress,setStress]=useState(5);const toggle=id=>{if(id==="none"){setSore([]);setPainTypes({});return;}setSore(p=>p.includes(id)?p.filter(x=>x!==id):[...p.filter(x=>x!=="none"),id]);};const setPainType=(area,type)=>setPainTypes(p=>({...p,[area]:type}));const adapt=sv=>sv<=3?[{l:"Warm-up",v:"Standard"},{l:"Volume",v:"Full"},{l:"Rest",v:"Standard"},{l:"Tone",v:"Direct"},{l:"Length",v:"Standard"}]:sv<=6?[{l:"Warm-up",v:"+5 min"},{l:"Volume",v:"-20%"},{l:"Rest",v:"+15 sec"},{l:"Tone",v:"Supportive"},{l:"Length",v:"Can shorten"}]:[{l:"Warm-up",v:"+8 min"},{l:"Volume",v:"-40%"},{l:"Rest",v:"+30 sec"},{l:"Tone",v:"Gentle"},{l:"Length",v:"Shortened"}];const compute=()=>{const ss=sleep==="great"?10:sleep==="good"?7:sleep==="ok"?5:3;const so=sore.length===0?10:Math.max(2,10-sore.length*1.5);const r=Math.round((ss*0.3+so*0.2+energy*0.2+(11-stress)*0.15+6*0.15)*10);onComplete({readiness:r,capacity:Math.max(20,Math.min(100,r-INJURIES.reduce((s,i)=>s+i.severity*5,0))),location:location||"gym",sleep:sleep||"ok",soreness:sore,painTypes,energy,stress});};
+  const[step,setStep]=useState(0);const[location,setLocation]=useState(null);const[sleep,setSleep]=useState(null);const[sore,setSore]=useState([]);const[painTypes,setPainTypes]=useState({});const[energy,setEnergy]=useState(5);const[stress,setStress]=useState(5);
+  // Finger health check state (climbers only)
+  const _isClimber=isClimber();const[fingerSoreness,setFingerSoreness]=useState("none");const[fingerPopping,setFingerPopping]=useState("no");const[fingerReadiness,setFingerReadiness]=useState(5);
+  const toggle=id=>{if(id==="none"){setSore([]);setPainTypes({});return;}setSore(p=>p.includes(id)?p.filter(x=>x!==id):[...p.filter(x=>x!=="none"),id]);};const setPainType=(area,type)=>setPainTypes(p=>({...p,[area]:type}));const adapt=sv=>sv<=3?[{l:"Warm-up",v:"Standard"},{l:"Volume",v:"Full"},{l:"Rest",v:"Standard"},{l:"Tone",v:"Direct"},{l:"Length",v:"Standard"}]:sv<=6?[{l:"Warm-up",v:"+5 min"},{l:"Volume",v:"-20%"},{l:"Rest",v:"+15 sec"},{l:"Tone",v:"Supportive"},{l:"Length",v:"Can shorten"}]:[{l:"Warm-up",v:"+8 min"},{l:"Volume",v:"-40%"},{l:"Rest",v:"+30 sec"},{l:"Tone",v:"Gentle"},{l:"Length",v:"Shortened"}];const compute=()=>{const ss=sleep==="great"?10:sleep==="good"?7:sleep==="ok"?5:3;const so=sore.length===0?10:Math.max(2,10-sore.length*1.5);const r=Math.round((ss*0.3+so*0.2+energy*0.2+(11-stress)*0.15+6*0.15)*10);
+  // Include finger health data for climbers
+  const fingerData=_isClimber?{soreness:fingerSoreness,popping:fingerPopping,readiness:fingerReadiness}:null;
+  if(fingerData)try{logFingerCheck(fingerData);}catch{}
+  onComplete({readiness:r,capacity:Math.max(20,Math.min(100,r-INJURIES.reduce((s,i)=>s+i.severity*5,0))),location:location||"gym",sleep:sleep||"ok",soreness:sore,painTypes,energy,stress,fingerHealth:fingerData});};
 return(<div style={{display:"flex",flexDirection:"column",gap:16}}><div style={{display:"flex",justifyContent:"space-between"}}><div><h2 style={{fontSize:24,fontWeight:800,color:C.text,margin:0,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:2}}>CHECK-IN</h2><div style={{fontSize:12,color:C.textMuted}}>BEFORE WE START</div></div><button onClick={compute} style={{background:"none",border:"none",color:C.teal,fontSize:13,fontWeight:600,cursor:"pointer"}}>Skip →</button></div><Card style={{background:C.tealBg,borderColor:C.teal+"30",padding:14}}><Badge>DAY 2 · UPPER BODY + CORE</Badge><div style={{fontSize:12,color:C.textMuted,marginTop:6}}>5 quick questions to calibrate today's session.</div></Card>
 {step===0&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 12px"}}>📍 Where are you training?</h3>{[{id:"gym",i:"🏋️",l:"Gym",d:"Full equipment access"},{id:"home",i:"🏠",l:"Home",d:"Bodyweight + bands + DBs"},{id:"outdoor",i:"🌳",l:"Outdoor",d:"Bodyweight + minimal gear"}].map(o=>(<Card key={o.id} onClick={()=>{setLocation(o.id);setTimeout(()=>setStep(1),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:14,marginBottom:8,cursor:"pointer",borderColor:location===o.id?C.teal:C.border,background:location===o.id?C.tealBg:C.bgCard}}><span style={{fontSize:24}}>{o.i}</span><div><div style={{fontSize:14,fontWeight:600,color:C.text}}>{o.l}</div><div style={{fontSize:11,color:C.textDim}}>{o.d}</div></div></Card>))}</div>}
 {step===1&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 12px"}}>😴 How did you sleep?</h3>{[{id:"great",i:"🌟",l:"Great — 8+ hrs"},{id:"good",i:"😊",l:"Good — 7-8 hrs"},{id:"ok",i:"😐",l:"OK — 5-6 hrs"},{id:"poor",i:"😩",l:"Poor — under 5 hrs"}].map(o=>(<Card key={o.id} onClick={()=>{setSleep(o.id);setTimeout(()=>setStep(2),300);}} style={{display:"flex",alignItems:"center",gap:12,padding:14,marginBottom:8,cursor:"pointer",borderColor:sleep===o.id?C.teal:C.border,background:sleep===o.id?C.tealBg:C.bgCard}}><span style={{fontSize:20}}>{o.i}</span><span style={{fontSize:14,fontWeight:600,color:C.text}}>{o.l}</span></Card>))}</div>}
-{step===2&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>💪 Any soreness or pain?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:4}}>Tap to select. Tap again to deselect. Select all that apply.</div><div style={{fontSize:10,color:C.textDim,marginBottom:12,lineHeight:1.5}}>Soreness = normal muscle fatigue after exercise. Pain = a warning signal that may need attention.</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{BODY_PARTS.map(bp=>(<Card key={bp.id} onClick={()=>toggle(bp.id)} style={{display:"flex",alignItems:"center",gap:8,padding:10,cursor:"pointer",borderColor:sore.includes(bp.id)?C.teal:C.border,background:sore.includes(bp.id)?C.tealBg:C.bgCard}}><span style={{fontSize:14}}>{bp.icon}</span><span style={{fontSize:12,color:sore.includes(bp.id)?C.text:C.textMuted}}>{bp.label}</span></Card>))}</div><Card onClick={()=>{setSore([]);setPainTypes({});}} style={{display:"flex",alignItems:"center",gap:8,padding:12,marginTop:8,cursor:"pointer",borderColor:sore.length===0?C.teal:C.border,background:sore.length===0?C.tealBg:C.bgCard}}><span>✅</span><span style={{fontSize:13,fontWeight:600,color:C.text}}>No Soreness or Pain Today</span></Card>{sore.length>0&&<Card style={{marginTop:8,padding:12,borderColor:C.warning+"30"}}><div style={{fontSize:10,fontWeight:700,color:C.warning,letterSpacing:1.5,marginBottom:6}}>WHAT TYPE?</div>{sore.map(id=>{const bp=BODY_PARTS.find(b=>b.id===id);const pt=painTypes[id]||"soreness";return(<div key={id} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:11,color:C.text,minWidth:80}}>{bp?.label||id}</span>{[{v:"soreness",l:"Soreness",c:C.teal},{v:"sharp",l:"Sharp Pain",c:C.danger},{v:"dull",l:"Dull Ache",c:C.warning}].map(t=>(<button key={t.v} onClick={()=>setPainType(id,t.v)} style={{padding:"3px 8px",borderRadius:6,fontSize:9,fontWeight:600,cursor:"pointer",background:pt===t.v?t.c+"15":"transparent",border:`1px solid ${pt===t.v?t.c+"60":C.border}`,color:pt===t.v?t.c:C.textDim,fontFamily:"inherit"}}>{t.l}</button>))}</div>);})}</Card>}{sore.filter(id=>painTypes[id]==="sharp").length>0&&<div style={{padding:"8px 10px",background:C.danger+"10",borderRadius:8,borderLeft:`3px solid ${C.danger}`,marginTop:6}}><div style={{fontSize:10,fontWeight:700,color:C.danger}}>Sharp pain reported — exercises loading those areas will be removed or modified.</div></div>}<Btn onClick={()=>setStep(3)} style={{marginTop:14}}>Next →</Btn><div style={{height:90}}/></div>}
+{step===2&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>💪 Any soreness or pain?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:4}}>Tap to select. Tap again to deselect. Select all that apply.</div><div style={{fontSize:10,color:C.textDim,marginBottom:12,lineHeight:1.5}}>Soreness = normal muscle fatigue after exercise. Pain = a warning signal that may need attention.</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{BODY_PARTS.map(bp=>(<Card key={bp.id} onClick={()=>toggle(bp.id)} style={{display:"flex",alignItems:"center",gap:8,padding:10,cursor:"pointer",borderColor:sore.includes(bp.id)?C.teal:C.border,background:sore.includes(bp.id)?C.tealBg:C.bgCard}}><span style={{fontSize:14}}>{bp.icon}</span><span style={{fontSize:12,color:sore.includes(bp.id)?C.text:C.textMuted}}>{bp.label}</span></Card>))}</div><Card onClick={()=>{setSore([]);setPainTypes({});}} style={{display:"flex",alignItems:"center",gap:8,padding:12,marginTop:8,cursor:"pointer",borderColor:sore.length===0?C.teal:C.border,background:sore.length===0?C.tealBg:C.bgCard}}><span>✅</span><span style={{fontSize:13,fontWeight:600,color:C.text}}>No Soreness or Pain Today</span></Card>{sore.length>0&&<Card style={{marginTop:8,padding:12,borderColor:C.warning+"30"}}><div style={{fontSize:10,fontWeight:700,color:C.warning,letterSpacing:1.5,marginBottom:6}}>WHAT TYPE?</div>{sore.map(id=>{const bp=BODY_PARTS.find(b=>b.id===id);const pt=painTypes[id]||"soreness";return(<div key={id} style={{display:"flex",alignItems:"center",gap:6,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:11,color:C.text,minWidth:80}}>{bp?.label||id}</span>{[{v:"soreness",l:"Soreness",c:C.teal},{v:"tightness",l:"Tight/Stiff",c:"#60a5fa"},{v:"sharp",l:"Sharp Pain",c:C.danger},{v:"dull",l:"Dull Ache",c:C.warning}].map(t=>(<button key={t.v} onClick={()=>setPainType(id,t.v)} style={{padding:"3px 8px",borderRadius:6,fontSize:9,fontWeight:600,cursor:"pointer",background:pt===t.v?t.c+"15":"transparent",border:`1px solid ${pt===t.v?t.c+"60":C.border}`,color:pt===t.v?t.c:C.textDim,fontFamily:"inherit"}}>{t.l}</button>))}</div>);})}</Card>}{sore.filter(id=>painTypes[id]==="sharp").length>0&&<div style={{padding:"8px 10px",background:C.danger+"10",borderRadius:8,borderLeft:`3px solid ${C.danger}`,marginTop:6}}><div style={{fontSize:10,fontWeight:700,color:C.danger}}>Sharp pain reported — exercises loading those areas will be removed or modified.</div></div>}<Btn onClick={()=>setStep(3)} style={{marginTop:14}}>Next →</Btn><div style={{height:90}}/></div>}
 {step===3&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 16px"}}>⚡ Energy level?</h3><input type="range" min={1} max={10} value={energy} onChange={e=>setEnergy(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Empty</span><span style={{fontSize:11,color:C.textDim}}>Charged</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{energy}</div></div><Btn onClick={()=>setStep(4)}>Next →</Btn></div>}
-{step===4&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧠 Stress level?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:16}}>Shapes coaching tone and volume</div><input type="range" min={1} max={10} value={stress} onChange={e=>setStress(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Calm</span><span style={{fontSize:11,color:C.textDim}}>Overwhelmed</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{stress}</div></div><Card style={{borderColor:C.teal+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>HOW THIS SHAPES TODAY</div>{adapt(stress).map(a=>(<div key={a.l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,color:C.textMuted}}>{a.l}</span><span style={{fontSize:13,color:C.teal,fontWeight:600}}>{a.v}</span></div>))}</Card><Btn onClick={compute} style={{marginTop:16}}>See My Plan →</Btn></div>}<div style={{height:90}}/></div>);}
+{step===4&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧠 Stress level?</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:16}}>Shapes coaching tone and volume</div><input type="range" min={1} max={10} value={stress} onChange={e=>setStress(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}><span style={{fontSize:11,color:C.textDim}}>Calm</span><span style={{fontSize:11,color:C.textDim}}>Overwhelmed</span></div><div style={{textAlign:"center",margin:"16px 0"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif"}}>{stress}</div></div><Card style={{borderColor:C.teal+"30"}}><div style={{fontSize:12,fontWeight:700,color:C.teal,letterSpacing:1.5,textTransform:"uppercase",marginBottom:10}}>HOW THIS SHAPES TODAY</div>{adapt(stress).map(a=>(<div key={a.l} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,color:C.textMuted}}>{a.l}</span><span style={{fontSize:13,color:C.teal,fontWeight:600}}>{a.v}</span></div>))}</Card><Btn onClick={()=>_isClimber?setStep(5):compute()} style={{marginTop:16}}>{_isClimber?"Next — Finger Check →":"See My Plan →"}</Btn></div>}
+{step===5&&_isClimber&&<div><h3 style={{fontSize:18,fontWeight:700,color:C.text,margin:"0 0 4px"}}>🧗 Finger Health Check</h3><div style={{fontSize:12,color:C.textMuted,marginBottom:12}}>Your fingers are your most important climbing tool. This 15-second check protects them.</div>
+<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:C.text,marginBottom:6}}>Any finger soreness or pain?</div>{[{v:"none",l:"None — feels great",c:C.success},{v:"mild",l:"Mild soreness (muscle fatigue)",c:C.teal},{v:"sharp",l:"Sharp or localized pain",c:C.warning},{v:"swelling",l:"Visible swelling",c:C.danger}].map(o=>(<button key={o.v} onClick={()=>setFingerSoreness(o.v)} style={{display:"block",width:"100%",padding:"10px 14px",marginBottom:6,borderRadius:10,cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,textAlign:"left",background:fingerSoreness===o.v?o.c+"15":C.bgCard,border:`1px solid ${fingerSoreness===o.v?o.c+"60":C.border}`,color:fingerSoreness===o.v?o.c:C.textMuted}}>{o.l}</button>))}</div>
+<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:C.text,marginBottom:6}}>Any popping or clicking in fingers?</div>{[{v:"no",l:"No"},{v:"painless_click",l:"Yes, painless click"},{v:"painful_pop",l:"Yes, painful pop during climbing"}].map(o=>(<button key={o.v} onClick={()=>setFingerPopping(o.v)} style={{display:"inline-block",padding:"8px 14px",marginRight:6,marginBottom:6,borderRadius:8,cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:600,background:fingerPopping===o.v?C.teal+"15":C.bgCard,border:`1px solid ${fingerPopping===o.v?C.teal+"60":C.border}`,color:fingerPopping===o.v?C.teal:C.textMuted}}>{o.l}</button>))}</div>
+<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:C.text,marginBottom:6}}>Finger readiness (1-5)</div><input type="range" min={1} max={5} value={fingerReadiness} onChange={e=>setFingerReadiness(parseInt(e.target.value))} style={{width:"100%",height:6,appearance:"none",background:C.border,borderRadius:3,accentColor:C.teal,cursor:"pointer"}}/><div style={{display:"flex",justifyContent:"space-between",marginTop:4}}><span style={{fontSize:10,color:C.danger}}>1 — Pain at rest</span><span style={{fontSize:10,color:C.success}}>5 — Full strength</span></div><div style={{textAlign:"center",margin:"10px 0"}}><div style={{fontSize:36,fontWeight:800,color:fingerReadiness>=4?C.success:fingerReadiness>=3?C.warning:C.danger,fontFamily:"'Bebas Neue',sans-serif"}}>{fingerReadiness}</div></div></div>
+{(fingerSoreness==="sharp"||fingerSoreness==="swelling"||fingerPopping==="painful_pop"||fingerReadiness<=1)&&<div style={{padding:"10px 12px",background:C.danger+"10",borderRadius:10,borderLeft:`3px solid ${C.danger}`,marginBottom:12}}><div style={{fontSize:11,fontWeight:700,color:C.danger}}>Finger Injury Alert</div><div style={{fontSize:10,color:C.text,marginTop:4}}>All grip-loading exercises will be removed. {fingerPopping==="painful_pop"||fingerSoreness==="swelling"?"Please see a hand specialist or climbing-specialized PT.":"Finger rehab exercises will be added."}</div></div>}
+{fingerReadiness<=2&&fingerSoreness!=="swelling"&&fingerPopping!=="painful_pop"&&<div style={{padding:"8px 12px",background:C.warning+"10",borderRadius:10,borderLeft:`3px solid ${C.warning}`,marginBottom:12}}><div style={{fontSize:10,color:C.warning}}>Hangboard and crimping exercises will be removed. Open-hand low-load only.</div></div>}
+<Btn onClick={compute} style={{marginTop:8}}>See My Plan →</Btn></div>}
+<div style={{height:90}}/></div>);}
 
 // ── PLAN SCREEN (Transparency Report) ─────────────────────────
 function PlanScreen({checkIn,workout,onGo,safetyReport}){
@@ -1238,6 +1596,7 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
       {checkIn?.sleep==="poor"&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.purple}}>😴 Poor sleep</span> — {sleepImpact}</div>}
       {checkIn?.sleep==="ok"&&<div style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.warning}}>😴 OK sleep</span> — {sleepImpact}</div>}
       {checkIn?.painTypes&&Object.entries(checkIn.painTypes).filter(([,v])=>v==="sharp").map(([area])=>{const bp=BODY_PARTS.find(b=>b.id===area);return <div key={area} style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:C.danger}}>⚠️ Sharp pain: {bp?.label||area}</span> — exercises loading this area removed</div>;})}
+      {checkIn?.painTypes&&Object.entries(checkIn.painTypes).filter(([,v])=>v==="tightness").map(([area])=>{const bp=BODY_PARTS.find(b=>b.id===area);return <div key={"tight_"+area} style={{fontSize:11,color:C.text,padding:"3px 0"}}><span style={{color:"#60a5fa"}}>🔗 Tight: {bp?.label||area}</span> — extra mobility + stretching added</div>;})}
     </Card>}
     {/* Readiness scores */}
     <Card glow={safetyColor+"30"} style={{borderColor:safetyColor+"40"}}>
@@ -2027,7 +2386,10 @@ function RecapScreen({onFinish,sessionData}){
   const[saved]=useState(()=>{
     if(!sessionData) return null;
     const volume=computeSessionVolume(sessionData.exercisesCompleted||[],exerciseDB);
-    return saveSession({...sessionData,totalVolume:volume});
+    const s=saveSession({...sessionData,totalVolume:volume});
+    // Update stretch tracker with body parts stretched this session
+    try { const stretchedBps=(sessionData.exercisesCompleted||[]).filter(ec=>{const ex=exerciseDB.find(e=>e.id===ec.exercise_id);return ex&&(ex.category==="cooldown"||ex.type==="flexibility");}).map(ec=>{const ex=exerciseDB.find(e=>e.id===ec.exercise_id);return ex?.bodyPart;}).filter(Boolean);if(stretchedBps.length>0)updateStretchTracker(stretchedBps); } catch{}
+    return s;
   });
   const otAssessment=useMemo(()=>assessOvertraining(),[saved]);
   const stats=getStats();
@@ -2042,6 +2404,7 @@ function AppInner(){
   const _noRestore=new Set(["perform","mindfulness","reflect","recap","checkin","plan","quickmode","init","auth","onboarding","baseline"]);
   const[screen,_setScreen]=useState("init");const setScreen=useCallback((s)=>{_setScreen(s);window.scrollTo(0,0);if(!_noRestore.has(s))try{localStorage.setItem("apex_last_screen",s);}catch{}},[]);const _savedTab=(()=>{try{return localStorage.getItem("apex_last_tab")||"home";}catch{return"home";}})();const[tab,_setTab]=useState(_savedTab);const setTab=(t)=>{_setTab(t);try{localStorage.setItem("apex_last_tab",t);}catch{}};
   const[authView,setAuthView]=useState("landing"); // landing|signup|login|forgot
+  const[sessionsRestored,setSessionsRestored]=useState(false); // tracks Supabase session restore completion
   const[exIdx,setExIdx]=useState(0);const[reflectData,setReflectData]=useState(null);
   const[checkInData,setCheckInData]=useState(null);
   const[completedExercises,setCompletedExercises]=useState([]);
@@ -2089,11 +2452,28 @@ function AppInner(){
         try{saveAssessment({_restoredStub:true,completedAt:new Date().toISOString()});}catch{}
         console.warn("APEX: assessment_completed=true but assessment_data missing in Supabase. Skipping onboarding.");
       }
-      // Restore workout sessions from Supabase (fire-and-forget)
-      restoreSessionsFromSupabase().catch(()=>{});
+      // Restore workout sessions from Supabase — await to ensure stats render correctly
+      restoreSessionsFromSupabase().then(restored => {
+        if (restored) { setSessionsRestored(true); console.log("APEX: Sessions restored from Supabase — stats will update"); }
+      }).catch(() => {});
     }
     if(screen==="auth"||screen==="init"){const saved=(()=>{try{return localStorage.getItem("apex_last_screen");}catch{return null;}})();const restorable=new Set(["home","train","library","tasks","coach","profile","plan_view"]);if(saved&&restorable.has(saved)){setScreen(saved);}else{setScreen("home");}}
   },[user,profile,loading,devBypass]);
+  // ── DEFENSIVE: Always try to restore sessions if localStorage is empty ──
+  // This catches the case where _clearUserLocalStorage wiped sessions but restore didn't run
+  useEffect(() => {
+    if (!user || loading) return;
+    const local = getSessions();
+    if (local.length === 0 && !sessionsRestored) {
+      restoreSessionsFromSupabase().then(restored => {
+        if (restored) { setSessionsRestored(true); console.log("APEX: Defensive session restore succeeded"); }
+      }).catch(() => {});
+    } else if (local.length > 0) {
+      // Backfill: ensure any local sessions are also in Supabase
+      backfillSessionsToSupabase().catch(() => {});
+    }
+  }, [user, loading, sessionsRestored]);
+
   // Check for paused workout on mount
   const[resumePrompt,setResumePrompt]=useState(null);
   const _checkResume=useCallback(()=>{try{const raw=localStorage.getItem("apex_paused_workout");if(!raw){setResumePrompt(null);return;}const pw=JSON.parse(raw);const pausedDate=new Date(pw.pausedAt).toISOString().split("T")[0];const today=new Date().toISOString().split("T")[0];if(pausedDate!==today){localStorage.removeItem("apex_paused_workout");setResumePrompt(null);return;}setResumePrompt(pw);}catch{setResumePrompt(null);}},[]);
@@ -2178,7 +2558,7 @@ function AppInner(){
     {screen==="plan_view"&&<PlanView onClose={()=>setScreen("home")}/>}
     {screen==="extra_work"&&<ExtraWork workout={workout} onClose={()=>setScreen("train")} onAddExercises={(exs)=>{setWorkout(w=>({...w,addOns:exs,all:[...w.all,...exs]}));setScreen("train");}}/>}
     {screen==="injuries"&&<InjuryManager onClose={()=>setScreen("home")}/>}
-    {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover","apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive","apex_mesocycle","apex_mesocycle_archive"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
+    {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onSportChange={()=>{/* Sport priorities changed — clear cached daily workout so next session uses new bias */try{localStorage.removeItem("apex_daily_workout");}catch{}}} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover","apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive","apex_mesocycle","apex_mesocycle_archive","apex_sports","apex_finger_health","apex_finger_log"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
     {/* Resume paused workout prompt */}
     {resumePrompt&&screen==="home"&&<Card glow={C.tealGlow} style={{margin:"0 0 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Unfinished Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} exercises done · {formatTimeAgo(resumePrompt.pausedAt)}</div></div></div><div style={{display:"flex",gap:8}}><Btn onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");}} style={{flex:3}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}} style={{flex:1,padding:"8px 10px",fontSize:11}}>Discard</Btn></div></Card>}
     {screen==="home"&&<HomeScreen onStart={()=>{const _s=getTodayWorkoutStatus();if(_s==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}/* If workout is in progress (daily tracker) but no resume prompt, skip check-in and rebuild from daily state */const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")} onAddOn={(type)=>{if(type==="pt"){const protocols=JSON.parse(localStorage.getItem("apex_pt_protocols")||"[]");if(protocols.length>0){setPtProtocol(protocols[0]);setScreen("pt_session");}return;}if(type==="cardio"){setScreen("extra_work");return;}/* For ROM, foam, stretch — go to extra work screen */setScreen("extra_work");}} onStartSecondary={()=>{setIsSecondarySession(true);setScreen("checkin");}}/>}

@@ -10,6 +10,7 @@ import { getAssessment } from "../components/Onboarding.jsx";
 import { getInjuries, conditionToGateKey } from "./injuries.js";
 import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
+import { hasHypertrophyGoals, getReadyPhysiqueMuscles } from "./hypertrophy.js";
 
 const LS_WEEKLY_PLAN = "apex_weekly_plan";
 const LS_ROTATION = "apex_rotation_indices";
@@ -273,6 +274,87 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       usedIds.add(iso.id);
       isoCount++;
     }
+  }
+
+  // ── Physique-priority isolation injection (NASM OPT gated) ──
+  // Adds targeted isolation for physique category + weak point muscles
+  // only when the body meets readiness criteria per NASM/PT guidelines
+  try {
+    if (hasHypertrophyGoals()) {
+      const completedSessions = getSessions().length;
+      const { week: mesoWeek } = getTrainingWeek();
+      const readyMuscles = getReadyPhysiqueMuscles(assessment, phase, mesoWeek, completedSessions, injuries);
+
+      if (readyMuscles.length > 0) {
+        // Expand day focus to include sub-muscles relevant to today's training
+        const relevantMuscles = new Set();
+        for (const focus of dayTemplate.focus) {
+          relevantMuscles.add(focus);
+          if (focus === "shoulders") { relevantMuscles.add("side_delts"); relevantMuscles.add("rear_delts"); relevantMuscles.add("front_delts"); relevantMuscles.add("traps"); }
+          if (focus === "back") { relevantMuscles.add("back_width"); relevantMuscles.add("back_thickness"); relevantMuscles.add("biceps"); }
+          if (focus === "chest") { relevantMuscles.add("triceps"); }
+          if (focus === "legs") { relevantMuscles.add("quads"); relevantMuscles.add("hamstrings"); relevantMuscles.add("calves"); }
+          if (focus === "glutes" || focus === "hips") relevantMuscles.add("glutes");
+          if (focus === "core") relevantMuscles.add("abs");
+        }
+
+        const maxPhysiqueIso = phase >= 2 ? 2 : 1;
+        let physiqueAdded = 0;
+
+        for (const pm of readyMuscles) {
+          if (physiqueAdded >= maxPhysiqueIso) break;
+
+          // Only inject for muscles relevant to today's split day
+          if (!relevantMuscles.has(pm.muscle) && !relevantMuscles.has(pm.bodyPart)) continue;
+
+          // Skip if body part already has isolation (unless double-priority: weak + category)
+          const alreadyHasIso = selected.some(e =>
+            e.bodyPart === pm.bodyPart && (e.type === "isolation" || (e._reason || "").includes("Isolation") || (e._reason || "").includes("Physique"))
+          );
+          if (alreadyHasIso && pm.priority < 3) continue;
+
+          // Base eligibility filter
+          const baseFilter = (e) =>
+            !usedIds.has(e.id) &&
+            !blacklist.has(e.id) &&
+            e.bodyPart === pm.bodyPart &&
+            e.safetyTier !== "red" &&
+            (pm.maxSafetyTier !== "green" || e.safetyTier === "green" || !e.safetyTier) &&
+            (e.phaseEligibility || []).includes(phase) &&
+            canUseExercise(e, phase, location, usedIds, injuries);
+
+          // Prefer hint-matched exercises (muscle specificity: lateral raise for side delts, not face pulls)
+          let candidate = exerciseDB.find(e => {
+            if (!baseFilter(e)) return false;
+            const searchText = ((e.name || "") + " " + (e.id || "") + " " + ((e.tags || []).join(" "))).toLowerCase();
+            return pm.hints.some(h => searchText.includes(h));
+          });
+
+          // Fallback: any isolation exercise for the body part
+          if (!candidate) {
+            candidate = exerciseDB.find(e =>
+              baseFilter(e) &&
+              (e.type === "isolation" || (e.movementPattern || "").toLowerCase() === "isolation" || (e.tags || []).includes("isolation"))
+            );
+          }
+
+          if (candidate) {
+            const volCheck = wouldExceedVolume(candidate, {}, phase);
+            if (volCheck.exceeded) continue;
+
+            const reason = `Physique priority: ${pm.muscle.replace(/_/g, " ")}` +
+              (pm.isWeakPoint ? " (weak point)" : "") +
+              (pm.isCategoryPriority ? ` (${(assessment?.physiqueCategory || "").replace(/_/g, " ")} emphasis)` : "");
+
+            selected.push({ ...candidate, _reason: reason });
+            usedIds.add(candidate.id);
+            physiqueAdded++;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Physique isolation injection skipped:", err.message);
   }
 
   return selected;

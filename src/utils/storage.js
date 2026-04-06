@@ -129,10 +129,12 @@ async function restoreSessionsFromSupabase() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return false;
     const { data: rows, error } = await supabase.from("sessions").select("*").eq("user_id", session.user.id).order("date", { ascending: true });
-    if (error || !rows?.length) return false;
+    if (error) { console.warn("APEX: Supabase session query error:", error.message); return false; }
+    if (!rows?.length) { console.log("APEX: No sessions in Supabase for this user"); return false; }
     // Only restore if localStorage has fewer sessions (don't overwrite newer local data)
     const local = getSessions();
-    if (local.length >= rows.length) return false;
+    console.log(`APEX: Session restore check — local: ${local.length}, supabase: ${rows.length}`);
+    if (local.length >= rows.length) { console.log("APEX: localStorage has enough sessions, skipping restore"); return false; }
     const restored = rows.map(r => ({
       session_id: r.id,
       // Prefer created_at (timestamptz with TZ) over date (bare date, UTC-parsed)
@@ -157,6 +159,29 @@ async function restoreSessionsFromSupabase() {
     console.log("APEX: Restored", restored.length, "sessions from Supabase");
     return true;
   } catch (e) { console.warn("Session restore from Supabase failed:", e); return false; }
+}
+
+// Backfill: sync any localStorage sessions that are missing from Supabase
+async function backfillSessionsToSupabase() {
+  try {
+    const { supabase, isSupabaseAvailable } = await import("../utils/supabase.js");
+    if (!isSupabaseAvailable()) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return;
+    const local = getSessions();
+    if (!local.length) return;
+    const { data: remote } = await supabase.from("sessions").select("date").eq("user_id", session.user.id);
+    const remoteDates = new Set((remote || []).map(r => r.date));
+    let synced = 0;
+    for (const entry of local) {
+      const entryDate = entry.date?.split("T")[0] || "";
+      if (!remoteDates.has(entryDate)) {
+        await _syncSessionToSupabase(entry);
+        synced++;
+      }
+    }
+    if (synced > 0) console.log(`APEX: Backfilled ${synced} sessions to Supabase`);
+  } catch (e) { console.warn("APEX: Session backfill failed:", e); }
 }
 
 // ── Stats (derived from sessions) ─────────────────────────────
@@ -238,6 +263,7 @@ function _computeFreshStats(sessions) {
 function getStats() {
   const sessions = getSessions();
   if (!sessions.length) {
+    console.log("APEX Stats: 0 sessions in localStorage — awaiting Supabase restore if applicable");
     return {
       totalSessions: 0,
       streak: 0,
@@ -246,7 +272,9 @@ function getStats() {
       sessionsThisWeek: 0,
     };
   }
-  return _computeFreshStats(sessions);
+  const stats = _computeFreshStats(sessions);
+  console.log(`APEX Stats: days=${stats.totalSessions} streak=${stats.streak} thisWeek=${stats.sessionsThisWeek} from ${sessions.length} sessions in localStorage`);
+  return stats;
 }
 
 // Local timezone date key — ALWAYS returns the LOCAL calendar date
@@ -431,6 +459,44 @@ function computeSessionVolume(exercisesCompleted, exerciseDB) {
   return volume;
 }
 
+// ── Stretch tracker (tracks when each body part was last stretched) ──
+
+const LS_STRETCH_TRACK = "apex_stretch_tracker";
+
+function getStretchTracker() {
+  try {
+    const raw = localStorage.getItem(LS_STRETCH_TRACK);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
+function updateStretchTracker(bodyPartsStretched) {
+  try {
+    const tracker = getStretchTracker();
+    const today = new Date().toISOString().split("T")[0];
+    for (const bp of bodyPartsStretched) {
+      tracker[bp] = today;
+    }
+    localStorage.setItem(LS_STRETCH_TRACK, JSON.stringify(tracker));
+  } catch {}
+}
+
+// ── Sport Preferences ────────────────────────────────────────
+const LS_SPORT_PREFS = "apex_sports";
+
+function getSportPrefs() {
+  try {
+    const raw = localStorage.getItem(LS_SPORT_PREFS);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+
+function saveSportPrefs(prefs) {
+  try {
+    localStorage.setItem(LS_SPORT_PREFS, JSON.stringify(prefs));
+  } catch (e) { console.warn("APEX sport prefs write failed:", e); }
+}
+
 export {
   get,
   set,
@@ -449,5 +515,10 @@ export {
   addPainFlag,
   computeSessionVolume,
   restoreSessionsFromSupabase,
+  getStretchTracker,
+  updateStretchTracker,
+  getSportPrefs,
+  saveSportPrefs,
+  backfillSessionsToSupabase,
   KEYS,
 };

@@ -15,7 +15,7 @@ const LS_HYPERTROPHY = "apex_hypertrophy_settings";
 
 export const PHYSIQUE_CATEGORIES = [
   { id: "general", label: "General Muscle Building", desc: "Look better, no competition plans", icon: "💪" },
-  { id: "mens_physique", label: "NPC Men's Physique", desc: "V-taper: shoulders, back, chest, arms — less leg emphasis", icon: "🏖️" },
+  { id: "mens_physique", label: "NPC Men's Physique", desc: "V-taper focus: shoulders, back, chest, arms — full balanced physique", icon: "🏖️" },
   { id: "classic_physique", label: "NPC Classic Physique", desc: "Balanced full-body muscle with size limits by height", icon: "🏛️" },
   { id: "bodybuilding", label: "NPC Bodybuilding", desc: "Maximum muscle mass and conditioning", icon: "🏋️" },
   { id: "bikini", label: "NPC Bikini", desc: "Toned, lean, glute/shoulder emphasis", icon: "👙" },
@@ -45,7 +45,7 @@ export const WEAK_POINTS = [
 // Volume emphasis by physique category
 const CATEGORY_EMPHASIS = {
   general: {},
-  mens_physique: { side_delts: 1.4, back_width: 1.3, chest: 1.2, biceps: 1.2, triceps: 1.2, quads: 0.7, hamstrings: 0.7, calves: 0.7 },
+  mens_physique: { side_delts: 1.4, back_width: 1.3, chest: 1.2, biceps: 1.2, triceps: 1.2 },
   classic_physique: { side_delts: 1.3, chest: 1.2, back_width: 1.2, quads: 1.1, abs: 1.2 },
   bodybuilding: { chest: 1.1, back_width: 1.1, back_thickness: 1.1, quads: 1.1, hamstrings: 1.1 },
   bikini: { glutes: 1.5, side_delts: 1.3, hamstrings: 1.2, chest: 0.7, back_thickness: 0.7 },
@@ -398,3 +398,148 @@ export const RPE_GUIDE = {
   isolation: "RPE 8-10 — last set to failure is acceptable and often beneficial for isolations.",
   guide: "RPE 8 = you could do 2 more reps. RPE 9 = 1 more rep possible. RPE 10 = absolute failure.",
 };
+
+// ═══════════════════════════════════════════════════════════════
+// 10. PHYSIQUE-PRIORITY ISOLATION ENGINE (NASM OPT Gated)
+// Evidence: NASM OPT model progression, ACSM resistance training
+// guidelines, PT clinical readiness criteria (pain-free ROM,
+// neural adaptation period, tissue tolerance)
+// ═══════════════════════════════════════════════════════════════
+
+// Priority muscles by physique category — these get extra isolation work
+export const PHYSIQUE_PRIORITY_MUSCLES = {
+  mens_physique: ["side_delts", "rear_delts", "back_width", "chest", "biceps", "triceps"],
+  classic_physique: ["side_delts", "chest", "back_width", "quads", "abs"],
+  bodybuilding: ["chest", "back_width", "back_thickness", "quads", "hamstrings"],
+  bikini: ["glutes", "side_delts", "hamstrings"],
+  figure: ["side_delts", "glutes", "back_width", "quads"],
+  wellness: ["glutes", "quads", "hamstrings"],
+  womens_physique: ["side_delts", "back_width", "glutes", "quads"],
+  general: [],
+  no_compete: [],
+};
+
+// Map priority muscle names → exercise DB bodyPart field
+const PRIORITY_TO_BODY_PART = {
+  side_delts: "shoulders", rear_delts: "shoulders", front_delts: "shoulders",
+  back_width: "back", back_thickness: "back",
+  chest: "chest", biceps: "arms", triceps: "arms",
+  quads: "legs", hamstrings: "legs",
+  glutes: "glutes", calves: "calves", abs: "core", traps: "shoulders", forearms: "arms",
+};
+
+// Search hints to find the correct isolation exercise for each priority muscle
+const PRIORITY_EXERCISE_HINTS = {
+  side_delts: ["lateral", "abduction", "side_delt"],
+  rear_delts: ["face_pull", "reverse_fly", "rear_delt", "pull_apart"],
+  back_width: ["pulldown", "pull_up", "pullover", "straight_arm"],
+  back_thickness: ["row"],
+  chest: ["fly", "cable_fly", "pec"],
+  biceps: ["curl", "bicep"],
+  triceps: ["pushdown", "extension", "tricep"],
+  quads: ["extension", "leg_ext", "vmo", "sissy"],
+  hamstrings: ["leg_curl", "hamstring_curl", "nordic"],
+  glutes: ["hip_thrust", "glute_bridge", "band_walk", "abduction", "clamshell"],
+  calves: ["calf_raise", "calf"],
+  abs: ["crunch", "ab_wheel"],
+  traps: ["shrug", "trap"],
+  forearms: ["wrist_curl", "forearm"],
+};
+
+// Injury gates per priority muscle (PT clinical criteria)
+// Each entry: which injury area blocks this muscle and at what severity threshold
+const MUSCLE_INJURY_GATES = {
+  side_delts: [{ area: "shoulder", maxSeverity: 1 }],
+  rear_delts: [{ area: "shoulder", maxSeverity: 1 }],
+  front_delts: [{ area: "shoulder", maxSeverity: 1 }],
+  back_width: [{ area: "lower_back", maxSeverity: 2 }],
+  back_thickness: [{ area: "lower_back", maxSeverity: 2 }],
+  chest: [{ area: "shoulder", maxSeverity: 1 }],
+  biceps: [],
+  triceps: [],
+  quads: [{ area: "knee", maxSeverity: 1 }],
+  hamstrings: [{ area: "knee", maxSeverity: 1 }],
+  glutes: [{ area: "lower_back", maxSeverity: 2 }],
+  calves: [{ area: "ankle", maxSeverity: 1 }],
+  abs: [{ area: "lower_back", maxSeverity: 2 }],
+  traps: [{ area: "shoulder", maxSeverity: 2 }],
+  forearms: [],
+};
+
+/**
+ * Determine which physique-priority muscles are ready for isolation work.
+ *
+ * Gating criteria (NASM OPT + PT clinical guidelines):
+ *
+ * 1. Minimum 6 completed sessions (neural adaptation / movement competency)
+ * 2. Phase 1 weeks 1-4: NO extra isolation (NASM Phase 1 = stabilization focus)
+ *    Phase 1 weeks 5+: GREEN-tier isolation only (light load, max 1 per session)
+ *    Phase 2+: Full isolation allowed (GREEN + YELLOW tier, max 2 per session)
+ * 3. Injury severity must be at/below threshold for the target area
+ *    (e.g., shoulder isolation requires shoulder severity ≤ 1)
+ * 4. Exercise DB phaseEligibility enforced separately (natural gate —
+ *    e.g., lateral raises are Phase 2+ so they won't appear in Phase 1)
+ */
+export function getReadyPhysiqueMuscles(assessment, phase, mesoWeek, completedSessions, injuries) {
+  const category = assessment?.physiqueCategory || "general";
+  const weakPoints = assessment?.weakPoints || [];
+  const priorityMuscles = [...(PHYSIQUE_PRIORITY_MUSCLES[category] || [])];
+
+  // Merge weak points that aren't already in the priority list
+  for (const wp of weakPoints) {
+    if (!priorityMuscles.includes(wp)) priorityMuscles.push(wp);
+  }
+
+  if (priorityMuscles.length === 0) return [];
+
+  const ready = [];
+
+  for (const muscle of priorityMuscles) {
+    // Gate 1: Minimum session count (neural adaptation per NASM)
+    if (completedSessions < 6) continue;
+
+    let maxSafetyTier = "green";
+
+    // Gate 2: Phase + week progression (NASM OPT model)
+    if (phase === 1) {
+      const effectiveWeek = mesoWeek || 1;
+      if (effectiveWeek <= 4) continue; // Stabilization focus — no extra isolation
+      maxSafetyTier = "green"; // Late Phase 1: green-tier only
+    } else {
+      maxSafetyTier = "yellow"; // Phase 2+: green + yellow allowed
+    }
+
+    // Gate 3: Injury severity check
+    const gates = MUSCLE_INJURY_GATES[muscle] || [];
+    let blocked = false;
+    for (const gate of gates) {
+      const matchingInjury = (injuries || []).find(inj => {
+        const injArea = (inj.condition_key || inj.area || "").toLowerCase().replace(/\s+/g, "_");
+        return injArea.includes(gate.area);
+      });
+      if (matchingInjury && (matchingInjury.severity || 0) > gate.maxSeverity) {
+        blocked = true;
+        break;
+      }
+    }
+    if (blocked) continue;
+
+    const isWeakPoint = weakPoints.includes(muscle);
+    const isCategoryPriority = (PHYSIQUE_PRIORITY_MUSCLES[category] || []).includes(muscle);
+
+    ready.push({
+      muscle,
+      bodyPart: PRIORITY_TO_BODY_PART[muscle] || muscle,
+      hints: PRIORITY_EXERCISE_HINTS[muscle] || [],
+      maxSafetyTier,
+      isWeakPoint,
+      isCategoryPriority,
+      // 3 = both weak + category, 2 = category emphasis, 1 = weak point only
+      priority: (isWeakPoint && isCategoryPriority) ? 3 : (isCategoryPriority ? 2 : 1),
+    });
+  }
+
+  // Highest priority first
+  ready.sort((a, b) => b.priority - a.priority);
+  return ready;
+}

@@ -8,7 +8,8 @@ import CARDIO_EXERCISES from "../data/cardioExercises.js";
 import { getInjuries } from "./injuries.js";
 import { getAssessment } from "../components/Onboarding.jsx";
 import { getHRSettings, getNASMZones, getCardioPrescription } from "./cardio.js";
-import { getSessions } from "./storage.js";
+import { getSessions, getSportPrefs } from "./storage.js";
+import { getSportCardioConfig, getEnergySystemForSession, capSportPrefs } from "../data/sportProfiles.js";
 
 const LS_CARDIO_PREFS = "apex_cardio_prefs";
 const exById = Object.fromEntries(CARDIO_EXERCISES.map(e => [e.id, e]));
@@ -214,8 +215,22 @@ export function buildCardioBlock(phase = 1, location = "gym", sessionIndex = 0, 
   const stage = getNASMStage(phase);
   const rx = getCardioPrescription(phase, injuries);
 
-  // Select exercise — prefer user favorites, avoid dislikes, rotate
-  const selected = selectCardioExercise(exercises, prefs, sessionIndex);
+  // ── Sport energy system awareness (Rule 5: session-specific rotation) ──
+  const sportPrefs = capSportPrefs(getSportPrefs());
+  const sportCardio = sportPrefs.length > 0 ? getSportCardioConfig(sportPrefs) : null;
+  // Rule 5: Get the energy system assigned to THIS specific session
+  const sessionEnergy = sportPrefs.length > 0 ? getEnergySystemForSession(sportPrefs, sessionIndex, daysPerWeek) : null;
+
+  // Inject sport-preferred cardio exercises into preference pool
+  let sportBoost = [];
+  if (sportCardio?.preferredExercises) {
+    sportBoost = sportCardio.preferredExercises.map(id => exercises.find(e => e.id === id)).filter(Boolean);
+  }
+
+  // Select exercise — sport-preferred first, then user favorites, avoid dislikes, rotate
+  const selected = sportBoost.length > 0
+    ? sportBoost[sessionIndex % sportBoost.length]
+    : selectCardioExercise(exercises, prefs, sessionIndex);
   if (!selected) return null;
 
   // Calculate duration based on stage
@@ -234,13 +249,33 @@ export function buildCardioBlock(phase = 1, location = "gym", sessionIndex = 0, 
         }).join(" | ");
       })();
 
-  // Build interval protocol if applicable
-  const protocol = buildProtocol(stage, zones, duration);
+  // Build interval protocol — use session-specific energy system rotation
+  let protocol = buildProtocol(stage, zones, duration);
+
+  // Rule 5: Override protocol based on THIS session's assigned energy system
+  if (sessionEnergy && phase >= 2) {
+    const targetFormat = sessionEnergy.format;
+    if (targetFormat && targetFormat !== stage.format) {
+      protocol = buildProtocol({ ...stage, format: targetFormat }, zones, duration);
+    }
+  } else if (sportCardio && phase >= 2) {
+    // Single sport fallback — use dominant system
+    if (sportCardio.dominant === "phosphagen" && stage.format !== "sprint") {
+      protocol = buildProtocol({ ...stage, format: "sprint" }, zones, duration);
+    } else if (sportCardio.dominant === "oxidative" && stage.format === "sprint") {
+      protocol = buildProtocol({ ...stage, format: "progressive" }, zones, duration);
+    }
+  }
+
+  // Sport-aware reason text (uses session-specific rotation message)
+  const sportReason = sessionEnergy?.note || (sportCardio
+    ? `${sportCardio.dominant === "phosphagen" ? "Sprint intervals match your sport's explosive energy demands" : sportCardio.dominant === "oxidative" ? "Sustained cardio builds the aerobic base your sport demands" : "Mixed cardio matches your sport's energy system profile"}`
+    : null);
 
   return {
     exercise: {
       ...selected,
-      _reason: messages[0] || `NASM ${stage.name}: ${rx.guidance}`,
+      _reason: sportReason || messages[0] || `NASM ${stage.name}: ${rx.guidance}`,
       _duration: `${duration} min`,
       _cardioMeta: {
         stage: stage.name,
@@ -248,9 +283,10 @@ export function buildCardioBlock(phase = 1, location = "gym", sessionIndex = 0, 
         zoneDisplay,
         protocol,
         duration,
-        format: stage.format,
+        format: sportCardio?.format || stage.format,
         settings: selected.settingsGuidance,
         nasmNote: selected.nasmNote,
+        sportEnergy: sportCardio?.dominant || null,
       },
     },
     alternatives: exercises.filter(e => e.id !== selected.id).slice(0, 3),

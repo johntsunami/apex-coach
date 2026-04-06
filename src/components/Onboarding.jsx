@@ -1035,16 +1035,35 @@ export default function OnboardingFlow({ onComplete }) {
             })}
           </div>
         </Card>
-        {/* Sports + custom */}
+        {/* Sports — Max 3, ranked by priority */}
         <Card>
-          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 4 }}>Sport interests</div>
-          <div style={{ fontSize: 11, color: C.textDim, marginBottom: 6 }}>Select all that apply. We'll tailor exercises for your sports.</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 4 }}>Pick Your Top 3 Sports or Activities</div>
+          <div style={{ fontSize: 11, color: C.textDim, marginBottom: 6, lineHeight: 1.5 }}>Training for fewer sports = faster improvement in each. We'll shape your workouts around these. Rank them by how often you play — #1 gets the most training focus.</div>
+          {/* Selected sports with rank badges */}
+          {prefs.sports.length > 0 && <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+            {prefs.sports.filter(s => s !== "None").map((s, i) => {
+              const rankColors = ["#FFD700", "#C0C0C0", "#CD7F32"];
+              const rankLabels = prefs.sports.filter(x => x !== "None").length === 1 ? ["PRIMARY — 100% focus"] : prefs.sports.filter(x => x !== "None").length === 2 ? ["PRIMARY — 70% focus", "SECONDARY — 30% focus"] : ["PRIMARY — 60% focus", "SECONDARY — 30% focus", "TERTIARY — 10% focus"];
+              return (<div key={s} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", background: C.bgElevated, borderRadius: 8, border: `1px solid ${rankColors[i] || C.border}30` }}>
+                <span style={{ width: 20, height: 20, borderRadius: 10, background: (rankColors[i] || C.textDim) + "30", color: rankColors[i] || C.textDim, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>#{i + 1}</span>
+                <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: C.text }}>{s}</span>
+                <span style={{ fontSize: 8, color: rankColors[i] || C.textDim, fontWeight: 700, letterSpacing: 0.5 }}>{rankLabels[i] || "SUPPORT"}</span>
+                <button onClick={() => setPrefs(p => ({ ...p, sports: p.sports.filter(x => x !== s) }))} style={{ width: 20, height: 20, borderRadius: 6, border: "none", background: "#ef444415", color: "#ef4444", cursor: "pointer", fontSize: 11, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+              </div>);
+            })}
+            <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>Order = priority. First selected = #1 (most focus).</div>
+          </div>}
+          {prefs.sports.filter(s => s !== "None").length >= 3 && <div style={{ padding: "6px 10px", background: C.purple + "10", borderRadius: 8, borderLeft: `3px solid ${C.purple}`, marginBottom: 8 }}>
+            <div style={{ fontSize: 10, color: C.purple, fontWeight: 600 }}>3 sport maximum reached. Remove one to add a different sport.</div>
+          </div>}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-            {SPORTS.filter(s => !prefs.customSport || s.toLowerCase().includes(prefs.customSport.toLowerCase())).map(s => {
+            {SPORTS.filter(s => s !== "None" && (!prefs.customSport || s.toLowerCase().includes(prefs.customSport.toLowerCase()))).map(s => {
               const sel = prefs.sports.includes(s);
+              const atMax = prefs.sports.filter(x => x !== "None").length >= 3 && !sel;
               return (
-                <button key={s} onClick={() => setPrefs(p => ({ ...p, sports: sel ? p.sports.filter(x => x !== s) : [...p.sports, s] }))}
-                  style={{ padding: "5px 10px", borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                <button key={s} onClick={() => { if (atMax) return; setPrefs(p => ({ ...p, sports: sel ? p.sports.filter(x => x !== s) : [...p.sports.filter(x => x !== "None"), s] })); }}
+                  style={{ padding: "5px 10px", borderRadius: 12, fontSize: 13, fontWeight: 600, cursor: atMax ? "default" : "pointer",
+                    opacity: atMax ? 0.35 : 1,
                     background: sel ? C.purple + "15" : "transparent",
                     border: `1px solid ${sel ? C.purple + "60" : C.border}`,
                     color: sel ? C.purple : C.textDim }}>{sel ? "✓ " : ""}{s}</button>
@@ -1054,9 +1073,10 @@ export default function OnboardingFlow({ onComplete }) {
           <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
             <input value={prefs.customSport} onChange={e => setPrefs(p => ({ ...p, customSport: e.target.value }))} placeholder="Other sport..."
               style={{ flex: 1, padding: "6px 10px", borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.text, fontSize: 15, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
-            {prefs.customSport.trim() && <button onClick={() => { if (prefs.customSport.trim() && !prefs.sports.includes(prefs.customSport.trim())) setPrefs(p => ({ ...p, sports: [...p.sports, p.customSport.trim()], customSport: "" })); }}
+            {prefs.customSport.trim() && prefs.sports.filter(s => s !== "None").length < 3 && <button onClick={() => { if (prefs.customSport.trim() && !prefs.sports.includes(prefs.customSport.trim())) setPrefs(p => ({ ...p, sports: [...p.sports.filter(x => x !== "None"), p.customSport.trim()], customSport: "" })); }}
               style={{ padding: "6px 10px", borderRadius: 8, background: C.tealBg, border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>+ Add</button>}
           </div>
+          <button onClick={() => setPrefs(p => ({ ...p, sports: ["None"] }))} style={{ display: "block", marginTop: 6, padding: "6px 10px", borderRadius: 8, background: prefs.sports.includes("None") ? C.tealBg : "transparent", border: `1px solid ${prefs.sports.includes("None") ? C.teal + "40" : C.border}`, color: prefs.sports.includes("None") ? C.teal : C.textDim, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{prefs.sports.includes("None") ? "✓ " : ""}No sports — general fitness only</button>
         </Card>
         {/* Favorite exercises — curated grid + search */}
         <Card>

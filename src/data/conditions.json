@@ -3939,5 +3939,149 @@
     "referOutIf": "Locking, giving way, significant swelling, pain not improving after 6 weeks of targeted hip/quad strengthening",
     "userMessage": "Patellofemoral pain responds well to exercise — especially hip strengthening. We focus on your hip abductors and external rotators because weak hips are the most common cause of knee tracking problems.",
     "source": "JOSPT 2019 Clinical Practice Guidelines (APTA), Mass General PFPS protocol"
+  },
+
+  {
+    "id": "CLIMB1",
+    "condition": "finger_pulley_strain_mild",
+    "name": "Finger Pulley Strain (Grade I — Mild)",
+    "category": "climbing_finger",
+    "severityRange": "1-2",
+    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch", "climb_forearm_massage", "climb_rice_bucket"],
+    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch"],
+    "avoid": ["Full crimp grip", "Max hangs", "Campus board", "Pocket holds (mono/duo)", "Dynamic climbing moves on small holds", "Hangboard on edges < 20mm"],
+    "modifications": {
+      "allGripExercises": "Open hand grip ONLY — no half crimp, no full crimp",
+      "hangboard": "Jug holds only at 50% perceived max for first 4 weeks",
+      "climbing": "Reduce grade by 3-4 levels, no overhangs, no small holds, H-tape affected finger",
+      "pullingExercises": "Use lifting straps for rows, pulldowns to reduce grip demand"
+    },
+    "phases": {
+      "weeks_1_2": "Unload: H-taping during any activity, gentle ROM, tendon glides 4-5x daily, finger extensor work, NO climbing or hangboard",
+      "weeks_3_4": "Mobility + light loading: isometric palm crimps (pain-free only), putty squeezes, continue tendon glides, light climbing on jugs only with tape",
+      "weeks_5_8": "Progressive loading: farmer crimps with light weight progressing weekly, open hand hangboard (jug holds), climbing 3-4 grades below max with tape",
+      "weeks_9_12": "Return to training: gradual reintroduction of half-crimp on large edges, progressive hangboard loading, climbing approaching normal grade with tape"
+    },
+    "progressionCriteria": "Pain-free at current level for 2 full weeks before advancing. Any pain = stay at current level or regress.",
+    "referOutIf": "Pain not improving after 3 weeks, visible bowstringing, inability to make a fist, swelling not resolving, numbness or tingling in finger",
+    "userMessage": "Your finger pulley needs protection while it heals. Grade I strains heal well with proper management — 88% of climbers return to their previous level (Schneeberger & Schweizer). We're modifying your training to keep you active while the pulley strengthens.",
+    "notes": "Most commonly A2 or A4 pulley. Pain with crimping but no bowstringing. Middle and ring fingers most vulnerable (Vigouroux 2008).",
+    "source": "Cooper & LaStayo 2019, Vagy 2023 Rock Rehab Pyramid, Schneeberger & Schweizer (47 pulley ruptures study)",
+    "severity_description": {
+      "1": "Mild tenderness at pulley, full grip strength, pain only under load",
+      "2": "Moderate tenderness, slight grip weakness, pain with crimping activities"
+    }
+  },
+  {
+    "id": "CLIMB2",
+    "condition": "finger_pulley_strain_moderate",
+    "name": "Finger Pulley Strain (Grade II — Moderate)",
+    "category": "climbing_finger",
+    "severityRange": "3",
+    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch", "climb_forearm_massage"],
+    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_extensor_band"],
+    "avoid": ["ALL crimping grips", "ALL hangboard types", "Campus board", "Climbing for 4 weeks minimum", "Heavy gripping", "Deadlifts without straps", "Pull-ups without straps", "Farmer carries"],
+    "modifications": {
+      "allPullingExercises": "Use lifting straps to remove grip demand for 4-8 weeks",
+      "upperBody": "Focus on pushing exercises (antagonist work) which is beneficial during recovery",
+      "lowerBody": "Full training allowed — legs don't stress finger pulleys"
+    },
+    "phases": {
+      "weeks_1_4": "Unload: H-taping or pulley ring orthosis (Hartnett 2024 protocol), ROM exercises only, NO grip loading, push and leg exercises encouraged",
+      "weeks_5_8": "Light loading: palm crimps → putty crimps progression (pain-free only), begin open hand jug hangs (feet on ground, 30% bodyweight)",
+      "weeks_9_12": "Progressive loading: farmer crimps with weight, open hand hangboard bodyweight, light climbing (5+ grades below max) with tape",
+      "weeks_13_16": "Return to training: gradual reintroduction of half-crimp, progressive hangboard, climbing approaching normal"
+    },
+    "progressionCriteria": "Pain-free at current level for 2 full weeks before advancing.",
+    "referOutIf": "Bowstringing present, pain not improving by week 6, inability to progress through loading phases",
+    "userMessage": "Moderate pulley strain needs 12-16 weeks of managed rehabilitation. Your training continues — we're shifting to pushing and leg work while your finger heals. Most climbers fully recover from Grade II strains.",
+    "source": "Lutter et al. 2021 (BJSM), Hartnett 2024 (Journal of Hand Therapy), Vagy Rock Rehab Pyramid",
+    "severity_description": {
+      "3": "Significant tenderness, mild swelling, pain with daily gripping, heard a pop during activity"
+    }
+  },
+  {
+    "id": "CLIMB3",
+    "condition": "finger_pulley_rupture",
+    "name": "Finger Pulley Rupture (Grade III-IV — Severe)",
+    "category": "climbing_finger",
+    "severityRange": "4-5",
+    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band"],
+    "mandatoryDaily": ["climb_finger_rom_isolation"],
+    "avoid": ["ALL grip loading for 8 weeks minimum", "ALL climbing for 8 weeks minimum", "ALL hangboard", "ALL pulling without straps", "Heavy carrying", "Gripping tools"],
+    "modifications": {
+      "allExercises": "No grip demand whatsoever — use straps, machines, push/leg focus",
+      "dailyLife": "Taping or splinting as directed by hand specialist"
+    },
+    "phases": {
+      "weeks_1_4": "Medical management: follow hand specialist protocol, gentle ROM only, taping/splinting",
+      "weeks_5_8": "Begin gentle loading under PT guidance: isometric palm presses, putty work",
+      "weeks_9_16": "Progressive loading per PT protocol: gradual grip reintroduction",
+      "weeks_16_plus": "Return to climbing under PT clearance only"
+    },
+    "referOutIf": "IMMEDIATELY — bowstringing visible, complete inability to flex finger, multiple pulley involvement may require surgical consultation",
+    "userMessage": "This is a serious finger injury that needs medical evaluation. We've removed ALL grip-loading exercises from your plan. Your training continues with pushing, legs, cardio, and core. See a hand specialist or climbing-specialized PT within the first week.",
+    "source": "Schöffl 2015, Lutter 2021, Cooper & LaStayo 2019 classification",
+    "severity_description": {
+      "4": "Complete single pulley rupture, bowstringing may be present, significant swelling",
+      "5": "Multiple pulley involvement, obvious deformity, requires surgical evaluation"
+    }
+  },
+  {
+    "id": "CLIMB4",
+    "condition": "finger_flexor_tendinopathy",
+    "name": "Finger Flexor Tendinopathy (Climber's Finger)",
+    "category": "climbing_finger",
+    "severityRange": "1-3",
+    "recommended": ["climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_eccentric_wrist_curl", "climb_forearm_massage", "climb_rice_bucket", "climb_wrist_flex_ext_stretch"],
+    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_forearm_massage", "climb_finger_extensor_band"],
+    "avoid": ["Max hangs", "Campus board", "Full crimp grip", "Small edges under 15mm", "Dynamic moves on small holds"],
+    "modifications": {
+      "hangboard": "Reduce to 60-70% intensity, open hand only, increase rest between sets to 5 min",
+      "climbing": "Reduce volume 40%, avoid crimping, focus on technique over power",
+      "pullingExercises": "Reduce grip demand — use straps for deadlifts, rows"
+    },
+    "phases": {
+      "weeks_1_3": "Reduce load: drop hangboard to 60% max, no small edges, isometric holds 30-40% max 5×10s daily, tendon glides, eccentric wrist curls",
+      "weeks_4_6": "Rebuild: progressive isometric loading on hangboard (increase 5% per week), introduce eccentric finger exercises, maintain climbing at reduced volume",
+      "weeks_7_12": "Return to full: gradual return to normal hangboard intensity, reintroduce half-crimp on moderate edges, climbing volume returns to normal"
+    },
+    "progressionCriteria": "Morning stiffness resolving, pain during activity decreasing, grip strength improving on testing.",
+    "referOutIf": "Pain worsening despite load management after 4 weeks, loss of finger ROM, swelling developing",
+    "userMessage": "Tendinopathy means your tendons are irritated from overuse — not injured. The treatment is controlled loading, not complete rest. We're adjusting your grip intensity while keeping you climbing and building tendon resilience.",
+    "notes": "Gradual onset, worse with gripping, morning stiffness. Eccentric loading stimulates tendon remodeling (GRSM 2025 tendon rehab principles).",
+    "source": "GRSM 2025 (8 tendon rehab principles), Vagy 2023, Union PT 2025",
+    "severity_description": {
+      "1": "Mild morning stiffness, pain only during high-load gripping",
+      "2": "Morning stiffness lasting 30+ min, pain during moderate gripping",
+      "3": "Stiffness throughout day, pain with daily gripping activities, grip weakness"
+    }
+  },
+  {
+    "id": "CLIMB5",
+    "condition": "finger_tenosynovitis_climbing",
+    "name": "Finger Tenosynovitis (Tendon Sheath Inflammation)",
+    "category": "climbing_finger",
+    "severityRange": "1-3",
+    "recommended": ["climb_finger_rom_isolation", "climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_forearm_massage", "climb_wrist_flex_ext_stretch"],
+    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_rom_isolation"],
+    "avoid": ["Repetitive high-volume gripping", "Crimping on small holds", "Vibrating tools"],
+    "modifications": {
+      "climbingVolume": "Reduce by 50% until catching resolves",
+      "gripType": "Open hand only — crimping compresses the sheath"
+    },
+    "phases": {
+      "weeks_1_3": "Reduce volume 50%, open hand grips only, tendon glides 4x daily, contrast therapy (warm 3min / cold 1min × 3 cycles)",
+      "weeks_4_6": "Gradual volume increase if catching has resolved, continue tendon glides, monitor for recurrence",
+      "weeks_6_plus": "Return to normal if symptom-free for 2 weeks"
+    },
+    "referOutIf": "Finger locks and won't straighten, catching worsening after 4 weeks, pain at rest, multiple fingers affected",
+    "userMessage": "Your tendon sheath is inflamed — the 'catching' sensation is the swollen tendon getting stuck. We're reducing volume and grip intensity while adding exercises to calm the inflammation. This typically resolves in 4-6 weeks with proper management.",
+    "source": "Schöffl 2015 (climbing injury epidemiology), hand surgery clinical guidelines",
+    "severity_description": {
+      "1": "Occasional catching, no pain, resolves quickly",
+      "2": "Frequent catching, mild pain, morning stiffness",
+      "3": "Catching with pain, locking episodes, difficulty making a fist"
+    }
   }
 ]
