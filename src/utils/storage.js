@@ -121,7 +121,20 @@ async function _syncSessionToSupabase(entry) {
   } catch (e) { console.warn("Session sync to Supabase failed (non-blocking):", e); }
 }
 
+// One-time migration: clear stale localStorage stats on devices that predate Supabase sync
+function _runStatsMigration() {
+  try {
+    if (localStorage.getItem("supabase_stats_migration_v1") === "done") return;
+    console.log("APEX: Running one-time stats migration — clearing stale localStorage stats");
+    localStorage.removeItem(KEYS.STATS);
+    localStorage.removeItem(KEYS.SESSIONS);
+    localStorage.setItem("supabase_stats_migration_v1", "done");
+  } catch {}
+}
+_runStatsMigration();
+
 // Restore sessions from Supabase on login (called from AuthProvider flow)
+// RULE: Supabase is source of truth — always overwrite localStorage with Supabase data
 async function restoreSessionsFromSupabase() {
   try {
     const { supabase, isSupabaseAvailable } = await import("../utils/supabase.js");
@@ -130,11 +143,16 @@ async function restoreSessionsFromSupabase() {
     if (!session?.user) return false;
     const { data: rows, error } = await supabase.from("sessions").select("*").eq("user_id", session.user.id).order("date", { ascending: true });
     if (error) { console.warn("APEX: Supabase session query error:", error.message); return false; }
-    if (!rows?.length) { console.log("APEX: No sessions in Supabase for this user"); return false; }
-    // Only restore if localStorage has fewer sessions (don't overwrite newer local data)
+    if (!rows?.length) {
+      // Supabase has no sessions — clear localStorage to match (prevents stale local data from showing)
+      console.log("APEX: No sessions in Supabase — clearing localStorage to match");
+      set(KEYS.SESSIONS, []);
+      _updateStats([]);
+      return false;
+    }
+    // ALWAYS overwrite localStorage with Supabase data — Supabase is source of truth
     const local = getSessions();
-    console.log(`APEX: Session restore check — local: ${local.length}, supabase: ${rows.length}`);
-    if (local.length >= rows.length) { console.log("APEX: localStorage has enough sessions, skipping restore"); return false; }
+    console.log(`APEX: Session restore — local: ${local.length}, supabase: ${rows.length} — Supabase wins`);
     const restored = rows.map(r => ({
       session_id: r.id,
       // Prefer created_at (timestamptz with TZ) over date (bare date, UTC-parsed)
@@ -156,7 +174,7 @@ async function restoreSessionsFromSupabase() {
     }));
     set(KEYS.SESSIONS, restored);
     _updateStats(restored);
-    console.log("APEX: Restored", restored.length, "sessions from Supabase");
+    console.log("APEX: Restored", restored.length, "sessions from Supabase — stats recalculated");
     return true;
   } catch (e) { console.warn("Session restore from Supabase failed:", e); return false; }
 }

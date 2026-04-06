@@ -2559,13 +2559,14 @@ function AppInner(){
   // ── DEFENSIVE: Restore sessions + sync critical data on auth ──
   useEffect(() => {
     if (!user || loading) return;
-    const local = getSessions();
-    if (local.length === 0 && !sessionsRestored) {
+    // ALWAYS restore from Supabase — it's the source of truth, not localStorage
+    if (!sessionsRestored) {
       restoreSessionsFromSupabase().then(restored => {
-        if (restored) { setSessionsRestored(n => n + 1); console.log("APEX: Defensive session restore succeeded"); }
+        setSessionsRestored(n => n + 1); // always increment to trigger HomeScreen remount with fresh stats
+        if (restored) console.log("APEX: Defensive session restore succeeded");
+        // After restore, backfill any local-only sessions to Supabase
+        backfillSessionsToSupabase().catch(() => {});
       }).catch(() => {});
-    } else if (local.length > 0) {
-      backfillSessionsToSupabase().catch(() => {});
     }
     // Full sync cycle: restore critical data from Supabase, then sync local to remote
     fullSyncCycle().catch(() => {});
