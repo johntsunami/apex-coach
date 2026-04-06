@@ -416,73 +416,169 @@ function BreathingSetup({ technique, onStart, onClose }) {
   const defaults = getConditionDefaults(technique);
   const saved = getBreathPrefs()[technique.id];
   const techDefaults = { inhale: technique.phases?.find(p => p.label === "INHALE")?.seconds || 4, holdFull: technique.phases?.find(p => p.label === "HOLD")?.seconds || 0, exhale: technique.phases?.find(p => p.label === "EXHALE")?.seconds || 6, holdEmpty: technique.phases?.filter(p => p.label === "HOLD")?.[1]?.seconds || 0 };
-  const init = saved || defaults || techDefaults;
+  const reducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
+  // View states: "saved" (has prefs) | "instructions" | "testing" | "results"
+  const [view, setView] = useState(saved ? "saved" : "instructions");
+  const [showAdjust, setShowAdjust] = useState(false);
+
+  // Test state
+  const [testState, setTestState] = useState(0); // 0=ready, 1=inhale, 2=exhale
+  const [inhaleStart, setInhaleStart] = useState(null);
+  const [inhaleEnd, setInhaleEnd] = useState(null);
+  const [elapsed, setElapsed] = useState(0);
+  const [tooFast, setTooFast] = useState(false);
+  const rafRef = useRef(null);
+  const startRef = useRef(null);
+
+  // Results state
+  const init = saved || defaults || techDefaults;
   const [inhale, setInhale] = useState(init.inhale || 4);
   const [holdFull, setHoldFull] = useState(init.holdFull || init.hold_full_seconds || 0);
   const [exhale, setExhale] = useState(init.exhale || 6);
   const [holdEmpty, setHoldEmpty] = useState(init.holdEmpty || init.hold_empty_seconds || 0);
   const [duration, setDuration] = useState(saved?.duration || technique.defaultDuration || 3);
-  const [previewing, setPreviewing] = useState(false);
-  const [previewPhase, setPreviewPhase] = useState(0);
-  const [previewTimer, setPreviewTimer] = useState(0);
-  const previewRef = useRef(null);
-  const reducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const [rawInhale, setRawInhale] = useState(saved?.baseline_inhale_raw || null);
+  const [rawExhale, setRawExhale] = useState(saved?.baseline_exhale_raw || null);
 
-  const previewPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
-
-  // Preview one breath cycle
+  // Live elapsed counter during test
   useEffect(() => {
-    if (!previewing) return;
-    previewRef.current = setInterval(() => {
-      setPreviewTimer(prev => {
-        const cp = previewPhases[previewPhase % previewPhases.length];
-        if (prev + 1 >= cp.seconds) {
-          const next = previewPhase + 1;
-          if (next >= previewPhases.length) { setPreviewing(false); setPreviewPhase(0); setPreviewTimer(0); clearInterval(previewRef.current); return 0; }
-          setPreviewPhase(next);
-          return 0;
-        }
-        return prev + 1;
-      });
-    }, 1000);
-    return () => clearInterval(previewRef.current);
-  }, [previewing, previewPhase, previewPhases]);
+    if (testState === 0 || view !== "testing") { cancelAnimationFrame(rafRef.current); return; }
+    const tick = () => { setElapsed(Math.round((Date.now() - startRef.current) / 100) / 10); rafRef.current = requestAnimationFrame(tick); };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [testState, view]);
 
-  const handleStart = () => {
+  const handleTestTap = () => {
+    const now = Date.now();
+    if (testState === 0) {
+      // Start inhale
+      setInhaleStart(now); startRef.current = now; setElapsed(0); setTestState(1); setTooFast(false);
+    } else if (testState === 1) {
+      // End inhale, start exhale
+      const ms = now - inhaleStart;
+      if (ms < 1500) { setTooFast(true); setTestState(0); setTimeout(() => setTooFast(false), 2500); return; }
+      setInhaleEnd(now); startRef.current = now; setElapsed(0); setTestState(2);
+    } else if (testState === 2) {
+      // End exhale — show results
+      if (inhaleEnd && now - inhaleEnd < 1500) return; // debounce fumble
+      const inhMs = inhaleEnd - inhaleStart;
+      const exMs = now - inhaleEnd;
+      const rawIn = Math.round(inhMs / 100) / 10;
+      const rawEx = Math.round(exMs / 100) / 10;
+      const clampIn = Math.max(2, Math.min(10, Math.round(rawIn)));
+      const clampEx = Math.max(2, Math.min(12, Math.round(rawEx)));
+      setRawInhale(rawIn); setRawExhale(rawEx); setInhale(clampIn); setExhale(clampEx);
+      cancelAnimationFrame(rafRef.current); setTestState(0); setView("results");
+    }
+  };
+
+  const handleLaunch = () => {
     const customPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
-    saveBreathPref(technique.id, { inhale, holdFull, exhale, holdEmpty, duration });
+    saveBreathPref(technique.id, { inhale, holdFull, exhale, holdEmpty, duration, baseline_inhale_raw: rawInhale, baseline_exhale_raw: rawExhale, baseline_tested_at: new Date().toISOString() });
     onStart({ customPhases, customDuration: duration });
   };
 
-  const resetDefaults = () => { const d = defaults || techDefaults; setInhale(d.inhale); setHoldFull(d.holdFull || 0); setExhale(d.exhale); setHoldEmpty(d.holdEmpty || 0); };
+  const useDefaults = () => { const d = defaults || techDefaults; setInhale(d.inhale); setExhale(d.exhale); setHoldFull(d.holdFull || 0); setHoldEmpty(d.holdEmpty || 0); setView("results"); };
   const guidance = getGuidanceText(inhale, exhale);
-  const previewCp = previewing ? previewPhases[previewPhase % previewPhases.length] : null;
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div><div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{technique.desc}</div></div>
-      <div style={{ height: 1, background: C.border }} />
-      <div><div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Set your rhythm</div><div style={{ fontSize: 12, color: C.textDim }}>Adjust to what feels natural.</div></div>
-      {defaults?.note && <div style={{ fontSize: 11, color: "#C8A87E", padding: "6px 10px", background: "rgba(200,168,126,0.08)", borderRadius: 8 }}>{defaults.note}</div>}
-      <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
-      {hasHolds && <TimingStepper label="Hold" value={holdFull} onChange={setHoldFull} min={0} max={10} color="#C8C87E" />}
-      <TimingStepper label="Exhale" value={exhale} onChange={setExhale} min={2} max={12} />
-      {hasHolds && <TimingStepper label="Hold empty" value={holdEmpty} onChange={setHoldEmpty} min={0} max={8} color="#A0B8A0" />}
-      <div style={{ height: 1, background: C.border }} />
-      <TimingStepper label="Duration" value={duration} onChange={setDuration} min={1} max={20} color={C.info} />
-      <div style={{ fontSize: 12, color: guidance.color, lineHeight: 1.5 }}>{guidance.text}</div>
-      {/* Preview */}
-      {previewing && previewCp && <div style={{ transform: "scale(0.6)", transformOrigin: "center", margin: "-20px 0" }}>
-        <ConcentricBreathAnimation phaseLabel={previewCp.label} phaseSeconds={previewCp.seconds} elapsedInPhase={previewTimer} reducedMotion={reducedMotion} />
-      </div>}
-      <button onClick={() => { if (!previewing) { setPreviewing(true); setPreviewPhase(0); setPreviewTimer(0); } }}
-        style={{ width: "100%", padding: "10px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{previewing ? "Previewing..." : "Try one breath"}</button>
-      <button onClick={handleStart} style={{ width: "100%", padding: "14px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start session</button>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <button onClick={resetDefaults} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Use recommended settings</button>
+  // ── SAVED VIEW (returning user) ──
+  if (view === "saved") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div><div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{technique.desc}</div></div>
+        <Card style={{ padding: 14 }}>
+          <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 6 }}>Your rhythm</div>
+          <div style={{ fontSize: 20, fontWeight: 300, color: "#E8EDF2" }}>Inhale {inhale}s · Exhale {exhale}s{holdFull > 0 ? ` · Hold ${holdFull}s` : ""}</div>
+          {!showAdjust && <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+            <button onClick={() => setShowAdjust(true)} style={{ background: "none", border: "none", color: C.teal, fontSize: 12, cursor: "pointer", fontFamily: "inherit", padding: 0 }}>Adjust</button>
+            <button onClick={() => { setView("instructions"); setTestState(0); }} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit", padding: 0 }}>Retest baseline</button>
+          </div>}
+          {showAdjust && <div style={{ marginTop: 8 }}>
+            <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
+            {hasHolds && <TimingStepper label="Hold" value={holdFull} onChange={setHoldFull} min={0} max={10} color="#C8C87E" />}
+            <TimingStepper label="Exhale" value={exhale} onChange={setExhale} min={2} max={12} />
+            {hasHolds && <TimingStepper label="Hold empty" value={holdEmpty} onChange={setHoldEmpty} min={0} max={8} color="#A0B8A0" />}
+            <div style={{ fontSize: 12, color: guidance.color, marginTop: 4 }}>{guidance.text}</div>
+          </div>}
+        </Card>
+        <TimingStepper label="Duration" value={duration} onChange={setDuration} min={1} max={20} color={C.info} />
+        {defaults?.note && <div style={{ fontSize: 11, color: "#C8A87E", padding: "6px 10px", background: "rgba(200,168,126,0.08)", borderRadius: 8 }}>{defaults.note}</div>}
+        <button onClick={handleLaunch} style={{ width: "100%", padding: "14px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start session</button>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit", textAlign: "center" }}>Cancel</button>
+      </div>
+    );
+  }
+
+  // ── INSTRUCTIONS VIEW ──
+  if (view === "instructions") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ textAlign: "center", fontSize: 28, marginTop: 8 }}>🌬️</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: C.text, textAlign: "center" }}>Find your natural rhythm</div>
+        <div style={{ fontSize: 13, color: C.textMuted, textAlign: "center", lineHeight: 1.6 }}>We'll measure one comfortable breath so your session matches what feels natural to you.</div>
+        <div style={{ height: 1, background: C.border }} />
+        <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 4 }}>How it works:</div>
+        {[
+          "Sit comfortably and relax",
+          "Take one easy, natural breath — not forced, not held",
+          "Press START when you begin to inhale",
+          "Press again when inhale ends and exhale begins",
+          "Press once more when the exhale is complete",
+        ].map((step, i) => (
+          <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: "#7EC8C8", minWidth: 24 }}>{i + 1}</span>
+            <span style={{ fontSize: 13, color: "#C8D6E5", lineHeight: 1.5 }}>{step}</span>
+          </div>
+        ))}
+        <div style={{ fontSize: 12, color: "#6B7A8D", fontStyle: "italic", textAlign: "center", marginTop: 4 }}>Breathe as you normally would. There is no right or wrong.</div>
+        <button onClick={() => setView("testing")} style={{ width: "100%", padding: "14px", borderRadius: 12, background: "#7EC8C8", border: "none", color: "#0D1117", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Begin test</button>
+        <button onClick={useDefaults} style={{ background: "none", border: "none", color: "#6B7A8D", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "center" }}>Use recommended settings instead</button>
+      </div>
+    );
+  }
+
+  // ── TESTING VIEW ──
+  if (view === "testing") {
+    const phaseLabel = testState === 0 ? "" : testState === 1 ? "INHALE" : "EXHALE";
+    const phaseColor = testState === 1 ? "#7EC8C8" : testState === 2 ? "#8FB8C8" : C.textDim;
+    const btnBg = testState === 0 ? "#7EC8C8" : testState === 1 ? "#6BA8C4" : "#8F8DC8";
+    const btnText = testState === 0 ? "START" : testState === 1 ? "INHALE\nDONE" : "EXHALE\nDONE";
+    const instruction = testState === 0 ? "Press when you begin to inhale" : testState === 1 ? "Inhale complete — press to exhale" : "Exhale complete — press when done";
+
+    return (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, minHeight: 400 }}>
+        {phaseLabel && <div style={{ fontSize: 28, fontWeight: 300, color: phaseColor, letterSpacing: 4 }}>{phaseLabel}</div>}
+        {!phaseLabel && <div style={{ fontSize: 16, color: C.textMuted }}>Get ready to inhale</div>}
+        {/* Freeform animation during test */}
+        {testState > 0 && !reducedMotion && <div style={{ transform: "scale(0.7)", transformOrigin: "center" }}>
+          <ConcentricBreathAnimation phaseLabel={phaseLabel} phaseSeconds={6} elapsedInPhase={Math.min(elapsed, 5.9)} reducedMotion={false} />
+        </div>}
+        {testState > 0 && reducedMotion && <div style={{ fontSize: 24, color: phaseColor, padding: "20px 0" }}>{elapsed.toFixed(1)}s</div>}
+        {testState > 0 && !reducedMotion && <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", fontFamily: "'Bebas Neue',sans-serif" }}>{elapsed.toFixed(1)}s</div>}
+        <div style={{ fontSize: 13, color: C.textMuted, textAlign: "center" }}>{instruction}</div>
+        {tooFast && <div style={{ fontSize: 12, color: "#C8A87E", textAlign: "center" }}>That felt quick — let's try once more with a full natural breath.</div>}
+        <button onClick={handleTestTap} style={{ width: 120, height: 120, borderRadius: 60, background: btnBg, border: "none", color: "#0D1117", fontSize: 18, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "pre-line", lineHeight: 1.3, animation: testState === 0 ? "pulse 2s ease-in-out infinite" : "none" }}>{btnText}</button>
         <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
       </div>
+    );
+  }
+
+  // ── RESULTS VIEW ──
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ fontSize: 20, fontWeight: 700, color: C.text }}>Your natural rhythm</div>
+      <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
+      {rawInhale && <div style={{ fontSize: 10, color: "#6B7A8D", marginTop: -8, paddingLeft: 98 }}>measured: {rawInhale}s</div>}
+      {hasHolds && <TimingStepper label="Hold" value={holdFull} onChange={setHoldFull} min={0} max={10} color="#C8C87E" />}
+      <TimingStepper label="Exhale" value={exhale} onChange={setExhale} min={2} max={12} />
+      {rawExhale && <div style={{ fontSize: 10, color: "#6B7A8D", marginTop: -8, paddingLeft: 98 }}>measured: {rawExhale}s</div>}
+      {hasHolds && <TimingStepper label="Hold empty" value={holdEmpty} onChange={setHoldEmpty} min={0} max={8} color="#A0B8A0" />}
+      <div style={{ height: 1, background: C.border }} />
+      <div style={{ fontSize: 12, color: guidance.color }}>{guidance.text}</div>
+      <TimingStepper label="Duration" value={duration} onChange={setDuration} min={1} max={20} color={C.info} />
+      <button onClick={handleLaunch} style={{ width: "100%", padding: "14px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Use these settings</button>
+      <button onClick={() => { setView("instructions"); setTestState(0); }} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "center" }}>Retest</button>
     </div>
   );
 }
