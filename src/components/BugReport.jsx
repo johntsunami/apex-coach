@@ -36,11 +36,11 @@ export function BugReportButton({ screen, tab }) {
   const [open, setOpen] = useState(false);
   if (screen === "auth" || screen === "init") return null;
   return <>
-    <button onClick={() => setOpen(true)} style={{ position: "fixed", bottom: 78, left: "50%", transform: "translateX(-50%)",
-      zIndex: 201, background: "rgba(6,11,24,0.85)", border: `1px solid ${C.border}`, borderRadius: 8,
-      color: C.textMuted, fontSize: 12, cursor: "pointer",
-      fontFamily: "inherit", opacity: 0.5, padding: "4px 14px", letterSpacing: 0.5 }}>
-      Report a Bug
+    <button onClick={() => setOpen(true)} onMouseEnter={e => e.currentTarget.style.opacity = "0.6"} onMouseLeave={e => e.currentTarget.style.opacity = ""} style={{ position: "fixed", bottom: 74, left: "50%", transform: "translateX(-50%)",
+      zIndex: 201, background: "none", border: "none", outline: "none", borderRadius: 0,
+      color: "rgba(255,255,255,0.25)", fontSize: 11, cursor: "pointer",
+      fontFamily: "inherit", padding: 0, letterSpacing: 0.3 }}>
+      Report Issue
     </button>
     {open && <BugReportModal screen={screen} tab={tab} onClose={() => setOpen(false)} />}
   </>;
