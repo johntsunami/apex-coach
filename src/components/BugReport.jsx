@@ -36,9 +36,10 @@ export function BugReportButton({ screen, tab }) {
   const [open, setOpen] = useState(false);
   if (screen === "auth" || screen === "init") return null;
   return <>
-    <button onClick={() => setOpen(true)} style={{ position: "fixed", bottom: 68, left: "50%", transform: "translateX(-50%)",
-      zIndex: 150, background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer",
-      fontFamily: "inherit", opacity: 0.35, padding: "4px 12px", letterSpacing: 0.5 }}>
+    <button onClick={() => setOpen(true)} style={{ position: "fixed", bottom: 78, left: "50%", transform: "translateX(-50%)",
+      zIndex: 201, background: "rgba(6,11,24,0.85)", border: `1px solid ${C.border}`, borderRadius: 8,
+      color: C.textMuted, fontSize: 12, cursor: "pointer",
+      fontFamily: "inherit", opacity: 0.5, padding: "4px 14px", letterSpacing: 0.5 }}>
       Report a Bug
     </button>
     {open && <BugReportModal screen={screen} tab={tab} onClose={() => setOpen(false)} />}
