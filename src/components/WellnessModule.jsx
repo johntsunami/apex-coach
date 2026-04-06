@@ -159,6 +159,209 @@ export function StressResetCard({ stressLevel, onStartTechnique, onSkip, onWelln
 }
 
 // ═══════════════════════════════════════════════════════════════
+// CONCENTRIC CIRCLE BREATHING ANIMATION
+// Pure CSS + JS. Rings expand on inhale, contract on exhale.
+// ═══════════════════════════════════════════════════════════════
+
+const RING_COLORS = ["#7EC8C8","#6BA8C4","#7B9EC8","#8F8DC8","#A08EC4","#B08DB8"];
+const PHASE_COLORS = { INHALE: "#7EC8C8", SNIFF: "#7EC8C8", HOLD: "#C8C87E", EXHALE: "#8FB8C8", REST: "#A0B8A0" };
+
+function ConcentricBreathAnimation({ phaseLabel, phaseSeconds, elapsedInPhase, reducedMotion }) {
+  if (reducedMotion) {
+    const label = phaseLabel === "INHALE" || phaseLabel === "SNIFF" ? "▲ Expanding" : phaseLabel === "EXHALE" ? "▼ Releasing" : phaseLabel === "HOLD" ? "◆ Holding" : "◇ Rest";
+    return <div style={{ textAlign: "center", padding: "40px 0" }}><div style={{ fontSize: 24, fontWeight: 300, color: PHASE_COLORS[phaseLabel] || C.textMuted, letterSpacing: 4 }}>{label}</div></div>;
+  }
+
+  const maxRings = Math.min(5, Math.max(1, phaseSeconds - 1));
+  const sec = Math.floor(elapsedInPhase);
+  const isInhale = phaseLabel === "INHALE" || phaseLabel === "SNIFF";
+  const isExhale = phaseLabel === "EXHALE";
+  const isHoldFull = phaseLabel === "HOLD" && maxRings > 1;
+  const isRest = phaseLabel === "REST";
+  const coreR = 48;
+  const ringStep = 22;
+  const gap = 8;
+
+  // Calculate visible rings
+  let visibleRings;
+  if (isInhale) visibleRings = Math.min(maxRings, sec + 1);
+  else if (isExhale) visibleRings = Math.max(0, maxRings - sec);
+  else if (isHoldFull) visibleRings = maxRings;
+  else visibleRings = 0;
+
+  // Core scale
+  const coreScale = isExhale && visibleRings === 0 ? 0.94 + Math.sin(Date.now() / 2000) * 0.03 : isRest ? 0.92 : 1;
+  const holdPulse = isHoldFull ? 1 + Math.sin(Date.now() / 1500) * 0.02 : 1;
+
+  const totalSize = (coreR + (maxRings + 1) * (ringStep + gap)) * 2;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "16px 0", background: "radial-gradient(circle, rgba(126,200,200,0.04) 0%, transparent 70%)" }}>
+      <div style={{ position: "relative", width: totalSize, height: totalSize, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {/* Rings (outermost to innermost for z-order) */}
+        {Array.from({ length: maxRings }, (_, i) => {
+          const ringIdx = maxRings - 1 - i; // reverse for rendering order
+          const r = coreR + (ringIdx + 1) * (ringStep + gap);
+          const visible = ringIdx < visibleRings;
+          const appearing = isInhale && ringIdx === visibleRings - 1;
+          return <div key={ringIdx} style={{
+            position: "absolute", width: r * 2, height: r * 2, borderRadius: "50%",
+            background: RING_COLORS[ringIdx + 1] || RING_COLORS[5],
+            opacity: visible ? 0.78 : 0, transform: `scale(${visible ? holdPulse : 0.5})`,
+            transition: appearing ? "opacity 200ms ease-in, transform 200ms ease-in" : "opacity 300ms ease-out, transform 300ms ease-out",
+            filter: "blur(0.5px)",
+          }} />;
+        })}
+        {/* Core circle */}
+        <div style={{
+          position: "absolute", width: coreR * 2, height: coreR * 2, borderRadius: "50%",
+          background: RING_COLORS[0], opacity: isRest ? 0.5 : 0.85,
+          transform: `scale(${coreScale * holdPulse})`, transition: "transform 1s ease-in-out, opacity 0.5s ease",
+          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10,
+        }} />
+      </div>
+      {/* Phase label */}
+      <div style={{ marginTop: 12, textAlign: "center" }}>
+        <div style={{ fontSize: 28, fontWeight: 300, color: PHASE_COLORS[phaseLabel] || C.textMuted, letterSpacing: 4 }}>{phaseLabel}</div>
+        <div style={{ fontSize: 20, fontWeight: 800, color: "rgba(255,255,255,0.6)", fontFamily: "'Bebas Neue',sans-serif", marginTop: 4, transition: "opacity 100ms" }}>{Math.max(0, phaseSeconds - sec)}</div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RELAXATION MATCH QUIZ
+// 5 questions → scored recommendation of top 3 techniques
+// ═══════════════════════════════════════════════════════════════
+
+const LS_MATCH = "apex_wellness_match";
+const MATCH_QUESTIONS = [
+  { id: "q1", q: "Right now, how do you feel?", opts: [
+    { v: "stressed", l: "😤 Stressed or anxious", w: { paced_breathing: 3, physiological_sigh: 2, box_breathing: 1 } },
+    { v: "numb", l: "😶 Numb or disconnected", w: { q_grounding: 3, body_scan: 2 } },
+    { v: "low", l: "😔 Low energy or flat", w: { r_pre_training: 3, box_breathing: 2 } },
+    { v: "overwhelmed", l: "🤯 Overwhelmed — can't think", w: { q_grounding: 3, q_stop: 2, physiological_sigh: 2 } },
+    { v: "wired", l: "😴 Tired but wired", w: { q_pmr_short: 3, four_six: 2, s_body_scan: 2 } },
+  ]},
+  { id: "q2", q: "What bothers you most right now?", opts: [
+    { v: "thoughts", l: "💭 Racing thoughts", w: { focused_attention: 3, paced_breathing: 2 } },
+    { v: "tension", l: "😤 Tension in my body", w: { q_pmr_short: 3, body_scan: 2, diaphragmatic: 1 } },
+    { v: "control", l: "😰 Feeling out of control", w: { q_stop: 3, q_grounding: 3, dbt_tipp: 1 } },
+    { v: "focus", l: "😑 Can't focus or feel present", w: { box_breathing: 3, breathing_space: 2, focused_attention: 2 } },
+    { v: "nothing", l: "😩 Nothing feels like it will help", w: { q_grounding: 3, q_pmr_short: 2 } },
+  ]},
+  { id: "q3", q: "How much time do you have?", opts: [
+    { v: "1-2", l: "⚡ 1–2 minutes", w: { physiological_sigh: 3, q_stop: 2, q_posture: 1 } },
+    { v: "3-5", l: "🕐 3–5 minutes", w: { paced_breathing: 2, box_breathing: 2, q_grounding: 2 } },
+    { v: "5-10", l: "🕙 5–10 minutes", w: { body_scan: 2, q_pmr_short: 2, focused_attention: 2 } },
+    { v: "10+", l: "🌙 10+ minutes (winding down)", w: { four_six: 3, s_pmr: 3, s_body_scan: 3 } },
+  ]},
+  { id: "q4", q: "How do you feel about focusing on your breathing?", opts: [
+    { v: "comfortable", l: "✅ Comfortable — I like breathwork", w: { paced_breathing: 2, box_breathing: 2, physiological_sigh: 1 } },
+    { v: "neutral", l: "😐 Neutral — I'll try it", w: { paced_breathing: 1, diaphragmatic: 1 } },
+    { v: "uncomfortable", l: "⚠️ Uncomfortable — sometimes makes me anxious", w: { q_grounding: 3, q_pmr_short: 2 }, exclude: "breathing" },
+    { v: "no_body", l: "🚫 I'd rather not focus on my body", w: { q_grounding: 3, focused_attention: 3, q_stop: 2 }, exclude: "body" },
+  ]},
+  { id: "q5", q: "What outcome matters most right now?", opts: [
+    { v: "calm", l: "🧘 Feel calm and settled", w: { paced_breathing: 3, diaphragmatic: 2, four_six: 2 } },
+    { v: "focus", l: "🎯 Get focused and sharp", w: { box_breathing: 3, focused_attention: 2, r_pre_training: 2 } },
+    { v: "sleep", l: "😴 Wind down and sleep", w: { four_six: 3, s_pmr: 3, s_body_scan: 2 } },
+    { v: "grounded", l: "🌍 Feel grounded and present", w: { q_grounding: 3, breathing_space: 2 } },
+    { v: "tension", l: "💪 Release tension from my body", w: { q_pmr_short: 3, body_scan: 2, diaphragmatic: 2 } },
+  ]},
+];
+
+const MATCH_REASONS = {
+  paced_breathing: "A simple, calming breath rhythm that may help you feel more settled.",
+  physiological_sigh: "A quick reset many people find helpful when stress spikes suddenly.",
+  box_breathing: "Structured breathing helps anchor attention when you need focus.",
+  diaphragmatic: "A foundational breathing style that may support relaxation and body awareness.",
+  four_six: "A longer exhale gently slows your system — ideal for winding down.",
+  q_grounding: "When feeling overwhelmed, grounding brings you back to the present moment quickly.",
+  q_pmr_short: "Your body is holding tension — this releases it muscle by muscle.",
+  q_stop: "A quick pause to interrupt reactive patterns and choose your next step.",
+  body_scan: "Gentle attention through body regions helps reconnect and release held tension.",
+  focused_attention: "Resting attention on one anchor can quiet a busy mind over time.",
+  s_pmr: "Systematic tension-release is well-studied for pre-sleep relaxation.",
+  s_body_scan: "An extended body scan with slow pacing to transition into sleep.",
+  breathing_space: "A brief 3-minute check-in to notice, narrow, and widen awareness.",
+  r_pre_training: "Breathing, intention, and imagery to prepare for effort.",
+  dbt_tipp: "Combines temperature, movement, and breathing for high emotional intensity.",
+};
+
+function RelaxationMatchQuiz({ onResult, onSkip }) {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [result, setResult] = useState(null);
+
+  const handleAnswer = (opt) => {
+    const newAnswers = [...answers, opt];
+    setAnswers(newAnswers);
+    if (step + 1 >= MATCH_QUESTIONS.length) {
+      // Score
+      const scores = {};
+      const excludes = new Set();
+      newAnswers.forEach(a => {
+        if (a.exclude === "breathing") TECHNIQUES.filter(t => t.category === "breathing").forEach(t => excludes.add(t.id));
+        if (a.exclude === "body") ["body_scan", "s_body_scan", "q_pmr_short", "s_pmr"].forEach(id => excludes.add(id));
+        Object.entries(a.w || {}).forEach(([tid, pts]) => { scores[tid] = (scores[tid] || 0) + pts; });
+      });
+      const sorted = Object.entries(scores).filter(([id]) => !excludes.has(id)).sort((a, b) => b[1] - a[1]);
+      const top3 = sorted.slice(0, 3).map(([id]) => ({ id, technique: TECHNIQUES.find(t => t.id === id), reason: MATCH_REASONS[id] || "A good match for your current state." }));
+      const res = { top3, answers: newAnswers.map(a => a.v), completedAt: new Date().toISOString() };
+      try { localStorage.setItem(LS_MATCH, JSON.stringify(res)); } catch {}
+      setResult(res);
+    } else {
+      setStep(step + 1);
+    }
+  };
+
+  if (result) {
+    const medals = ["🥇", "🥈", "🥉"];
+    const labels = ["Best match", "Also works well", "Another option"];
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ fontSize: 18, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>YOUR MATCH</div>
+        {result.top3.map((r, i) => r.technique && (
+          <Card key={r.id} style={{ borderColor: i === 0 ? C.teal + "40" : C.border, padding: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 18 }}>{medals[i]}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: C.textDim, letterSpacing: 1 }}>{labels[i]?.toUpperCase()}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{r.technique.name}</div>
+              </div>
+              <span style={{ fontSize: 10, color: C.textDim }}>{r.technique.defaultDuration} min</span>
+            </div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5, marginBottom: 8 }}>{r.reason}</div>
+            <button onClick={() => onResult?.(r.id)} style={{ width: "100%", padding: "10px", borderRadius: 10, background: i === 0 ? `linear-gradient(135deg,${C.teal},${C.tealDark})` : C.bgElevated, border: i === 0 ? "none" : `1px solid ${C.border}`, color: i === 0 ? "#000" : C.teal, fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start now</button>
+          </Card>
+        ))}
+        <button onClick={onSkip} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit", padding: "8px 0" }}>Explore all techniques</button>
+      </div>
+    );
+  }
+
+  const q = MATCH_QUESTIONS[step];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>QUESTION {step + 1} OF {MATCH_QUESTIONS.length}</div>
+        <button onClick={onSkip} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Skip</button>
+      </div>
+      <div style={{ width: "100%", height: 4, background: C.border, borderRadius: 2 }}><div style={{ width: `${((step + 1) / MATCH_QUESTIONS.length) * 100}%`, height: "100%", background: C.teal, borderRadius: 2, transition: "width 0.3s ease" }} /></div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: C.text, lineHeight: 1.4 }}>{q.q}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {q.opts.map(o => (
+          <button key={o.v} onClick={() => handleAnswer(o)} style={{ padding: "14px 16px", borderRadius: 12, background: C.bgCard, border: `1px solid ${C.border}`, color: C.text, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left", transition: "border-color 0.15s" }}>
+            {o.l}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // TECHNIQUE PLAYER (shared across all sessions)
 // ═══════════════════════════════════════════════════════════════
 
@@ -233,8 +436,6 @@ function TechniquePlayer({ technique, onClose, onComplete }) {
 
   const currentPhase = phases.length > 0 ? phases[phase % phases.length] : null;
   const currentStep = steps.length > 0 ? steps[Math.min(Math.floor(totalElapsed / (totalDuration / steps.length)), steps.length - 1)] : null;
-  const phasePct = currentPhase ? (timer / currentPhase.seconds) * 100 : (totalElapsed / totalDuration) * 100;
-  const breathSize = currentPhase?.label === "INHALE" || currentPhase?.label === "SNIFF" ? 60 + (phasePct * 0.4) : currentPhase?.label === "EXHALE" ? 100 - (phasePct * 0.4) : 80;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -246,13 +447,8 @@ function TechniquePlayer({ technique, onClose, onComplete }) {
       </div>
       {/* Progress bar */}
       <div style={{ width: "100%", height: 4, background: C.border, borderRadius: 2 }}><div style={{ width: `${(totalElapsed / totalDuration) * 100}%`, height: "100%", background: C.teal, borderRadius: 2, transition: "width 1s linear" }} /></div>
-      {/* Breathing circle */}
-      {currentPhase && <div style={{ display: "flex", justifyContent: "center", padding: "20px 0" }}>
-        <div style={{ width: reducedMotion ? 80 : breathSize, height: reducedMotion ? 80 : breathSize, borderRadius: "50%", border: `3px solid ${C.teal}60`, background: C.tealBg, display: "flex", alignItems: "center", justifyContent: "center", transition: reducedMotion ? "none" : "width 1s ease, height 1s ease", flexDirection: "column" }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: C.teal, letterSpacing: 2 }}>{currentPhase.label}</div>
-          <div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{currentPhase.seconds - timer}</div>
-        </div>
-      </div>}
+      {/* Concentric circle breathing animation */}
+      {currentPhase && <ConcentricBreathAnimation phaseLabel={currentPhase.label} phaseSeconds={currentPhase.seconds} elapsedInPhase={timer} reducedMotion={reducedMotion} />}
       {/* Step-based display */}
       {currentStep && !currentPhase && <Card style={{ textAlign: "center", padding: 20 }}>
         <div style={{ fontSize: 16, fontWeight: 600, color: C.text, lineHeight: 1.6 }}>{currentStep}</div>
@@ -276,6 +472,8 @@ export default function WellnessScreen() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeTechnique, setActiveTechnique] = useState(null);
   const [showDisclaimer, setShowDisclaimer] = useState(!localStorage.getItem(LS_DISCLAIMER));
+  const [showMatchQuiz, setShowMatchQuiz] = useState(false);
+  const [savedMatch, setSavedMatch] = useState(() => { try { return JSON.parse(localStorage.getItem(LS_MATCH)); } catch { return null; } });
   const stats = getWellnessStats();
 
   // Disclaimer gate
@@ -291,6 +489,15 @@ export default function WellnessScreen() {
           </div>
           <button onClick={() => { localStorage.setItem(LS_DISCLAIMER, "1"); setShowDisclaimer(false); }} style={{ width: "100%", marginTop: 12, padding: "12px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>I understand</button>
         </Card>
+      </div>
+    );
+  }
+
+  // Match quiz flow
+  if (showMatchQuiz) {
+    return (
+      <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <RelaxationMatchQuiz onResult={(id) => { setShowMatchQuiz(false); setSavedMatch(JSON.parse(localStorage.getItem(LS_MATCH) || "null")); setActiveTechnique(id); }} onSkip={() => { setShowMatchQuiz(false); setSavedMatch(JSON.parse(localStorage.getItem(LS_MATCH) || "null")); }} />
       </div>
     );
   }
@@ -351,6 +558,32 @@ export default function WellnessScreen() {
           </Card>
         ))}
       </div>}
+      {/* Match quiz banner */}
+      {savedMatch?.top3?.[0] ? (
+        <Card style={{ padding: 12, borderColor: C.teal + "20", background: C.tealBg }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 18 }}>✨</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>Your match: {savedMatch.top3[0].technique?.name || TECHNIQUES.find(t => t.id === savedMatch.top3[0].id)?.name}</div>
+              <button onClick={() => { localStorage.removeItem(LS_MATCH); setSavedMatch(null); setShowMatchQuiz(true); }} style={{ background: "none", border: "none", color: C.teal, fontSize: 11, cursor: "pointer", fontFamily: "inherit", padding: 0, marginTop: 2 }}>Retake match quiz</button>
+            </div>
+            <button onClick={() => setActiveTechnique(savedMatch.top3[0].id)} style={{ padding: "6px 12px", borderRadius: 8, background: C.teal + "20", border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start</button>
+          </div>
+        </Card>
+      ) : (
+        <Card style={{ padding: 12, borderColor: C.purple + "20" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 18 }}>🎯</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>Not sure where to start?</div>
+              <div style={{ fontSize: 11, color: C.textMuted }}>Answer 5 quick questions and we'll find your best match.</div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+            <button onClick={() => setShowMatchQuiz(true)} style={{ flex: 1, padding: "8px", borderRadius: 8, background: C.purple + "15", border: `1px solid ${C.purple}40`, color: C.purple, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Find my technique</button>
+          </div>
+        </Card>
+      )}
       {/* Category cards */}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {CATEGORIES.map(cat => (
