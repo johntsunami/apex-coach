@@ -90,15 +90,17 @@ const TECHNIQUES = [
   // ── QUICK STRESS RESET ──
   { id: "q_sigh", name: "Physiological Sigh × 3", category: "quick", tier: 1, durations: [1], defaultDuration: 1, bestFor: ["acute stress"], desc: "3 quick sighs for immediate reset.", icon: "⚡", rounds: 3 },
   { id: "q_grounding", name: "5-4-3-2-1 Grounding", category: "quick", tier: 1, durations: [3], defaultDuration: 3, bestFor: ["overwhelm","panic","dissociation"],
-    desc: "Sensory grounding to bring you back to the present moment.", icon: "🌍",
-    steps: ["Name 5 things you can SEE","Name 4 things you can TOUCH","Name 3 things you can HEAR","Name 2 things you like to SMELL","Name 1 thing you can TASTE"] },
+    desc: "Sensory grounding to bring you back to the present moment.", icon: "🌍", mode: "steps", completionMessage: "You are here. Present. Grounded.",
+    steps: [{instruction:"Name 5 things you can SEE",detail:"Look around. Notice colors, shapes, light.",stepType:"manual"},{instruction:"Name 4 things you can TOUCH",detail:"Feel textures. The chair, your clothes, the air.",stepType:"manual"},{instruction:"Name 3 things you can HEAR",detail:"Listen. Background sounds, near and far.",stepType:"manual"},{instruction:"Name 2 things you can SMELL",detail:"Notice scents. Or imagine a favorite smell.",stepType:"manual"},{instruction:"Name 1 thing you can TASTE",detail:"Notice the taste in your mouth right now.",stepType:"manual"}] },
   { id: "q_stop", name: "STOP Skill", category: "quick", tier: 1, durations: [2], defaultDuration: 2, bestFor: ["impulse control","emotional reaction"],
-    desc: "Pause before acting. DBT-inspired skill.", icon: "🛑",
-    steps: ["STOP — Do not act. Pause.","TAKE A STEP BACK — Breathe. Remove yourself briefly.","OBSERVE — What am I feeling? What is happening?","PROCEED MINDFULLY — What action fits my values right now?"] },
+    desc: "Pause before acting. DBT-inspired skill.", icon: "🛑", mode: "steps", completionMessage: "Clear mind. Wise action.",
+    steps: [{instruction:"S — STOP",detail:"Do not react. Freeze. Pause everything.",stepType:"manual"},{instruction:"T — TAKE A STEP BACK",detail:"Breathe. Create space between you and the situation.",stepType:"manual"},{instruction:"O — OBSERVE",detail:"What am I feeling? What is actually happening? What do I want here?",stepType:"manual"},{instruction:"P — PROCEED MINDFULLY",detail:"What action fits my values and goals right now?",stepType:"manual"}] },
   { id: "q_posture", name: "1-Minute Posture Reset", category: "quick", tier: 1, durations: [1], defaultDuration: 1, bestFor: ["quick centering"],
-    desc: "Stand or sit tall. Slow exhale. Relax jaw and shoulders. Feel feet grounded.", icon: "📐" },
+    desc: "Stand or sit tall. Slow exhale. Relax jaw and shoulders. Feel feet grounded.", icon: "📐", mode: "steps", completionMessage: "Posture reset. Carry this into your next moment.",
+    steps: [{instruction:"Stand or sit tall",detail:"Lengthen your spine. Crown of head reaching up.",stepType:"manual"},{instruction:"Slow exhale",detail:"Long exhale through mouth. Release tension from jaw and shoulders.",stepType:"manual"},{instruction:"Feel grounded",detail:"Notice your feet on the floor. You are here.",stepType:"manual"}] },
   { id: "q_pmr_short", name: "PMR Short", category: "quick", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["tension","stress"],
-    desc: "Brief progressive muscle relaxation — tense and release major muscle groups.", icon: "💪" },
+    desc: "Brief progressive muscle relaxation — tense and release major muscle groups.", icon: "💪", mode: "steps", completionMessage: "Every muscle released. Notice the difference.",
+    steps: [{instruction:"Hands and forearms",detail:"Make fists. Squeeze tight for 5 seconds. Release.",stepType:"timed",durationSeconds:15},{instruction:"Shoulders",detail:"Shrug shoulders to ears. Hold 5 seconds. Drop them.",stepType:"timed",durationSeconds:15},{instruction:"Face",detail:"Scrunch your whole face tight. Hold 5 seconds. Relax.",stepType:"timed",durationSeconds:15},{instruction:"Core",detail:"Tighten your abs. Hold 5 seconds. Release.",stepType:"timed",durationSeconds:15},{instruction:"Legs",detail:"Press thighs together, point toes. Hold 5 seconds. Release.",stepType:"timed",durationSeconds:15},{instruction:"Full body",detail:"Tense everything at once. Hold 5 seconds. Release completely.",stepType:"timed",durationSeconds:20}] },
   // ── SLEEP ──
   { id: "s_four_six", name: "4-6 Sleep Breathing", category: "sleep", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["sleep"], desc: "Default bedtime breathing. Gentle and effective.", icon: "🌙",
     phases: [{label:"INHALE",seconds:4},{label:"EXHALE",seconds:6}] },
@@ -107,29 +109,31 @@ const TECHNIQUES = [
   { id: "s_body_scan", name: "Body Scan for Sleep", category: "sleep", tier: 1, durations: [10,20], defaultDuration: 15, bestFor: ["sleep"],
     desc: "Extended body scan with slow pacing. Screen dims at end.", icon: "🛏️" },
   { id: "s_brain_dump", name: "Brain Dump / Worry Offload", category: "sleep", tier: 1, durations: [3], defaultDuration: 3, bestFor: ["racing mind","sleep"],
-    desc: "Write out what's on your mind to close the mental loop before sleep.", icon: "📝",
-    steps: ["What is on your mind right now?","What can wait until tomorrow?","What is one small next step?"] },
+    desc: "Write out what's on your mind to close the mental loop before sleep.", icon: "📝", mode: "steps", completionMessage: "Mental loop closed. Rest easy.",
+    steps: [{instruction:"What is on your mind right now?",detail:"Let it all out. No filter needed.",stepType:"manual"},{instruction:"What can wait until tomorrow?",detail:"Give yourself permission to set it down for tonight.",stepType:"manual"},{instruction:"What is one small next step?",detail:"Just one. You'll handle it tomorrow.",stepType:"manual"}] },
   // ── DBT / ACT ──
   { id: "dbt_stop", name: "STOP Skill", category: "dbt_act", tier: 1, durations: [2], defaultDuration: 2, bestFor: ["impulse control","emotional reaction"],
-    desc: "DBT skill for pausing before acting on impulse.", icon: "🛑",
-    steps: ["S — STOP: Do not act. Pause.","T — TAKE A STEP BACK: Breathe. Remove yourself briefly.","O — OBSERVE: What am I feeling? What is happening? What do I actually want here?","P — PROCEED MINDFULLY: What action fits my values and goals right now?"] },
+    desc: "DBT skill for pausing before acting on impulse.", icon: "🛑", mode: "steps", completionMessage: "Clear mind. Wise action.",
+    steps: [{instruction:"S — STOP",detail:"Do not act. Pause. Freeze everything.",stepType:"manual"},{instruction:"T — TAKE A STEP BACK",detail:"Breathe. Create space between you and the situation.",stepType:"manual"},{instruction:"O — OBSERVE",detail:"What am I feeling? What is actually happening? What do I want here?",stepType:"manual"},{instruction:"P — PROCEED MINDFULLY",detail:"What action fits my values and goals right now?",stepType:"manual"}] },
   { id: "dbt_tipp", name: "TIPP (Emotion Regulation)", category: "dbt_act", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["high emotion","overwhelm"],
-    desc: "DBT skill combining temperature, movement, breathing, and relaxation.", icon: "🧊",
-    steps: ["TEMPERATURE: Splash cold water on your face or hold something cold briefly.","INTENSE MOVEMENT: 30 seconds of brisk movement to discharge tension.","PACED BREATHING: Inhale 4 / Exhale 6. 10 rounds.","PAIRED MUSCLE RELAXATION: Tense whole body on inhale, release on exhale. 5 rounds."] },
+    desc: "DBT skill combining temperature, movement, breathing, and relaxation.", icon: "🧊", mode: "steps", completionMessage: "Emotional intensity lowered.",
+    steps: [{instruction:"T — Temperature",detail:"Splash cold water on your face or hold something cold for 30 seconds.",stepType:"manual"},{instruction:"I — Intense Movement",detail:"30 seconds: jumping jacks, running in place, or brisk seated marching.",stepType:"timed",durationSeconds:30},{instruction:"P — Paced Breathing",detail:"Inhale 4 counts. Exhale 6 counts. 10 rounds.",stepType:"timed",durationSeconds:60},{instruction:"PM — Paired Muscle Relaxation",detail:"Inhale: tense whole body. Exhale: release completely. 5 rounds.",stepType:"timed",durationSeconds:50}] },
   { id: "act_defusion", name: "Leaves on a Stream", category: "dbt_act", tier: 1, durations: [3,5], defaultDuration: 3, bestFor: ["negative self-talk","fear"],
-    desc: "ACT defusion technique. Place each thought on a leaf and watch it float by.", icon: "🍃" },
+    desc: "ACT defusion technique. Place each thought on a leaf and watch it float by.", icon: "🍃", mode: "steps", completionMessage: "Thoughts are events, not facts.",
+    steps: [{instruction:"Close your eyes if comfortable",detail:"Imagine a gentle stream flowing in front of you. Leaves float on the surface.",stepType:"timed",durationSeconds:10},{instruction:"Notice your thoughts",detail:"As each thought comes, place it on a leaf. Watch it float downstream.",stepType:"timed",durationSeconds:120},{instruction:"Return",detail:"Open your eyes. You are the observer — not the thoughts.",stepType:"manual"}] },
   { id: "act_values", name: "Values Check", category: "dbt_act", tier: 1, durations: [2], defaultDuration: 2, bestFor: ["motivation","avoidance"],
-    desc: "What matters to you in the next 10 minutes?", icon: "🎯" },
+    desc: "What matters to you in the next 10 minutes?", icon: "🎯", mode: "steps", completionMessage: "You chose your action. That's power.",
+    steps: [{instruction:"What is the urge right now?",detail:"Name the emotion driving you. What does it want you to do?",stepType:"manual"},{instruction:"Identify the opposite",detail:"If the urge is to avoid — show up. To quit — do one rep.",stepType:"manual"},{instruction:"Do the opposite action",detail:"Act opposite to the urge. All the way.",stepType:"manual"}] },
   // ── RECOVERY PROTOCOLS ──
   { id: "r_pre_training", name: "Pre-Training Reset", category: "recovery", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["pre-workout","focus"],
-    desc: "Breathing, intention, imagery, and posture reset before training.", icon: "🏋️",
-    steps: ["1 min — Physiological sigh or paced breathing","1 min — Set one intention: What am I here to do today?","2 min — Brief performance imagery","1 min — Posture reset + movement prep"] },
+    desc: "Breathing, intention, imagery, and posture reset before training.", icon: "🏋️", mode: "steps", completionMessage: "Ready to train. Let's go.",
+    steps: [{instruction:"Breathing reset",detail:"3 physiological sighs or 1 minute of paced breathing.",stepType:"timed",durationSeconds:60},{instruction:"Set your intention",detail:"What am I here to do today? One sentence.",stepType:"manual"},{instruction:"Brief visualization",detail:"See yourself completing today's session. Feel the effort and the finish.",stepType:"timed",durationSeconds:120},{instruction:"Posture reset",detail:"Stand tall. Shoulders back. One deep breath. Ready.",stepType:"manual"}] },
   { id: "r_post_training", name: "Post-Training Downshift", category: "recovery", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["recovery","post-workout"],
-    desc: "Slow breathing, body scan, and reflection after training.", icon: "🧘",
-    steps: ["2 min — Slow paced breathing","2 min — Brief body scan","1 min — How does your body feel? One thing that went well?"] },
+    desc: "Slow breathing, body scan, and reflection after training.", icon: "🧘", mode: "steps", completionMessage: "Session complete. Recovery starts now.",
+    steps: [{instruction:"Slow breathing",detail:"2 minutes of paced breathing. Inhale 4, exhale 6.",stepType:"timed",durationSeconds:120},{instruction:"Brief body scan",detail:"Scan from feet to head. Notice what feels worked, tight, or released.",stepType:"timed",durationSeconds:120},{instruction:"Reflect",detail:"How does your body feel? Name one thing that went well.",stepType:"manual"}] },
   { id: "r_midday", name: "Midday Reset", category: "recovery", tier: 1, durations: [5], defaultDuration: 5, bestFor: ["focus","afternoon"],
-    desc: "Brief reset for energy and focus midday.", icon: "☀️",
-    steps: ["2 min — Paced breathing","1 min — Eyes-open mindful moment","1 min — Stand or walk briefly","1 min — What matters this afternoon?"] },
+    desc: "Brief reset for energy and focus midday.", icon: "☀️", mode: "steps", completionMessage: "Reset complete. Carry this into your afternoon.",
+    steps: [{instruction:"Paced breathing",detail:"2 minutes. Inhale 4, exhale 6. Let the morning go.",stepType:"timed",durationSeconds:120},{instruction:"Mindful moment",detail:"Eyes open. Notice 3 things around you right now.",stepType:"manual"},{instruction:"Move briefly",detail:"Stand up. Walk a few steps. Stretch if it feels right.",stepType:"manual"},{instruction:"Set afternoon intention",detail:"What matters most this afternoon? One thing.",stepType:"manual"}] },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -709,7 +713,8 @@ function TechniquePlayer({ technique, onClose, onComplete, customPhases, customD
       <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: "20px 0" }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>✨</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>Done — {Math.round(totalElapsed / 60)} minutes</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>Done — {Math.max(1, Math.round(totalElapsed / 60))} minutes</div>
+          {technique.completionMessage && <div style={{ fontSize: 14, color: C.teal, marginTop: 4, fontStyle: "italic" }}>{technique.completionMessage}</div>}
           <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4 }}>{technique.name}</div>
         </div>
         <Card style={{ padding: 14 }}>
@@ -728,8 +733,74 @@ function TechniquePlayer({ technique, onClose, onComplete, customPhases, customD
     );
   }
 
-  const currentPhase = phases.length > 0 ? phases[phase % phases.length] : null;
-  const currentStep = steps.length > 0 ? steps[Math.min(Math.floor(totalElapsed / (totalDuration / steps.length)), steps.length - 1)] : null;
+  const isStepMode = technique.mode === "steps" && steps.length > 0;
+  const currentPhase = !isStepMode && phases.length > 0 ? phases[phase % phases.length] : null;
+
+  // ── STEP MODE: manual/timed step progression ──
+  const [stepIdx, setStepIdx] = useState(0);
+  const [stepTimer, setStepTimer] = useState(0);
+  const [stepTimerActive, setStepTimerActive] = useState(false);
+  const stepTimerRef = useRef(null);
+
+  const currentStepObj = isStepMode ? steps[Math.min(stepIdx, steps.length - 1)] : null;
+  const isLastStep = isStepMode && stepIdx >= steps.length - 1;
+  const isTimed = currentStepObj?.stepType === "timed" && currentStepObj?.durationSeconds > 0;
+
+  // Auto-start timed steps
+  useEffect(() => {
+    if (!isStepMode || !isTimed || done) return;
+    setStepTimer(0); setStepTimerActive(true);
+    stepTimerRef.current = setInterval(() => {
+      setStepTimer(prev => {
+        if (prev + 1 >= currentStepObj.durationSeconds) { setStepTimerActive(false); clearInterval(stepTimerRef.current);
+          // Auto-advance after timed step
+          if (!isLastStep) { setTimeout(() => { setStepIdx(i => i + 1); setTotalElapsed(t => t + currentStepObj.durationSeconds); }, 500); }
+          else { setDone(true); }
+          return currentStepObj.durationSeconds; }
+        return prev + 1;
+      });
+    }, 1000);
+    return () => clearInterval(stepTimerRef.current);
+  }, [stepIdx, isStepMode]);
+
+  const handleNextStep = () => {
+    if (isLastStep) { setDone(true); return; }
+    clearInterval(stepTimerRef.current); setStepTimerActive(false);
+    setTotalElapsed(t => t + (stepTimer || 5));
+    setStepIdx(i => i + 1); setStepTimer(0);
+  };
+
+  // Step mode render
+  if (isStepMode && !done) {
+    const progress = (stepIdx / steps.length) * 100;
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div><div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 11, color: C.textDim }}>Step {stepIdx + 1} of {steps.length}</div></div>
+          <button onClick={() => { logWellnessSession({ techniqueId: technique.id, category: technique.category, durationSeconds: totalElapsed, completionStatus: "exited_early" }); onClose(); }}
+            style={{ padding: "6px 12px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Stop</button>
+        </div>
+        {/* Progress bar */}
+        <div style={{ width: "100%", height: 4, background: C.border, borderRadius: 2 }}><div style={{ width: `${progress}%`, height: "100%", background: C.teal, borderRadius: 2, transition: "width 0.3s ease" }} /></div>
+        {/* Step content */}
+        {currentStepObj && <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 24, textAlign: "center" }}>
+          <div style={{ fontSize: 20, fontWeight: 700, color: C.text, lineHeight: 1.4, marginBottom: 8 }}>{currentStepObj.instruction || currentStepObj}</div>
+          {currentStepObj.detail && <div style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.6 }}>{currentStepObj.detail}</div>}
+          {isTimed && stepTimerActive && <div style={{ marginTop: 12, fontSize: 28, fontWeight: 800, color: C.teal, fontFamily: "'Bebas Neue',sans-serif" }}>{currentStepObj.durationSeconds - stepTimer}s</div>}
+          {isTimed && !stepTimerActive && stepTimer >= currentStepObj.durationSeconds && <div style={{ marginTop: 8, fontSize: 13, color: C.success }}>Done</div>}
+        </div>}
+        {/* Next button — only for manual steps or after timed step completes */}
+        {(!isTimed || !stepTimerActive) && <button onClick={handleNextStep} style={{ width: "100%", padding: "14px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", minHeight: 48 }}>{isLastStep ? "Complete ✓" : "Next →"}</button>}
+        {/* Controls */}
+        <button onClick={() => { clearInterval(stepTimerRef.current); setStepIdx(0); setStepTimer(0); setStepTimerActive(false); setTotalElapsed(0); }}
+          style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "center" }}>Restart from step 1</button>
+      </div>
+    );
+  }
+
+  // ── TIMER MODE (existing behavior) ──
+  const currentStep = null; // disabled — step mode uses stepIdx above
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -748,10 +819,6 @@ function TechniquePlayer({ technique, onClose, onComplete, customPhases, customD
       <div style={{ width: "100%", height: 4, background: C.border, borderRadius: 2 }}><div style={{ width: `${(totalElapsed / totalDuration) * 100}%`, height: "100%", background: C.teal, borderRadius: 2, transition: "width 1s linear" }} /></div>
       {/* Concentric circle breathing animation */}
       {currentPhase && <ConcentricBreathAnimation phaseLabel={currentPhase.label} phaseSeconds={currentPhase.seconds} elapsedInPhase={timer} reducedMotion={reducedMotion} />}
-      {/* Step-based display */}
-      {currentStep && !currentPhase && <Card style={{ textAlign: "center", padding: 20 }}>
-        <div style={{ fontSize: 16, fontWeight: 600, color: C.text, lineHeight: 1.6 }}>{currentStep}</div>
-      </Card>}
       {/* Round counter */}
       {phases.length > 0 && <div style={{ textAlign: "center", fontSize: 12, color: C.textDim }}>Round {round}{maxRounds < 999 ? ` of ${maxRounds}` : ""} · {Math.round(totalElapsed)}s elapsed</div>}
       {/* Controls */}
