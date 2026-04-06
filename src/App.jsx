@@ -2782,8 +2782,12 @@ function AppInner(){
   </>);
 }
 
+// ── QA PANEL (intercepts before main app if ?qa=true) ────────────
+import QAPanel, { isQAEnabled } from "./components/QAPanel.jsx";
+
 // ── MAIN (wrapped in AuthProvider) ──────────────────────────────
 export default function ApexCoach(){
+  if (isQAEnabled()) return <QAPanel />;
   return(<AuthProvider><div style={{fontFamily:"'DM Sans',-apple-system,sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",padding:"20px 16px 40px",boxSizing:"border-box"}}>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>{`input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg};box-shadow:0 0 10px ${C.tealGlow}}input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:${C.teal};cursor:pointer;border:3px solid ${C.bg}}*{box-sizing:border-box}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
