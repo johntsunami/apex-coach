@@ -362,10 +362,171 @@ function RelaxationMatchQuiz({ onResult, onSkip }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// BREATHING TIMING STEPPER + SETUP SCREEN
+// ═══════════════════════════════════════════════════════════════
+
+const LS_BREATH_PREFS = "apex_breathing_preferences";
+
+function getBreathPrefs() { try { return JSON.parse(localStorage.getItem(LS_BREATH_PREFS) || "{}"); } catch { return {}; } }
+function saveBreathPref(techId, prefs) {
+  try { const all = getBreathPrefs(); all[techId] = { ...prefs, lastUpdated: new Date().toISOString() }; localStorage.setItem(LS_BREATH_PREFS, JSON.stringify(all)); } catch {}
+}
+
+function getConditionDefaults(technique) {
+  try {
+    const a = JSON.parse(localStorage.getItem("apex_assessment") || "{}");
+    const injuries = JSON.parse(localStorage.getItem("apex_injuries") || "[]");
+    const hasCOPD = (a.conditions || []).some(c => (c.name || "").toLowerCase().includes("copd") || (c.name || "").toLowerCase().includes("asthma"));
+    const isSenior = (a.userAge || 0) >= 65;
+    const isAthlete = a.trainingExperience === "professional" || a.trainingExperience === "performance";
+    if (hasCOPD) return { inhale: 2, holdFull: 0, exhale: 4, holdEmpty: 0, note: "Starting shorter — adjust up as feels comfortable." };
+    if (isSenior) return { inhale: 3, holdFull: 0, exhale: 5, holdEmpty: 0 };
+    if (isAthlete) return { inhale: 5, holdFull: 0, exhale: 7, holdEmpty: 0 };
+    if (technique.id === "box_breathing") return { inhale: 4, holdFull: 4, exhale: 4, holdEmpty: 4 };
+  } catch {}
+  return null;
+}
+
+function TimingStepper({ label, value, onChange, min = 0, max = 10, color = "#7EC8C8" }) {
+  const holdRef = useRef(null);
+  const startHold = (delta) => { onChange(Math.max(min, Math.min(max, value + delta))); holdRef.current = setTimeout(() => { holdRef.current = setInterval(() => onChange(v => Math.max(min, Math.min(max, v + delta))), 200); }, 600); };
+  const stopHold = () => { clearTimeout(holdRef.current); clearInterval(holdRef.current); };
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0" }}>
+      <span style={{ fontSize: 14, color: "#8B9BB4", letterSpacing: "0.08em", textTransform: "uppercase", minWidth: 90 }}>{label}</span>
+      <button onPointerDown={() => startHold(-1)} onPointerUp={stopHold} onPointerCancel={stopHold} disabled={value <= min}
+        style={{ width: 44, height: 44, borderRadius: 22, background: "rgba(126,200,200,0.12)", border: "1px solid rgba(126,200,200,0.2)", color, fontSize: 20, cursor: value <= min ? "default" : "pointer", opacity: value <= min ? 0.3 : 1, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>−</button>
+      <div style={{ minWidth: 72, textAlign: "center", fontSize: 32, fontWeight: 300, color: "#E8EDF2" }}>{value}s</div>
+      <button onPointerDown={() => startHold(1)} onPointerUp={stopHold} onPointerCancel={stopHold} disabled={value >= max}
+        style={{ width: 44, height: 44, borderRadius: 22, background: "rgba(126,200,200,0.12)", border: "1px solid rgba(126,200,200,0.2)", color, fontSize: 20, cursor: value >= max ? "default" : "pointer", opacity: value >= max ? 0.3 : 1, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+    </div>
+  );
+}
+
+function getGuidanceText(inhale, exhale) {
+  if (exhale < inhale) return { text: "Try making your exhale at least as long as your inhale for a calming effect.", color: "#C8A87E" };
+  if (exhale === inhale) return { text: "Equal breathing — good for balance and focus.", color: "#8BC8A0" };
+  if (inhale >= 7) return { text: "Long inhale — take your time between cycles.", color: "#8BC8A0" };
+  if (inhale <= 2) return { text: "Short cycles are fine — use what feels comfortable.", color: "#8B9BB4" };
+  return { text: "Longer exhale — good for calming.", color: "#7EC8C8" };
+}
+
+function BreathingSetup({ technique, onStart, onClose }) {
+  const hasHolds = technique.phases?.some(p => p.label === "HOLD");
+  const defaults = getConditionDefaults(technique);
+  const saved = getBreathPrefs()[technique.id];
+  const techDefaults = { inhale: technique.phases?.find(p => p.label === "INHALE")?.seconds || 4, holdFull: technique.phases?.find(p => p.label === "HOLD")?.seconds || 0, exhale: technique.phases?.find(p => p.label === "EXHALE")?.seconds || 6, holdEmpty: technique.phases?.filter(p => p.label === "HOLD")?.[1]?.seconds || 0 };
+  const init = saved || defaults || techDefaults;
+
+  const [inhale, setInhale] = useState(init.inhale || 4);
+  const [holdFull, setHoldFull] = useState(init.holdFull || init.hold_full_seconds || 0);
+  const [exhale, setExhale] = useState(init.exhale || 6);
+  const [holdEmpty, setHoldEmpty] = useState(init.holdEmpty || init.hold_empty_seconds || 0);
+  const [duration, setDuration] = useState(saved?.duration || technique.defaultDuration || 3);
+  const [previewing, setPreviewing] = useState(false);
+  const [previewPhase, setPreviewPhase] = useState(0);
+  const [previewTimer, setPreviewTimer] = useState(0);
+  const previewRef = useRef(null);
+  const reducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  const previewPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
+
+  // Preview one breath cycle
+  useEffect(() => {
+    if (!previewing) return;
+    previewRef.current = setInterval(() => {
+      setPreviewTimer(prev => {
+        const cp = previewPhases[previewPhase % previewPhases.length];
+        if (prev + 1 >= cp.seconds) {
+          const next = previewPhase + 1;
+          if (next >= previewPhases.length) { setPreviewing(false); setPreviewPhase(0); setPreviewTimer(0); clearInterval(previewRef.current); return 0; }
+          setPreviewPhase(next);
+          return 0;
+        }
+        return prev + 1;
+      });
+    }, 1000);
+    return () => clearInterval(previewRef.current);
+  }, [previewing, previewPhase, previewPhases]);
+
+  const handleStart = () => {
+    const customPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
+    saveBreathPref(technique.id, { inhale, holdFull, exhale, holdEmpty, duration });
+    onStart({ customPhases, customDuration: duration });
+  };
+
+  const resetDefaults = () => { const d = defaults || techDefaults; setInhale(d.inhale); setHoldFull(d.holdFull || 0); setExhale(d.exhale); setHoldEmpty(d.holdEmpty || 0); };
+  const guidance = getGuidanceText(inhale, exhale);
+  const previewCp = previewing ? previewPhases[previewPhase % previewPhases.length] : null;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div><div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{technique.desc}</div></div>
+      <div style={{ height: 1, background: C.border }} />
+      <div><div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Set your rhythm</div><div style={{ fontSize: 12, color: C.textDim }}>Adjust to what feels natural.</div></div>
+      {defaults?.note && <div style={{ fontSize: 11, color: "#C8A87E", padding: "6px 10px", background: "rgba(200,168,126,0.08)", borderRadius: 8 }}>{defaults.note}</div>}
+      <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
+      {hasHolds && <TimingStepper label="Hold" value={holdFull} onChange={setHoldFull} min={0} max={10} color="#C8C87E" />}
+      <TimingStepper label="Exhale" value={exhale} onChange={setExhale} min={2} max={12} />
+      {hasHolds && <TimingStepper label="Hold empty" value={holdEmpty} onChange={setHoldEmpty} min={0} max={8} color="#A0B8A0" />}
+      <div style={{ height: 1, background: C.border }} />
+      <TimingStepper label="Duration" value={duration} onChange={setDuration} min={1} max={20} color={C.info} />
+      <div style={{ fontSize: 12, color: guidance.color, lineHeight: 1.5 }}>{guidance.text}</div>
+      {/* Preview */}
+      {previewing && previewCp && <div style={{ transform: "scale(0.6)", transformOrigin: "center", margin: "-20px 0" }}>
+        <ConcentricBreathAnimation phaseLabel={previewCp.label} phaseSeconds={previewCp.seconds} elapsedInPhase={previewTimer} reducedMotion={reducedMotion} />
+      </div>}
+      <button onClick={() => { if (!previewing) { setPreviewing(true); setPreviewPhase(0); setPreviewTimer(0); } }}
+        style={{ width: "100%", padding: "10px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{previewing ? "Previewing..." : "Try one breath"}</button>
+      <button onClick={handleStart} style={{ width: "100%", padding: "14px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start session</button>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button onClick={resetDefaults} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Use recommended settings</button>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+// Mid-session timing adjustment bottom sheet
+function TimingSheet({ phases, onUpdate, onClose }) {
+  const inhaleP = phases.find(p => p.label === "INHALE");
+  const exhaleP = phases.find(p => p.label === "EXHALE");
+  const holds = phases.filter(p => p.label === "HOLD");
+  const [inhale, setInhale] = useState(inhaleP?.seconds || 4);
+  const [exhale, setExhale] = useState(exhaleP?.seconds || 6);
+  const [holdFull, setHoldFull] = useState(holds[0]?.seconds || 0);
+  const [holdEmpty, setHoldEmpty] = useState(holds[1]?.seconds || 0);
+  const hasHolds = holds.length > 0;
+  const guidance = getGuidanceText(inhale, exhale);
+
+  const handleDone = () => {
+    const newPhases = [{ label: "INHALE", seconds: inhale }, ...(holdFull > 0 ? [{ label: "HOLD", seconds: holdFull }] : []), { label: "EXHALE", seconds: exhale }, ...(holdEmpty > 0 ? [{ label: "HOLD", seconds: holdEmpty }] : [])];
+    onUpdate(newPhases);
+    onClose();
+  };
+
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 400, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: "#161B22", borderRadius: "20px 20px 0 0", padding: "12px 20px 24px", width: "100%", maxWidth: 480 }}>
+        <div style={{ width: 36, height: 4, borderRadius: 2, background: "rgba(255,255,255,0.15)", margin: "0 auto 12px" }} />
+        <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2 }}>Adjust timing</div>
+        <div style={{ fontSize: 11, color: C.textDim, marginBottom: 10 }}>Changes apply next breath</div>
+        <TimingStepper label="Inhale" value={inhale} onChange={setInhale} min={2} max={10} />
+        {hasHolds && <TimingStepper label="Hold" value={holdFull} onChange={setHoldFull} min={0} max={10} color="#C8C87E" />}
+        <TimingStepper label="Exhale" value={exhale} onChange={setExhale} min={2} max={12} />
+        {hasHolds && <TimingStepper label="Hold empty" value={holdEmpty} onChange={setHoldEmpty} min={0} max={8} color="#A0B8A0" />}
+        <div style={{ fontSize: 11, color: guidance.color, marginTop: 4, marginBottom: 8 }}>{guidance.text}</div>
+        <button onClick={handleDone} style={{ width: "100%", padding: "12px", borderRadius: 12, background: C.teal, border: "none", color: "#000", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Done</button>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // TECHNIQUE PLAYER (shared across all sessions)
 // ═══════════════════════════════════════════════════════════════
 
-function TechniquePlayer({ technique, onClose, onComplete }) {
+function TechniquePlayer({ technique, onClose, onComplete, customPhases, customDuration }) {
   const [phase, setPhase] = useState(0);
   const [timer, setTimer] = useState(0);
   const [totalElapsed, setTotalElapsed] = useState(0);
@@ -373,8 +534,10 @@ function TechniquePlayer({ technique, onClose, onComplete }) {
   const [round, setRound] = useState(1);
   const [done, setDone] = useState(false);
   const [stressAfter, setStressAfter] = useState(null);
-  const totalDuration = (technique.defaultDuration || 3) * 60;
-  const phases = technique.phases || [];
+  const [showTimingSheet, setShowTimingSheet] = useState(false);
+  const [activePhases, setActivePhases] = useState(customPhases || technique.phases || []);
+  const totalDuration = (customDuration || technique.defaultDuration || 3) * 60;
+  const phases = activePhases;
   const steps = technique.steps || [];
   const maxRounds = technique.rounds || 999;
   const intervalRef = useRef(null);
@@ -442,9 +605,14 @@ function TechniquePlayer({ technique, onClose, onComplete }) {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div><div style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{technique.name}</div><div style={{ fontSize: 11, color: C.textDim }}>{technique.category.replace("_", " / ").toUpperCase()}</div></div>
-        <button onClick={() => { logWellnessSession({ techniqueId: technique.id, category: technique.category, durationSeconds: totalElapsed, completionStatus: "exited_early" }); onClose(); }}
-          style={{ padding: "6px 12px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Stop</button>
+        <div style={{ display: "flex", gap: 6 }}>
+          {phases.length > 0 && <button onClick={() => setShowTimingSheet(true)} style={{ width: 32, height: 32, borderRadius: 8, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textDim, fontSize: 14, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>⚙️</button>}
+          <button onClick={() => { logWellnessSession({ techniqueId: technique.id, category: technique.category, durationSeconds: totalElapsed, completionStatus: "exited_early" }); onClose(); }}
+            style={{ padding: "6px 12px", borderRadius: 8, background: C.danger + "15", border: `1px solid ${C.danger}30`, color: C.danger, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Stop</button>
+        </div>
       </div>
+      {/* Mid-session timing adjustment */}
+      {showTimingSheet && <TimingSheet phases={phases} onUpdate={setActivePhases} onClose={() => setShowTimingSheet(false)} />}
       {/* Progress bar */}
       <div style={{ width: "100%", height: 4, background: C.border, borderRadius: 2 }}><div style={{ width: `${(totalElapsed / totalDuration) * 100}%`, height: "100%", background: C.teal, borderRadius: 2, transition: "width 1s linear" }} /></div>
       {/* Concentric circle breathing animation */}
@@ -474,6 +642,8 @@ export default function WellnessScreen() {
   const [showDisclaimer, setShowDisclaimer] = useState(!localStorage.getItem(LS_DISCLAIMER));
   const [showMatchQuiz, setShowMatchQuiz] = useState(false);
   const [savedMatch, setSavedMatch] = useState(() => { try { return JSON.parse(localStorage.getItem(LS_MATCH)); } catch { return null; } });
+  const [breathingSetup, setBreathingSetup] = useState(null); // technique object for setup screen
+  const [customBreathParams, setCustomBreathParams] = useState(null); // { customPhases, customDuration }
   const stats = getWellnessStats();
 
   // Disclaimer gate
@@ -502,12 +672,21 @@ export default function WellnessScreen() {
     );
   }
 
+  // Breathing setup screen (pre-session timing adjustment)
+  if (breathingSetup) {
+    return (
+      <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <BreathingSetup technique={breathingSetup} onStart={(params) => { setCustomBreathParams(params); setActiveTechnique(breathingSetup.id); setBreathingSetup(null); }} onClose={() => setBreathingSetup(null)} />
+      </div>
+    );
+  }
+
   // Active technique player
   if (activeTechnique) {
     const tech = TECHNIQUES.find(t => t.id === activeTechnique);
     if (tech) return (
       <div className="fade-in safe-bottom" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <TechniquePlayer technique={tech} onClose={() => setActiveTechnique(null)} onComplete={() => setActiveTechnique(null)} />
+        <TechniquePlayer technique={tech} customPhases={customBreathParams?.customPhases} customDuration={customBreathParams?.customDuration} onClose={() => { setActiveTechnique(null); setCustomBreathParams(null); }} onComplete={() => { setActiveTechnique(null); setCustomBreathParams(null); }} />
       </div>
     );
   }
@@ -524,7 +703,7 @@ export default function WellnessScreen() {
         </div>
         {selectedCategory === "sleep" && <div style={{ fontSize: 11, color: C.textDim, lineHeight: 1.5, padding: "6px 10px", background: C.bgGlass, borderRadius: 8 }}>Relaxation practices can help with general sleep quality. For persistent insomnia, CBT-I is the evidence-based first-line treatment.</div>}
         {techs.map(t => (
-          <Card key={t.id} onClick={() => setActiveTechnique(t.id)} style={{ cursor: "pointer", padding: 12 }}>
+          <Card key={t.id} onClick={() => { if (t.phases?.length > 0 && t.category === "breathing") setBreathingSetup(t); else setActiveTechnique(t.id); }} style={{ cursor: "pointer", padding: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 22 }}>{t.icon || cat?.icon}</span>
               <div style={{ flex: 1 }}>
