@@ -16,6 +16,7 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
+import { PHASE_EXERCISE_WEIGHTS, EQUIPMENT_TIERS, LOCATION_BOOSTS } from "./utils/constants.js";
 import { validateSession as _validateSession } from "./utils/workoutValidator.js";
 import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing, isSeniorUser, getAgeTier } from "./utils/seniorFitness.js";
 import { getWeightTrend, shouldShowWeightNudge, dismissWeightNudge, logWeight, displayWeight, getWeightUnit, lbsToKg, calculateBMI } from "./utils/weightTracking.js";
@@ -1009,14 +1010,10 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       const _recentIds = []; try { const ss = getSessions() || []; ss.slice(-2).forEach(s => (s.exercises_completed || []).forEach(ec => _recentIds.push(ec.exercise_id))); } catch {}
 
       // Score every exercise in pool
-      const _phaseW = { 1: { stabilization: 2.0, mobility: 1.5, rehab: 1.5, strength: 0.5, isolation: 0.3 }, 2: { stabilization: 1.2, mobility: 1.0, rehab: 1.0, strength: 1.5, isolation: 0.8 }, 3: { stabilization: 0.4, mobility: 0.3, rehab: 0.8, strength: 2.0, isolation: 1.8 }, 4: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 2.5, isolation: 0.8 }, 5: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 1.5, isolation: 0.5 } };
+      const _phaseW = PHASE_EXERCISE_WEIGHTS;
       // Equipment tier derivation for location-smart scheduling (Rule 19)
-      const _t1 = new Set(["cable","machine","lat_pulldown","leg_press","smith_machine","hack_squat","cable_machine","leg_extension","leg_curl","pec_deck","chest_press_machine"]);
-      const _t2 = new Set(["barbell","trap_bar","squat_rack","pull_up_bar","dip_bars","landmine","olympic_bar"]);
-      const _t3 = new Set(["dumbbell","kettlebell","bench","box","step","medicine_ball","ab_wheel"]);
-      const _t4 = new Set(["band","trx","stability_ball","foam_roller","bosu_ball","yoga_block","suspension_trainer"]);
-      const _eqTier = (ex) => { const eq = ex.equipmentRequired || []; if (eq.some(e => _t1.has(e))) return 1; if (eq.some(e => _t2.has(e))) return 2; if (eq.some(e => _t3.has(e))) return 3; if (eq.some(e => _t4.has(e))) return 4; return 5; };
-      const _locBoost = location === "gym" ? { 1: 1.8, 2: 1.5, 3: 1.0, 4: 0.6, 5: 0.4 } : location === "home" ? { 1: 0, 2: 0, 3: 1.2, 4: 1.5, 5: 1.8 } : { 1: 0, 2: 0, 3: 0.3, 4: 0.8, 5: 2.0 };
+      const _eqTier = (ex) => { const eq = ex.equipmentRequired || []; if (eq.some(e => EQUIPMENT_TIERS.tier1.has(e))) return 1; if (eq.some(e => EQUIPMENT_TIERS.tier2.has(e))) return 2; if (eq.some(e => EQUIPMENT_TIERS.tier3.has(e))) return 3; if (eq.some(e => EQUIPMENT_TIERS.tier4.has(e))) return 4; return 5; };
+      const _locBoost = LOCATION_BOOSTS[location] || LOCATION_BOOSTS.gym;
       const _scoreEx = (ex) => {
         let s = 1.0;
         s *= (_phaseW[phase]?.[ex.type] ?? 1.0);
