@@ -8,13 +8,14 @@ import ExerciseImage from "./ExerciseImage.jsx";
 import SwapModal from "./ExerciseSwap.jsx";
 
 // Import real plan data
-let getWeeklyPlan, getMesocycle, checkPhaseReadiness, TIERS, TIER_PROGRESSIONS, getMesocycleWeekParams, DAY_NAMES, getDayOfWeek;
+let getWeeklyPlan, generateWeeklyPlan, getMesocycle, checkPhaseReadiness, TIERS, TIER_PROGRESSIONS, getMesocycleWeekParams, DAY_NAMES, getDayOfWeek;
 try {
   const wp = require("../utils/weeklyPlanner.js");
   getWeeklyPlan = wp.getWeeklyPlan;
+  generateWeeklyPlan = wp.generateWeeklyPlan;
   DAY_NAMES = wp.DAY_NAMES;
   getDayOfWeek = wp.getDayOfWeek;
-} catch { getWeeklyPlan = () => null; DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]; getDayOfWeek = () => 0; }
+} catch { getWeeklyPlan = () => null; generateWeeklyPlan = null; DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]; getDayOfWeek = () => 0; }
 try {
   const mc = require("../utils/mesocycle.js");
   getMesocycle = mc.getMesocycle;
@@ -305,41 +306,19 @@ export default function PlanView({ onClose }) {
                     const handleExpandWeek = (weekNum) => {
                       if (expandedWeek === weekNum) { setExpandedWeek(null); return; }
                       setExpandedWeek(weekNum);
-                      // If not current week and not already generated, generate on demand
-                      if (weekNum !== currentWeek && !generatedWeeks[weekNum] && window._buildWorkoutList) {
+                      // If not current week and not already generated, generate using the real weekly planner
+                      if (weekNum !== currentWeek && !generatedWeeks[weekNum]) {
                         setGenerating(weekNum);
                         setTimeout(() => {
                           try {
-                            const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-                            const trainingDays = [];
-                            // Generate daysPerWeek sessions to simulate the week
-                            for (let d = 0; d < daysPerWeek && d < 7; d++) {
-                              const plan = window._buildWorkoutList();
-                              if (plan) {
-                                trainingDays.push({
-                                  dayName: dayNames[d < 5 ? [0,2,4,1,3][d] : d] || dayNames[d], // spread across M/W/F/Tu/Th
-                                  label: plan.sportMeta ? `${plan.sportMeta.label}` : "Training",
-                                  type: "training",
-                                  exercises: (plan.main || []).map(e => ({ id: e.id, name: e.name, bodyPart: e.bodyPart, movementPattern: e.movementPattern, category: e.category })),
-                                  warmup: (plan.warmup || []).slice(0, 3).map(e => ({ id: e.id, name: e.name })),
-                                  cooldown: (plan.cooldown || []).slice(0, 2).map(e => ({ id: e.id, name: e.name })),
-                                });
+                            if (generateWeeklyPlan) {
+                              // Use the REAL weekly planner — same logic that generates the current week
+                              // This gives proper splits, muscle group rotation, and exercise variety
+                              const generated = generateWeeklyPlan(exerciseDB, p.num, "gym");
+                              if (generated?.days) {
+                                setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { days: generated.days } }));
                               }
                             }
-                            // Add rest days
-                            const allDays = [];
-                            const restDayIndices = daysPerWeek <= 3 ? [1,3,5,6] : daysPerWeek <= 4 ? [2,4,6] : [5,6];
-                            for (let d = 0; d < 7; d++) {
-                              const tIdx = trainingDays.findIndex((_, i) => !allDays.some(ad => ad._tIdx === i));
-                              if (restDayIndices.includes(d) || !trainingDays[allDays.filter(a => a.type === "training").length]) {
-                                allDays.push({ dayName: dayNames[d], label: "Rest & Recovery", type: "rest", description: "Active recovery, mobility, walking" });
-                              } else {
-                                const td = trainingDays[allDays.filter(a => a.type === "training").length];
-                                if (td) allDays.push({ ...td, _tIdx: allDays.filter(a => a.type === "training").length });
-                                else allDays.push({ dayName: dayNames[d], label: "Rest", type: "rest", description: "Recovery" });
-                              }
-                            }
-                            setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { days: allDays } }));
                           } catch (e) { console.warn("Week generation failed:", e); }
                           setGenerating(null);
                         }, 100);
@@ -382,14 +361,13 @@ export default function PlanView({ onClose }) {
                           <div style={{ padding: "8px", fontSize: 10, color: C.teal, textAlign: "center" }}>Generating exercises...</div>
                         ) : generatedWeeks[w]?.days ? generatedWeeks[w].days.map((day, di) => (
                           <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < generatedWeeks[w].days.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                            <div style={{ fontSize: 10, fontWeight: 700, color: day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.type === "rest" ? "😴" : ""}</div>
-                            {day.type !== "rest" && <>
-                              {day.warmup?.length > 0 && <div style={{ fontSize: 8, color: C.textDim, paddingLeft: 8, marginTop: 2 }}>Warmup: {day.warmup.map(e => e.name).join(", ")}</div>}
-                              {day.exercises?.map((e, ei) => <div key={ei} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
-                                {ei + 1}. {e.name} <span style={{ color: C.textDim }}>({(e.bodyPart || "").replace(/_/g, " ")})</span>
-                              </div>)}
-                              {day.cooldown?.length > 0 && <div style={{ fontSize: 8, color: C.textDim, paddingLeft: 8, marginTop: 2 }}>Cooldown: {day.cooldown.map(e => e.name).join(", ")}</div>}
-                            </>}
+                            <div style={{ fontSize: 10, fontWeight: 700, color: day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.type === "rest" ? "😴" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
+                            {day.type !== "rest" && day.exercises?.map((e, ei) => {
+                              const fullEx = exerciseDB.find(x => x.id === e.id) || e;
+                              return <div key={ei} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
+                                {ei + 1}. {fullEx.name} <span style={{ color: C.textDim }}>({(fullEx.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span>
+                              </div>;
+                            })}
                             {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description}</div>}
                           </div>
                         )) : (
