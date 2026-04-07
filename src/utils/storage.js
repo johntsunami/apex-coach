@@ -67,10 +67,14 @@ function saveSession(session) {
   sessions.push(entry);
   set(KEYS.SESSIONS, sessions);
 
+  // Verify write succeeded
+  const verify = getSessions();
+  console.log(`[COMPLETION] Session saved to localStorage: ${verify.length} sessions total. Today: ${_dateKey(new Date())}. Latest: ${_dateKey(verify[verify.length - 1]?.date)}`);
+
   // Update stats after saving session
   _updateStats(sessions);
 
-  // Fire-and-forget sync to Supabase for cross-device persistence
+  // Sync to Supabase for cross-device persistence
   _syncSessionToSupabase(entry);
 
   return entry;
@@ -121,14 +125,15 @@ async function _syncSessionToSupabase(entry) {
   } catch (e) { console.warn("Session sync to Supabase failed (non-blocking):", e); }
 }
 
-// One-time migration: clear stale localStorage stats on devices that predate Supabase sync
+// One-time migration: clear stale stats cache (NOT sessions — sessions are the source of truth)
 function _runStatsMigration() {
   try {
-    if (localStorage.getItem("supabase_stats_migration_v1") === "done") return;
-    console.log("APEX: Running one-time stats migration — clearing stale localStorage stats");
-    localStorage.removeItem(KEYS.STATS);
-    localStorage.removeItem(KEYS.SESSIONS);
-    localStorage.setItem("supabase_stats_migration_v1", "done");
+    if (localStorage.getItem("supabase_stats_migration_v2") === "done") return;
+    console.log("APEX: Running stats migration v2 — clearing stale stats cache (sessions preserved)");
+    localStorage.removeItem(KEYS.STATS); // stats cache only — will be recomputed from sessions
+    // NOTE: Do NOT remove KEYS.SESSIONS — that destroys workout history!
+    // Sessions are the source of truth; stats are derived from them.
+    localStorage.setItem("supabase_stats_migration_v2", "done");
   } catch {}
 }
 _runStatsMigration();
@@ -144,10 +149,15 @@ async function restoreSessionsFromSupabase() {
     const { data: rows, error } = await supabase.from("sessions").select("*").eq("user_id", session.user.id).order("date", { ascending: true });
     if (error) { console.warn("APEX: Supabase session query error:", error.message); return false; }
     if (!rows?.length) {
-      // Supabase has no sessions — clear localStorage to match (prevents stale local data from showing)
-      console.log("APEX: No sessions in Supabase — clearing localStorage to match");
-      set(KEYS.SESSIONS, []);
-      _updateStats([]);
+      // Supabase has no sessions — but DON'T wipe localStorage!
+      // Local sessions may exist from a recent workout that hasn't synced yet.
+      // Backfill local → Supabase instead of clearing local.
+      const local = getSessions();
+      if (local.length > 0) {
+        console.log("APEX: Supabase has 0 sessions but localStorage has", local.length, "— keeping local, will backfill");
+        return false; // keep local data, backfill will push it to Supabase
+      }
+      console.log("APEX: No sessions in Supabase or localStorage");
       return false;
     }
     // ALWAYS overwrite localStorage with Supabase data — Supabase is source of truth
