@@ -257,6 +257,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       const _fallbackFilter = (e, checkCeiling) =>
         e.category === "main" &&
         !usedIds.has(e.id) &&
+        !usedThisWeek.has(e.id) &&
         !blacklist.has(e.id) &&
         (e.phaseEligibility || []).includes(phase) &&
         e.safetyTier !== "red" &&
@@ -284,6 +285,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
   // Add isolation exercises for the day's focus muscles
   // Issue 3: Phase 3+ MUST include at least 1-2 isolation exercises
   // Fix: check movementPattern === "isolation" (not type — DB uses type: "strength" for these)
+  // Also check usedThisWeek for within-week dedup
   const isoLimit = phase >= 3 ? 2 : dayTemplate.focus.length >= 4 ? 2 : 1;
   let isoCount = 0;
   for (const bodyPart of dayTemplate.focus) {
@@ -293,6 +295,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       (e.movementPattern === "isolation" || e.type === "isolation") &&
       e.bodyPart === bodyPart &&
       !usedIds.has(e.id) &&
+      !usedThisWeek.has(e.id) &&
       !blacklist.has(e.id) &&
       (e.phaseEligibility || []).includes(phase) &&
       (e.bodyPart === "core" || e.type === "stabilization" || phase <= getMaxPhaseForDifficulty(e.difficultyLevel || 3)) &&
@@ -342,9 +345,10 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
           );
           if (alreadyHasIso && pm.priority < 3) continue;
 
-          // Base eligibility filter
+          // Base eligibility filter (includes usedThisWeek for within-week dedup)
           const baseFilter = (e) =>
             !usedIds.has(e.id) &&
+            !usedThisWeek.has(e.id) &&
             !blacklist.has(e.id) &&
             e.bodyPart === pm.bodyPart &&
             e.safetyTier !== "red" &&
@@ -387,6 +391,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
   }
 
   // ── Issue 4: Phase 5 MUST include at least 1 plyometric/explosive exercise ──
+  // Cap at 2 plyometric appearances per week to prevent overuse injury
   if (phase >= 5) {
     const hasPlyo = selected.some(e => e.type === "plyometric");
     if (!hasPlyo) {
@@ -394,6 +399,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
         .filter(e =>
           e.type === "plyometric" &&
           !usedIds.has(e.id) &&
+          !usedThisWeek.has(e.id) &&
           !blacklist.has(e.id) &&
           (e.phaseEligibility || []).includes(phase) &&
           canUseExercise(e, phase, location, usedIds, injuries)

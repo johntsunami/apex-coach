@@ -31,7 +31,7 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
 // Cache version — increment when generation logic changes to invalidate stale cached weeks
-const PLAN_GEN_VERSION = 2;
+const PLAN_GEN_VERSION = 3;
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
@@ -411,7 +411,7 @@ export default function PlanView({ onClose }) {
                             const names = allEx.map(e => e.name);
                             const dupes = names.filter((n,i) => names.indexOf(n) !== i);
                             if (dupes.length) issues.push("Repeats: " + [...new Set(dupes)].join(", "));
-                            console.log("[PLANVIEW " + (issues.length ? "FAIL" : "PASS") + "] Wk" + w + " Ph" + p.num, issues.length ? issues : "all checks pass");
+                            console.log("[PLANVIEW " + (issues.length ? "FAIL" : "PASS") + "] Wk" + w + " Ph" + p.num, issues.length ? issues.join(" | ") : "all checks pass");
                           }
                           return <>
                             {dayData.map((day, di) => (

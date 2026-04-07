@@ -35744,7 +35744,7 @@
     "category": "main",
     "type": "strength",
     "movementPattern": "pull",
-    "bodyPart": "shoulders",
+    "bodyPart": "back",
     "primaryMuscles": [
       "Forearm Flexors",
       "Latissimus Dorsi"
