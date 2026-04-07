@@ -285,7 +285,7 @@ const SPORT_PROFILES = {
       // MANDATORY antagonist work — non-negotiable every session (Dr. Vagy framework)
       antagonist: ["climb_pushup_antagonist", "climb_db_shoulder_press", "climb_reverse_wrist_curl", "climb_scapular_pushup_plus", "climb_prone_ytw"],
       injury_prevention: ["climb_finger_extensor_band", "climb_rice_bucket", "climb_reverse_wrist_curl", "iso_band_ext_rotation", "climb_scapular_pushup_plus", "climb_prone_ytw"],
-      mobility: ["climb_hip_turnout", "climb_thoracic_foam_ext", "climb_shoulder_passthrough", "climb_wrist_flex_ext_stretch", "climb_forearm_massage", "climb_ankle_df_mob", "climb_hip_flexor_stretch", "sport_dead_hang_active"],
+      mobility: ["climb_hip_turnout", "rehab_thoracic_ext_roller", "climb_shoulder_passthrough", "climb_wrist_flex_ext_stretch", "climb_forearm_massage", "climb_ankle_df_mob", "climb_hip_flexor_stretch", "sport_dead_hang_active"],
       conditioning: ["cardio_rower", "cardio_bike_upright"],
     },
     cardio: { mode: "sustained_moderate", workRest: null, preferredExercises: ["cardio_rower", "cardio_bike_upright"] },
@@ -305,7 +305,7 @@ const SPORT_PROFILES = {
       },
       postClimb: {
         description: "8 min minimum cooldown after every climbing session",
-        exercises: ["climb_forearm_massage", "climb_wrist_flex_ext_stretch", "climb_thoracic_foam_ext", "climb_pushup_antagonist", "iso_band_ext_rotation", "climb_hip_flexor_stretch"],
+        exercises: ["climb_forearm_massage", "climb_wrist_flex_ext_stretch", "rehab_thoracic_ext_roller", "climb_pushup_antagonist", "iso_band_ext_rotation", "climb_hip_flexor_stretch"],
         note: "Antagonist push work MUST happen after every climbing session.",
       },
       weeklyAntagonist: {

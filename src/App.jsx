@@ -1166,6 +1166,17 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   let main = pick("main", mainLimit);
   const cooldown = pick("cooldown", cooldownLimit);
 
+  // ── DEDUP GUARD: Remove exercises with same base name (Rule: max 1 per base exercise) ──
+  {
+    const _seenBase = new Set();
+    main = main.filter(ex => {
+      const base = (ex.name || "").toLowerCase().replace(/\s*\(.*\)\s*$/, "").replace(/modified|cautious|advanced|basic/gi, "").trim();
+      if (_seenBase.has(base)) { console.warn("[DEDUP] Removed duplicate:", ex.name, ex.id, "— base:", base); return false; }
+      _seenBase.add(base);
+      return true;
+    });
+  }
+
   // ── Rule 1: Sport exercises REPLACE generic ones — they don't add ──
   // Rule 2: Add dedicated sport drills carved from main slots (not extra)
   if (_sportFocus?.profile) {
