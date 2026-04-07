@@ -631,10 +631,10 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
         const cond = conditionsDB.find(c => c.condition === inj.conditionId || c.id === inj.conditionId);
         const mandatory = cond?.mandatoryDaily || [];
 
-        // Add mandatory daily exercises to warm-up (max 2 per condition)
+        // Add mandatory daily exercises to warm-up (max 4 per condition — McKenzie sequences need 4)
         let added = 0;
         for (const exId of mandatory) {
-          if (added >= 2) break;
+          if (added >= 4) break;
           if (addedIds.has(exId)) continue;
           const ex = exerciseDB.find(e => e.id === exId);
           if (!ex || !locOk(ex)) continue;
@@ -649,11 +649,14 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
           added++;
         }
 
-        // Also add McKenzie exercises from INJURY_ADJUSTMENTS if not already covered
+        // Also add McKenzie exercises — full sequence in correct medical order
         const gateKey = inj.gateKey || "other";
-        const mckExercises = gateKey === "lower_back" ? ["mck_back_press_up", "mck_back_prone_elbows"] :
-          gateKey === "knee" ? ["rehab_vmo_wall_sit", "rehab_tke"] :
-          gateKey === "shoulder" ? ["iso_band_ext_rotation", "iso_face_pulls"] : [];
+        const mckExercises = gateKey === "lower_back" ? ["mck_back_prone_lying", "mck_back_prone_elbows", "mck_back_press_up", "mck_back_ext_standing"] :
+          gateKey === "knee" ? ["rehab_vmo_wall_sit", "rehab_tke", "mck_kn_squat_prog"] :
+          gateKey === "shoulder" ? ["iso_band_ext_rotation", "iso_face_pulls", "mck_sh_pendulum"] :
+          gateKey === "neck" ? ["mck_neck_retraction", "mck_neck_extension", "mck_neck_ret_ext"] :
+          gateKey === "hip" ? ["mck_hip_flexion", "mck_hip_rotation", "mck_hip_flexor_str"] :
+          gateKey === "ankle" ? ["mck_ank_dorsi", "mck_ank_eccentric", "mck_ank_balance"] : [];
 
         for (const exId of mckExercises) {
           if (addedIds.has(exId)) continue;

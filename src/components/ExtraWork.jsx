@@ -83,14 +83,22 @@ export default function ExtraWork({workout,onAddExercises,onClose}){
     </div>
   );
 
-  const Section=({id,icon,label,badge,children})=>{
+  const Section=({id,icon,label,badge,exercises,children})=>{
     const isOpen=openSection===id;
+    const sectionExercises = exercises || [];
     return(<Card style={{padding:0,overflow:"hidden"}}>
       <div onClick={()=>setOpenSection(isOpen?null:id)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",cursor:"pointer"}}>
         <div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:16}}>{icon}</span><span style={{fontSize:12,fontWeight:700,color:C.text}}>{label}</span>{badge}</div>
         <span style={{color:C.textDim,fontSize:10,transform:isOpen?"rotate(90deg)":"rotate(0)",transition:"transform 0.2s"}}>▸</span>
       </div>
-      {isOpen&&<div style={{padding:"0 14px 14px"}}>{children}</div>}
+      {isOpen&&<div style={{padding:"0 14px 14px"}}>
+        {children}
+        {sectionExercises.length > 0 && <button onClick={() => {
+          // Add all section exercises and navigate to workout flow
+          const toAdd = sectionExercises.filter(e => !mainIds.has(e.id));
+          if (toAdd.length > 0 && onAddExercises) onAddExercises(toAdd);
+        }} style={{width:"100%",padding:"10px",borderRadius:10,background:`linear-gradient(135deg,${C.teal},${C.tealDark||"#00a89f"})`,border:"none",color:"#000",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginTop:8}}>Start {label} ({sectionExercises.length} exercises) →</button>}
+      </div>}
     </Card>);
   };
 
@@ -106,7 +114,7 @@ export default function ExtraWork({workout,onAddExercises,onClose}){
       const exercises=getProtocol(proto.tag);
       if(!exercises.length)return null;
       const selInProto=exercises.filter(e=>selected[e.id]).length;
-      return(<Section key={proto.id} id={proto.id} icon={proto.icon} label={proto.label} badge={selInProto>0&&<Badge color={C.teal}>{selInProto}/{exercises.length}</Badge>}>
+      return(<Section key={proto.id} id={proto.id} icon={proto.icon} label={proto.label} exercises={exercises} badge={selInProto>0&&<Badge color={C.teal}>{selInProto}/{exercises.length}</Badge>}>
         <div style={{fontSize:8,color:C.warning,padding:"6px 0",borderBottom:`1px solid ${C.border}`,fontStyle:"italic"}}>{MCK_NOTE}</div>
         <div style={{fontSize:7,color:C.textDim,padding:"4px 0"}}>Source: {proto.source}</div>
         {exercises.map((ex,i)=>{
@@ -143,13 +151,13 @@ export default function ExtraWork({workout,onAddExercises,onClose}){
     </Section>
 
     {/* Foam Rolling */}
-    <Section id="foam" icon="🧽" label="Extra Foam Rolling" badge={<Badge>{foamRolls.length}</Badge>}>
+    <Section id="foam" icon="🧽" label="Extra Foam Rolling" exercises={foamRolls} badge={<Badge>{foamRolls.length}</Badge>}>
       <div style={{fontSize:9,color:C.textMuted,marginBottom:6}}>Based on today's trained muscles and soreness.</div>
       {foamRolls.map(ex=><ExRow key={ex.id} ex={ex}/>)}
     </Section>
 
     {/* PT Exercises */}
-    {ptExercises.length>0&&<Section id="pt" icon="🩺" label="Additional PT Exercises" badge={<Badge color={C.danger}>{ptExercises.length}</Badge>}>
+    {ptExercises.length>0&&<Section id="pt" icon="🩺" label="Additional PT Exercises" exercises={ptExercises} badge={<Badge color={C.danger}>{ptExercises.length}</Badge>}>
       <div style={{fontSize:9,color:C.textMuted,marginBottom:6}}>From your active condition protocols — not already in today's workout.</div>
       {ptExercises.map(ex=><ExRow key={ex.id} ex={ex}/>)}
     </Section>}
