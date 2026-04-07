@@ -136,6 +136,9 @@ export default function PlanView({ onClose }) {
                 <div style={{ fontSize: 10, color: C.textDim, fontStyle: "italic" }}>{day.description}</div>
               ) : (
                 <div>
+                  {/* Warmup exercises for this day */}
+                  {(() => { const bps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean)); const wu = exerciseDB.filter(e => (e.category === "foam_roll" || (e.category === "warmup" && e.type === "mobility")) && (e.phaseEligibility || []).includes(CURRENT_PHASE) && bps.has(e.bodyPart)).slice(0, 4); return wu.length > 0 ? <div style={{ marginBottom: 6 }}><div style={{ fontSize: 9, fontWeight: 700, color: C.info, letterSpacing: 0.5, marginBottom: 2 }}>WARM-UP</div>{wu.map((we, wi) => <div key={wi} style={{ fontSize: 9, color: C.textDim, paddingLeft: 4 }}>{we.name}</div>)}</div> : null; })()}
+                  <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: 0.5, marginBottom: 2 }}>MAIN EXERCISES</div>
                   {day.exercises?.map((e, ei) => {
                     const fullEx = exerciseDB.find(x => x.id === e.id) || e;
                     const display = swaps[e.id] || fullEx;
@@ -153,6 +156,8 @@ export default function PlanView({ onClose }) {
                       </div>
                     );
                   })}
+                  {/* Cooldown exercises */}
+                  {(() => { const bps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean)); const cd = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type === "static" && (e.phaseEligibility || []).includes(CURRENT_PHASE) && bps.has(e.bodyPart)).slice(0, 3); return cd.length > 0 ? <div style={{ marginTop: 6 }}><div style={{ fontSize: 9, fontWeight: 700, color: C.success, letterSpacing: 0.5, marginBottom: 2 }}>COOLDOWN</div>{cd.map((ce, ci) => <div key={ci} style={{ fontSize: 9, color: C.textDim, paddingLeft: 4 }}>{ce.name} · 30s hold</div>)}</div> : null; })()}
                   {day.muscleGroups?.length > 0 && <div style={{ display: "flex", gap: 3, marginTop: 4, flexWrap: "wrap" }}>
                     {day.muscleGroups.map(m => <span key={m} style={{ fontSize: 8, color: C.teal, background: C.tealBg, padding: "1px 4px", borderRadius: 3 }}>{m}</span>)}
                   </div>}
@@ -366,14 +371,38 @@ export default function PlanView({ onClose }) {
                             {dayData.map((day, di) => (
                               <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < dayData.length - 1 ? `1px solid ${C.border}` : "none" }}>
                                 <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : day.type === "rest" ? "😴" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
-                                {day.type !== "rest" && (day.exercises || []).map((e, ei) => {
-                                  const full = exerciseDB.find(x => x.id === e.id) || e;
-                                  const pp = full.phaseParams?.[String(p.num)] || {};
-                                  return <div key={ei} style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
-                                    <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span></span>
-                                    <span style={{ color: C.textDim, flexShrink: 0, marginLeft: 4 }}>{pp.sets || "2"}×{pp.reps || "12"}</span>
-                                  </div>;
-                                })}
+                                {day.type !== "rest" && (() => {
+                                  // Get body parts trained today for warmup/cooldown targeting
+                                  const trainedBps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean));
+                                  // Generate warmup: foam roll + mobility for trained areas
+                                  const warmup = exerciseDB.filter(e => (e.category === "foam_roll" || (e.category === "warmup" && e.type === "mobility")) && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart)).slice(0, 4);
+                                  // Generate cooldown: static stretches for trained areas
+                                  const cooldown = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type === "static" && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart)).slice(0, 3);
+                                  return <>
+                                    {/* Warmup */}
+                                    {warmup.length > 0 && <div style={{ paddingLeft: 8, marginTop: 2 }}>
+                                      <div style={{ fontSize: 8, fontWeight: 700, color: C.info, letterSpacing: 0.5, marginBottom: 1 }}>WARM-UP</div>
+                                      {warmup.map((we, wi) => <div key={wi} style={{ fontSize: 8, color: C.textDim, padding: "0 0 0 4px" }}>{we.name}</div>)}
+                                    </div>}
+                                    {/* Main exercises */}
+                                    <div style={{ paddingLeft: 8, marginTop: 2 }}>
+                                      <div style={{ fontSize: 8, fontWeight: 700, color: C.teal, letterSpacing: 0.5, marginBottom: 1 }}>MAIN</div>
+                                      {(day.exercises || []).map((e, ei) => {
+                                        const full = exerciseDB.find(x => x.id === e.id) || e;
+                                        const pp = full.phaseParams?.[String(p.num)] || {};
+                                        return <div key={ei} style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 4 }}>
+                                          <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span></span>
+                                          <span style={{ color: C.textDim, flexShrink: 0, marginLeft: 4 }}>{pp.sets || "2"}×{pp.reps || "12"}</span>
+                                        </div>;
+                                      })}
+                                    </div>
+                                    {/* Cooldown */}
+                                    {cooldown.length > 0 && <div style={{ paddingLeft: 8, marginTop: 2 }}>
+                                      <div style={{ fontSize: 8, fontWeight: 700, color: C.success, letterSpacing: 0.5, marginBottom: 1 }}>COOLDOWN</div>
+                                      {cooldown.map((ce, ci) => <div key={ci} style={{ fontSize: 8, color: C.textDim, padding: "0 0 0 4px" }}>{ce.name} · 30s</div>)}
+                                    </div>}
+                                  </>;
+                                })()}
                                 {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description || "Rest & recovery"}</div>}
                               </div>
                             ))}
