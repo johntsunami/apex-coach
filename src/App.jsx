@@ -1009,6 +1009,13 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
 
       // Score every exercise in pool
       const _phaseW = { 1: { stabilization: 2.0, mobility: 1.5, rehab: 1.5, strength: 0.5, isolation: 0.3 }, 2: { stabilization: 1.2, mobility: 1.0, rehab: 1.0, strength: 1.5, isolation: 0.8 }, 3: { stabilization: 0.4, mobility: 0.3, rehab: 0.8, strength: 2.0, isolation: 1.8 }, 4: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 2.5, isolation: 0.8 }, 5: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 1.5, isolation: 0.5 } };
+      // Equipment tier derivation for location-smart scheduling (Rule 19)
+      const _t1 = new Set(["cable","machine","lat_pulldown","leg_press","smith_machine","hack_squat","cable_machine","leg_extension","leg_curl","pec_deck","chest_press_machine"]);
+      const _t2 = new Set(["barbell","trap_bar","squat_rack","pull_up_bar","dip_bars","landmine","olympic_bar"]);
+      const _t3 = new Set(["dumbbell","kettlebell","bench","box","step","medicine_ball","ab_wheel"]);
+      const _t4 = new Set(["band","trx","stability_ball","foam_roller","bosu_ball","yoga_block","suspension_trainer"]);
+      const _eqTier = (ex) => { const eq = ex.equipmentRequired || []; if (eq.some(e => _t1.has(e))) return 1; if (eq.some(e => _t2.has(e))) return 2; if (eq.some(e => _t3.has(e))) return 3; if (eq.some(e => _t4.has(e))) return 4; return 5; };
+      const _locBoost = location === "gym" ? { 1: 1.8, 2: 1.5, 3: 1.0, 4: 0.6, 5: 0.4 } : location === "home" ? { 1: 0, 2: 0, 3: 1.2, 4: 1.5, 5: 1.8 } : { 1: 0, 2: 0, 3: 0.3, 4: 0.8, 5: 2.0 };
       const _scoreEx = (ex) => {
         let s = 1.0;
         s *= (_phaseW[phase]?.[ex.type] ?? 1.0);
@@ -1018,6 +1025,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         if (ga.includes("strength") && ex.type === "strength") s *= 1.5;
         if (_recentIds.includes(ex.id)) s *= 0.3; // penalize recent repeats
         if (!locationFilter(ex, location)) s *= 0.1; // strong penalty for location mismatch
+        s *= (_locBoost[_eqTier(ex)] || 1.0); // location-smart equipment priority
         return s;
       };
 

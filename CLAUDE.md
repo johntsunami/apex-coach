@@ -414,6 +414,19 @@ Every wellness technique must be completable end-to-end. Two player modes exist:
 
 If a technique has no way for the user to reach the completion screen, it is broken.
 
+### Rule 19: Location-Smart Exercise Scheduling
+
+When the user selects GYM, prioritize exercises that REQUIRE gym equipment (cables, machines, barbells, squat racks). Save home-compatible exercises (bodyweight, bands, dumbbells) for home days.
+
+**Equipment tiers:**
+- Tier 1 (GYM ONLY): cable, machine, lat pulldown, leg press — 1.8× score boost on gym days
+- Tier 2 (GYM PREFERRED): barbell, trap bar, squat rack, pull-up bar — 1.5× boost
+- Tier 3 (EITHER): dumbbell, kettlebell, bench — neutral (1.0×)
+- Tier 4 (HOME FRIENDLY): band, TRX, stability ball — 0.6× on gym days (save for home)
+- Tier 5 (ANYWHERE): bodyweight — 0.4× on gym days (save for home)
+
+On home days, reverse: tier 5 gets 1.8×, tier 4 gets 1.5×, tier 3 gets 1.2×, tier 1-2 are filtered out.
+
 ---
 
 ## REFERENCE DOCS
