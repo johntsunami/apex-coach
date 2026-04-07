@@ -186,9 +186,41 @@ export function exportWorkout() {
   const sessions = safeGet("apex_sessions") || [];
   const weeklyVol = safeGet("apex_weekly_volume") || {};
   const prefs = assessment.preferences || {};
+  const phase = meso?.phase || assessment.startingPhase || 1;
 
   // Get today's workout if cached
   const dailyWorkout = safeGet("apex_daily_workout");
+
+  // Generate full multi-week schedule (current + next 3 weeks)
+  let fullSchedule = null;
+  try {
+    // Dynamic import to avoid circular deps — generateWeeklyPlan is in weeklyPlanner
+    const exerciseDB = require("../data/exercises.json");
+    const { generateWeeklyPlan } = require("./weeklyPlanner.js");
+    if (generateWeeklyPlan) {
+      fullSchedule = [];
+      for (let wk = 0; wk < 4; wk++) {
+        const generated = generateWeeklyPlan(exerciseDB, phase, "gym");
+        if (generated?.days) {
+          fullSchedule.push({
+            weekLabel: wk === 0 ? "Current Week" : `Week +${wk}`,
+            split: generated.split,
+            isDeload: generated.isDeload,
+            days: generated.days.map(day => ({
+              dayName: day.dayName, type: day.type, label: day.label,
+              description: day.description, muscleGroups: day.muscleGroups || [],
+              estimatedMinutes: day.estimatedMinutes,
+              exercises: (day.exercises || []).map(ex => {
+                const full = exerciseDB.find(e => e.id === ex.id) || ex;
+                const pp = full.phaseParams?.[String(phase)] || {};
+                return { id: full.id, name: full.name, bodyPart: full.bodyPart, movementPattern: full.movementPattern, type: full.type, sets: pp.sets, reps: pp.reps, tempo: pp.tempo, rest: pp.rest, rpe: pp.rpe || pp.intensity };
+              }),
+            })),
+          });
+        }
+      }
+    }
+  } catch (e) { console.warn("Full schedule generation failed:", e); }
 
   const data = {
     exportedAt: new Date().toISOString(),
@@ -256,6 +288,9 @@ export function exportWorkout() {
       weeklyVol: dailyWorkout.weeklyVol || {},
       sportMeta: dailyWorkout.sportMeta || null,
     } : null,
+
+    // Full multi-week schedule (current + next 3 weeks with all exercises)
+    fullSchedule,
 
     // Weekly volume tracking
     weeklyVolume: weeklyVol,
@@ -417,7 +452,30 @@ function buildWorkoutMarkdown(data, name) {
   if (ctx.cycleEmphasis) lines.push(`- Cycle Emphasis: ${ctx.cycleEmphasis}`);
   lines.push("");
 
-  if (data.weeklyPlan) {
+  // Full multi-week schedule (the main content of the export)
+  if (data.fullSchedule?.length > 0) {
+    lines.push(`## Full Training Schedule (${data.fullSchedule.length} weeks)\n`);
+    data.fullSchedule.forEach((week, wi) => {
+      lines.push(`### ${week.weekLabel}${week.isDeload ? " — DELOAD WEEK" : ""} (${week.split || "Full Body"})`);
+      (week.days || []).forEach(day => {
+        if (day.type === "rest") {
+          lines.push(`\n**${day.dayName}** — Rest Day`);
+          lines.push(`*${day.description || "Active recovery, mobility, walking"}*`);
+        } else {
+          const muscles = day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : "";
+          lines.push(`\n**${day.dayName}** — ${day.label}${muscles} · ~${day.estimatedMinutes || "?"} min`);
+          if (day.exercises?.length > 0) {
+            lines.push(`| # | Exercise | Body Part | Pattern | Sets | Reps | Tempo | RPE |`);
+            lines.push(`|---|----------|-----------|---------|------|------|-------|-----|`);
+            day.exercises.forEach((ex, i) => {
+              lines.push(`| ${i + 1} | ${ex.name} | ${(ex.bodyPart || "-").replace(/_/g, " ")} | ${ex.movementPattern || "-"} | ${ex.sets || "-"} | ${ex.reps || "-"} | ${ex.tempo || "-"} | ${ex.rpe || "-"} |`);
+            });
+          }
+        }
+      });
+      lines.push(""); // blank line between weeks
+    });
+  } else if (data.weeklyPlan) {
     lines.push(`## Weekly Plan (Week ${data.weeklyPlan.weekNumber}${data.weeklyPlan.isDeload ? " — DELOAD" : ""})`);
     (data.weeklyPlan.days || []).forEach(day => {
       lines.push(`\n### ${day.dayName} — ${day.label} (${day.type})`);
