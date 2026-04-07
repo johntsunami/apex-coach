@@ -73,6 +73,13 @@ export function validateSession(session, phase, profile) {
   const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
   if (dupes.length > 0) errors.push(`Duplicate exercises: ${[...new Set(dupes)].join(", ")}`);
 
+  // Check 7: Cardio placement (Rule 20 — cardio after all strength)
+  const lastStrengthIdx = exercises.reduce((max, ex, i) => (ex.type === "strength" || ex.type === "isolation" || ex.type === "stabilization") ? i : max, -1);
+  const firstCardioIdx = exercises.findIndex(e => e.category === "cardio" || e.type === "cardio");
+  if (firstCardioIdx !== -1 && lastStrengthIdx !== -1 && firstCardioIdx < lastStrengthIdx) {
+    warnings.push(`Cardio exercise at position ${firstCardioIdx + 1} appears before strength at position ${lastStrengthIdx + 1}`);
+  }
+
   return { valid: errors.length === 0, errors, warnings, patternCounts, bodyParts, compounds, exerciseCount: exercises.length };
 }
 

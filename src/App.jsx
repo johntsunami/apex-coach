@@ -1177,6 +1177,16 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     });
   }
 
+  // ── EXERCISE ORDERING: Compounds → Isolation → Core → Cardio (Rule 20) ──
+  {
+    const _isCore = ex => ex.bodyPart === "core" || ["anti_rotation","anti_extension","anti_flexion"].includes(ex.movementPattern);
+    const _isCardio = ex => ex.category === "cardio" || ex.type === "cardio";
+    const _isIso = ex => ex.type === "isolation";
+    const compounds = [], iso = [], core = [], cardio = [], other = [];
+    main.forEach(ex => { if (_isCardio(ex)) cardio.push(ex); else if (_isCore(ex)) core.push(ex); else if (_isIso(ex)) iso.push(ex); else compounds.push(ex); });
+    main = [...compounds, ...iso, ...core, ...cardio];
+  }
+
   // ── Rule 1: Sport exercises REPLACE generic ones — they don't add ──
   // Rule 2: Add dedicated sport drills carved from main slots (not extra)
   if (_sportFocus?.profile) {

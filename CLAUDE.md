@@ -427,6 +427,20 @@ When the user selects GYM, prioritize exercises that REQUIRE gym equipment (cabl
 
 On home days, reverse: tier 5 gets 1.8×, tier 4 gets 1.5×, tier 3 gets 1.2×, tier 1-2 are filtered out.
 
+### Rule 20: Cardio Placement — Always After Strength
+
+All cardio exercises go at the END of the main workout block, after all strength and resistance training is complete. Never program cardio before or between strength exercises.
+
+**Session order within Phase D (Integrate):**
+1. Compound strength exercises (push, pull, hinge, squat)
+2. Isolation / accessory exercises
+3. Core exercises
+4. Cardio conditioning (LAST)
+
+**Why (NASM principle):** Performing cardio before resistance training depletes glycogen and fatigues the neuromuscular system, reducing force output on compound lifts. Placing cardio last also improves fat utilization.
+
+**Exceptions:** Cardio-only sessions (dedicated Zone 2 day) are exempt. Post-cardiac event users defer to medical guidance.
+
 ---
 
 ## REFERENCE DOCS
