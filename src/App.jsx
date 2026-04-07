@@ -1018,12 +1018,15 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       // Location bonus: ADDITIVE, small values (0-0.25) — tiebreaker not dominator
       const _locBonusMap = location === "gym" ? { 1: 0.25, 2: 0.20, 3: 0.10, 4: 0, 5: 0 } : location === "home" ? { 1: 0, 2: 0, 3: 0.10, 4: 0.20, 5: 0.25 } : { 1: 0, 2: 0, 3: 0, 4: 0.10, 5: 0.30 };
       // Phase-appropriate score: exercises score highest in their optimal phase range
+      // TIGHTER penalties to force different exercises per phase
       const _phaseAppropriate = (ex) => {
         const diff = ex.difficultyLevel || 3;
-        const optimal = { 1: [1, 2], 2: [1, 2, 3], 3: [2, 3, 4], 4: [3, 4, 5], 5: [4, 5] }[diff] || [1, 2, 3, 4, 5];
-        if (optimal.includes(phase)) return 1.5;
+        // Narrower optimal ranges — each difficulty level fits 2 phases max
+        const optimal = { 1: [1], 2: [1, 2], 3: [2, 3], 4: [3, 4], 5: [4, 5], 6: [5], 7: [5] }[diff] || [2, 3];
+        if (optimal.includes(phase)) return 1.8; // Strong boost in optimal range
         const distance = Math.min(...optimal.map(p => Math.abs(p - phase)));
-        return Math.max(0.1, 1.0 - (distance * 0.35));
+        // Steeper penalty: 1 away = 0.5, 2 away = 0.15, 3+ away = 0.05
+        return Math.max(0.05, 1.0 - (distance * 0.45));
       };
       const _scoreEx = (ex) => {
         // Phase weight: PRIMARY factor (0.3-2.5)
