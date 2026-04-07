@@ -28,7 +28,7 @@ This is a fitness + mental health coaching app. The founder (John) is the test s
 Before editing, LIST every feature currently in the file. After editing, VERIFY every feature still works. If a feature is missing after your edit, you broke the rule.
 
 ### Rule 2: Surgical Edits Only
-NEVER rewrite the entire file. Use targeted find-and-replace. If adding a feature, add it. Don't rebuild everything around it.
+NEVER rewrite the entire file. Use targeted find-and-replace. If adding a feature, add it. Don't rebuild everything around it. Every prompt begins with "Read CLAUDE.md" — this file is the source of truth for all project rules.
 
 ### Rule 3: Exercise Screen Must Always Include
 - Inline SVG illustration of the exercise (accurate to the specific movement)
@@ -321,11 +321,86 @@ Floor: 20, Ceiling: 100
 
 ---
 
+## WORKOUT GENERATION — NEVER VIOLATE
+
+These rules govern how the app selects exercises for any user's session. They apply to EVERY profile, EVERY phase, EVERY account. If any code change touches workout generation, verify these rules still hold.
+
+### Rule 11: Movement Pattern Coverage
+
+Every main workout (Phase D: Integrate) must include at least ONE exercise from each fundamental pattern:
+- **Push** (horizontal or vertical)
+- **Pull** (horizontal or vertical)
+- **Hinge** (deadlift, RDL, hip thrust, glute bridge)
+- **Squat** (bilateral or unilateral)
+- **Core** (anti-rotation, anti-extension, anti-flexion)
+
+Fill these 5 required slots FIRST, then fill remaining slots with goal-driven picks. If a pattern has zero safe exercises available (due to injury/equipment filters), log the gap — do not fill it with a random exercise from another pattern.
+
+**Exceptions:** Wheelchair users may skip hinge/squat. Bed-bound users may skip most patterns. Post-surgical acute patients use breathing + ROM only.
+
+### Rule 12: Movement Pattern Concentration Limit
+
+**HARD LIMIT: Maximum 2 exercises from any single movementPattern per session.**
+
+This means NEVER 3 anti-rotation exercises. NEVER 3 push exercises. NEVER 3 squats. If the engine selects a 3rd exercise from the same pattern, it must be replaced with the highest-scoring exercise from the most underrepresented pattern.
+
+### Rule 13: Progression Chain Deduplication
+
+**Maximum 1 exercise per chainFamily per session.**
+
+Pallof Press (Tall Kneeling), Pallof Press (Standing), and Pallof Press (Split Stance) are all from `core_anti_rotation_chain`. Only the most advanced version the user has earned should appear. Never include multiple exercises from the same progression chain in one session.
+
+### Rule 14: Phase-Appropriate Exercise Selection
+
+The exercise pool must be weighted by phase. Stabilization exercises dominate Phase 1 but should be deprioritized in Phase 3+. Compound strength exercises dominate Phase 3-4. Power/plyometrics dominate Phase 5.
+
+**Phase weight guidelines:**
+
+| Exercise Type | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5 |
+|---|---|---|---|---|---|
+| Stabilization | HIGH | Medium | LOW | LOW | LOW |
+| Compound strength | LOW | HIGH | HIGHEST | HIGHEST | HIGH |
+| Isolation | LOW | Medium | HIGH | Medium | LOW |
+| Plyometric | BLOCKED | LOW | Medium | Medium | HIGHEST |
+
+**Phase 3 minimum:** At least 3 compound strength exercises per session. If a Phase 3 session has fewer than 3 compounds, the engine is broken.
+
+### Rule 15: Profile Differentiation
+
+Different user profiles must produce meaningfully different exercise selections. If a bodybuilder and a rock climber get the same 8 exercises, the engine is not differentiating.
+
+Target: less than 50% exercise overlap between different sport profiles at the same phase.
+
+### Rule 16: Workout Validation Is Mandatory
+
+Every generated workout MUST pass validation before being served to the user. The validator checks: movement pattern coverage, pattern concentration limit, chain family uniqueness, phase-appropriate compound ratio, no duplicate exercises, body part distribution (max 3 per body part).
+
+**Never serve an unvalidated session.** Never silently serve a session that fails validation.
+
+### Rule 17: Recency-Aware Selection
+
+Do not repeat the same exercises in consecutive sessions unless they are mandatory (rehab/PT exercises, McKenzie protocol, daily minimums). Apply a recency penalty: exercise used yesterday scores × 0.2, exercise used 2 sessions ago scores × 0.6.
+
+---
+
+## WELLNESS SYSTEM — NEVER VIOLATE
+
+### Rule 18: Wellness Technique Progression
+
+Every wellness technique must be completable end-to-end. Two player modes exist:
+- **Timer mode:** For breathing exercises — auto-advances on countdown
+- **Step mode:** For guided techniques (grounding, STOP, TIPP, DEAR MAN, etc.) — requires a visible, tappable "Next →" button to advance between steps
+
+If a technique has no way for the user to reach the completion screen, it is broken.
+
+---
+
 ## REFERENCE DOCS
 Read these files for detailed requirements:
 - `docs/FEATURE_REQUIREMENTS_V2.md` — All feature specs with details
 - `docs/ARCHITECTURE_DECISIONS.md` — Database, deployment, verification strategy
 - `docs/V7_SPEC.md` — Original product specification
+- `src/utils/workoutValidator.js` — Validation rules for generated sessions
 
 ---
 
@@ -346,34 +421,43 @@ Read these files for detailed requirements:
 - [x] Bottom nav on all screens
 - [x] Momentum modules on home
 
-### ❌ Not Yet Built — Priority Order
-- [ ] Exercise database (JSON file, 50+ exercises with full metadata)
-- [ ] NASM initial assessment protocol (posture, movement screen, PAR-Q+)
-- [ ] Goal selection: size vs strength per muscle group + compensatory muscle logic
-- [ ] Transparency layer: show WHY each exercise was selected/excluded
-- [ ] Quick-complete mode (checkbox on workout list for experienced users)
-- [ ] Difficulty override: Standard / Push It / Full Send (with safety check)
-- [ ] Persistent data storage (localStorage)
-- [ ] Injury management: add, edit, remove injuries anytime
-- [ ] Daily ROM + static stretching cooldown targeting trouble areas
-- [ ] McKenzie protocol library (back, neck, hip, knee)
-- [ ] Add-on exercises: foam rolling, extra PT, bodyweight fundamentals, sport-specific
-- [ ] Volume regulation engine (sets per week, deload weeks, overtraining prevention)
-- [ ] Post-session feedback that feeds into future plans
-- [ ] Favorite exercises with progression roadmap
-- [ ] Exercise plan review with alternative requests
-- [ ] VO2 max tracking + cardio prescription
-- [ ] Home page progress visuals (strength goals, VO2, phase timeline)
-- [ ] Core movement patterns daily (push/pull/hinge/squat/carry)
-- [ ] Long-term periodization tracking (phase progression)
-- [ ] Return-to-Training engine (after breaks)
-- [ ] Weekly coach report (Claude-generated narrative)
-- [ ] Integrity score from task completion
-- [ ] Task board with CTFAR coaching
-- [ ] Sport bias layers (surfing, BJJ, muay thai, snowboarding, hiking)
-- [ ] PT Protocol Scorecards with criteria-driven progression
-- [ ] Weight history tracking per exercise
-- [ ] Progressive overload recommendations
-- [ ] Floor Session (minimum viable workout for bad days)
-- [ ] Persona system (coaching tone by context)
-- [ ] Multi-user support (Supabase auth + cloud DB)
+### ❌ Not Yet Built / ✅ Now Built — Priority Order
+- [x] Exercise database (JSON file, 472 exercises with full metadata) ✅ BUILT
+- [x] NASM initial assessment protocol (posture, movement screen, PAR-Q+) ✅ BUILT — 14-screen assessment
+- [x] Goal selection: size vs strength per muscle group + compensatory muscle logic ✅ BUILT
+- [x] Transparency layer: show WHY each exercise was selected/excluded ✅ BUILT — _reason field on every exercise
+- [x] Quick-complete mode (checkbox on workout list for experienced users) ✅ BUILT
+- [x] Difficulty override: Standard / Push It / Full Send (with safety check) ✅ BUILT
+- [x] Persistent data storage (Supabase + localStorage cache) ✅ BUILT
+- [x] Injury management: add, edit, remove injuries anytime ✅ BUILT — InjuryManager component
+- [x] Daily ROM + static stretching cooldown targeting trouble areas ✅ BUILT — 5-tier ROM system
+- [x] McKenzie protocol library (back, neck, hip, knee) ✅ BUILT
+- [x] Add-on exercises: foam rolling, extra PT, bodyweight fundamentals, sport-specific ✅ BUILT
+- [x] Volume regulation engine (sets per week, deload weeks, overtraining prevention) ✅ BUILT
+- [x] Post-session feedback that feeds into future plans ✅ BUILT — analyzeFeedback in mesocycle
+- [x] Favorite exercises with progression roadmap ✅ BUILT
+- [x] Exercise plan review with alternative requests ✅ BUILT — swap modal
+- [x] VO2 max tracking + cardio prescription ✅ BUILT
+- [x] Home page progress visuals (Power Rings, stats, volume chart) ✅ BUILT
+- [x] Core movement patterns daily (push/pull/hinge/squat/carry) ✅ BUILT — pattern-slot selection
+- [x] Long-term periodization tracking (phase progression) ✅ BUILT — continuous cycling + mesocycles
+- [x] Return-to-Training engine (after breaks) ✅ BUILT — detraining protocol
+- [ ] Weekly coach report (Claude-generated narrative) — NOT YET
+- [ ] Integrity score from task completion — NOT YET
+- [ ] Task board with CTFAR coaching — REMOVED from nav (deprioritized)
+- [x] Sport bias layers (surfing, BJJ, muay thai, snowboarding, hiking, climbing) ✅ BUILT — PES sport system
+- [x] PT Protocol Scorecards with criteria-driven progression ✅ BUILT — PTSystem component
+- [x] Weight history tracking per exercise ✅ BUILT — exercise effort map
+- [x] Progressive overload recommendations ✅ BUILT — load enrichment
+- [x] Floor Session (minimum viable workout for bad days) ✅ BUILT
+- [ ] Persona system (coaching tone by context) — NOT YET
+- [x] Multi-user support (Supabase auth + cloud DB) ✅ BUILT
+- [x] Wellness module (breathing, mindfulness, DBT/ACT skills, sleep) ✅ BUILT
+- [x] Senior fitness system (fall risk, balance training, age-adapted) ✅ BUILT
+- [x] Weight/body composition tracking with goals ✅ BUILT
+- [x] Data export (profile + workout JSON/markdown) ✅ BUILT
+- [x] Bug reporting system (Supabase-backed) ✅ BUILT
+- [x] Plan quality validation (14 automated checks) ✅ BUILT
+- [x] Developer testing dashboard (8 simulated profiles) ✅ BUILT
+- [x] Celebration/reinforcement system (confetti + milestones) ✅ BUILT
+- [x] Power Rings detraining visualization ✅ BUILT
