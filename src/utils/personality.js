@@ -99,14 +99,24 @@ export function getStreakEmoji(streak) {
 
 // ── 6. REST TIMER TIPS ──────────────────────────────────────
 
-export function getRestTip() {
+export function getRestTip(bodyPart, exercisesDone) {
+  // Hydrate reminder every 3rd exercise, body-part-aware
+  const isHydrateTime = exercisesDone > 0 && exercisesDone % 3 === 0;
+  if (isHydrateTime) {
+    const bp = (bodyPart || "").toLowerCase();
+    if (["legs","glutes","hips","calves"].includes(bp)) return "Shake out your legs. Grab some water.";
+    if (["chest","shoulders","arms"].includes(bp)) return "Shake out your arms. Stay hydrated.";
+    if (bp === "back") return "Roll your shoulders. Time for water.";
+    if (bp === "core") return "Stretch your torso. Drink up.";
+    return "Shake everything out. Hydrate.";
+  }
   return pick([
-    "Hydrate", "Shake out those arms", "Breathe: 4 in, 4 out",
+    "Breathe: 4 in, 4 out",
     "Your muscles grow during rest, not during the set",
-    "Check your form in the mirror — looking good",
+    "Check your form — looking good",
     "This rest is building your next set's power",
     "Focus on what's next", "Relax your jaw and shoulders",
-    "Pro tip: visualize the next set going perfectly",
+    "Visualize the next set going perfectly",
     "Rest is training. Embrace it.",
   ]);
 }
