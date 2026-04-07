@@ -2073,10 +2073,10 @@ const[curPain,setCurPain]=useState(false);
 const[curQuality,setCurQuality]=useState("");
 useEffect(()=>{setCs(1);setResting(false);setTimerOn(false);setTl(ep.rest||0);setExp("steps");setSetLog([]);setCurReps(_parseReps(ep.reps)||12);setCurLoad(exercise._lastLoad||"");setCurRpe(0);setCurPain(false);setCurQuality("");setAutoAdvancing(false);setAutoAdvanceName("");},[exercise.id]);
 const[autoAdvancing,setAutoAdvancing]=useState(false);const[autoAdvanceName,setAutoAdvanceName]=useState("");
-const[restTipText,setRestTipText]=useState(()=>getRestTip(exercise?.bodyPart, completedExercises?.length || 0));
+const[restTipText,setRestTipText]=useState(()=>getRestTip(exercise?.bodyPart, index || 0));
 const[restTipChanged,setRestTipChanged]=useState(false);
 useEffect(()=>{if(timerOn&&tl>0){tr.current=setTimeout(()=>setTl(t=>t-1),1000);// Change tip once at halfway for long rest periods (>90s)
-if(ep.rest>90&&tl===Math.floor(ep.rest/2)&&!restTipChanged){setRestTipText(getRestTip(exercise?.bodyPart, completedExercises?.length || 0));setRestTipChanged(true);}}else if(timerOn&&tl===0){setTimerOn(false);setResting(false);
+if(ep.rest>90&&tl===Math.floor(ep.rest/2)&&!restTipChanged){setRestTipText(getRestTip(exercise?.bodyPart, index || 0));setRestTipChanged(true);}}else if(timerOn&&tl===0){setTimerOn(false);setResting(false);
 // If this was the last set's rest, auto-advance to next exercise immediately
 if(cs>=(ep.sets||1)){setAutoAdvanceName("next");setAutoAdvancing(true);}
 }return()=>clearTimeout(tr.current);},[timerOn,tl]);
@@ -2084,7 +2084,7 @@ if(cs>=(ep.sets||1)){setAutoAdvanceName("next");setAutoAdvancing(true);}
 const setLogRef=useRef(setLog);setLogRef.current=setLog;
 useEffect(()=>{if(autoAdvancing){const t=setTimeout(()=>{setAutoAdvancing(false);setAutoAdvanceName("");onDone({sets:setLogRef.current});},1500);return()=>clearTimeout(t);}},[autoAdvancing]);
 const logAndAdvance=()=>{const entry={set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"};setSetLog(prev=>[...prev,entry]);setCurPain(false);setCurQuality("");};
-const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);setRestTipText(getRestTip(exercise?.bodyPart, completedExercises?.length || 0));setRestTipChanged(false);}}else{const allSets=[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}];setSetLog(allSets);
+const handleSet=()=>{logAndAdvance();if(cs<(ep.sets||1)){setCs(s=>s+1);setCanUndo(true);if(ep.rest){setResting(true);setTl(ep.rest);setTimerOn(true);setRestTipText(getRestTip(exercise?.bodyPart, index || 0));setRestTipChanged(false);}}else{const allSets=[...setLog,{set_number:cs,reps_done:curReps,load:curLoad?parseFloat(curLoad):null,rpe:curRpe||null,pain:curPain,quality:curQuality||"good"}];setSetLog(allSets);
   // Last set complete — advance to next exercise immediately (no second tap needed)
   setAutoAdvanceName("next");setAutoAdvancing(true);
   // Store effort level for future workout adjustments
