@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
+import { validateSession } from "../utils/workoutValidator.js";
 
 const C={bg:"#060b18",bgCard:"#0d1425",bgElevated:"#162040",border:"rgba(255,255,255,0.08)",text:"#e8ecf4",textMuted:"#7a8ba8",textDim:"#4a5a78",teal:"#00d2c8",tealDark:"#00a89f",tealBg:"rgba(0,210,200,0.08)",success:"#22c55e",danger:"#ef4444",warning:"#eab308",info:"#3b82f6",purple:"#a855f7"};
 
@@ -136,16 +137,24 @@ export default function DevTestDashboard({ onClose }) {
       // Generate plan
       const plan = window._buildWorkoutList ? window._buildWorkoutList() : null;
 
-      // Run audit checks
+      // Run profile-specific audit checks
       const audit = (profile.checks || []).map(chk => {
         try { return { label: chk.label, passed: plan ? chk.test(plan) : false }; }
         catch (e) { return { label: chk.label, passed: false, error: e.message }; }
       });
 
+      // Run session validator (movement patterns, chain dedup, body part dist)
+      const sv = plan ? validateSession(plan, profile.assessment.startingPhase || 1) : null;
+      if (sv) {
+        sv.errors.forEach(e => audit.push({ label: e, passed: false, source: "validator" }));
+        sv.warnings.forEach(w => audit.push({ label: w, passed: true, warning: true, source: "validator" }));
+        if (sv.valid && sv.errors.length === 0) audit.push({ label: `Session valid: ${Object.entries(sv.patternCounts || {}).map(([p,c])=>`${p}:${c}`).join(" ")} | ${sv.compounds} compounds`, passed: true, source: "validator" });
+      }
+
       const passed = audit.filter(a => a.passed).length;
       const total = audit.length;
 
-      setResults(prev => ({ ...prev, [profile.id]: { plan, audit, passed, total, exerciseCount: plan ? (plan.all || []).length : 0, mainCount: plan ? (plan.main || []).length : 0 } }));
+      setResults(prev => ({ ...prev, [profile.id]: { plan, audit, passed, total, exerciseCount: plan ? (plan.all || []).length : 0, mainCount: plan ? (plan.main || []).length : 0, sessionValidation: sv } }));
     } catch (e) {
       setResults(prev => ({ ...prev, [profile.id]: { error: e.message, audit: [], passed: 0, total: 0, exerciseCount: 0, mainCount: 0 } }));
     } finally {

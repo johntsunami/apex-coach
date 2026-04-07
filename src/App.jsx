@@ -16,6 +16,7 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
+import { validateSession as _validateSession } from "./utils/workoutValidator.js";
 import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing, isSeniorUser, getAgeTier } from "./utils/seniorFitness.js";
 import { getWeightTrend, shouldShowWeightNudge, dismissWeightNudge, logWeight, displayWeight, getWeightUnit, lbsToKg, calculateBMI } from "./utils/weightTracking.js";
 import WellnessScreen, { StressResetCard } from "./components/WellnessModule.jsx";
@@ -1000,6 +1001,74 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       const prioritized = prioritizeBySport(pool, userSports, sportPrefs.length > 0 ? sportPrefs : null);
       pool.length = 0; pool.push(...prioritized);
     }
+    // ── PATTERN-SLOT SELECTION (main exercises only) ──
+    // Fills required movement patterns first, then remaining slots by score
+    if (category === "main" && limit >= 4) {
+      const _goals = assessment?.goals || {};
+      const _recentIds = []; try { const ss = getSessions() || []; ss.slice(-2).forEach(s => (s.exercises_completed || []).forEach(ec => _recentIds.push(ec.exercise_id))); } catch {}
+
+      // Score every exercise in pool
+      const _phaseW = { 1: { stabilization: 2.0, mobility: 1.5, rehab: 1.5, strength: 0.5, isolation: 0.3 }, 2: { stabilization: 1.2, mobility: 1.0, rehab: 1.0, strength: 1.5, isolation: 0.8 }, 3: { stabilization: 0.4, mobility: 0.3, rehab: 0.8, strength: 2.0, isolation: 1.8 }, 4: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 2.5, isolation: 0.8 }, 5: { stabilization: 0.3, mobility: 0.3, rehab: 0.8, strength: 1.5, isolation: 0.5 } };
+      const _scoreEx = (ex) => {
+        let s = 1.0;
+        s *= (_phaseW[phase]?.[ex.type] ?? 1.0);
+        const bpGoal = _goals[ex.bodyPart]; const ga = Array.isArray(bpGoal) ? bpGoal : [bpGoal];
+        if (ga.includes("size") && ex.type === "isolation") s *= 1.5;
+        if (ga.includes("size") && ex.type === "strength") s *= 1.3;
+        if (ga.includes("strength") && ex.type === "strength") s *= 1.5;
+        if (_recentIds.includes(ex.id)) s *= 0.3; // penalize recent repeats
+        if (!locationFilter(ex, location)) s *= 0.1; // strong penalty for location mismatch
+        return s;
+      };
+
+      const scored = pool.map(ex => ({ ...ex, _score: _scoreEx(ex) })).sort((a, b) => b._score - a._score);
+      const result = [];
+      const usedIds = new Set();
+      const usedChains = new Set();
+      const usedPatterns = {};
+      const usedBps = {};
+
+      const _normP = (p) => ["anti_rotation","anti_extension","anti_flexion","breathing"].includes(p) ? "core" : p === "lunge" ? "squat" : p === "carry" ? "core" : p;
+      const _canPick = (ex) => {
+        if (usedIds.has(ex.id)) return false;
+        const cf = ex.progressionChain?.chainFamily; if (cf && usedChains.has(cf)) return false;
+        const np = _normP(ex.movementPattern); if ((usedPatterns[np] || 0) >= 2) return false;
+        if ((usedBps[ex.bodyPart] || 0) >= 3) return false;
+        return true;
+      };
+      const _addEx = (ex) => {
+        let picked = locationFilter(ex, location) ? ex : trySubstitute(ex, location, phase);
+        if (!picked || usedIds.has(picked.id)) return false;
+        // Volume check
+        if (category === "main") { const vc = wouldExceedVolume(picked, runningVol, phase); if (vc.exceeded) return false; }
+        result.push(picked); usedIds.add(picked.id);
+        const cf = picked.progressionChain?.chainFamily; if (cf) usedChains.add(cf);
+        const np = _normP(picked.movementPattern); usedPatterns[np] = (usedPatterns[np] || 0) + 1;
+        usedBps[picked.bodyPart] = (usedBps[picked.bodyPart] || 0) + 1;
+        const bp = picked.bodyPart || "other"; const cp = capExerciseParams(picked, phase, difficulty);
+        runningVol[bp] = (runningVol[bp] || 0) + cp.sets;
+        return true;
+      };
+
+      // STEP 1: Fill required movement pattern slots
+      const requiredPatterns = ["push", "pull", "hinge", "squat", "core"];
+      for (const rp of requiredPatterns) {
+        const candidates = scored.filter(ex => _normP(ex.movementPattern) === rp && _canPick(ex));
+        if (candidates.length > 0) _addEx(candidates[0]);
+      }
+
+      // STEP 2: Fill remaining slots by score
+      const remaining = limit - result.length;
+      for (let i = 0; i < remaining; i++) {
+        const candidates = scored.filter(ex => _canPick(ex));
+        if (candidates.length === 0) break;
+        _addEx(candidates[0]);
+      }
+
+      return result;
+    }
+
+    // ── ORIGINAL PICK LOGIC (warmup/cooldown — unchanged) ──
     const result = [];
     const usedIds = new Set();
     for (const ex of pool) {
@@ -1370,6 +1439,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const sportMeta = _sportFocus ? { sport: _sportFocus.sport, label: _sportFocus.label, rank: _sportFocus.rank } : null;
 
   const _plan = { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  // Run session validation
+  try { const _sv = _validateSession(_plan, phase); if (!_sv.valid) console.warn("[WORKOUT VALIDATION]", _sv.errors.join(" | ")); else console.log("[WORKOUT VALIDATION] PASS — patterns:", JSON.stringify(_sv.patternCounts), "compounds:", _sv.compounds); _plan._sessionValidation = _sv; } catch {}
   // Run plan validation (non-blocking)
   try { const wp = JSON.parse(localStorage.getItem("apex_weekly_plan") || "null"); const vr = _validatePlan(_plan, wp); _saveValidation(vr); _plan._validation = vr; } catch {}
   return _plan;
