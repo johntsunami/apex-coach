@@ -31,8 +31,14 @@ export default function AuthProvider({ children }) {
   function _getLocalUid() { try { return localStorage.getItem("apex_current_uid"); } catch { return null; } }
   function _setLocalUid(uid) { try { localStorage.setItem("apex_current_uid", uid); } catch {} }
   function _clearUserLocalStorage() {
+    // Clear UI state and preferences on user switch — but NEVER clear session history.
+    // Sessions are the source of truth (per CLAUDE.md Rule 9). They persist across
+    // user switches because Supabase restore will overwrite them with the correct
+    // user's data. Clearing them causes the "0 sessions / Start Workout" bug.
     const userKeys = [
-      "apex_assessment","apex_injuries","apex_injury_history","apex_sessions","apex_stats",
+      "apex_assessment","apex_injuries","apex_injury_history",
+      // "apex_sessions" — NEVER CLEAR. Supabase restore handles user isolation.
+      // "apex_stats" — NEVER CLEAR. Derived from sessions; clearing causes 0 streak.
       "apex_prefs","apex_paused_workout","apex_last_screen","apex_last_tab",
       "apex_image_overrides","apex_youtube_overrides","apex_baseline_tests",
       "apex_baseline_capabilities","apex_power_records","apex_current_uid",
@@ -64,9 +70,11 @@ export default function AuthProvider({ children }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const newUser = session?.user ?? null;
-      // Clear stale localStorage when user changes (prevents data leaking between accounts)
+      // Clear stale localStorage ONLY on genuine user switch (different user logged in)
+      // NOT on: null prevUid (first load), token refresh (same user), migration cleared UID
       const prevUid = _getLocalUid();
       if (newUser && prevUid && prevUid !== newUser.id) {
+        console.log("[AUTH] User switch detected:", prevUid, "→", newUser.id, "— clearing preferences");
         _clearUserLocalStorage();
       }
       if (newUser) _setLocalUid(newUser.id);
