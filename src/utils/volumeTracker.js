@@ -131,16 +131,44 @@ function findVolumeSub(exercise, exerciseDB, phase = 1, location = "gym") {
   return samePart || alternatives[0] || null;
 }
 
+// ── Issue 2: Smart params for stabilization/timed exercises ──────
+// Core stabilization exercises ALWAYS use stabilization params (never 5×3-5)
+// Timed holds (plank, side plank) progress by duration, not reps
+
+function getExerciseDisplayParams(exercise, phase = 1) {
+  // Timed holds FIRST (plank, side plank, dead hang, wall sit) — progress by duration not reps
+  const isTimedHold = exercise.trackingType === "timed" ||
+    exercise.name?.toLowerCase().includes("plank") ||
+    exercise.name?.toLowerCase().includes("hold") ||
+    exercise.name?.toLowerCase().includes("hang");
+  if (isTimedHold) {
+    const timedParams = { 1: { sets: "2", reps: "20-30s hold", rest: "30s" }, 2: { sets: "2-3", reps: "30-45s hold", rest: "30s" }, 3: { sets: "3", reps: "45-60s hold", rest: "30s" }, 4: { sets: "3", reps: "45-60s hold", rest: "30s" }, 5: { sets: "3", reps: "45-60s hold", rest: "30s" } };
+    return timedParams[phase] || timedParams[3];
+  }
+
+  // Core stabilization exercises — ALWAYS use stabilization params (never 5×3-5)
+  const STAB_IDS = ["dead_bug", "bird_dog", "pallof_press", "mcgill_curl_up", "stir_the_pot"];
+  const isStabilizationCore = (
+    exercise.type === "stabilization" ||
+    (exercise.bodyPart === "core" && (exercise.difficultyLevel || 3) <= 2) ||
+    STAB_IDS.some(id => exercise.id?.includes(id) || exercise.name?.toLowerCase().includes(id.replace(/_/g, " ")))
+  );
+  if (isStabilizationCore) {
+    // Use their Phase 1-2 params, NEVER apply Phase 4+ max-strength rep ranges
+    return exercise.phaseParams?.[String(Math.min(phase, 2))] || { sets: "2-3", reps: "8-12 each side", tempo: "4/2/1", rest: "30-60s", intensity: "bodyweight" };
+  }
+
+  // Normal exercises: use their phaseParams or NASM defaults
+  const _phaseDefaults = { 1: { sets: "2", reps: "12-20", rest: "60" }, 2: { sets: "3", reps: "8-12", rest: "60" }, 3: { sets: "4", reps: "6-12", rest: "75" }, 4: { sets: "5", reps: "3-5", rest: "150" }, 5: { sets: "4", reps: "3-5", rest: "150" } };
+  return exercise.phaseParams?.[String(phase)] || _phaseDefaults[phase] || {};
+}
+
 // ── Apply volume caps to exercise parameters ──────────────────
 
 function capExerciseParams(exercise, phase = 1, difficulty = "standard") {
   const maxSets = getMaxSetsPerExercise(phase);
-  // NEVER fall back to Phase 1 params in Phase 4 — use NASM phase defaults
-  const _phaseDefaults = { 1: { sets: "2", reps: "12-20", rest: "60" }, 2: { sets: "3", reps: "8-12", rest: "60" }, 3: { sets: "4", reps: "6-12", rest: "75" }, 4: { sets: "5", reps: "3-5", rest: "150" }, 5: { sets: "4", reps: "3-5", rest: "150" } };
-  const phaseParams =
-    exercise.phaseParams?.[String(phase)] ||
-    _phaseDefaults[phase] ||
-    {};
+  // Issue 2: use smart params (stabilization/timed get their own ranges)
+  const phaseParams = getExerciseDisplayParams(exercise, phase);
 
   let sets = parseInt(phaseParams.sets) || 1;
   let rest = parseInt(phaseParams.rest) || 0;
@@ -213,6 +241,7 @@ export {
   wouldExceedVolume,
   findVolumeSub,
   capExerciseParams,
+  getExerciseDisplayParams,
   getVolumeSummary,
   VOLUME_LIMITS,
   HYPERTROPHY_VOLUME,

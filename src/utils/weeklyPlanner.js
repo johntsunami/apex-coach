@@ -71,15 +71,16 @@ const SPLITS = {
     days: [
       { name: "Full Body A", focus: ["chest", "back", "legs", "core"], patterns: ["horizontal_push", "horizontal_pull", "squat", "hinge", "core"] },
       { name: "Full Body B", focus: ["shoulders", "back", "legs", "core"], patterns: ["vertical_push", "vertical_pull", "hinge", "squat", "core"] },
-      { name: "Full Body C", focus: ["chest", "shoulders", "back", "legs", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "squat", "core"] },
+      { name: "Full Body C", focus: ["chest", "shoulders", "back", "legs", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "vertical_pull", "squat", "core"] },
     ],
   },
   4: {
     label: "Upper/Lower Split",
     days: [
-      { name: "Upper Body A", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "core"] },
+      // Issue 6: 2 pulls per upper day for balanced push:pull ratio and adequate back volume
+      { name: "Upper Body A", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "vertical_push", "core"] },
       { name: "Lower Body A", focus: ["legs", "glutes", "hips", "core"], patterns: ["squat", "hinge", "core"] },
-      { name: "Upper Body B", focus: ["chest", "back", "shoulders", "core"], patterns: ["vertical_push", "vertical_pull", "horizontal_push", "core"] },
+      { name: "Upper Body B", focus: ["chest", "back", "shoulders", "core"], patterns: ["vertical_push", "vertical_pull", "horizontal_pull", "horizontal_push", "core"] },
       { name: "Lower Body B", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "core"] },
     ],
   },
@@ -89,7 +90,7 @@ const SPLITS = {
       { name: "Push", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "core"] },
       { name: "Pull", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "core"] },
       { name: "Legs", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "core"] },
-      { name: "Upper", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "core"] },
+      { name: "Upper", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "vertical_push", "core"] },
       { name: "Lower", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "core"] },
     ],
   },
@@ -190,6 +191,17 @@ function canUseExercise(ex, phase, location, excludeIds, injuries) {
   return true;
 }
 
+// ── ISSUE 1: Difficulty ceiling — exercises too easy for late phases are BLOCKED ──
+function getMaxPhaseForDifficulty(difficulty) {
+  return { 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 }[difficulty] || 5;
+}
+
+// ⚠️ DUAL PATH: This is the plan view exercise selection path.
+// App.jsx buildWorkoutList() is the daily workout path.
+// Both must apply the same rules: difficulty ceiling, core param exemptions,
+// isolation (Phase 3+), plyometric (Phase 5), within-week dedup, double pulls.
+// Any fix to exercise selection must be applied to BOTH files.
+
 // Select exercises for a single training day from rotation pools
 function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWeek, dayIndex, injuries) {
   const selected = [];
@@ -216,6 +228,9 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       const ex = resolveExercise(poolId, exerciseDB, phase, location, usedIds, injuries);
       if (!ex) continue;
       if (blacklist.has(ex.id)) continue;
+      // Issue 1: difficulty ceiling — skip exercises too easy for this phase
+      // EXEMPT core/stabilization — they always appear with stabilization params (Issue 2)
+      if (ex.bodyPart !== "core" && ex.type !== "stabilization" && phase > getMaxPhaseForDifficulty(ex.difficultyLevel || 3)) continue;
 
       // Check volume
       const volCheck = wouldExceedVolume(ex, {}, phase);
@@ -239,15 +254,26 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
         core: ["core", "anti_extension", "anti_rotation"],
       };
       const matchPatterns = patternMap[pattern] || [pattern];
-      const fallback = exerciseDB.find(e =>
+      const _fallbackFilter = (e, checkCeiling) =>
         e.category === "main" &&
         !usedIds.has(e.id) &&
         !blacklist.has(e.id) &&
         (e.phaseEligibility || []).includes(phase) &&
         e.safetyTier !== "red" &&
+        // Difficulty ceiling exempt for core/stabilization (Issue 2 handles their params)
+        (!checkCeiling || e.bodyPart === "core" || e.type === "stabilization" || phase <= getMaxPhaseForDifficulty(e.difficultyLevel || 3)) &&
         matchPatterns.some(p => (e.movementPattern || "").toLowerCase().includes(p)) &&
-        canUseExercise(e, phase, location, usedIds, injuries)
-      );
+        canUseExercise(e, phase, location, usedIds, injuries);
+      // Try with difficulty ceiling first
+      let fallback = exerciseDB.find(e => _fallbackFilter(e, true));
+      // If no candidates pass ceiling, fall back to highest-difficulty available
+      if (!fallback) {
+        const noCeiling = exerciseDB.filter(e => _fallbackFilter(e, false)).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+        if (noCeiling.length > 0) {
+          console.log(`[WARNING] No exercises for ${pattern} in Phase ${phase} after difficulty filter — using ${noCeiling[0].name} (diff ${noCeiling[0].difficultyLevel})`);
+          fallback = noCeiling[0];
+        }
+      }
       if (fallback) {
         selected.push({ ...fallback, _rotationPattern: pattern });
         usedIds.add(fallback.id);
@@ -255,18 +281,21 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
     }
   }
 
-  // Add 1-2 isolation exercises for the day's focus muscles
-  const isoLimit = dayTemplate.focus.length >= 4 ? 2 : 1;
+  // Add isolation exercises for the day's focus muscles
+  // Issue 3: Phase 3+ MUST include at least 1-2 isolation exercises
+  // Fix: check movementPattern === "isolation" (not type — DB uses type: "strength" for these)
+  const isoLimit = phase >= 3 ? 2 : dayTemplate.focus.length >= 4 ? 2 : 1;
   let isoCount = 0;
   for (const bodyPart of dayTemplate.focus) {
     if (isoCount >= isoLimit) break;
     const iso = exerciseDB.find(e =>
       e.category === "main" &&
-      e.type === "isolation" &&
+      (e.movementPattern === "isolation" || e.type === "isolation") &&
       e.bodyPart === bodyPart &&
       !usedIds.has(e.id) &&
       !blacklist.has(e.id) &&
       (e.phaseEligibility || []).includes(phase) &&
+      (e.bodyPart === "core" || e.type === "stabilization" || phase <= getMaxPhaseForDifficulty(e.difficultyLevel || 3)) &&
       canUseExercise(e, phase, location, usedIds, injuries)
     );
     if (iso) {
@@ -334,7 +363,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
           if (!candidate) {
             candidate = exerciseDB.find(e =>
               baseFilter(e) &&
-              (e.type === "isolation" || (e.movementPattern || "").toLowerCase() === "isolation" || (e.tags || []).includes("isolation"))
+              (e.movementPattern === "isolation" || e.type === "isolation" || (e.tags || []).includes("isolation"))
             );
           }
 
@@ -355,6 +384,28 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
     }
   } catch (err) {
     console.warn("Physique isolation injection skipped:", err.message);
+  }
+
+  // ── Issue 4: Phase 5 MUST include at least 1 plyometric/explosive exercise ──
+  if (phase >= 5) {
+    const hasPlyo = selected.some(e => e.type === "plyometric");
+    if (!hasPlyo) {
+      const plyoCandidate = exerciseDB
+        .filter(e =>
+          e.type === "plyometric" &&
+          !usedIds.has(e.id) &&
+          !blacklist.has(e.id) &&
+          (e.phaseEligibility || []).includes(phase) &&
+          canUseExercise(e, phase, location, usedIds, injuries)
+        )
+        .sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+      if (plyoCandidate.length > 0) {
+        selected.push({ ...plyoCandidate[0], _reason: "Phase 5 plyometric/explosive requirement" });
+        usedIds.add(plyoCandidate[0].id);
+      } else {
+        console.log("[WARNING] No plyometric exercises available for Phase 5 — check injury gates and database");
+      }
+    }
   }
 
   return selected;
@@ -396,7 +447,7 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
     tierMessage: mesoCtx?.mesocycle?.config?.message || null,
   };
 
-  const usedExercisesByPrevDay = new Set(); // Track for consecutive-day exclusion
+  const usedExercisesThisWeek = new Set(); // Issue 5: track ALL exercises across the week (not just prev day)
 
   for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
     const trainingIdx = trainingDayIndices.indexOf(dayOfWeek);
@@ -423,30 +474,36 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
         estimatedMinutes: 0,
         status: "not_started",
       });
-      usedExercisesByPrevDay.clear();
+      // Issue 5: do NOT clear — maintain full-week dedup even across rest days
       continue;
     }
 
     const template = split.days[trainingIdx];
     const mainExercises = selectDayExercises(
       template, exerciseDB, phase, defaultLocation,
-      usedExercisesByPrevDay, trainingIdx, injuries
+      usedExercisesThisWeek, trainingIdx, injuries
     );
 
     // ── Filter exercises through mesocycle injury adjustments ──
+    // Sets get serialized to {} via JSON.stringify(localStorage) — safely convert back
+    const _toIterable = (v) => v instanceof Set ? v : Array.isArray(v) ? v : (v && typeof v === "object") ? Object.keys(v) : [];
+    const _toSet = (v) => v instanceof Set ? v : new Set(_toIterable(v));
     let filteredExercises = mainExercises;
     if (injAdj) {
+      const _blockedIds = _toIterable(injAdj.blockedExerciseIds);
+      const _blockedCats = _toSet(injAdj.blockedCategories);
+      const _blockedPats = _toIterable(injAdj.blockedPatterns);
       filteredExercises = mainExercises.filter(ex => {
         // Check blocked exercise IDs (fuzzy match by name parts)
         const exNameLower = (ex.name || "").toLowerCase().replace(/[-_\s]/g, "");
-        for (const blocked of injAdj.blockedExerciseIds) {
+        for (const blocked of _blockedIds) {
           if (exNameLower.includes(blocked.replace(/[-_\s]/g, "")) || ex.id === blocked) return false;
         }
         // Check blocked categories
-        if (injAdj.blockedCategories.has(ex.category)) return false;
+        if (_blockedCats.has(ex.category)) return false;
         // Check blocked movement patterns
         const mp = (ex.movementPattern || "").toLowerCase();
-        for (const bp of injAdj.blockedPatterns) {
+        for (const bp of _blockedPats) {
           if (mp.includes(bp) || (ex.name || "").toLowerCase().includes(bp)) return false;
         }
         // Check safety tier restrictions
@@ -486,11 +543,10 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
       rpeMax: weekParams?.rpeMax || null,
     });
 
-    // Track used exercises for next day's exclusion
-    usedExercisesByPrevDay.clear();
+    // Issue 5: track used exercises for full-week dedup (no clearing between days)
     filteredExercises.forEach(e => {
-      usedExercisesByPrevDay.add(e.id);
-      if (e._rotationPoolId) usedExercisesByPrevDay.add(e._rotationPoolId);
+      usedExercisesThisWeek.add(e.id);
+      if (e._rotationPoolId) usedExercisesThisWeek.add(e._rotationPoolId);
     });
   }
 

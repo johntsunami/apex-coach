@@ -1,9 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import exerciseDB from "../data/exercises.json";
 import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { getStats, getSessions } from "../utils/storage.js";
-import { getVolumeSummary, getTrainingWeek } from "../utils/volumeTracker.js";
+import { getVolumeSummary, getTrainingWeek, getExerciseDisplayParams } from "../utils/volumeTracker.js";
 import ExerciseImage from "./ExerciseImage.jsx";
 import SwapModal from "./ExerciseSwap.jsx";
 
@@ -30,19 +30,53 @@ const Card=({children,style})=><div style={{background:C.bgCard,border:`1px soli
 const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",padding:"3px 8px",borderRadius:6,fontSize:9,fontWeight:700,letterSpacing:1,textTransform:"uppercase",color,background:color+"15"}}>{children}</span>;
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
+// Cache version — increment when generation logic changes to invalidate stale cached weeks
+const PLAN_GEN_VERSION = 2;
+
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
   const [swapTarget, setSwapTarget] = useState(null);
   const [swaps, setSwaps] = useState({});
   const [expandedWeeks, setExpandedWeeks] = useState(new Set());
-  const [generatedWeeks, setGeneratedWeeks] = useState({}); // cache: { weekNum: { days: [...] } }
-  const [generating, setGenerating] = useState(null);
+  const [generatedWeeks, setGeneratedWeeks] = useState({}); // cache: { weekNum: { days: [...], _v } }
+  const [generating, setGenerating] = useState(new Set());
+
   const assessment = getAssessment();
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const stats = getStats();
   const sessions = getSessions();
   const tw = getTrainingWeek();
   const daysPerWeek = assessment?.preferences?.daysPerWeek || 3;
+  const currentWeekNum = tw.week || 1;
+
+  // Generate plan for a single week (cached with version — stale cache auto-invalidated)
+  const generateWeek = useCallback((weekNum, phaseNum) => {
+    if (generatedWeeks[weekNum]?._v === PLAN_GEN_VERSION || weekNum === currentWeekNum) return;
+    setGenerating(prev => new Set(prev).add(weekNum));
+    try {
+      if (generateWeeklyPlan) {
+        const gen = generateWeeklyPlan(exerciseDB, phaseNum, "gym");
+        if (gen?.days) {
+          const exCount = gen.days.filter(d => d.type === "training").reduce((n, d) => n + (d.exercises?.length || 0), 0);
+          console.log("[PLAN GEN] Week", weekNum, "Phase", phaseNum, "— generated", exCount, "exercises across", gen.days.filter(d => d.type === "training").length, "training days");
+          setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { days: gen.days, _v: PLAN_GEN_VERSION } }));
+        } else {
+          setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { error: true, message: "No exercises generated", _v: PLAN_GEN_VERSION } }));
+        }
+      }
+    } catch (e) {
+      console.warn("[PLAN ERROR] Week", weekNum, e.message);
+      setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { error: true, message: e.message, _v: PLAN_GEN_VERSION } }));
+    }
+    setGenerating(prev => { const n = new Set(prev); n.delete(weekNum); return n; });
+  }, [generatedWeeks, currentWeekNum]);
+
+  // Bulk generate all weeks in a phase
+  const generatePhaseWeeks = useCallback((phaseObj) => {
+    for (let w = phaseObj.weeks[0]; w <= phaseObj.weeks[1]; w++) {
+      generateWeek(w, phaseObj.num);
+    }
+  }, [generateWeek]);
 
   // Get REAL data from weekly planner and mesocycle
   const weekPlan = getWeeklyPlan?.() || null;
@@ -143,7 +177,7 @@ export default function PlanView({ onClose }) {
                     const fullEx = exerciseDB.find(x => x.id === e.id) || e;
                     const display = swaps[e.id] || fullEx;
                     const wasSwapped = !!swaps[e.id];
-                    const pp = fullEx.phaseParams?.[String(CURRENT_PHASE)] || {};
+                    const pp = getExerciseDisplayParams(fullEx, CURRENT_PHASE);
                     return (
                       <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", borderBottom: ei < day.exercises.length - 1 ? `1px solid ${C.border}` : "none" }}>
                         <ExerciseImage exercise={display} size="thumb" />
@@ -175,7 +209,7 @@ export default function PlanView({ onClose }) {
         {/* Planned weekly volume from schedule */}
         {weekPlan && (() => {
           const planned = {};
-          weekPlan.days.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = full.phaseParams?.[String(CURRENT_PHASE)] || {}; const sets = parseInt(pp.sets) || 2; planned[bp] = (planned[bp] || 0) + sets; }); });
+          weekPlan.days.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = getExerciseDisplayParams(full, CURRENT_PHASE); const sets = parseInt(pp.sets) || 2; planned[bp] = (planned[bp] || 0) + sets; }); });
           const entries = Object.entries(planned).sort((a, b) => b[1] - a[1]);
           if (entries.length === 0) return null;
           return <Card>
@@ -291,9 +325,9 @@ export default function PlanView({ onClose }) {
           </Card>
           {/* Bulk expand/collapse buttons */}
           <div style={{ display: "flex", gap: 6 }}>
-            <button onClick={() => { const all = new Set(); for (let w = 1; w <= totalWeeks; w++) all.add(w); setExpandedWeeks(all); }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted }}>Expand All</button>
+            <button onClick={() => { const all = new Set(); for (let w = 1; w <= totalWeeks; w++) all.add(w); setExpandedWeeks(all); phases.forEach(ph => generatePhaseWeeks(ph)); }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted }}>Expand All</button>
             <button onClick={() => setExpandedWeeks(new Set())} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted }}>Collapse All</button>
-            <button onClick={() => { const cp = phases.find(ph => ph.num === CURRENT_PHASE); if (cp) { const s = new Set(expandedWeeks); for (let w = cp.weeks[0]; w <= cp.weeks[1]; w++) s.add(w); setExpandedWeeks(s); } }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.tealBg, border: `1px solid ${C.teal}30`, color: C.teal }}>Expand Current Phase</button>
+            <button onClick={() => { const cp = phases.find(ph => ph.num === CURRENT_PHASE); if (cp) { const s = new Set(expandedWeeks); for (let w = cp.weeks[0]; w <= cp.weeks[1]; w++) s.add(w); setExpandedWeeks(s); generatePhaseWeeks(cp); } }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.tealBg, border: `1px solid ${C.teal}30`, color: C.teal }}>Expand Current Phase</button>
           </div>
           {/* Phase cards */}
           {phases.map(p => {
@@ -327,30 +361,14 @@ export default function PlanView({ onClose }) {
                     // For past weeks, pull from session history
                     const pastSessions = isDoneWeek ? (sessions || []).filter(s => { try { const sd = new Date(s.date); const weekNum = Math.floor((sd - new Date(sessions[0]?.date || sd)) / (7 * 86400000)) + 1; return weekNum === w; } catch { return false; } }) : [];
 
-                    // Generate exercises for a future week on demand
+                    // Toggle expand + generate exercises on demand
                     const handleExpandWeek = (weekNum) => {
                       setExpandedWeeks(prev => {
                         const next = new Set(prev);
                         if (next.has(weekNum)) next.delete(weekNum); else next.add(weekNum);
                         return next;
                       });
-                      // Generate for ANY week that isn't the current week and isn't already cached
-                      if (weekNum !== currentWeek && !generatedWeeks[weekNum]) {
-                        setGenerating(weekNum);
-                        setTimeout(() => {
-                          try {
-                            if (generateWeeklyPlan) {
-                              // Use the REAL weekly planner — same logic that generates the current week
-                              // This gives proper splits, muscle group rotation, and exercise variety
-                              const generated = generateWeeklyPlan(exerciseDB, p.num, "gym");
-                              if (generated?.days) {
-                                setGeneratedWeeks(prev => ({ ...prev, [weekNum]: { days: generated.days } }));
-                              }
-                            }
-                          } catch (e) { console.warn("Week generation failed:", e); }
-                          setGenerating(null);
-                        }, 100);
-                      }
+                      generateWeek(weekNum, p.num);
                     };
 
                     return <div key={w}>
@@ -367,15 +385,34 @@ export default function PlanView({ onClose }) {
                       </div>
                       {/* Expanded week detail — render from generated plan (ALL weeks use the same renderer) */}
                       {isExpanded && <div style={{ marginLeft: 30, paddingBottom: 6, borderLeft: `2px solid ${weekColor}20` }}>
-                        {generating === w ? (
+                        {generating.has(w) ? (
                           <div style={{ padding: "8px", fontSize: 10, color: C.teal, textAlign: "center" }}>Generating exercises...</div>
+                        ) : generatedWeeks[w]?.error ? (
+                          <div style={{ padding: "4px 8px", fontSize: 9, color: C.danger }}>⚠ {generatedWeeks[w].message || "Generation failed"}</div>
                         ) : (() => {
                           // Use current week's real plan, or generated plan, in that order
                           const dayData = isThisWeek && weekExercises ? weekExercises : generatedWeeks[w]?.days;
-                          if (!dayData) return <div style={{ padding: "4px 8px", fontSize: 9, color: C.textDim, fontStyle: "italic" }}>Generating plan...</div>;
+                          if (!dayData) return <div style={{ padding: "4px 8px", fontSize: 9, color: C.textDim, fontStyle: "italic" }}>Click to generate plan</div>;
                           // Calculate weekly volume summary
                           const volSummary = {};
-                          dayData.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = full.phaseParams?.[String(p.num)] || {}; const sets = parseInt(pp.sets) || 2; volSummary[bp] = (volSummary[bp] || 0) + sets; }); });
+                          dayData.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = getExerciseDisplayParams(full, p.num); const sets = parseInt(pp.sets) || 2; volSummary[bp] = (volSummary[bp] || 0) + sets; }); });
+                          // ── Inline verification: log what the UI will show ──
+                          if ([21,37,47].includes(w)) {
+                            const allEx = dayData.filter(d => d.type !== "rest").flatMap(d => (d.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id) || e; return { name: f.name, diff: f.difficultyLevel, bp: f.bodyPart, type: f.type, mp: f.movementPattern, pp: getExerciseDisplayParams(f, p.num) }; }));
+                            const issues = [];
+                            if (p.num >= 3 && allEx.some(e => e.name.includes("Wall Push"))) issues.push("Wall Push-Up in Phase " + p.num);
+                            if (p.num >= 4 && allEx.some(e => e.name.includes("Goblet Squat"))) issues.push("Goblet Squat in Phase " + p.num);
+                            allEx.forEach(e => {
+                              if (e.bp === "core" && e.pp.reps?.includes("3-5")) issues.push(e.name + " has 3-5 reps");
+                              if (e.name.includes("Plank") && !e.pp.reps?.includes("hold") && !e.pp.reps?.includes("s")) issues.push(e.name + " not timed hold");
+                            });
+                            if (p.num >= 3 && !allEx.some(e => e.mp === "isolation")) issues.push("Zero isolation exercises");
+                            if (p.num === 5 && !allEx.some(e => e.type === "plyometric")) issues.push("Zero plyometrics");
+                            const names = allEx.map(e => e.name);
+                            const dupes = names.filter((n,i) => names.indexOf(n) !== i);
+                            if (dupes.length) issues.push("Repeats: " + [...new Set(dupes)].join(", "));
+                            console.log("[PLANVIEW " + (issues.length ? "FAIL" : "PASS") + "] Wk" + w + " Ph" + p.num, issues.length ? issues : "all checks pass");
+                          }
                           return <>
                             {dayData.map((day, di) => (
                               <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < dayData.length - 1 ? `1px solid ${C.border}` : "none" }}>
@@ -398,7 +435,7 @@ export default function PlanView({ onClose }) {
                                       <div style={{ fontSize: 8, fontWeight: 700, color: C.teal, letterSpacing: 0.5, marginBottom: 1 }}>MAIN</div>
                                       {(day.exercises || []).map((e, ei) => {
                                         const full = exerciseDB.find(x => x.id === e.id) || e;
-                                        const pp = full.phaseParams?.[String(p.num)] || {};
+                                        const pp = getExerciseDisplayParams(full, p.num);
                                         return <div key={ei} style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 4 }}>
                                           <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span></span>
                                           <span style={{ color: C.textDim, flexShrink: 0, marginLeft: 4 }}>{pp.sets || "2"}×{pp.reps || "12"}</span>

@@ -871,12 +871,32 @@ export function checkPhaseReadiness(currentPhase, tier) {
 export function getMesocycle() {
   try {
     const raw = localStorage.getItem(LS_MESOCYCLE);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const meso = JSON.parse(raw);
+    // Sets get serialized to {} by JSON.stringify — reconstruct them
+    if (meso?.injuryAdjustments) {
+      const ia = meso.injuryAdjustments;
+      if (!(ia.blockedExerciseIds instanceof Set)) ia.blockedExerciseIds = new Set(Array.isArray(ia.blockedExerciseIds) ? ia.blockedExerciseIds : []);
+      if (!(ia.blockedPatterns instanceof Set)) ia.blockedPatterns = new Set(Array.isArray(ia.blockedPatterns) ? ia.blockedPatterns : []);
+      if (!(ia.blockedCategories instanceof Set)) ia.blockedCategories = new Set(Array.isArray(ia.blockedCategories) ? ia.blockedCategories : []);
+    }
+    return meso;
   } catch { return null; }
 }
 
 export function saveMesocycle(meso) {
-  try { localStorage.setItem(LS_MESOCYCLE, JSON.stringify(meso)); } catch {}
+  try {
+    // Convert Sets to Arrays before JSON.stringify (Sets serialize as {})
+    const serializable = { ...meso };
+    if (serializable.injuryAdjustments) {
+      const ia = { ...serializable.injuryAdjustments };
+      if (ia.blockedExerciseIds instanceof Set) ia.blockedExerciseIds = [...ia.blockedExerciseIds];
+      if (ia.blockedPatterns instanceof Set) ia.blockedPatterns = [...ia.blockedPatterns];
+      if (ia.blockedCategories instanceof Set) ia.blockedCategories = [...ia.blockedCategories];
+      serializable.injuryAdjustments = ia;
+    }
+    localStorage.setItem(LS_MESOCYCLE, JSON.stringify(serializable));
+  } catch {}
 }
 
 export function createMesocycle(phase, tier, tierInfo) {
@@ -1045,7 +1065,7 @@ export function getMesocycleContext(phase) {
   }
 
   // Apply injury RPE cap
-  if (meso.injuryAdjustments.maxRPE) {
+  if (meso.injuryAdjustments?.maxRPE) {
     adjustedRPEMax = Math.min(adjustedRPEMax, meso.injuryAdjustments.maxRPE);
   }
 

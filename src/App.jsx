@@ -964,6 +964,11 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const _isSeniorPick = _seniorAssessment >= 65;
   const _isSeniorAdvanced = _seniorAssessment >= 75;
 
+  // ⚠️ DUAL PATH: This is the daily workout path. weeklyPlanner.js selectDayExercises()
+  // is the plan view path. Both must apply the same rules. See CLAUDE.md Rules 11-16.
+  // Issue 1: Difficulty ceiling — exercises too easy for late phases are BLOCKED
+  const _maxPhaseForDiff = (diff) => ({ 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 }[diff] || 5);
+
   const pick = (category, limit, excludeStarters) => {
     let pool = exerciseDB.filter(e =>
       e.category === category &&
@@ -971,6 +976,9 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       !recentPainIds.has(e.id) && // exclude yesterday's painful exercises
       (e.phaseEligibility || []).includes(phase) &&
       (category !== "main" || e.safetyTier !== "red") &&
+      // Issue 1: difficulty ceiling — block exercises too easy for this phase
+      // Exempt core/stabilization — they always appear with stabilization params (Issue 2)
+      (category !== "main" || e.bodyPart === "core" || e.type === "stabilization" || phase <= _maxPhaseForDiff(e.difficultyLevel || 3)) &&
       // Senior Advanced (75+): exclude yellow safety tier for main exercises
       (category !== "main" || !_isSeniorAdvanced || e.safetyTier !== "yellow") &&
       // Sharp pain filter: block exercises targeting sharp-pain body parts
@@ -1092,7 +1100,22 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         if (candidates.length > 0) _addEx(candidates[0]);
       }
 
-      // STEP 2: Fill remaining slots by score
+      // STEP 2: Issue 3 — Phase 3+ must include isolation exercises
+      if (phase >= 3 && result.length < limit) {
+        const isoPool = scored.filter(ex =>
+          (ex.movementPattern === "isolation" || ex.type === "isolation") && _canPick(ex)
+        );
+        const isoTarget = Math.min(2, limit - result.length, isoPool.length);
+        for (let i = 0; i < isoTarget; i++) _addEx(isoPool[i]);
+      }
+
+      // STEP 3: Issue 4 — Phase 5 must include plyometric/explosive exercise
+      if (phase >= 5 && result.length < limit && !result.some(e => e.type === "plyometric")) {
+        const plyoPool = scored.filter(ex => ex.type === "plyometric" && _canPick(ex));
+        if (plyoPool.length > 0) _addEx(plyoPool[0]);
+      }
+
+      // STEP 4: Fill remaining slots by score
       const remaining = limit - result.length;
       for (let i = 0; i < remaining; i++) {
         const candidates = scored.filter(ex => _canPick(ex));
