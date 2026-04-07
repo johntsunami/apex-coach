@@ -98,9 +98,11 @@ export function getDetrainingWarning(daysOff) {
 
 // ── Ring Storage ─────────────────────────────────────────────────
 
+const _defaultRings = { strength: 0, mobility: 0, endurance: 0, recovery: 0, powerLevel: 0, ascensionCount: 0, colorPalette: 0, lastSessionDate: null, lastDecayCheck: null };
+
 export function getRings() {
-  try { return JSON.parse(localStorage.getItem(LS_RINGS)) || { strength: 0, mobility: 0, endurance: 0, recovery: 0, powerLevel: 0, ascensionCount: 0, colorPalette: 0, lastSessionDate: null, lastDecayCheck: null }; }
-  catch { return { strength: 0, mobility: 0, endurance: 0, recovery: 0, powerLevel: 0, ascensionCount: 0, colorPalette: 0, lastSessionDate: null, lastDecayCheck: null }; }
+  try { return JSON.parse(localStorage.getItem(LS_RINGS)) || { ..._defaultRings }; }
+  catch { return { ..._defaultRings }; }
 }
 
 export function saveRings(rings) {
@@ -109,6 +111,39 @@ export function saveRings(rings) {
   // Fire-and-forget Supabase sync
   _syncRingsToSupabase(updated).catch(() => {});
   return updated;
+}
+
+// ── Restore rings from Supabase on app load (source of truth) ────
+export async function restoreRingsFromSupabase() {
+  try {
+    const { supabase, isSupabaseAvailable } = await import("./supabase.js");
+    if (!isSupabaseAvailable()) return false;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return false;
+    const { data: row, error } = await supabase.from("power_rings").select("*").eq("user_id", session.user.id).single();
+    if (error || !row) return false;
+    const restored = {
+      strength: parseFloat(row.strength_value) || 0,
+      mobility: parseFloat(row.mobility_value) || 0,
+      endurance: parseFloat(row.endurance_value) || 0,
+      recovery: parseFloat(row.recovery_value) || 0,
+      powerLevel: row.power_level || 0,
+      ascensionCount: row.ascension_count || 0,
+      colorPalette: row.color_palette || 0,
+      lastSessionDate: row.last_session_date || null,
+      lastDecayCheck: row.last_decay_check || null,
+    };
+    // Only restore if Supabase has meaningful data (power level > 0 or any ring > 0)
+    const local = getRings();
+    const supabaseHasData = restored.powerLevel > 0 || restored.strength > 0 || restored.ascensionCount > 0;
+    const localHasData = local.powerLevel > 0 || local.strength > 0 || local.ascensionCount > 0;
+    if (supabaseHasData && (!localHasData || restored.powerLevel >= local.powerLevel)) {
+      localStorage.setItem(LS_RINGS, JSON.stringify({ ...restored, updatedAt: new Date().toISOString() }));
+      console.log("[POWER RINGS] Restored from Supabase:", restored.powerLevel, "power level,", restored.ascensionCount, "ascensions");
+      return true;
+    }
+    return false;
+  } catch (e) { console.warn("Ring restore from Supabase failed:", e); return false; }
 }
 
 async function _syncRingsToSupabase(rings) {

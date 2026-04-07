@@ -24,7 +24,7 @@ import WellnessScreen, { StressResetCard } from "./components/WellnessModule.jsx
 import { CelebrationLayer, CelebrationAPI } from "./components/CelebrationSystem.jsx";
 import PowerRingsCard from "./components/PowerRings.jsx";
 import { getAssessmentProgress, getDismissedToday, dismissForToday, ASSESSMENT_TYPES, getAssessmentResults } from "./utils/fitnessAssessments.js";
-import { checkAndApplyDecay, addSessionGains, getRings, getReturnVolumeMultiplier, getPhaseRegression } from "./utils/detraining.js";
+import { checkAndApplyDecay, addSessionGains, getRings, getReturnVolumeMultiplier, getPhaseRegression, restoreRingsFromSupabase } from "./utils/detraining.js";
 
 // Expose audit + buildWorkoutList on window for console + dev dashboard use
 if (typeof window !== "undefined") {
@@ -2779,6 +2779,8 @@ function AppInner(){
         // After restore, backfill any local-only sessions to Supabase
         backfillSessionsToSupabase().catch(() => {});
       }).catch(() => {});
+      // Restore power rings from Supabase (prevents reset on cache clear/new device)
+      restoreRingsFromSupabase().catch(() => {});
     }
     // Full sync cycle: restore critical data from Supabase, then sync local to remote
     fullSyncCycle().catch(() => {});
