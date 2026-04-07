@@ -467,6 +467,20 @@ Users select a training intensity mode that affects volume, RPE targets, rest pe
 
 Mode affects PARAMETERS, not exercise selection — the science is the same, the throttle is different. The app may suggest mode changes based on trends but never auto-switches.
 
+### Rule 23: Never Clear User Data on Auth State Changes
+
+Auth state changes (login, logout, app reload, token refresh, Supabase session restore) must NEVER clear workout sessions, streaks, assessment results, set logs, or any user-earned data from localStorage or Supabase.
+
+**What happened:** AuthProvider._clearUserLocalStorage() was clearing apex_sessions and apex_stats on every auth state change where the previous UID didn't match the new UID. On app reload, the stored UID was null (not yet loaded), the new UID was the real user ID, `null !== "user123"` evaluated to true, and all session data was wiped. This caused: streak reset to 0, week reset to 0, "Start Today's Workout" shown after completed workouts, and loss of workout history. This bug survived TWO previous fix attempts because the root cause was in the auth layer, not the UI.
+
+**Rules:**
+- The only localStorage keys that may be cleared on auth state change are: auth tokens, temporary UI state, and cached API responses
+- **NEVER clear**: session history, workout logs, set logs, assessment results, streaks, stats, user preferences, injury profiles, or any data the user created through their training
+- When handling multi-user scenarios (user switch), restore the new user's data from Supabase — do NOT clear localStorage and hope it refills
+- Any function named "clear", "reset", "wipe", or "cleanup" in the auth layer must have a hardcoded exclusion list of protected keys
+- If a new clearing function is added, it must log exactly what it's clearing: `console.log('[AUTH CLEAR] Clearing:', keysList)` — so data loss is visible in the console immediately
+- `null !== "real_uid"` must NEVER trigger a data wipe — treat null/undefined previous UID as "first load", not "different user"
+
 ---
 
 ## REFERENCE DOCS
