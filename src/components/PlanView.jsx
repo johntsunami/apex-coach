@@ -34,7 +34,7 @@ export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
   const [swapTarget, setSwapTarget] = useState(null);
   const [swaps, setSwaps] = useState({});
-  const [expandedWeek, setExpandedWeek] = useState(null);
+  const [expandedWeeks, setExpandedWeeks] = useState(new Set());
   const [generatedWeeks, setGeneratedWeeks] = useState({}); // cache: { weekNum: { days: [...] } }
   const [generating, setGenerating] = useState(null);
   const assessment = getAssessment();
@@ -289,6 +289,12 @@ export default function PlanView({ onClose }) {
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: C.textDim, marginBottom: 4 }}><span>Week {currentWeek} of {totalWeeks}</span><span>{Math.round(currentWeek / totalWeeks * 100)}%</span></div>
             <ProgressBar value={currentWeek} max={totalWeeks} color={C.teal} height={6} />
           </Card>
+          {/* Bulk expand/collapse buttons */}
+          <div style={{ display: "flex", gap: 6 }}>
+            <button onClick={() => { const all = new Set(); for (let w = 1; w <= totalWeeks; w++) all.add(w); setExpandedWeeks(all); }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted }}>Expand All</button>
+            <button onClick={() => setExpandedWeeks(new Set())} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted }}>Collapse All</button>
+            <button onClick={() => { const cp = phases.find(ph => ph.num === CURRENT_PHASE); if (cp) { const s = new Set(expandedWeeks); for (let w = cp.weeks[0]; w <= cp.weeks[1]; w++) s.add(w); setExpandedWeeks(s); } }} style={{ flex: 1, padding: "6px", borderRadius: 8, fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", background: C.tealBg, border: `1px solid ${C.teal}30`, color: C.teal }}>Expand Current Phase</button>
+          </div>
           {/* Phase cards */}
           {phases.map(p => {
             const isCurrent = p.num === CURRENT_PHASE;
@@ -314,7 +320,7 @@ export default function PlanView({ onClose }) {
                     const isThisWeek = w === currentWeek;
                     const isDoneWeek = w < currentWeek;
                     const isDeload = w % 4 === 0;
-                    const isExpanded = expandedWeek === w;
+                    const isExpanded = expandedWeeks.has(w);
                     const weekColor = isThisWeek ? C.teal : isDoneWeek ? C.success : C.textDim;
                     // For current week, use real plan data
                     const weekExercises = isThisWeek && weekPlan ? weekPlan.days : null;
@@ -323,8 +329,11 @@ export default function PlanView({ onClose }) {
 
                     // Generate exercises for a future week on demand
                     const handleExpandWeek = (weekNum) => {
-                      if (expandedWeek === weekNum) { setExpandedWeek(null); return; }
-                      setExpandedWeek(weekNum);
+                      setExpandedWeeks(prev => {
+                        const next = new Set(prev);
+                        if (next.has(weekNum)) next.delete(weekNum); else next.add(weekNum);
+                        return next;
+                      });
                       // Generate for ANY week that isn't the current week and isn't already cached
                       if (weekNum !== currentWeek && !generatedWeeks[weekNum]) {
                         setGenerating(weekNum);
