@@ -136,20 +136,20 @@ export default function PlanView({ onClose }) {
                 <div style={{ fontSize: 10, color: C.textDim, fontStyle: "italic" }}>{day.description}</div>
               ) : (
                 <div>
-                  {day.exercises?.map(e => {
+                  {day.exercises?.map((e, ei) => {
                     const fullEx = exerciseDB.find(x => x.id === e.id) || e;
                     const display = swaps[e.id] || fullEx;
                     const wasSwapped = !!swaps[e.id];
+                    const pp = fullEx.phaseParams?.[String(CURRENT_PHASE)] || {};
                     return (
-                      <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "3px 0" }}>
+                      <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", borderBottom: ei < day.exercises.length - 1 ? `1px solid ${C.border}` : "none" }}>
                         <ExerciseImage exercise={display} size="thumb" />
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 10, color: C.text, fontWeight: wasSwapped ? 600 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{display.name}</div>
+                          <div style={{ fontSize: 11, color: C.text, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{display.name}</div>
+                          <div style={{ fontSize: 9, color: C.textDim }}>{pp.sets || "2"} sets × {pp.reps || "12"}{pp.tempo ? ` · ${pp.tempo}` : ""} · {(fullEx.bodyPart || "").replace(/_/g, " ")}{pp.intensity ? ` · ${pp.intensity}` : ""}</div>
                           {wasSwapped && <div style={{ fontSize: 8, color: C.warning }}>🔄 was {e.name}</div>}
-                          {e._reason && <div style={{ fontSize: 8, color: C.info }}>{e._reason}</div>}
                         </div>
-                        {day.muscleGroups?.length > 0 && <span style={{ fontSize: 7, color: C.teal, background: C.tealBg, padding: "1px 3px", borderRadius: 3 }}>{(e.bodyPart || "").replace(/_/g, " ")}</span>}
-                        <button onClick={() => setSwapTarget(fullEx)} style={{ width: 22, height: 22, borderRadius: 6, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textDim, fontSize: 9, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }} title="Swap Exercise">🔄</button>
+                        <button onClick={() => setSwapTarget(fullEx)} style={{ width: 22, height: 22, borderRadius: 6, background: "transparent", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, opacity: 0.5 }} title="Options">⋯</button>
                       </div>
                     );
                   })}
@@ -167,7 +167,21 @@ export default function PlanView({ onClose }) {
           </Card>
         )}
 
-        {/* Volume summary */}
+        {/* Planned weekly volume from schedule */}
+        {weekPlan && (() => {
+          const planned = {};
+          weekPlan.days.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = full.phaseParams?.[String(CURRENT_PHASE)] || {}; const sets = parseInt(pp.sets) || 2; planned[bp] = (planned[bp] || 0) + sets; }); });
+          const entries = Object.entries(planned).sort((a, b) => b[1] - a[1]);
+          if (entries.length === 0) return null;
+          return <Card>
+            <div style={{ fontSize: 10, fontWeight: 700, color: C.teal, letterSpacing: 1.5, marginBottom: 6 }}>PLANNED WEEKLY SETS (from schedule)</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+              {entries.map(([bp, sets]) => <span key={bp} style={{ fontSize: 9, padding: "2px 8px", borderRadius: 4, background: C.tealBg, color: C.teal, border: `1px solid ${C.teal}20` }}>{bp}: {sets} sets</span>)}
+            </div>
+            <div style={{ fontSize: 8, color: C.textDim, marginTop: 4 }}>Total: {entries.reduce((s, [, v]) => s + v, 0)} sets across {entries.length} body parts</div>
+          </Card>;
+        })()}
+        {/* Completed volume (actual) */}
         {vs.groups.length > 0 && <Card>
           <div style={{ fontSize: 10, fontWeight: 700, color: C.purple, letterSpacing: 1.5, marginBottom: 8 }}>WEEKLY VOLUME</div>
           {vs.groups.map(g => (
@@ -306,7 +320,7 @@ export default function PlanView({ onClose }) {
                     const handleExpandWeek = (weekNum) => {
                       if (expandedWeek === weekNum) { setExpandedWeek(null); return; }
                       setExpandedWeek(weekNum);
-                      // If not current week and not already generated, generate using the real weekly planner
+                      // Generate for ANY week that isn't the current week and isn't already cached
                       if (weekNum !== currentWeek && !generatedWeeks[weekNum]) {
                         setGenerating(weekNum);
                         setTimeout(() => {
@@ -337,44 +351,41 @@ export default function PlanView({ onClose }) {
                         </div>
                         <span style={{ fontSize: 9, color: C.textDim, transform: isExpanded ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>▸</span>
                       </div>
-                      {/* Expanded week detail */}
+                      {/* Expanded week detail — render from generated plan (ALL weeks use the same renderer) */}
                       {isExpanded && <div style={{ marginLeft: 30, paddingBottom: 6, borderLeft: `2px solid ${weekColor}20` }}>
-                        {isThisWeek && weekExercises ? weekExercises.map((day, di) => (
-                          <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < weekExercises.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                            <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : day.type === "rest" ? "😴" : ""}</div>
-                            {day.type !== "rest" && day.exercises?.map((e, ei) => {
-                              const fullEx = exerciseDB.find(x => x.id === e.id) || e;
-                              return <div key={ei} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
-                                {ei + 1}. {fullEx.name} <span style={{ color: C.textDim }}>({(fullEx.bodyPart || "").replace(/_/g, " ")})</span>
-                              </div>;
-                            })}
-                            {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description || "Rest & recovery"}</div>}
-                          </div>
-                        )) : isDoneWeek && pastSessions.length > 0 ? (
-                          <div style={{ padding: "4px 0 4px 8px" }}>
-                            <div style={{ fontSize: 10, color: C.success }}>{pastSessions.length} session{pastSessions.length > 1 ? "s" : ""} completed</div>
-                            {pastSessions.map((s, si) => <div key={si} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0" }}>
-                              {new Date(s.date).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} — {(s.exercises_completed || []).length} exercises · {s.duration_minutes || "?"}min
-                            </div>)}
-                          </div>
-                        ) : generating === w ? (
+                        {generating === w ? (
                           <div style={{ padding: "8px", fontSize: 10, color: C.teal, textAlign: "center" }}>Generating exercises...</div>
-                        ) : generatedWeeks[w]?.days ? generatedWeeks[w].days.map((day, di) => (
-                          <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < generatedWeeks[w].days.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                            <div style={{ fontSize: 10, fontWeight: 700, color: day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.type === "rest" ? "😴" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
-                            {day.type !== "rest" && day.exercises?.map((e, ei) => {
-                              const fullEx = exerciseDB.find(x => x.id === e.id) || e;
-                              return <div key={ei} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
-                                {ei + 1}. {fullEx.name} <span style={{ color: C.textDim }}>({(fullEx.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span>
-                              </div>;
-                            })}
-                            {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description}</div>}
-                          </div>
-                        )) : (
-                          <div style={{ padding: "4px 8px", fontSize: 9, color: C.textDim, fontStyle: "italic" }}>
-                            {isDoneWeek ? "No session data available" : "Tap to generate projected exercises..."}
-                          </div>
-                        )}
+                        ) : (() => {
+                          // Use current week's real plan, or generated plan, in that order
+                          const dayData = isThisWeek && weekExercises ? weekExercises : generatedWeeks[w]?.days;
+                          if (!dayData) return <div style={{ padding: "4px 8px", fontSize: 9, color: C.textDim, fontStyle: "italic" }}>Generating plan...</div>;
+                          // Calculate weekly volume summary
+                          const volSummary = {};
+                          dayData.forEach(day => { if (day.type !== "rest") (day.exercises || []).forEach(e => { const full = exerciseDB.find(x => x.id === e.id) || e; const bp = (full.bodyPart || e.bodyPart || "other").replace(/_/g, " "); const pp = full.phaseParams?.[String(p.num)] || {}; const sets = parseInt(pp.sets) || 2; volSummary[bp] = (volSummary[bp] || 0) + sets; }); });
+                          return <>
+                            {dayData.map((day, di) => (
+                              <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < dayData.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                                <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : day.type === "rest" ? "😴" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
+                                {day.type !== "rest" && (day.exercises || []).map((e, ei) => {
+                                  const full = exerciseDB.find(x => x.id === e.id) || e;
+                                  const pp = full.phaseParams?.[String(p.num)] || {};
+                                  return <div key={ei} style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
+                                    <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span></span>
+                                    <span style={{ color: C.textDim, flexShrink: 0, marginLeft: 4 }}>{pp.sets || "2"}×{pp.reps || "12"}</span>
+                                  </div>;
+                                })}
+                                {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description || "Rest & recovery"}</div>}
+                              </div>
+                            ))}
+                            {/* Weekly volume summary */}
+                            {Object.keys(volSummary).length > 0 && <div style={{ padding: "6px 8px", marginTop: 4, background: C.bgGlass, borderRadius: 6 }}>
+                              <div style={{ fontSize: 8, fontWeight: 700, color: C.textDim, letterSpacing: 1, marginBottom: 3 }}>WEEKLY SETS</div>
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                {Object.entries(volSummary).sort((a, b) => b[1] - a[1]).map(([bp, sets]) => <span key={bp} style={{ fontSize: 8, padding: "1px 5px", borderRadius: 3, background: C.tealBg, color: C.teal }}>{bp}: {sets}</span>)}
+                              </div>
+                            </div>}
+                          </>;
+                        })()}
                       </div>}
                     </div>;
                   })}
