@@ -740,15 +740,16 @@ export default function BaselineTestFlow({ onComplete, onClose }) {
     const test = BASELINE_TESTS[testIndex];
     return (
       <div>
-        {/* Progress bar */}
+        {/* Progress bar + back button */}
         <div style={{ marginBottom: 12 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-            <div style={{ fontSize: 10, color: C.textDim }}>Test {testIndex + 1} of {BASELINE_TESTS.length}</div>
-            <div style={{ fontSize: 10, color: C.teal, fontWeight: 700 }}>{Math.round(((testIndex) / BASELINE_TESTS.length) * 100)}%</div>
+            {testIndex > 0 ? <button onClick={() => { setTestIndex(i => i - 1); setStep(`test_${testIndex - 1}`); window.scrollTo(0, 0); }} style={{ background: "none", border: "none", color: C.textMuted, fontSize: 12, cursor: "pointer", fontFamily: "inherit", padding: 0 }}>← Previous</button> : <div style={{ fontSize: 10, color: C.textDim }}>Test {testIndex + 1} of {BASELINE_TESTS.length}</div>}
+            <div style={{ fontSize: 10, color: C.teal, fontWeight: 700 }}>{testIndex + 1} of {BASELINE_TESTS.length}</div>
           </div>
           <ProgressBar value={testIndex} max={BASELINE_TESTS.length} color={C.purple} height={4} />
         </div>
         <TestScreen
+          key={test.id}
           test={test}
           injuries={injuries}
           onComplete={handleTestComplete}
