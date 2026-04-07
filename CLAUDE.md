@@ -441,6 +441,32 @@ All cardio exercises go at the END of the main workout block, after all strength
 
 **Exceptions:** Cardio-only sessions (dedicated Zone 2 day) are exempt. Post-cardiac event users defer to medical guidance.
 
+### Rule 21: Rule Priority Hierarchy
+
+When workout generation rules conflict, resolve using this priority order:
+- **Tier 1 SAFETY** always wins (injury blocks, pain flags, medical refer-out, post-surgical restrictions)
+- **Tier 2 STRUCTURAL** shapes the session (pattern coverage, phase params, CEx order, chain dedup, volume caps)
+- **Tier 3 ADAPTATION** adjusts intensity (stress, sleep, energy, soreness, deload, return-to-training)
+- **Tier 4 PREFERENCE** personalizes (favorites, training mode, coaching voice)
+
+Tier 3 adaptations use ADDITIVE reductions with a FLOOR:
+- Apply the LARGEST single reduction first (e.g., high stress = -40%)
+- Additional factors add -5% each (capped)
+- Volume floor: 40% of phase baseline (except STOP safety level)
+- Never multiply reductions — this gutters the session to ~30%
+
+Log every rule application: `[RULE 21] Applied: stress_high + sleep_poor → 55% volume`
+
+### Rule 22: Training Mode
+
+Users select a training intensity mode that affects volume, RPE targets, rest periods, overload aggressiveness, and coaching tone:
+- **Send It** (100% volume, RPE 7-9, aggressive overload)
+- **Steady Build** (80% volume, RPE 6-8, standard overload)
+- **Smart Recovery** (65% volume, RPE 5-7, conservative overload)
+- **Just Move** (50-60% volume, RPE 4-6, minimal overload)
+
+Mode affects PARAMETERS, not exercise selection — the science is the same, the throttle is different. The app may suggest mode changes based on trends but never auto-switches.
+
 ---
 
 ## REFERENCE DOCS

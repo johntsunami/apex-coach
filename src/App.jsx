@@ -1124,16 +1124,30 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   };
   // ── ENERGY/SLEEP/STRESS VOLUME MODIFIERS ─────────────────────
   // These actually reduce volume based on check-in data (not just display text)
-  let volumeModifier = 1.0; // 1.0 = full volume
-  // Return-to-training ramp (detraining protocol)
-  try { const _rings = getRings(); if (_rings.daysOff >= 14) { const _sessions = (getSessions() || []).length; const _rtm = getReturnVolumeMultiplier(_sessions, _rings.daysOff); volumeModifier *= _rtm; } } catch {}
+  // ── VOLUME ADAPTATION (Rule 20: additive reductions, 40% floor) ──
+  // Apply LARGEST single reduction first, then incremental -5% for additional factors
+  // NEVER multiply — that gutters the session to ~30% on bad days
+  let volumeModifier = 1.0;
+  // Return-to-training ramp (detraining protocol — applied separately, not stacked)
+  try { const _rings = getRings(); if (_rings.daysOff >= 14) { const _sessions = (getSessions() || []).length; const _rtm = getReturnVolumeMultiplier(_sessions, _rings.daysOff); volumeModifier = _rtm; } } catch {}
   if (checkInData) {
-    if (checkInData.energy <= 3) volumeModifier *= 0.7;        // Low energy: -30%
-    else if (checkInData.energy <= 5) volumeModifier *= 0.85;  // Moderate: -15%
-    if (checkInData.sleep === "poor") volumeModifier *= 0.7;   // Poor sleep: -30%
-    else if (checkInData.sleep === "ok") volumeModifier *= 0.85; // OK sleep: -15%
-    if (checkInData.stress >= 7) volumeModifier *= 0.6;        // High stress: -40%
-    else if (checkInData.stress >= 4) volumeModifier *= 0.8;   // Moderate stress: -20%
+    // Find the largest single reduction
+    const _reductions = [];
+    if (checkInData.stress >= 7) _reductions.push({ source: "stress_high", val: 0.40 });
+    else if (checkInData.stress >= 4) _reductions.push({ source: "stress_mod", val: 0.20 });
+    if (checkInData.sleep === "poor") _reductions.push({ source: "sleep_poor", val: 0.30 });
+    else if (checkInData.sleep === "ok") _reductions.push({ source: "sleep_ok", val: 0.15 });
+    if (checkInData.energy <= 3) _reductions.push({ source: "energy_low", val: 0.30 });
+    else if (checkInData.energy <= 5) _reductions.push({ source: "energy_mod", val: 0.15 });
+    // Apply largest reduction first, then -5% for each additional factor
+    _reductions.sort((a, b) => b.val - a.val);
+    if (_reductions.length > 0) {
+      volumeModifier -= _reductions[0].val; // largest reduction
+      for (let i = 1; i < _reductions.length; i++) volumeModifier -= 0.05; // incremental -5% each
+    }
+    // Floor: never below 40% (except STOP safety level which is handled separately)
+    volumeModifier = Math.max(0.40, volumeModifier);
+    if (_reductions.length > 0) console.log("[RULE 20] Volume adaptation:", _reductions.map(r => r.source).join(" + "), "→", Math.round(volumeModifier * 100) + "%");
   }
 
   // Respect user's session time preference (Fix #8)
