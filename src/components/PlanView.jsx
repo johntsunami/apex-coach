@@ -249,55 +249,72 @@ export default function PlanView({ onClose }) {
       </div>}
 
       {/* ── TAB: 12-MONTH ROADMAP ───────────────────────────── */}
-      {tab === "roadmap" && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {[
-          { num: 1, name: "Foundation", weeks: "1-8", focus: "Movement quality, core stability, injury-safe patterns", style: "1-3 sets, 12-20 reps, slow tempos",
-            unlocks: ["Core stability basic", "Hip hinge competent", "Single-leg stable"], newEx: "Dead bug, bird dog, glute bridge, goblet squat, band pull-apart",
-            injuryMilestone: null, criteria: "8+ sessions, proper form, no pain, core stability earned" },
-          { num: 2, name: "Strength", weeks: "9-16", focus: "Progressive overload, compound lifts, sport patterns", style: "2-4 sets, 8-12 reps, moderate tempos",
-            unlocks: ["Barbell competent", "Heavy loading ready", "Shoulder pressing cleared"], newEx: "Trap bar deadlift, landmine press, cable rows, front squat",
-            injuryMilestone: "If back drops to severity 2 → conventional deadlift unlocks",
-            criteria: "All injuries ≤2, barbell competent, no compensations" },
-          { num: 3, name: "Hypertrophy", weeks: "17-24", focus: "Muscle development, volume accumulation, mind-muscle", style: "3-5 sets, 6-12 reps, controlled tempos",
-            unlocks: ["Pull-up ready", "Plyometric ready (if knee allows)"], newEx: "Bench press, pull-ups, barbell hip thrust, advanced core",
-            injuryMilestone: "If knee drops to severity 1 → plyometrics and box jumps unlock",
-            criteria: "Strength benchmarks met, no compensations on retest" },
-          { num: 4, name: "Performance", weeks: "25+", focus: "Sport-specific power, advanced training, competition prep", style: "4-6 sets, 1-10 reps, explosive tempos",
-            unlocks: ["Full exercise library", "Olympic lifts", "Advanced plyometrics"], newEx: "Power clean, box jumps, sled work, sport-specific drills",
-            injuryMilestone: "Full athletic clearance based on ongoing assessment",
-            criteria: "Heavy loading ready, medical clearance for high intensity" },
-        ].map(p => {
-          const isCurrent = p.num === CURRENT_PHASE;
-          const isPast = p.num < CURRENT_PHASE;
-          return (
-            <Card key={p.num} style={{ borderColor: isCurrent ? C.teal + "40" : C.border, opacity: isPast ? 0.5 : 1 }}>
-              <div style={{ display: "flex", gap: 10 }}>
-                <div style={{ width: 32, textAlign: "center", flexShrink: 0 }}>
-                  <div style={{ width: 26, height: 26, borderRadius: "50%", background: isCurrent ? C.teal : isPast ? C.success : C.bgElevated, border: `2px solid ${isCurrent ? C.teal : isPast ? C.success : C.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 11, fontWeight: 800, color: isCurrent || isPast ? "#000" : C.textDim }}>{isPast ? "✓" : p.num}</span>
+      {tab === "roadmap" && (() => {
+        const phases = [
+          { num: 1, name: "Stabilization", weeks: [1,8], style: "1-3 sets · 12-20 reps · 4/2/1 tempo", unlocks: ["Core stability","Hip hinge competent"], criteria: "8+ sessions, no pain, core earned" },
+          { num: 2, name: "Strength Endurance", weeks: [9,16], style: "2-4 sets · 8-12 reps · 2/0/2 tempo", unlocks: ["Barbell competent","Heavy loading ready"], criteria: "All injuries ≤2, barbell competent" },
+          { num: 3, name: "Hypertrophy", weeks: [17,32], style: "3-5 sets · 6-12 reps · controlled", unlocks: ["Pull-up ready","Plyometric ready"], criteria: "Strength benchmarks met" },
+          { num: 4, name: "Max Strength", weeks: [33,44], style: "3-5 sets · 4-6 reps · explosive", unlocks: ["Full exercise library","Power lifts"], criteria: "Heavy loading ready" },
+          { num: 5, name: "Power", weeks: [45,52], style: "3-5 sets · 1-5 reps · max intent", unlocks: ["Olympic lifts","Advanced plyometrics"], criteria: "All Phase 4 criteria met" },
+        ];
+        const totalWeeks = 52;
+        const currentWeek = tw.week || 1;
+        return <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {/* Progress bar */}
+          <Card style={{ padding: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: C.textDim, marginBottom: 4 }}><span>Week {currentWeek} of {totalWeeks}</span><span>{Math.round(currentWeek / totalWeeks * 100)}%</span></div>
+            <ProgressBar value={currentWeek} max={totalWeeks} color={C.teal} height={6} />
+          </Card>
+          {/* Phase cards */}
+          {phases.map(p => {
+            const isCurrent = p.num === CURRENT_PHASE;
+            const isPast = p.num < CURRENT_PHASE;
+            const isFuture = p.num > CURRENT_PHASE;
+            const phaseWeeks = [];
+            for (let w = p.weeks[0]; w <= p.weeks[1]; w++) phaseWeeks.push(w);
+            return <Card key={p.num} style={{ padding: 0, overflow: "hidden", borderColor: isCurrent ? C.teal + "40" : C.border, opacity: isFuture ? 0.7 : 1 }}>
+              <div style={{ padding: "12px 14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 12, background: isCurrent ? C.teal : isPast ? C.success : C.bgElevated, border: `2px solid ${isCurrent ? C.teal : isPast ? C.success : C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: isCurrent || isPast ? "#000" : C.textDim }}>{isPast ? "✓" : p.num}</div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: isCurrent ? C.teal : C.text }}>Phase {p.num}: {p.name}</div>
+                      <div style={{ fontSize: 10, color: C.textDim }}>Weeks {p.weeks[0]}-{p.weeks[1]} · {p.style}</div>
+                    </div>
                   </div>
+                  {isCurrent && <Badge color={C.teal}>CURRENT</Badge>}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: isCurrent ? C.teal : C.text }}>{p.name}</span>
-                    <span style={{ fontSize: 9, color: C.textDim }}>Weeks {p.weeks}</span>
-                  </div>
-                  <div style={{ fontSize: 10, color: C.textMuted, marginTop: 2 }}>{p.focus}</div>
-                  <div style={{ fontSize: 9, color: C.textDim, marginTop: 2 }}>{p.style}</div>
-                  <div style={{ fontSize: 9, color: C.success, marginTop: 4 }}>Unlocks: {p.unlocks.join(", ")}</div>
-                  <div style={{ fontSize: 9, color: C.info, marginTop: 2 }}>New exercises: {p.newEx}</div>
-                  {p.injuryMilestone && <div style={{ fontSize: 9, color: C.warning, marginTop: 2 }}>{p.injuryMilestone}</div>}
-                  {!isCurrent && !isPast && <div style={{ fontSize: 8, color: C.textDim, marginTop: 4, padding: 4, background: C.bgGlass, borderRadius: 4 }}>Requires: {p.criteria}</div>}
-                  {isCurrent && <Badge color={C.teal}>YOU ARE HERE</Badge>}
+                {/* Week indicators */}
+                <div style={{ display: "flex", gap: 2, marginTop: 8, flexWrap: "wrap" }}>
+                  {phaseWeeks.map(w => {
+                    const isThisWeek = w === currentWeek;
+                    const isDoneWeek = w < currentWeek;
+                    const isDeload = w % 4 === 0;
+                    return <div key={w} style={{ width: 14, height: 14, borderRadius: 3, fontSize: 7, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center",
+                      background: isThisWeek ? C.teal : isDoneWeek ? C.success + "40" : isDeload ? C.info + "20" : C.bgElevated,
+                      color: isThisWeek ? "#000" : isDoneWeek ? C.success : isDeload ? C.info : C.textDim,
+                      border: isThisWeek ? `1px solid ${C.teal}` : "none" }}>{w}</div>;
+                  })}
                 </div>
+                {/* Unlocks */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 6 }}>
+                  {p.unlocks.map(u => <span key={u} style={{ fontSize: 8, padding: "2px 5px", borderRadius: 4, background: isPast ? C.success + "15" : C.bgElevated, color: isPast ? C.success : C.textDim }}>{isPast ? "✓ " : ""}{u}</span>)}
+                </div>
+                {isFuture && <div style={{ fontSize: 8, color: C.textDim, marginTop: 4 }}>Requires: {p.criteria}</div>}
               </div>
-            </Card>
-          );
-        })}
-        <Card style={{ background: C.bgGlass }}>
-          <div style={{ fontSize: 10, color: C.textDim, fontStyle: "italic" }}>This plan adapts every session based on your progress and feedback. Phase advancement is criteria-based, not time-based.</div>
-        </Card>
-      </div>}
+              {/* Phase transition */}
+              {isCurrent && readiness && <div style={{ padding: "8px 14px", borderTop: `1px solid ${C.border}`, background: C.bgGlass }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: C.info, letterSpacing: 1, marginBottom: 4 }}>PHASE {CURRENT_PHASE + 1} READINESS</div>
+                {readiness.checks?.slice(0, 4).map((c, j) => <div key={j} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 9, color: c.met ? C.success : C.textMuted, padding: "1px 0" }}><span>{c.met ? "✅" : "⬜"}</span>{c.label}</div>)}
+                <div style={{ fontSize: 8, color: C.teal, marginTop: 4 }}>{readiness.metCount}/{readiness.totalCount} criteria met</div>
+              </div>}
+            </Card>;
+          })}
+          <Card style={{ background: C.bgGlass, padding: 12 }}>
+            <div style={{ fontSize: 10, color: C.textDim, fontStyle: "italic" }}>This plan adapts every session. Phase advancement is criteria-based, not time-based. Projected timelines may shift based on your progress.</div>
+          </Card>
+        </div>;
+      })()}
 
       {/* ── TAB: BLOCKED & WHY ──────────────────────────────── */}
       {tab === "blocked" && <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
