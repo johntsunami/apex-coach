@@ -2825,7 +2825,28 @@ function AppInner(){
     try{const weekPlan=getOrCreateWeeklyPlan(exerciseDB,CURRENT_PHASE,loc);const todayPlan=getTodayFromPlan(weekPlan);if(todayPlan)adjustPlanForCheckIn(todayPlan,data,exerciseDB,CURRENT_PHASE);updateDayStatus(weekPlan,getDayOfWeek(),"in_progress");}catch(e){console.warn("Weekly plan adjust error (non-blocking):",e);}
     // For secondary workouts, exclude muscles trained in first session
     const firstMuscles=isSecondarySession?getFirstSessionMuscles(exerciseDB):null;
-    let w=buildWorkoutList(CURRENT_PHASE,loc,difficulty,data,firstMuscles);
+    // ── USE WEEKLY PLAN EXERCISES IF AVAILABLE (consistency between plan view and actual workout) ──
+    let w = null;
+    try {
+      const _wp = getWeeklyPlan();
+      const _today = _wp ? getTodayFromPlan(_wp) : null;
+      if (_today && _today.type === "training" && _today.exercises?.length >= 3 && !isSecondarySession) {
+        // Build workout from the weekly plan's scheduled exercises
+        const _planExercises = _today.exercises.map(pe => {
+          const full = exerciseDB.find(e => e.id === pe.id);
+          return full ? { ...full, _reason: pe._reason || "Scheduled in weekly plan" } : null;
+        }).filter(Boolean);
+        if (_planExercises.length >= 3) {
+          // Still run through buildWorkoutList for warm-up/cooldown/blocks generation
+          const _fullSession = buildWorkoutList(CURRENT_PHASE, loc, difficulty, data, firstMuscles);
+          // Replace main exercises with the planned ones, keep warmup/cooldown/blocks
+          w = { ..._fullSession, main: _planExercises, all: [...(_fullSession.warmup || []), ..._planExercises, ...(_fullSession.cooldown || [])] };
+          console.log("[PLAN SYNC] Using weekly plan exercises:", _planExercises.map(e => e.name).join(", "));
+        }
+      }
+    } catch (e) { console.warn("Weekly plan exercise sync error (non-blocking):", e); }
+    // Fallback: generate fresh if no weekly plan match
+    if (!w) w = buildWorkoutList(CURRENT_PHASE, loc, difficulty, data, firstMuscles);
     // Apply overtraining modifiers if detected
     try{const otSignals=assessOvertraining();if(otSignals&&otSignals.level>=2){w=applyOvertrainingModifiers(w,otSignals)||w;}}catch(e){console.warn("Overtraining modifier error:",e);}
     const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
