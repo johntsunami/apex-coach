@@ -761,6 +761,34 @@
         "tempo": "4/2/1",
         "rest": "30-60s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪲",
@@ -905,6 +933,34 @@
         "tempo": "Static",
         "rest": "30-60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🧱",
@@ -1044,6 +1100,34 @@
         "tempo": "Static",
         "rest": "30s",
         "intensity": "RPE 5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "📐",
@@ -1183,6 +1267,34 @@
         "tempo": "4/2/1",
         "rest": "30s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🐕",
@@ -1317,6 +1429,34 @@
         "tempo": "2/5/2",
         "rest": "30s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -1455,6 +1595,34 @@
         "tempo": "Static",
         "rest": "15s",
         "intensity": "RPE 3"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦩",
@@ -1595,6 +1763,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🌟",
@@ -1737,6 +1933,13 @@
         "tempo": "4/2/1",
         "rest": "60s",
         "intensity": "RPE 5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
       }
     },
     "emoji": "⚖️",
@@ -1872,6 +2075,13 @@
         "tempo": "4/2/1",
         "rest": "60s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
       }
     },
     "emoji": "🏐",
@@ -2015,6 +2225,27 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🍑",
@@ -2153,6 +2384,34 @@
         "tempo": "2/2/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🍑",
@@ -2306,6 +2565,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔽",
@@ -2472,6 +2752,20 @@
         "tempo": "1/0/2",
         "rest": "120-180s",
         "intensity": "75-85% 1RM"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -2631,6 +2925,20 @@
         "tempo": "1/0/2",
         "rest": "180s",
         "intensity": "75-85% 1RM"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -2767,6 +3075,20 @@
         "tempo": "4/2/1",
         "rest": "30-60s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
       }
     },
     "emoji": "🧱",
@@ -2907,6 +3229,34 @@
         "tempo": "4/1/2",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "📐",
@@ -3060,6 +3410,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -3212,6 +3583,27 @@
         "tempo": "2/0/2",
         "rest": "60-90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💥",
@@ -3364,6 +3756,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🛏️",
@@ -3517,6 +3930,20 @@
         "tempo": "2/0/2",
         "rest": "60-90s",
         "intensity": "75-85% 1RM"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -3652,6 +4079,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "↔️",
@@ -3795,6 +4250,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🚣",
@@ -3944,6 +4420,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -4092,6 +4589,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🚤",
@@ -4243,6 +4761,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🤸",
@@ -4387,6 +4926,34 @@
         "tempo": "4/2/1",
         "rest": "60s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -4537,6 +5104,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏆",
@@ -4682,6 +5270,34 @@
         "tempo": "3/1/2",
         "rest": "60-90s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦿",
@@ -4833,6 +5449,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦿",
@@ -4994,6 +5624,13 @@
         "tempo": "X/X/2",
         "rest": "180s",
         "intensity": "85-95% 1RM"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -5128,6 +5765,34 @@
         "tempo": "2/1/2",
         "rest": "45-60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🎯",
@@ -5262,6 +5927,34 @@
         "tempo": "2/0/2",
         "rest": "30s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🎯",
@@ -5397,6 +6090,27 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -5527,6 +6241,27 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔽",
@@ -5668,6 +6403,27 @@
         "tempo": "2/1/2",
         "rest": "45s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🤷",
@@ -5802,6 +6558,34 @@
         "tempo": "2/1/2",
         "rest": "30-45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦶",
@@ -6204,6 +6988,34 @@
         "tempo": "2/2/2",
         "rest": "45-60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -6340,6 +7152,34 @@
         "tempo": "2/2/2",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -6476,6 +7316,27 @@
         "tempo": "2/2/2",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -6619,6 +7480,27 @@
         "tempo": "2/1/2",
         "rest": "60-90s",
         "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🎡",
@@ -6760,6 +7642,34 @@
         "tempo": "Walking pace",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🧑‍🌾",
@@ -6900,6 +7810,34 @@
         "tempo": "Walking pace",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💼",
@@ -20240,6 +21178,34 @@
         "tempo": "Static",
         "rest": "15s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "😌",
@@ -20376,6 +21342,34 @@
         "tempo": "Static",
         "rest": "15s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "⚖️",
@@ -20523,6 +21517,27 @@
         "tempo": "Land and STICK 3s",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦘",
@@ -20662,6 +21677,34 @@
         "tempo": "Slow, controlled",
         "rest": "15s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🚶",
@@ -21253,6 +22296,27 @@
         "tempo": "Slow — each position held 2s",
         "rest": "90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -21395,6 +22459,34 @@
         "tempo": "Controlled walking pace",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🧑‍🌾",
@@ -23151,6 +24243,34 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪑",
@@ -23299,6 +24419,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -23440,6 +24581,27 @@
         "tempo": "2/1/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🤷",
@@ -23574,6 +24736,34 @@
         "tempo": "2/1/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🚣",
@@ -23708,6 +24898,27 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -23846,6 +25057,27 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -23979,6 +25211,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "↔️",
@@ -24118,6 +25378,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -24402,6 +25690,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪑",
@@ -24539,6 +25848,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪑",
@@ -24678,6 +26015,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -24810,6 +26175,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦵",
@@ -25344,6 +26737,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "↔️",
@@ -25488,6 +26909,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪑",
@@ -26558,6 +28000,34 @@
         "tempo": "2/0/2",
         "rest": "30s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏊",
@@ -26831,6 +28301,34 @@
         "tempo": "Moderate kicking",
         "rest": "30s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏊",
@@ -27099,6 +28597,34 @@
         "tempo": "3/1/2",
         "rest": "45s",
         "intensity": "RPE 3-4"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏊",
@@ -27248,6 +28774,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏆",
@@ -27401,6 +28948,27 @@
         "tempo": "2/0/2",
         "rest": "60-90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔔",
@@ -27551,6 +29119,27 @@
         "tempo": "Explosive hip drive",
         "rest": "60-90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔔",
@@ -27704,6 +29293,27 @@
         "tempo": "Slow — hold each position 2s",
         "rest": "90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🏋️",
@@ -27849,6 +29459,27 @@
         "tempo": "2/0/2",
         "rest": "60-90s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔔",
@@ -27989,6 +29620,34 @@
         "tempo": "2/1/2",
         "rest": "60-75s",
         "intensity": "RPE 6-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔔",
@@ -28273,6 +29932,34 @@
         "tempo": "Walking pace",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔔",
@@ -28412,6 +30099,34 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -28553,6 +30268,34 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -28689,6 +30432,34 @@
         "tempo": "3/1/2",
         "rest": "60s",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -28832,6 +30603,34 @@
         "tempo": "3/1/2",
         "rest": "75s",
         "intensity": "RPE 6-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -28974,6 +30773,27 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -29113,6 +30933,34 @@
         "tempo": "2/1/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -29246,6 +31094,34 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -29380,6 +31256,34 @@
         "tempo": "2/1/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔗",
@@ -29527,6 +31431,27 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -29669,6 +31594,34 @@
         "tempo": "3/1/2",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -29814,6 +31767,34 @@
         "tempo": "3/1/2",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -29954,6 +31935,34 @@
         "tempo": "2/0/2",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -30098,6 +32107,34 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -30233,6 +32270,27 @@
         "tempo": "2/0/2",
         "rest": "45s",
         "intensity": "RPE 5-6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -30366,6 +32424,34 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔵",
@@ -30502,6 +32588,34 @@
         "tempo": "2/2/2",
         "rest": "60s",
         "intensity": "RPE 6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🍑",
@@ -31052,6 +33166,34 @@
         "tempo": "Static holds",
         "rest": "30s between positions",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🧱",
@@ -32579,6 +34721,27 @@
         "tempo": "Fast feet",
         "rest": "45s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪜",
@@ -32715,6 +34878,27 @@
         "tempo": "Fast",
         "rest": "45s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔶",
@@ -32851,6 +35035,27 @@
         "tempo": "Fast",
         "rest": "60s",
         "intensity": "RPE 7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "◻️",
@@ -32985,6 +35190,27 @@
         "tempo": "React and catch",
         "rest": "30s",
         "intensity": "RPE 5"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🟡",
@@ -33131,6 +35357,20 @@
         "tempo": "Hop and STICK 3s",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🦘",
@@ -33269,6 +35509,27 @@
         "tempo": "Maximum speed",
         "rest": "90s",
         "intensity": "RPE 8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔀",
@@ -33403,6 +35664,27 @@
         "tempo": "Static hold",
         "rest": "45s",
         "intensity": "RPE 6"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🤏",
@@ -33546,6 +35828,34 @@
         "tempo": "Static hang",
         "rest": "60s",
         "intensity": "RPE 5-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🤸",
@@ -33681,6 +35991,27 @@
         "tempo": "Slow rolling",
         "rest": "60s",
         "intensity": "RPE 6-7"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -34495,6 +36826,34 @@
         "tempo": "Walking pace",
         "rest": "N/A",
         "intensity": "RPE 4-5"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🧠",
@@ -35622,6 +37981,34 @@
         "tempo": "2/0/2",
         "rest": "15-30s between exercises, 60-90s between rounds",
         "intensity": "RPE 5-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔄",
@@ -35758,6 +38145,20 @@
         "tempo": "isometric",
         "rest": "30-60s",
         "intensity": "RPE 4-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
       }
     },
     "emoji": "🧱",
@@ -36026,6 +38427,20 @@
         "tempo": "2/1/2",
         "rest": "30s",
         "intensity": "RPE 4-6"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
       }
     },
     "emoji": "🦪",
@@ -39118,6 +41533,34 @@
         "tempo": "3/1/2",
         "rest": "60s",
         "intensity": "RPE 5-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🪜",
@@ -39255,6 +41698,34 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 5-7"
+      },
+      "2": {
+        "sets": "3",
+        "reps": "8-12",
+        "tempo": "2/0/2",
+        "rest": "60s",
+        "intensity": "RPE 6-8"
+      },
+      "3": {
+        "sets": "4",
+        "reps": "6-12",
+        "tempo": "2/0/2",
+        "rest": "60-90s",
+        "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "💪",
@@ -39408,6 +41879,20 @@
         "tempo": "2/1/2",
         "rest": "60s",
         "intensity": "RPE 7-8"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🔽",
@@ -39867,6 +42352,20 @@
         "tempo": "2/1/3",
         "rest": "90-120s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "emoji": "🐒",
@@ -50728,6 +53227,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51301,6 +53807,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51399,6 +53912,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": "str_leg_press",
@@ -51498,6 +54018,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51596,6 +54123,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51691,6 +54232,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51790,6 +54338,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -51983,6 +54538,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": "stab_ball_pushup",
@@ -52090,6 +54659,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52189,6 +54772,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52297,6 +54894,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52402,6 +55013,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52502,6 +55127,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52602,6 +55241,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52700,6 +55346,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52796,6 +55456,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52893,6 +55567,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -52989,6 +55677,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53087,6 +55782,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53187,6 +55896,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53288,6 +56011,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53387,6 +56124,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53486,6 +56237,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53588,6 +56353,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53690,6 +56469,20 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
+      },
+      "5": {
+        "sets": "4",
+        "reps": "3-5",
+        "tempo": "X/0/X",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -53992,6 +56785,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -54088,6 +56888,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,
@@ -54185,6 +56992,13 @@
         "tempo": "2/0/2",
         "rest": "90s",
         "intensity": "RPE 7-9"
+      },
+      "4": {
+        "sets": "5",
+        "reps": "3-5",
+        "tempo": "X/0/2",
+        "rest": "120-180s",
+        "intensity": "RPE 8-10"
       }
     },
     "phase2_superset_pair": null,

@@ -135,9 +135,11 @@ function findVolumeSub(exercise, exerciseDB, phase = 1, location = "gym") {
 
 function capExerciseParams(exercise, phase = 1, difficulty = "standard") {
   const maxSets = getMaxSetsPerExercise(phase);
+  // NEVER fall back to Phase 1 params in Phase 4 — use NASM phase defaults
+  const _phaseDefaults = { 1: { sets: "2", reps: "12-20", rest: "60" }, 2: { sets: "3", reps: "8-12", rest: "60" }, 3: { sets: "4", reps: "6-12", rest: "75" }, 4: { sets: "5", reps: "3-5", rest: "150" }, 5: { sets: "4", reps: "3-5", rest: "150" } };
   const phaseParams =
     exercise.phaseParams?.[String(phase)] ||
-    Object.values(exercise.phaseParams || {})[0] ||
+    _phaseDefaults[phase] ||
     {};
 
   let sets = parseInt(phaseParams.sets) || 1;

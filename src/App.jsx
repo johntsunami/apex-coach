@@ -1012,21 +1012,36 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       const _goals = assessment?.goals || {};
       const _recentIds = []; try { const ss = getSessions() || []; ss.slice(-2).forEach(s => (s.exercises_completed || []).forEach(ec => _recentIds.push(ec.exercise_id))); } catch {}
 
-      // Score every exercise in pool
+      // Score every exercise — phase weight is PRIMARY, location is ADDITIVE tiebreaker
       const _phaseW = PHASE_EXERCISE_WEIGHTS;
-      // Equipment tier derivation for location-smart scheduling (Rule 19)
       const _eqTier = (ex) => { const eq = ex.equipmentRequired || []; if (eq.some(e => EQUIPMENT_TIERS.tier1.has(e))) return 1; if (eq.some(e => EQUIPMENT_TIERS.tier2.has(e))) return 2; if (eq.some(e => EQUIPMENT_TIERS.tier3.has(e))) return 3; if (eq.some(e => EQUIPMENT_TIERS.tier4.has(e))) return 4; return 5; };
-      const _locBoost = LOCATION_BOOSTS[location] || LOCATION_BOOSTS.gym;
+      // Location bonus: ADDITIVE, small values (0-0.25) — tiebreaker not dominator
+      const _locBonusMap = location === "gym" ? { 1: 0.25, 2: 0.20, 3: 0.10, 4: 0, 5: 0 } : location === "home" ? { 1: 0, 2: 0, 3: 0.10, 4: 0.20, 5: 0.25 } : { 1: 0, 2: 0, 3: 0, 4: 0.10, 5: 0.30 };
+      // Phase-appropriate score: exercises score highest in their optimal phase range
+      const _phaseAppropriate = (ex) => {
+        const diff = ex.difficultyLevel || 3;
+        const optimal = { 1: [1, 2], 2: [1, 2, 3], 3: [2, 3, 4], 4: [3, 4, 5], 5: [4, 5] }[diff] || [1, 2, 3, 4, 5];
+        if (optimal.includes(phase)) return 1.5;
+        const distance = Math.min(...optimal.map(p => Math.abs(p - phase)));
+        return Math.max(0.1, 1.0 - (distance * 0.35));
+      };
       const _scoreEx = (ex) => {
-        let s = 1.0;
-        s *= (_phaseW[phase]?.[ex.type] ?? 1.0);
+        // Phase weight: PRIMARY factor (0.3-2.5)
+        let phaseScore = _phaseW[phase]?.[ex.type] ?? 1.0;
+        // Location bonus: ADDITIVE tiebreaker (0-0.25)
+        const locBonus = _locBonusMap[_eqTier(ex)] || 0;
+        let s = phaseScore + locBonus;
+        // Phase-appropriate: difficulty-based (0.1-1.5)
+        s *= _phaseAppropriate(ex);
+        // Goal weight
         const bpGoal = _goals[ex.bodyPart]; const ga = Array.isArray(bpGoal) ? bpGoal : [bpGoal];
         if (ga.includes("size") && ex.type === "isolation") s *= 1.5;
         if (ga.includes("size") && ex.type === "strength") s *= 1.3;
         if (ga.includes("strength") && ex.type === "strength") s *= 1.5;
-        if (_recentIds.includes(ex.id)) s *= 0.3; // penalize recent repeats
-        if (!locationFilter(ex, location)) s *= 0.1; // strong penalty for location mismatch
-        s *= (_locBoost[_eqTier(ex)] || 1.0); // location-smart equipment priority
+        // Recency penalty
+        if (_recentIds.includes(ex.id)) s *= 0.3;
+        // Location filter (can't do this exercise here at all)
+        if (!locationFilter(ex, location)) s *= 0.05;
         return s;
       };
 

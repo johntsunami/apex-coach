@@ -84,5 +84,14 @@ export const LOCATION_BOOSTS = {
   outdoor: { 1: 0, 2: 0, 3: 0.3, 4: 0.8, 5: 2.0 },
 };
 
+// ── Phase Parameter Defaults (fallback when exercise lacks phaseParams) ──
+export const PHASE_DEFAULTS = {
+  1: { sets: "2", reps: "12-20", tempo: "4/2/1", rest: "60s", intensity: "RPE 5-7" },
+  2: { sets: "3", reps: "8-12", tempo: "2/0/2", rest: "60s", intensity: "RPE 6-8" },
+  3: { sets: "4", reps: "6-12", tempo: "2/0/2", rest: "60-90s", intensity: "RPE 7-9" },
+  4: { sets: "5", reps: "3-5", tempo: "X/0/2", rest: "120-180s", intensity: "RPE 8-10" },
+  5: { sets: "4", reps: "3-5", tempo: "X/0/X", rest: "120-180s", intensity: "RPE 8-10" },
+};
+
 // ── Developer Whitelist ─────────────────────────────────────────
 export const DEV_EMAILS = ["johncarrus@gmail.com"];
