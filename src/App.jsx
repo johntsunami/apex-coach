@@ -1029,10 +1029,18 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       const usedBps = {};
 
       const _normP = (p) => ["anti_rotation","anti_extension","anti_flexion","breathing"].includes(p) ? "core" : p === "lunge" ? "squat" : p === "carry" ? "core" : p;
+      // Determine split type for pattern limits
+      const _daysPerWeek = assessment?.preferences?.daysPerWeek || 3;
+      const _isSplit = _daysPerWeek >= 4;
+      const _wp = (() => { try { return JSON.parse(localStorage.getItem("apex_weekly_plan")); } catch { return null; } })();
+      const _todayLabel = (_wp?.days?.[new Date().getDay()]?.label || "").toLowerCase();
+      const _primaryPatterns = !_isSplit ? [] : _todayLabel.includes("push") ? ["push"] : _todayLabel.includes("pull") ? ["pull"] : _todayLabel.includes("leg") ? ["squat","hinge"] : _todayLabel.includes("upper") ? ["push","pull"] : _todayLabel.includes("lower") ? ["squat","hinge"] : [];
       const _canPick = (ex) => {
         if (usedIds.has(ex.id)) return false;
         const cf = ex.progressionChain?.chainFamily; if (cf && usedChains.has(cf)) return false;
-        const np = _normP(ex.movementPattern); if ((usedPatterns[np] || 0) >= 2) return false;
+        const np = _normP(ex.movementPattern);
+        const patLimit = np === "core" ? 2 : _primaryPatterns.includes(np) ? 99 : 2; // split primary = unlimited
+        if ((usedPatterns[np] || 0) >= patLimit) return false;
         if ((usedBps[ex.bodyPart] || 0) >= 3) return false;
         return true;
       };

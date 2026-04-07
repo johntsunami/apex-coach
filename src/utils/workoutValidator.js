@@ -41,9 +41,15 @@ export function validateSession(session, phase, profile) {
   if (unexpectedMissing.length > 1) errors.push(`Missing patterns: ${unexpectedMissing.join(", ")}`);
   else if (unexpectedMissing.length === 1) warnings.push(`Missing pattern: ${unexpectedMissing[0]}`);
 
-  // Check 2: Pattern concentration
+  // Check 2: Pattern concentration (split-aware)
+  // Full-body: max 2 per pattern. Split: primary pattern unlimited, secondary max 2, core always max 2.
+  const splitType = profile?.splitType || "full_body"; // "full_body"|"push"|"pull"|"legs"|"upper"|"lower"
+  const primaryPatterns = { push: ["push"], pull: ["pull"], legs: ["squat","hinge"], upper: ["push","pull"], lower: ["squat","hinge"], full_body: [] }[splitType] || [];
   Object.entries(patternCounts).forEach(([p, count]) => {
-    if (p !== "mobility" && count > 2) errors.push(`Pattern "${p}" has ${count} exercises (max 2)`);
+    if (p === "mobility") return;
+    const isPrimary = primaryPatterns.includes(p);
+    const limit = p === "core" ? 2 : isPrimary ? 99 : 2; // primary unlimited (except core), secondary max 2
+    if (count > limit) errors.push(`Pattern "${p}" has ${count} exercises (max ${limit} for ${splitType} session)`);
   });
 
   // Check 3: Chain family uniqueness

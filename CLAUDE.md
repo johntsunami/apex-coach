@@ -338,11 +338,32 @@ Fill these 5 required slots FIRST, then fill remaining slots with goal-driven pi
 
 **Exceptions:** Wheelchair users may skip hinge/squat. Bed-bound users may skip most patterns. Post-surgical acute patients use breathing + ROM only.
 
-### Rule 12: Movement Pattern Concentration Limit
+### Rule 12: Movement Pattern Concentration Limits
 
-**HARD LIMIT: Maximum 2 exercises from any single movementPattern per session.**
+Pattern limits depend on the session type (split vs full body):
 
-This means NEVER 3 anti-rotation exercises. NEVER 3 push exercises. NEVER 3 squats. If the engine selects a 3rd exercise from the same pattern, it must be replaced with the highest-scoring exercise from the most underrepresented pattern.
+**FULL-BODY SESSIONS (2-3 day/week frequency):**
+- Maximum 2 exercises from any single movementPattern
+- Must cover all 5 fundamental patterns (push, pull, hinge, squat, core)
+
+**SPLIT SESSIONS (4+ day/week frequency):**
+- The PRIMARY pattern for that day has NO upper limit (Push Day can have 4-5 push exercises)
+- SECONDARY patterns: maximum 2 exercises
+- Core: maximum 2 exercises per session regardless of split type
+
+| Split Day | Primary (unlimited) | Secondary (max 2 each) | Core (max 2) |
+|---|---|---|---|
+| Push Day | push | — | core |
+| Pull Day | pull | — | core |
+| Leg Day | squat, hinge, lunge | — | core |
+| Upper Day | push, pull | — | core |
+| Lower Day | squat, hinge, lunge | — | core |
+| Full Body | none (max 2 each) | all patterns max 2 | core |
+
+**THE RULE THAT NEVER CHANGES regardless of split:**
+- Maximum 1 exercise per chainFamily per session (Rule 13)
+- You CAN have flat DB bench press + incline DB press + landmine press (different chain families)
+- You CANNOT have Pallof Press Tall Kneeling + Pallof Press Standing + Pallof Press Split Stance (same chain family)
 
 ### Rule 13: Progression Chain Deduplication
 
