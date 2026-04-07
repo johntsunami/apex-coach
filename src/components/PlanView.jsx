@@ -33,9 +33,11 @@ export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
   const [swapTarget, setSwapTarget] = useState(null);
   const [swaps, setSwaps] = useState({});
+  const [expandedWeek, setExpandedWeek] = useState(null);
   const assessment = getAssessment();
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const stats = getStats();
+  const sessions = getSessions();
   const tw = getTrainingWeek();
   const daysPerWeek = assessment?.preferences?.daysPerWeek || 3;
 
@@ -284,16 +286,58 @@ export default function PlanView({ onClose }) {
                   </div>
                   {isCurrent && <Badge color={C.teal}>CURRENT</Badge>}
                 </div>
-                {/* Week indicators */}
-                <div style={{ display: "flex", gap: 2, marginTop: 8, flexWrap: "wrap" }}>
+                {/* Week rows — tappable to expand and see exercises */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 8 }}>
                   {phaseWeeks.map(w => {
                     const isThisWeek = w === currentWeek;
                     const isDoneWeek = w < currentWeek;
                     const isDeload = w % 4 === 0;
-                    return <div key={w} style={{ width: 14, height: 14, borderRadius: 3, fontSize: 7, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center",
-                      background: isThisWeek ? C.teal : isDoneWeek ? C.success + "40" : isDeload ? C.info + "20" : C.bgElevated,
-                      color: isThisWeek ? "#000" : isDoneWeek ? C.success : isDeload ? C.info : C.textDim,
-                      border: isThisWeek ? `1px solid ${C.teal}` : "none" }}>{w}</div>;
+                    const isExpanded = expandedWeek === w;
+                    const weekColor = isThisWeek ? C.teal : isDoneWeek ? C.success : C.textDim;
+                    // For current week, use real plan data
+                    const weekExercises = isThisWeek && weekPlan ? weekPlan.days : null;
+                    // For past weeks, pull from session history
+                    const pastSessions = isDoneWeek ? (sessions || []).filter(s => { try { const sd = new Date(s.date); const weekNum = Math.floor((sd - new Date(sessions[0]?.date || sd)) / (7 * 86400000)) + 1; return weekNum === w; } catch { return false; } }) : [];
+
+                    return <div key={w}>
+                      <div onClick={() => setExpandedWeek(isExpanded ? null : w)} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 4px", cursor: "pointer", borderRadius: 6, background: isExpanded ? C.bgElevated : "transparent" }}>
+                        <div style={{ width: 22, height: 22, borderRadius: 4, fontSize: 9, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                          background: isThisWeek ? C.teal : isDoneWeek ? C.success + "30" : isDeload ? C.info + "15" : C.bgElevated,
+                          color: isThisWeek ? "#000" : weekColor, border: isThisWeek ? `1px solid ${C.teal}` : "none" }}>{w}</div>
+                        <div style={{ flex: 1 }}>
+                          <span style={{ fontSize: 11, fontWeight: isThisWeek ? 700 : 500, color: weekColor }}>Week {w}</span>
+                          {isDeload && <span style={{ fontSize: 8, color: C.info, marginLeft: 4 }}>DELOAD</span>}
+                          {isThisWeek && <span style={{ fontSize: 8, color: C.teal, marginLeft: 4 }}>CURRENT</span>}
+                        </div>
+                        <span style={{ fontSize: 9, color: C.textDim, transform: isExpanded ? "rotate(90deg)" : "none", transition: "transform 0.15s" }}>▸</span>
+                      </div>
+                      {/* Expanded week detail */}
+                      {isExpanded && <div style={{ marginLeft: 30, paddingBottom: 6, borderLeft: `2px solid ${weekColor}20` }}>
+                        {isThisWeek && weekExercises ? weekExercises.map((day, di) => (
+                          <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < weekExercises.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : day.type === "rest" ? "😴" : ""}</div>
+                            {day.type !== "rest" && day.exercises?.map((e, ei) => {
+                              const fullEx = exerciseDB.find(x => x.id === e.id) || e;
+                              return <div key={ei} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 8 }}>
+                                {ei + 1}. {fullEx.name} <span style={{ color: C.textDim }}>({(fullEx.bodyPart || "").replace(/_/g, " ")})</span>
+                              </div>;
+                            })}
+                            {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description || "Rest & recovery"}</div>}
+                          </div>
+                        )) : isDoneWeek && pastSessions.length > 0 ? (
+                          <div style={{ padding: "4px 0 4px 8px" }}>
+                            <div style={{ fontSize: 10, color: C.success }}>{pastSessions.length} session{pastSessions.length > 1 ? "s" : ""} completed</div>
+                            {pastSessions.map((s, si) => <div key={si} style={{ fontSize: 9, color: C.textMuted, padding: "1px 0" }}>
+                              {new Date(s.date).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} — {(s.exercises_completed || []).length} exercises · {s.duration_minutes || "?"}min
+                            </div>)}
+                          </div>
+                        ) : (
+                          <div style={{ padding: "4px 8px", fontSize: 9, color: C.textDim, fontStyle: "italic" }}>
+                            {isDoneWeek ? "No session data available" : `Projected: ${daysPerWeek} sessions/week · ${p.style}`}
+                          </div>
+                        )}
+                      </div>}
+                    </div>;
                   })}
                 </div>
                 {/* Unlocks */}
