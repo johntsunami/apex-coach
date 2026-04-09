@@ -433,15 +433,34 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
 // Adapters normalize the 300-exercise JSON schema for existing UI components
 // Dynamic phase: reads from mesocycle → assessment → default 1
 function getCurrentPhase() {
+  let raw = 1;
   try {
     const meso = JSON.parse(localStorage.getItem("apex_mesocycle"));
-    if (meso?.phase) return meso.phase;
+    if (meso?.phase) raw = meso.phase;
   } catch {}
+  if (raw === 1) {
+    try {
+      const a = JSON.parse(localStorage.getItem("apex_assessment"));
+      if (a?.startingPhase) raw = a.startingPhase;
+    } catch {}
+  }
+  // Sanity check: < 6 sessions means Phase 1 regardless of stored value
   try {
-    const a = JSON.parse(localStorage.getItem("apex_assessment"));
-    if (a?.startingPhase) return a.startingPhase;
+    const sessions = JSON.parse(localStorage.getItem("apex_sessions") || "[]");
+    if (sessions.length < 6 && raw > 1) {
+      console.warn('[PHASE SANITY] Resetting phase from', raw, 'to 1 —', sessions.length, 'sessions completed');
+      raw = 1;
+    }
   } catch {}
-  return 1;
+  // Apply safeguard ceiling (age/condition caps)
+  try {
+    const { checkSafeguardPhaseReadiness } = require("./utils/safeguards.js");
+    const a = JSON.parse(localStorage.getItem("apex_assessment") || "{}");
+    const injuries = JSON.parse(localStorage.getItem("apex_injuries") || "[]").filter(i => i.status !== "resolved");
+    const sg = checkSafeguardPhaseReadiness(raw, a?.userAge, a?.fitnessLevel, injuries);
+    if (!sg.allowed) { console.log('[PHASE CAP]', raw, '→', sg.maxPhase, ':', sg.message); raw = sg.maxPhase; }
+  } catch {}
+  return raw;
 }
 const CURRENT_PHASE = getCurrentPhase();
 const BODY_GROUPS=["All","back","core","shoulders","legs","glutes","hips","full_body","chest","arms","neck","ankles","calves"];
@@ -1226,19 +1245,24 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const recentSessions = getSessions() || [];
   const last3Starters = new Set(recentSessions.slice(-3).map(s => (s.exercises_completed || [])[0]?.exercise_id).filter(Boolean));
 
-  const warmup = pick("warmup", warmupLimit, last3Starters);
+  let warmup = pick("warmup", warmupLimit, last3Starters);
   let main = pick("main", mainLimit);
-  const cooldown = pick("cooldown", cooldownLimit);
+  let cooldown = pick("cooldown", cooldownLimit);
 
-  // ── DEDUP GUARD: Remove exercises with same base name (Rule: max 1 per base exercise) ──
+  // ── DEDUP GUARD: Remove exercises with same base name across ALL lists ──
   {
-    const _seenBase = new Set();
-    main = main.filter(ex => {
-      const base = (ex.name || "").toLowerCase().replace(/\s*\(.*\)\s*$/, "").replace(/modified|cautious|advanced|basic/gi, "").trim();
-      if (_seenBase.has(base)) { console.warn("[DEDUP] Removed duplicate:", ex.name, ex.id, "— base:", base); return false; }
-      _seenBase.add(base);
-      return true;
-    });
+    const _dedup = (arr, label) => {
+      const _seenBase = new Set();
+      return arr.filter(ex => {
+        const base = (ex.name || "").toLowerCase().replace(/\s*\(.*\)\s*$/, "").replace(/modified|cautious|advanced|basic/gi, "").trim();
+        if (_seenBase.has(base)) { console.warn(`[DEDUP ${label}] Removed duplicate:`, ex.name, ex.id, "— base:", base); return false; }
+        _seenBase.add(base);
+        return true;
+      });
+    };
+    warmup = _dedup(warmup, "warmup");
+    main = _dedup(main, "main");
+    cooldown = _dedup(cooldown, "cooldown");
   }
 
   // ── EXERCISE ORDERING: Compounds → Isolation → Core → Cardio (Rule 20) ──
@@ -1451,11 +1475,19 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const dWarmup = dedupGlobal(warmup);
   const dMain = dedupGlobal(main);
   const dCooldown = dedupGlobal(cooldown);
-  // Also dedup the blocks exercises against warmup/main/cooldown
-  if (blocks.inhibit) blocks.inhibit = blocks.inhibit.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
-  if (blocks.lengthen) blocks.lengthen = blocks.lengthen.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
-  if (blocks.cooldownStretches) blocks.cooldownStretches = blocks.cooldownStretches.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
-  if (blocks.cardio) blocks.cardio = blocks.cardio.filter(e => { if (globalSeen.has(e.id)) return false; globalSeen.add(e.id); return true; });
+  // Also dedup the blocks exercises against warmup/main/cooldown (by ID and name)
+  const _blockNameSeen = new Set();
+  const _dedupBlock = (arr) => (arr || []).filter(e => {
+    if (globalSeen.has(e.id)) return false;
+    const base = (e.name || "").toLowerCase().replace(/\s*\(.*\)\s*$/, "").trim();
+    if (_blockNameSeen.has(base)) return false;
+    globalSeen.add(e.id); _blockNameSeen.add(base);
+    return true;
+  });
+  if (blocks.inhibit) blocks.inhibit = _dedupBlock(blocks.inhibit);
+  if (blocks.lengthen) blocks.lengthen = _dedupBlock(blocks.lengthen);
+  if (blocks.cooldownStretches) blocks.cooldownStretches = _dedupBlock(blocks.cooldownStretches);
+  if (blocks.cardio) blocks.cardio = _dedupBlock(blocks.cardio);
 
   let eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
 
@@ -2605,13 +2637,13 @@ function Mindfulness({onContinue,type}){
 
   // ── Full breathing exercise (phase transitions) ──
   const isCooldown=type==="mainToCooldown";
-  // Cooldown: progressive deceleration 4/4 → 6/6 → 7/7
-  const cooldownPacing=[{i:4,h:0,e:4},{i:6,h:0,e:6},{i:7,h:0,e:7}];
+  // Cooldown: progressive deceleration 4/0/6 → 6/0/8 → 7/0/9 (longer exhale for parasympathetic)
+  const cooldownPacing=[{i:4,h:0,e:6},{i:6,h:0,e:8},{i:7,h:0,e:9}];
   const LS="apex_breath_prefs";
   const saved=(()=>{try{return JSON.parse(localStorage.getItem(LS))||{};}catch{return{};}})();
-  const defaultInh=isCooldown?cooldownPacing[0].i:(saved.inh||7);
-  const defaultHld=isCooldown?cooldownPacing[0].h:(saved.hld||7);
-  const defaultExh=isCooldown?cooldownPacing[0].e:(saved.exh||7);
+  const defaultInh=isCooldown?cooldownPacing[0].i:(saved.inh||4);
+  const defaultHld=isCooldown?cooldownPacing[0].h:(saved.hld||0);
+  const defaultExh=isCooldown?cooldownPacing[0].e:(saved.exh||6);
   const[inh,setInh]=useState(defaultInh);
   const[hld,setHld]=useState(defaultHld);
   const[exh,setExh]=useState(defaultExh);
@@ -2619,6 +2651,7 @@ function Mindfulness({onContinue,type}){
   const[sec,setSec]=useState(0);
   const[cycle,setCycle]=useState(0);
   const[circleScale,setCircleScale]=useState(0.4);
+  const[showAdj,setShowAdj]=useState(false);
   const totalCycles=3;
   const timerRef=useRef(null);
 
@@ -2660,7 +2693,7 @@ function Mindfulness({onContinue,type}){
 
   const phaseLabel=phase==="in"?"Breathe In":phase==="hold"?"Hold":phase==="out"?"Breathe Out":phase==="done"?"Done":"";
   const phaseColor=phase==="in"?C.info:phase==="hold"?C.warning:phase==="out"?C.success:C.teal;
-  const Adj=({label,val,set})=>(<div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:10,color:C.textDim,minWidth:36}}>{label}</span><button onClick={()=>set(v=>Math.max(2,v-1))} style={{width:24,height:24,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:12,cursor:"pointer"}}>-</button><span style={{fontSize:14,fontWeight:700,color:C.text,minWidth:20,textAlign:"center"}}>{val}s</span><button onClick={()=>set(v=>Math.min(15,v+1))} style={{width:24,height:24,borderRadius:6,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textDim,fontSize:12,cursor:"pointer"}}>+</button></div>);
+  const Adj=({label,val,set})=>(<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,padding:"6px 0"}}><span style={{fontSize:13,color:C.textMuted,minWidth:60}}>{label}</span><button onClick={()=>set(v=>Math.max(0,v-1))} style={{width:44,height:44,borderRadius:22,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textMuted,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"inherit"}}>-</button><span style={{fontSize:22,fontWeight:700,color:C.text,minWidth:36,textAlign:"center"}}>{val}s</span><button onClick={()=>set(v=>Math.min(15,v+1))} style={{width:44,height:44,borderRadius:22,background:C.bgElevated,border:`1px solid ${C.border}`,color:C.textMuted,fontSize:18,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"inherit"}}>+</button></div>);
 
   return(<div className="fade-in" style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20,minHeight:400,textAlign:"center"}}>
     <div style={{fontSize:48}}>{labels.i}</div>
@@ -2674,13 +2707,14 @@ function Mindfulness({onContinue,type}){
     </div>}
     {phase!=="done"&&<div style={{fontSize:16,fontWeight:700,color:phaseColor}}>{phaseLabel}...</div>}
     {phase!=="done"&&<div style={{fontSize:10,color:C.textDim}}>Breath {cycle+1} of {totalCycles}</div>}
-    <Card style={{background:C.bgGlass,width:"100%",maxWidth:300,padding:12}}>
-      <div style={{display:"flex",justifyContent:"space-around"}}>
-        <Adj label="In" val={inh} set={setInh}/>
-        <Adj label="Hold" val={hld} set={setHld}/>
-        <Adj label="Out" val={exh} set={setExh}/>
-      </div>
-    </Card>
+    {phase!=="done"&&<div style={{fontSize:11,color:C.textDim}}>{inh}s in{hld>0?` · ${hld}s hold`:""} · {exh}s out</div>}
+    {!showAdj&&phase!=="done"&&<button onClick={()=>setShowAdj(true)} style={{background:"none",border:"none",color:C.textDim,fontSize:11,cursor:"pointer",padding:4,fontFamily:"inherit",opacity:0.6}}>⚙️ Adjust timing</button>}
+    {showAdj&&<Card style={{background:C.bgGlass,width:"100%",maxWidth:280,padding:14}}>
+      <Adj label="Inhale" val={inh} set={setInh}/>
+      <Adj label="Hold" val={hld} set={setHld}/>
+      <Adj label="Exhale" val={exh} set={setExh}/>
+      <button onClick={()=>setShowAdj(false)} style={{background:"none",border:"none",color:C.textDim,fontSize:10,cursor:"pointer",marginTop:4,fontFamily:"inherit"}}>Done</button>
+    </Card>}
     {phase==="done"&&<div><div style={{fontSize:32,marginBottom:8}}>✨</div><div style={{fontSize:14,color:C.success,fontWeight:600,marginBottom:12}}>3 breaths complete. Ready to go.</div><Btn onClick={onContinue} style={{maxWidth:300}}>Continue →</Btn></div>}
     {phase!=="done"&&<Btn variant="ghost" onClick={onContinue} style={{maxWidth:300,opacity:0.6}}>Skip →</Btn>}
     <div style={{height:90}}/>

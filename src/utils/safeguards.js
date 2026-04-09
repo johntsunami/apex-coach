@@ -76,6 +76,54 @@ export function getMaxPhaseForAge(age, fitnessLevel, conditions) {
 // Some conditions require higher reps GLOBALLY (all exercises).
 
 const CONDITION_REP_RULES = {
+  // ── SEVERITY-TIERED CONDITIONS ──
+  // Keys 1/2/3 = severity buckets: 1=managed/chronic, 2=active/controlled, 3=acute/unstable
+  disc_herniation_chronic: {
+    1: { minReps: 6, maxPhase: 5, reason: "Chronic disc (managed) — full training with extension-bias maintenance" },
+    2: { minReps: 8, maxPhase: 4, reason: "Disc (active) — moderate loading, McKenzie daily" },
+    3: { minReps: 12, maxPhase: 2, reason: "Disc (acute) — stabilization only" },
+  },
+  microdiscectomy: {
+    1: { minReps: 6, maxPhase: 5, reason: "Healed microdiscectomy — full training OK with McKenzie maintenance" },
+    2: { minReps: 8, maxPhase: 3, reason: "Microdiscectomy (irritated) — moderate loading" },
+    3: { minReps: 12, maxPhase: 2, reason: "Microdiscectomy (flare) — stabilization only" },
+  },
+  labrum_tear_shoulder: {
+    1: { minReps: 6, maxPhase: 4, reason: "Old SLAP (managed) — avoid max overhead, otherwise full training" },
+    2: { minReps: 8, maxPhase: 3, reason: "SLAP (active) — no max loads through shoulder" },
+    3: { minReps: 12, maxPhase: 2, reason: "SLAP (acute) — PT only, no loaded pressing" },
+  },
+  labrum_tear_hip: {
+    1: { minReps: 6, maxPhase: 5, reason: "Healed hip labrum — full training" },
+    2: { minReps: 8, maxPhase: 3, reason: "Hip labrum (active) — moderate loading" },
+    3: { minReps: 12, maxPhase: 2, reason: "Hip labrum (acute) — PT protocol only" },
+  },
+  acl_post_op: {
+    1: { minReps: 6, maxPhase: 5, reason: "Healed ACL (8+ years) — full training including plyometrics with caution" },
+    2: { minReps: 8, maxPhase: 3, reason: "ACL (recovering) — no impact, moderate loading" },
+    3: { minReps: 12, maxPhase: 2, reason: "ACL (acute post-op) — PT protocol only" },
+  },
+  meniscus_tear: {
+    1: { minReps: 6, maxPhase: 5, reason: "Healed meniscus — full training" },
+    2: { minReps: 8, maxPhase: 3, reason: "Meniscus (active) — limit deep flexion under load" },
+    3: { minReps: 12, maxPhase: 2, reason: "Meniscus (acute) — no loaded knee flexion" },
+  },
+  rotator_cuff_tear: {
+    1: { minReps: 6, maxPhase: 4, reason: "Old rotator cuff (managed) — avoid extreme ROM under load" },
+    2: { minReps: 10, maxPhase: 2, reason: "Rotator cuff (active) — no max loads" },
+    3: { minReps: 12, maxPhase: 1, reason: "Rotator cuff (acute) — PT only" },
+  },
+  patellar_tendinopathy: {
+    1: { minReps: 6, maxPhase: 5, reason: "Resolved tendinopathy — full training" },
+    2: { minReps: 8, maxPhase: 3, reason: "Tendinopathy (active) — moderate intensity" },
+    3: { minReps: 12, maxPhase: 2, reason: "Tendinopathy (acute) — eccentric protocol only" },
+  },
+  achilles_tendinopathy: {
+    1: { minReps: 6, maxPhase: 5, reason: "Resolved achilles — full training" },
+    2: { minReps: 8, maxPhase: 3, reason: "Achilles (active) — eccentric focus" },
+    3: { minReps: 12, maxPhase: 2, reason: "Achilles (acute) — no impact" },
+  },
+  // ── FLAT RULES (no severity tiers — condition itself defines limits) ──
   osteoporosis:              { minReps: 10, maxPhase: 3, reason: "Fracture risk — 10-20 reps (NASM Ch23)" },
   osteopenia:                { minReps: 8,  maxPhase: 4, reason: "Moderate loading builds bone safely" },
   rheumatoid_arthritis:      { minReps: 10, maxPhase: 2, reason: "Joint protection — higher reps (NASM Ch23)" },
@@ -90,16 +138,8 @@ const CONDITION_REP_RULES = {
   postpartum:                { minReps: 10, maxPhase: 2, reason: "Pelvic floor recovery" },
   spinal_fusion:             { minReps: 8,  maxPhase: 3, reason: "Protect fused segments" },
   disc_herniation_acute:     { minReps: 12, maxPhase: 1, reason: "Acute disc — stabilization only" },
-  disc_herniation_chronic:   { minReps: 8,  maxPhase: 3, reason: "Chronic disc — moderate loading OK" },
-  labrum_tear_shoulder:      { minReps: 8,  maxPhase: 3, reason: "Shoulder instability — no max loads" },
-  labrum_tear_hip:           { minReps: 8,  maxPhase: 3, reason: "Hip instability — moderate loading" },
-  acl_post_op:               { minReps: 8,  maxPhase: 3, reason: "Graft protection" },
-  meniscus_tear:             { minReps: 8,  maxPhase: 3, reason: "Joint surface protection" },
-  rotator_cuff_tear:         { minReps: 10, maxPhase: 2, reason: "Tendon healing — no max loads" },
   frozen_shoulder:           { minReps: 10, maxPhase: 2, reason: "ROM priority — no heavy loading" },
   total_joint_replacement:   { minReps: 10, maxPhase: 2, reason: "Prosthetic protection" },
-  patellar_tendinopathy:     { minReps: 8,  maxPhase: 3, reason: "Tendon protocol — moderate intensity" },
-  achilles_tendinopathy:     { minReps: 8,  maxPhase: 3, reason: "Tendon protocol — eccentric focus" },
   multiple_sclerosis:        { minReps: 10, maxPhase: 2, reason: "Fatigue management" },
   parkinsons:                { minReps: 8,  maxPhase: 3, reason: "Movement quality over max load" },
   stroke_post:               { minReps: 10, maxPhase: 2, reason: "Controlled movements" },
@@ -118,11 +158,23 @@ export function getConditionRepModifications(conditions) {
   (conditions || []).forEach(c => {
     const key = c.id || c.type || c.condition || (c.area || "").toLowerCase().replace(/\s+/g, "_");
     const rule = CONDITION_REP_RULES[key];
-    if (rule) {
-      globalMinReps = Math.max(globalMinReps, rule.minReps);
-      globalMaxPhase = Math.min(globalMaxPhase, rule.maxPhase);
-      reasons.push(rule.reason);
+    if (!rule) return;
+
+    // Check if rule is severity-tiered (has numeric keys 1/2/3) or flat (has minReps directly)
+    const severity = c.severity || 2;
+    let effectiveRule;
+    if (rule.minReps !== undefined) {
+      // Flat rule (not severity-tiered)
+      effectiveRule = rule;
+    } else {
+      // Severity-tiered: find the matching bucket
+      const bucket = severity >= 3 ? 3 : severity >= 2 ? 2 : 1;
+      effectiveRule = rule[bucket] || rule[2] || { minReps: 8, maxPhase: 3, reason: key };
     }
+
+    globalMinReps = Math.max(globalMinReps, effectiveRule.minReps);
+    globalMaxPhase = Math.min(globalMaxPhase, effectiveRule.maxPhase);
+    reasons.push(effectiveRule.reason);
   });
 
   return { globalMinReps, globalMaxPhase, reasons, hasRestrictions: globalMinReps > 0 || globalMaxPhase < 5 };
