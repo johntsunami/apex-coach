@@ -11,7 +11,9 @@ import { getInjuries, conditionToGateKey } from "./injuries.js";
 import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
 import { applySafeguards } from "./safeguards.js";
-import { hasHypertrophyGoals, getReadyPhysiqueMuscles } from "./hypertrophy.js";
+import { hasHypertrophyGoals, getReadyPhysiqueMuscles, CATEGORY_EMPHASIS } from "./hypertrophy.js";
+import { prioritizeBySport, getSportPreventionExercises } from "./programTracks.js";
+import { getSportPrefs } from "./storage.js";
 
 const LS_WEEKLY_PLAN = "apex_weekly_plan";
 const LS_ROTATION = "apex_rotation_indices";
@@ -298,6 +300,65 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       }
     }
   }
+
+  // ── SPORT PRIORITIZATION — inject sport-specific exercises ──
+  try {
+    const _sportPrefs = getSportPrefs();
+    const _userSports = _sportPrefs.length > 0 ? _sportPrefs : (assessment?.preferences?.sports || []).filter(s => s !== "None").map((s, i) => ({ sport: s, rank: i + 1 }));
+    if (_userSports.length > 0 && phase >= 2) {
+      const _sessIdx = (getSessions() || []).length % (assessment?.preferences?.daysPerWeek || 3);
+      const sportEx = getSportPreventionExercises(_userSports, exerciseDB, phase, location, 2, _sessIdx);
+      for (const sex of sportEx) {
+        if (usedIds.has(sex.id) || usedThisWeek.has(sex.id) || blacklist.has(sex.id)) continue;
+        if (selected.length >= 8) break; // don't overfill
+        selected.push(sex);
+        usedIds.add(sex.id);
+      }
+      // Also sort existing selected exercises by sport relevance (don't change required pattern order)
+      if (selected.length > 5) {
+        const patternSlots = selected.slice(0, 5); // preserve first 5 (pattern-filled)
+        const extra = prioritizeBySport(selected.slice(5), _userSports.map(s => s.sport || s), _sportPrefs.length > 0 ? _sportPrefs : null);
+        selected.length = 0;
+        selected.push(...patternSlots, ...extra);
+      }
+    }
+  } catch (e) { console.warn("Sport injection in planner error:", e); }
+
+  // ── PHYSIQUE CATEGORY EXTRA SLOTS ──
+  try {
+    const _cat = assessment?.physiqueCategory || "general";
+    const _emphasis = CATEGORY_EMPHASIS[_cat] || {};
+    // If chest emphasis >= 1.2 and < 2 chest exercises, add another horizontal push
+    if (_emphasis.chest >= 1.2) {
+      const chestCount = selected.filter(e => e.bodyPart === "chest").length;
+      if (chestCount < 2 && dayTemplate.focus.includes("chest")) {
+        const chestEx = exerciseDB.find(e =>
+          e.category === "main" && e.bodyPart === "chest" && e.movementPattern === "push" &&
+          !usedIds.has(e.id) && !usedThisWeek.has(e.id) && !blacklist.has(e.id) &&
+          (e.phaseEligibility || []).includes(phase) && canUseExercise(e, phase, location, usedIds, injuries)
+        );
+        if (chestEx) {
+          selected.push({ ...chestEx, _reason: `${_cat.replace(/_/g, " ")} chest emphasis` });
+          usedIds.add(chestEx.id);
+        }
+      }
+    }
+    // If glutes emphasis >= 1.3 and < 2 glute exercises on lower days
+    if (_emphasis.glutes >= 1.3 && dayTemplate.focus.includes("glutes")) {
+      const gluteCount = selected.filter(e => e.bodyPart === "glutes").length;
+      if (gluteCount < 2) {
+        const gluteEx = exerciseDB.find(e =>
+          e.category === "main" && e.bodyPart === "glutes" &&
+          !usedIds.has(e.id) && !usedThisWeek.has(e.id) && !blacklist.has(e.id) &&
+          (e.phaseEligibility || []).includes(phase) && canUseExercise(e, phase, location, usedIds, injuries)
+        );
+        if (gluteEx) {
+          selected.push({ ...gluteEx, _reason: `${_cat.replace(/_/g, " ")} glute emphasis` });
+          usedIds.add(gluteEx.id);
+        }
+      }
+    }
+  } catch (e) { console.warn("Physique emphasis injection error:", e); }
 
   // Add isolation exercises for the day's focus muscles
   // Issue 3: Phase 3+ MUST include at least 1-2 isolation exercises

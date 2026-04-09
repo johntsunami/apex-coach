@@ -43,7 +43,7 @@ export const WEAK_POINTS = [
 ];
 
 // Volume emphasis by physique category
-const CATEGORY_EMPHASIS = {
+export const CATEGORY_EMPHASIS = {
   general: {},
   mens_physique: { side_delts: 1.4, back_width: 1.3, chest: 1.2, biceps: 1.2, triceps: 1.2 },
   classic_physique: { side_delts: 1.3, chest: 1.2, back_width: 1.2, quads: 1.1, abs: 1.2 },

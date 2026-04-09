@@ -1275,6 +1275,26 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     main = [...compounds, ...iso, ...core, ...cardio];
   }
 
+  // ── PHYSIQUE CATEGORY EXTRA SLOTS (chest/glute emphasis) ──
+  try {
+    const _pCat = assessment?.physiqueCategory || "general";
+    const _pEmphasis = { mens_physique: { chest: 1.2 }, classic_physique: { chest: 1.2 }, bikini: { glutes: 1.5 }, wellness: { glutes: 1.5, quads: 1.4 }, figure: { glutes: 1.2 } }[_pCat] || {};
+    if (_pEmphasis.chest >= 1.2) {
+      const _chestCount = main.filter(e => e.bodyPart === "chest").length;
+      if (_chestCount < 2) {
+        const _chestEx = exerciseDB.find(e => e.category === "main" && e.bodyPart === "chest" && e.movementPattern === "push" && !new Set(main.map(m => m.id)).has(e.id) && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location));
+        if (_chestEx) { main.splice(main.length - 1, 0, { ..._chestEx, _reason: `${_pCat.replace(/_/g, " ")} chest emphasis` }); }
+      }
+    }
+    if (_pEmphasis.glutes >= 1.2) {
+      const _gluteCount = main.filter(e => e.bodyPart === "glutes").length;
+      if (_gluteCount < 1) {
+        const _gluteEx = exerciseDB.find(e => e.category === "main" && e.bodyPart === "glutes" && !new Set(main.map(m => m.id)).has(e.id) && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location));
+        if (_gluteEx) { main.push({ ..._gluteEx, _reason: `${_pCat.replace(/_/g, " ")} glute emphasis` }); }
+      }
+    }
+  } catch (e) { console.warn("Physique emphasis injection error:", e); }
+
   // ── Rule 1: Sport exercises REPLACE generic ones — they don't add ──
   // Rule 2: Add dedicated sport drills carved from main slots (not extra)
   if (_sportFocus?.profile) {
@@ -2863,14 +2883,16 @@ function AppInner(){
   // ── DEFENSIVE: Profile condition check + session restore on auth ──
   useEffect(() => {
     if (!user || loading) return;
-    // Check for incorrect condition data (e.g., spinal_fusion should be microdiscectomy)
+    // Check profile data: conditions, physique category, sports, weak points
     try {
       const _inj = getInjuries();
       const _wrongFusion = _inj.filter(i => (i.conditionId || i.id || "").includes("spinal_fusion") || (i.area || "").toLowerCase().includes("fusion"));
-      if (_wrongFusion.length > 0) {
-        console.warn("[PROFILE CHECK] Found incorrect spinal_fusion condition — should be microdiscectomy:", JSON.stringify(_wrongFusion));
-      }
-      console.log("[PROFILE CHECK] Stored conditions:", JSON.stringify(_inj.map(i => ({ id: i.conditionId || i.id, area: i.area, severity: i.severity }))));
+      if (_wrongFusion.length > 0) console.warn("[PROFILE CHECK] Found incorrect spinal_fusion condition:", JSON.stringify(_wrongFusion));
+      console.log("[PROFILE CHECK] Conditions:", JSON.stringify(_inj.map(i => ({ id: i.conditionId || i.id, area: i.area, severity: i.severity }))));
+      const _a = getAssessment();
+      console.log("[PROFILE CHECK] Physique:", _a?.physiqueCategory || "NOT SET");
+      console.log("[PROFILE CHECK] Sports:", JSON.stringify(getSportPrefs()) || "NOT SET");
+      console.log("[PROFILE CHECK] Weak points:", JSON.stringify(_a?.weakPoints) || "NOT SET");
     } catch {}
     // ALWAYS restore from Supabase — it's the source of truth, not localStorage
     if (!sessionsRestored) {
