@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import conditionsDB from "../data/conditions.json";
 import compensationsDB from "../data/compensations.json";
 import exerciseDB from "../data/exercises.json";
@@ -566,12 +566,55 @@ export default function OnboardingFlow({ onComplete, initialData }) {
             {parqWarning ? "✅ Continuing with caution" : "I understand — continue with caution →"}
           </button>
         </Card>}
-        {/* Age input */}
+        {/* Age scroll picker */}
         <Card>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>How old are you?</div>
           <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This helps us tailor exercise selection, safety thresholds, and recovery protocols to your age.</div>
-          <input type="number" min="16" max="99" value={userAge || ""} onChange={e => { const v = parseInt(e.target.value); if (v >= 16 && v <= 99) setUserAge(v); else if (!e.target.value) setUserAge(null); }}
-            placeholder="Enter your age" style={{ width: 120, padding: "10px 14px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${userAge ? C.teal + "60" : C.border}`, color: C.text, fontSize: 16, fontFamily: "inherit", outline: "none", textAlign: "center" }} />
+          {(() => {
+            const ages = Array.from({ length: 83 }, (_, i) => i + 13);
+            const ITEM_H = 40;
+            const scrollRef = useRef(null);
+            const scrollTimer = useRef(null);
+            const initAge = userAge || 25;
+            useEffect(() => {
+              if (scrollRef.current) {
+                scrollRef.current.scrollTop = (initAge - 13) * ITEM_H;
+              }
+            }, []);
+            const handleScroll = () => {
+              clearTimeout(scrollTimer.current);
+              scrollTimer.current = setTimeout(() => {
+                if (!scrollRef.current) return;
+                const idx = Math.round(scrollRef.current.scrollTop / ITEM_H);
+                const picked = Math.max(13, Math.min(95, idx + 13));
+                if (picked !== userAge) setUserAge(picked);
+              }, 80);
+            };
+            const pickAge = (a) => {
+              setUserAge(a);
+              if (scrollRef.current) scrollRef.current.scrollTo({ top: (a - 13) * ITEM_H, behavior: "smooth" });
+            };
+            return <div style={{ position: "relative", width: 160, margin: "0 auto" }}>
+              <div ref={scrollRef} onScroll={handleScroll} style={{
+                height: 150, overflow: "auto", borderRadius: 12,
+                background: C.bgElevated, border: `1px solid ${userAge ? C.teal + "60" : C.border}`,
+                scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch",
+              }}>
+                <div style={{ height: 55 }} />
+                {ages.map(a => <div key={a} onClick={() => pickAge(a)} style={{
+                  height: ITEM_H, display: "flex", alignItems: "center", justifyContent: "center",
+                  scrollSnapAlign: "center", cursor: "pointer", transition: "all 0.15s ease",
+                  fontSize: userAge === a ? 28 : 18, fontWeight: userAge === a ? 700 : 400,
+                  color: userAge === a ? C.teal : C.textDim,
+                }}>{a}</div>)}
+                <div style={{ height: 55 }} />
+              </div>
+              <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: ITEM_H,
+                transform: "translateY(-50%)", borderTop: `2px solid ${C.teal}30`, borderBottom: `2px solid ${C.teal}30`,
+                pointerEvents: "none", borderRadius: 0 }} />
+            </div>;
+          })()}
+          {userAge && <div style={{ textAlign: "center", marginTop: 8, fontSize: 13, color: C.teal, fontWeight: 600 }}>{userAge} years old</div>}
           {userAge >= 65 && <div style={{ fontSize: 12, color: C.info, marginTop: 8, padding: "6px 10px", background: C.info + "08", borderRadius: 8, lineHeight: 1.5 }}>We'll add a brief balance and mobility screen on the next page to customize your plan for strength, stability, and independence.</div>}
         </Card>
         {/* Height + Weight + Body Goal */}
