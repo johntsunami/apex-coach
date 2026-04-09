@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef } from "react";
 import conditionsDB from "../data/conditions.json";
 import compensationsDB from "../data/compensations.json";
 import exerciseDB from "../data/exercises.json";
@@ -305,6 +305,9 @@ export default function OnboardingFlow({ onComplete, initialData }) {
 
   // ── Age + Body composition state ────────────────────────────
   const [userAge, setUserAge] = useState(_d.userAge || null);
+  const _ageScrollRef = useRef(null);
+  const _ageScrollTimer = useRef(null);
+  const _ageInitDone = useRef(false);
   const [bodyComp, setBodyComp] = useState(_d.bodyComp || { heightFt: null, heightIn: null, heightCm: null, weightLbs: null, weightKg: null, unit: "imperial", goalType: null, goalWeightLbs: null, goalWeightKg: null, weeklyGoal: null });
   const [seniorScreening, setSeniorScreening] = useState(_d.seniorScreening || {});
 
@@ -570,50 +573,39 @@ export default function OnboardingFlow({ onComplete, initialData }) {
         <Card>
           <div style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 4 }}>How old are you?</div>
           <div style={{ fontSize: 12, color: C.textMuted, marginBottom: 8 }}>This helps us tailor exercise selection, safety thresholds, and recovery protocols to your age.</div>
-          {(() => {
-            const ages = Array.from({ length: 83 }, (_, i) => i + 13);
-            const ITEM_H = 40;
-            const scrollRef = useRef(null);
-            const scrollTimer = useRef(null);
-            const initAge = userAge || 25;
-            useEffect(() => {
-              if (scrollRef.current) {
-                scrollRef.current.scrollTop = (initAge - 13) * ITEM_H;
-              }
-            }, []);
-            const handleScroll = () => {
-              clearTimeout(scrollTimer.current);
-              scrollTimer.current = setTimeout(() => {
-                if (!scrollRef.current) return;
-                const idx = Math.round(scrollRef.current.scrollTop / ITEM_H);
-                const picked = Math.max(13, Math.min(95, idx + 13));
-                if (picked !== userAge) setUserAge(picked);
-              }, 80);
-            };
-            const pickAge = (a) => {
-              setUserAge(a);
-              if (scrollRef.current) scrollRef.current.scrollTo({ top: (a - 13) * ITEM_H, behavior: "smooth" });
-            };
-            return <div style={{ position: "relative", width: 160, margin: "0 auto" }}>
-              <div ref={scrollRef} onScroll={handleScroll} style={{
+          <div style={{ position: "relative", width: 160, margin: "0 auto" }}>
+              <div ref={el => {
+                _ageScrollRef.current = el;
+                if (el && !_ageInitDone.current) { _ageInitDone.current = true; setTimeout(() => { el.scrollTop = ((userAge || 25) - 13) * 40; }, 50); }
+              }} onScroll={() => {
+                clearTimeout(_ageScrollTimer.current);
+                _ageScrollTimer.current = setTimeout(() => {
+                  if (!_ageScrollRef.current) return;
+                  const idx = Math.round(_ageScrollRef.current.scrollTop / 40);
+                  const picked = Math.max(13, Math.min(95, idx + 13));
+                  if (picked !== userAge) setUserAge(picked);
+                }, 80);
+              }} style={{
                 height: 150, overflow: "auto", borderRadius: 12,
                 background: C.bgElevated, border: `1px solid ${userAge ? C.teal + "60" : C.border}`,
                 scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch",
               }}>
                 <div style={{ height: 55 }} />
-                {ages.map(a => <div key={a} onClick={() => pickAge(a)} style={{
-                  height: ITEM_H, display: "flex", alignItems: "center", justifyContent: "center",
+                {Array.from({ length: 83 }, (_, i) => i + 13).map(a => <div key={a} onClick={() => {
+                  setUserAge(a);
+                  if (_ageScrollRef.current) _ageScrollRef.current.scrollTo({ top: (a - 13) * 40, behavior: "smooth" });
+                }} style={{
+                  height: 40, display: "flex", alignItems: "center", justifyContent: "center",
                   scrollSnapAlign: "center", cursor: "pointer", transition: "all 0.15s ease",
                   fontSize: userAge === a ? 28 : 18, fontWeight: userAge === a ? 700 : 400,
                   color: userAge === a ? C.teal : C.textDim,
                 }}>{a}</div>)}
                 <div style={{ height: 55 }} />
               </div>
-              <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: ITEM_H,
+              <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 40,
                 transform: "translateY(-50%)", borderTop: `2px solid ${C.teal}30`, borderBottom: `2px solid ${C.teal}30`,
                 pointerEvents: "none", borderRadius: 0 }} />
-            </div>;
-          })()}
+            </div>
           {userAge && <div style={{ textAlign: "center", marginTop: 8, fontSize: 13, color: C.teal, fontWeight: 600 }}>{userAge} years old</div>}
           {userAge >= 65 && <div style={{ fontSize: 12, color: C.info, marginTop: 8, padding: "6px 10px", background: C.info + "08", borderRadius: 8, lineHeight: 1.5 }}>We'll add a brief balance and mobility screen on the next page to customize your plan for strength, stability, and independence.</div>}
         </Card>
