@@ -493,10 +493,10 @@ Read these files for detailed requirements:
 ### Rule 24: Multi-Profile Engine QA
 
 After ANY change to exercise selection, scoring, filtering, or session generation:
-1. Run Engine QA from Dev tab → Engine → "Run Engine QA (8 profiles)"
-2. All 8 profiles must pass (0 critical failures)
-3. If any profile fails, fix BEFORE committing
-4. The 8 test profiles cover: healthy beginner, physique competitor, carpal tunnel, senior with arthritis, bikini competitor, home-only, severe shoulder, multi-condition (RA+fibro+obesity)
+1. Run Engine QA from Dev tab → Engine → "Run Engine QA (All Profiles)"
+2. ALL profiles must pass — every condition at severity 2 and 4, every physique category, every age tier, every location type
+3. If any profile fails with CRITICAL issues, fix BEFORE committing
+4. Profile groups: 5 core + 9 physique categories + 6 age tiers + auto-generated (every condition × 2 severities)
 5. File: `src/utils/engineQA.js`
 
 ---
