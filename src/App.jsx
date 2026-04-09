@@ -15,7 +15,7 @@ import { getInjuries, saveInjuries, conditionToGateKey, updatePainTracking, getS
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
-import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary } from "./utils/planValidator.js";
+import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary, validateAndFixSession as _validateAndFix } from "./utils/planValidator.js";
 import { PHASE_EXERCISE_WEIGHTS, EQUIPMENT_TIERS, LOCATION_BOOSTS } from "./utils/constants.js";
 // Note: LOCATION_BOOSTS is now additive (0-0.30). The inline _locBonusMap in buildWorkoutList
 // duplicates these values for historical reasons — both must stay in sync.
@@ -3100,7 +3100,11 @@ function AppInner(){
     if (!w) w = buildWorkoutList(CURRENT_PHASE, loc, difficulty, data, firstMuscles);
     // Apply overtraining modifiers if detected
     try{const otSignals=assessOvertraining();if(otSignals&&otSignals.level>=2){w=applyOvertrainingModifiers(w,otSignals)||w;}}catch(e){console.warn("Overtraining modifier error:",e);}
-    const vf=verifyAndFix(w);setWorkout(vf.plan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
+    const vf=verifyAndFix(w);
+    // Structural validation + auto-fix (min exercises, pattern coverage, duplicates)
+    let finalPlan=vf.plan;
+    try{const sv=_validateAndFix(vf.plan,CURRENT_PHASE,exerciseDB);if(sv.log.length>0)console.log("[VALIDATOR]",sv.log.join(" | "));if(!sv.valid)console.warn("[VALIDATOR] Unfixable:",sv.unfixable);finalPlan=sv.session;finalPlan._validationScore=sv.score;}catch(e){console.warn("[VALIDATOR] Error (non-blocking):",e.message);}
+    setWorkout(finalPlan);setSafetyReport(vf.report);setCheckInData(data);setExIdx(0);setCompletedExercises([]);const start=Date.now();setSessionStart(start);setScreen("plan");setTab("train");if(data?.location)setPref("lastLocation",data.location);// Save initial workout state for resume
     try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx:0,completedExercises:[],workout:vf.plan,sessionStart:start,checkInData:data,pausedAt:Date.now()}));}catch{}};
   const[exHistory,setExHistory]=useState([]); // [{idx, completedSnapshot}] for undo
   const[performSwap,setPerformSwap]=useState(null); // exercise to swap during perform

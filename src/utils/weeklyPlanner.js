@@ -733,6 +733,15 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
     advanceRotation(pattern, ROTATION_POOLS[pattern].length);
   }
 
+  // Structural validation + auto-fix before returning
+  try {
+    const { validateAndFixWeek } = require("./planValidator.js");
+    const validated = validateAndFixWeek(weekPlan.days, phase, exerciseDB);
+    if (validated.log.length > 0) console.log("[WEEK VALIDATOR]", validated.log.join(" | "));
+    weekPlan.days = validated.days;
+    weekPlan._validationScore = validated.score;
+  } catch (e) { console.warn("[WEEK VALIDATOR] Error (non-blocking):", e.message); }
+
   return weekPlan;
 }
 

@@ -271,3 +271,253 @@ export function getValidationSummary() {
   const totalInfo = recent.reduce((s, v) => s + v.infoCount, 0);
   return { avgScore, totalCritical, totalWarnings, totalInfo, count: recent.length, latest: recent[recent.length - 1] };
 }
+
+// ═══════════════════════════════════════════════════════════════
+// NASM COMPLIANCE VALIDATOR + AUTO-FIX
+// Runs BEFORE any session or week is shown to the user.
+// Catches structural issues (min exercises, pattern coverage,
+// volume, duplicates) and auto-fixes them.
+// ═══════════════════════════════════════════════════════════════
+
+function _normP(mp) {
+  if (!mp) return "other";
+  const p = (mp || "").toLowerCase();
+  if (["anti_rotation", "anti_extension", "anti_flexion", "breathing"].includes(p)) return "core";
+  if (p === "lunge") return "squat";
+  if (p === "carry") return "core";
+  if (p.includes("push")) return "push";
+  if (p.includes("pull")) return "pull";
+  return p;
+}
+
+function _sessionChecks(session, phase, exerciseDB) {
+  const main = session.main || [];
+  const warmup = session.warmup || [];
+  const all = session.all || [...warmup, ...main, ...(session.cooldown || [])];
+  const results = [];
+
+  // S1: Minimum exercise count (≥ 4 main)
+  results.push({
+    id: "S1", severity: "CRITICAL", pass: main.length >= 4,
+    msg: main.length >= 4 ? "OK" : `Only ${main.length} main exercises (min 4)`,
+  });
+
+  // S2: Movement pattern coverage (≥ 3 of push/pull/hinge/squat)
+  const patterns = new Set();
+  main.forEach(e => { const p = _normP(e.movementPattern); if (p !== "core" && p !== "other" && p !== "mobility" && p !== "balance") patterns.add(p); });
+  results.push({
+    id: "S2", severity: "CRITICAL", pass: patterns.size >= 3,
+    msg: patterns.size >= 3 ? "OK" : `Only ${patterns.size} patterns: ${[...patterns].join(",")}`,
+  });
+
+  // S3: No duplicate exercises
+  const names = main.map(e => (e.name || "").toLowerCase().trim());
+  const dupes = names.filter((n, i) => names.indexOf(n) !== i);
+  results.push({
+    id: "S3", severity: "CRITICAL", pass: dupes.length === 0,
+    msg: dupes.length === 0 ? "OK" : `Duplicates: ${[...new Set(dupes)].join(", ")}`,
+  });
+
+  // S4: No zero-strength sessions
+  const strengthCount = main.filter(e => e.type === "strength" || e.type === "isolation" || e.type === "plyometric").length;
+  results.push({
+    id: "S10", severity: "CRITICAL", pass: strengthCount >= 2,
+    msg: strengthCount >= 2 ? "OK" : `Only ${strengthCount} strength exercises (min 2)`,
+  });
+
+  // S7: Warm-up has foam rolling
+  const foamCount = warmup.filter(e => e.category === "foam_roll").length;
+  const blockFoam = (session.blocks?.inhibit || []).length;
+  results.push({
+    id: "S7", severity: "WARNING", pass: foamCount + blockFoam >= 2,
+    msg: foamCount + blockFoam >= 2 ? "OK" : `Only ${foamCount + blockFoam} foam roll exercises (want 2+)`,
+  });
+
+  // S9: Balance in warmup not main
+  const balInMain = main.filter(e => e.type === "balance" || (e.name || "").toLowerCase().includes("single-leg balance")).length;
+  results.push({
+    id: "S9", severity: "WARNING", pass: balInMain === 0,
+    msg: balInMain === 0 ? "OK" : `${balInMain} balance drill(s) in main slots`,
+  });
+
+  return results;
+}
+
+function _weekChecks(days, phase) {
+  const results = [];
+  const vol = {};
+  const allEx = [];
+  const dayMuscles = []; // track which muscles each day trains
+
+  days.forEach((d, di) => {
+    const ex = d.main || d.exercises || [];
+    const dayBps = new Set();
+    ex.forEach(e => {
+      const bp = e.bodyPart || "other";
+      const sets = parseInt(e.sets || e.prescribedSets || "2") || 2;
+      vol[bp] = (vol[bp] || 0) + sets;
+      allEx.push({ ...e, _dayIdx: di });
+      dayBps.add(bp);
+    });
+    dayMuscles.push(dayBps);
+  });
+
+  // W1: Volume within phase limits
+  const LIMITS = { 1: [8, 12], 2: [10, 18], 3: [14, 24], 4: [10, 16], 5: [8, 15] };
+  const [lo, hi] = LIMITS[phase] || [8, 24];
+  const overVol = Object.entries(vol).filter(([bp, s]) => s > hi && bp !== "other" && bp !== "core");
+  results.push({
+    id: "W1", severity: "WARNING", pass: overVol.length === 0,
+    msg: overVol.length === 0 ? "OK" : `Over-volume: ${overVol.map(([bp, s]) => `${bp} ${s}/${hi}`).join(", ")}`,
+  });
+
+  // W5: Minimum volume per major group (≥ 6 sets)
+  const majorGroups = ["chest", "back", "legs", "shoulders"];
+  const underVol = majorGroups.filter(g => (vol[g] || 0) < 6);
+  results.push({
+    id: "W5", severity: "CRITICAL", pass: underVol.length === 0,
+    msg: underVol.length === 0 ? "OK" : `Under-volume: ${underVol.map(g => `${g} ${vol[g] || 0}/6`).join(", ")}`,
+  });
+
+  // W2: Push:pull ratio (1:1 to 1:2)
+  const pushVol = (vol.chest || 0) + (vol.shoulders || 0);
+  const pullVol = (vol.back || 0);
+  const ratio = pullVol > 0 ? pushVol / pullVol : 0;
+  results.push({
+    id: "W2", severity: "WARNING", pass: ratio <= 1.5 || pullVol === 0,
+    msg: ratio <= 1.5 ? "OK" : `Push:pull ratio ${ratio.toFixed(1)}:1 (max 1.5:1)`,
+  });
+
+  // W4: Exercise variety (no exercise > 2 times per week)
+  const exCounts = {};
+  allEx.forEach(e => { exCounts[e.id] = (exCounts[e.id] || 0) + 1; });
+  const repeats = Object.entries(exCounts).filter(([, c]) => c > 2);
+  results.push({
+    id: "W4", severity: "WARNING", pass: repeats.length === 0,
+    msg: repeats.length === 0 ? "OK" : `Repeated 3+ times: ${repeats.map(([id]) => id).join(", ")}`,
+  });
+
+  // W6: Core variety
+  const coreCounts = {};
+  allEx.filter(e => e.bodyPart === "core").forEach(e => { coreCounts[e.id] = (coreCounts[e.id] || 0) + 1; });
+  const coreTotal = allEx.filter(e => e.bodyPart === "core").length;
+  const coreDominant = Object.entries(coreCounts).find(([, c]) => c > Math.max(2, coreTotal * 0.5));
+  results.push({
+    id: "W6", severity: "WARNING", pass: !coreDominant,
+    msg: !coreDominant ? "OK" : `Core dominated by ${coreDominant[0]} (${coreDominant[1]}/${coreTotal})`,
+  });
+
+  return { results, volume: vol };
+}
+
+// ── AUTO-FIX for session-level critical failures ──
+function _autoFixSession(session, checks, phase, exerciseDB) {
+  let fixed = { ...session, main: [...(session.main || [])], warmup: [...(session.warmup || [])], cooldown: [...(session.cooldown || [])] };
+  const log = [];
+
+  const fails = checks.filter(c => !c.pass && c.severity === "CRITICAL");
+  if (fails.length === 0) return { session: fixed, log };
+
+  const usedIds = new Set(fixed.main.map(e => e.id));
+  const isUsable = (e) => e.category === "main" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance";
+
+  // S1/S10: Not enough exercises or strength exercises
+  if (fails.some(c => c.id === "S1" || c.id === "S10")) {
+    const pool = (exerciseDB || []).filter(isUsable).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+    while (fixed.main.length < 4 && pool.length > 0) {
+      const ex = pool.shift();
+      fixed.main.push({ ...ex, _reason: "Auto-fix: minimum session size" });
+      usedIds.add(ex.id);
+      log.push(`S1: Added ${ex.name} to meet minimum`);
+    }
+  }
+
+  // S2: Missing patterns
+  if (fails.some(c => c.id === "S2")) {
+    const present = new Set();
+    fixed.main.forEach(e => { const p = _normP(e.movementPattern); if (p !== "core" && p !== "other") present.add(p); });
+    const needed = ["push", "pull", "hinge", "squat"].filter(p => !present.has(p));
+    for (const pattern of needed) {
+      if (present.size >= 3) break; // only need 3
+      const match = (exerciseDB || []).find(e => isUsable(e) && _normP(e.movementPattern) === pattern);
+      if (match) {
+        fixed.main.push({ ...match, _reason: `Auto-fix: missing ${pattern} pattern` });
+        usedIds.add(match.id);
+        present.add(pattern);
+        log.push(`S2: Added ${match.name} for ${pattern} pattern`);
+      }
+    }
+  }
+
+  // S3: Duplicates
+  if (fails.some(c => c.id === "S3")) {
+    const seen = new Set();
+    fixed.main = fixed.main.filter(e => {
+      const n = (e.name || "").toLowerCase().trim();
+      if (seen.has(n)) { log.push(`S3: Removed duplicate ${e.name}`); return false; }
+      seen.add(n);
+      return true;
+    });
+  }
+
+  // Rebuild .all
+  fixed.all = [...fixed.warmup, ...fixed.main, ...fixed.cooldown];
+  return { session: fixed, log };
+}
+
+// ── MASTER: Validate + Auto-Fix Session ──
+export function validateAndFixSession(session, phase, exerciseDB) {
+  let current = session;
+  const allLogs = [];
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const checks = _sessionChecks(current, phase, exerciseDB);
+    const criticals = checks.filter(c => !c.pass && c.severity === "CRITICAL");
+    if (criticals.length === 0) {
+      const warnings = checks.filter(c => !c.pass && c.severity === "WARNING");
+      return { session: current, valid: true, checks, log: allLogs, warnings: warnings.length, score: Math.round((checks.filter(c => c.pass).length / checks.length) * 100) };
+    }
+    const { session: fixed, log } = _autoFixSession(current, checks, phase, exerciseDB);
+    allLogs.push(...log);
+    current = fixed;
+  }
+
+  // After 3 attempts
+  const finalChecks = _sessionChecks(current, phase, exerciseDB);
+  const remaining = finalChecks.filter(c => !c.pass && c.severity === "CRITICAL");
+  return {
+    session: current, valid: remaining.length === 0,
+    checks: finalChecks, log: allLogs,
+    warnings: finalChecks.filter(c => !c.pass && c.severity === "WARNING").length,
+    unfixable: remaining.map(c => c.msg),
+    score: Math.round((finalChecks.filter(c => c.pass).length / finalChecks.length) * 100),
+  };
+}
+
+// ── MASTER: Validate + Auto-Fix Week ──
+export function validateAndFixWeek(weekDays, phase, exerciseDB) {
+  // Validate each day
+  const dayResults = (weekDays || []).map(day => {
+    if (day.type !== "training" || !(day.exercises || day.main || []).length) return { day, valid: true, checks: [], log: [] };
+    // Wrap day exercises into session format
+    const asSess = { main: day.exercises || day.main || [], warmup: day.warmup || [], cooldown: day.cooldown || [], all: day.all || day.exercises || [], blocks: day.blocks };
+    const result = validateAndFixSession(asSess, phase, exerciseDB);
+    return { day: { ...day, exercises: result.session.main, main: result.session.main }, ...result };
+  });
+
+  // Validate week as a whole
+  const trainingDays = dayResults.filter(d => d.day.type === "training");
+  const weekCheck = _weekChecks(trainingDays.map(d => d.day), phase);
+
+  const allValid = dayResults.every(d => d.valid) && weekCheck.results.filter(r => !r.pass && r.severity === "CRITICAL").length === 0;
+  const totalChecks = dayResults.reduce((s, d) => s + (d.checks?.length || 0), 0) + weekCheck.results.length;
+  const totalPassed = dayResults.reduce((s, d) => s + (d.checks?.filter(c => c.pass)?.length || 0), 0) + weekCheck.results.filter(r => r.pass).length;
+
+  return {
+    days: dayResults.map(d => d.day),
+    valid: allValid,
+    dayResults, weekResults: weekCheck.results, volume: weekCheck.volume,
+    score: totalChecks > 0 ? Math.round((totalPassed / totalChecks) * 100) : 100,
+    log: dayResults.flatMap(d => d.log || []),
+  };
+}
