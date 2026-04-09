@@ -9,6 +9,8 @@ const AuthContext = createContext({
   user: null,
   profile: null,
   loading: true,
+  passwordRecovery: false,
+  clearPasswordRecovery: () => {},
   signUp: async () => {},
   signIn: async () => {},
   signOut: async () => {},
@@ -25,6 +27,7 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
 
   // ── User-scoped localStorage management ────────────────────
   // Prevents user A's data from leaking to user B
@@ -67,8 +70,31 @@ export default function AuthProvider({ children }) {
       else setLoading(false);
     }).catch(() => { setLoading(false); });
 
+    // Check URL for password recovery redirect (hash or query params)
+    try {
+      const hash = window.location.hash.substring(1);
+      const hashParams = new URLSearchParams(hash);
+      const urlParams = new URLSearchParams(window.location.search);
+      if (hashParams.get("type") === "recovery" || urlParams.get("type") === "recovery") {
+        console.log("[AUTH] Password recovery detected from URL");
+        setPasswordRecovery(true);
+      }
+      // PKCE flow: exchange code for session
+      const code = urlParams.get("code");
+      if (code && urlParams.get("type") === "recovery") {
+        supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+          if (!error) setPasswordRecovery(true);
+          else console.warn("[AUTH] Code exchange failed:", error.message);
+        });
+      }
+    } catch {}
+
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (_event === "PASSWORD_RECOVERY") {
+        console.log("[AUTH] PASSWORD_RECOVERY event received");
+        setPasswordRecovery(true);
+      }
       const newUser = session?.user ?? null;
       // Clear stale localStorage ONLY on genuine user switch (different user logged in)
       // NOT on: null prevUid (first load), token refresh (same user), migration cleared UID
@@ -172,7 +198,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signOut, resetPassword, updateProfile, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, passwordRecovery, clearPasswordRecovery: () => setPasswordRecovery(false), signUp, signIn, signOut, resetPassword, updateProfile, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
