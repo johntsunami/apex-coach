@@ -879,7 +879,28 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   const cardioBlock = buildCardioBlock(phase, location, sessionIdx, daysPerWeek);
   const cardio = cardioBlock ? [cardioBlock.exercise] : [];
 
-  return { inhibit, lengthen, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
+  // PHASE C: ACTIVATE — Core activation exercises (NASM CEx: activate phase)
+  // 2 core exercises per session, phase-appropriate, for bracing/stabilization before main lifts
+  const coreActivation = [];
+  const corePool = exerciseDB.filter(e =>
+    e.bodyPart === "core" && (e.category === "main" || e.type === "stabilization") &&
+    (e.phaseEligibility || []).includes(phase) && locOk(e) &&
+    !inhibit.find(x => x.id === e.id) && !lengthen.find(x => x.id === e.id)
+  ).sort((a, b) => (a.difficultyLevel || 1) - (b.difficultyLevel || 1));
+  // Pick phase-appropriate core: anti-extension + anti-rotation (NASM: both planes)
+  const antiExt = corePool.find(e => (e.movementPattern || "").includes("anti_extension"));
+  const antiRot = corePool.find(e => (e.movementPattern || "").includes("anti_rotation") && e.id !== antiExt?.id);
+  if (antiExt) coreActivation.push({ ...antiExt, _reason: "Core activation: anti-extension bracing", _phase: "activate" });
+  if (antiRot) coreActivation.push({ ...antiRot, _reason: "Core activation: anti-rotation stability", _phase: "activate" });
+  // Fallback: if no anti-extension/rotation found, pick any 2 core exercises
+  if (coreActivation.length < 2) {
+    for (const ex of corePool) {
+      if (coreActivation.length >= 2) break;
+      if (!coreActivation.find(x => x.id === ex.id)) coreActivation.push({ ...ex, _reason: "Core activation", _phase: "activate" });
+    }
+  }
+
+  return { inhibit, lengthen, coreActivation, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
 }
 
 // ── Standalone stretch session for rest days (15-min ROM + stretch) ──
@@ -1120,8 +1141,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         return true;
       };
 
-      // STEP 1: Fill required movement pattern slots
-      const requiredPatterns = ["push", "pull", "hinge", "squat", "core"];
+      // STEP 1: Fill required movement pattern slots (core moved to warmup activation)
+      const requiredPatterns = ["push", "pull", "hinge", "squat"];
       for (const rp of requiredPatterns) {
         const candidates = scored.filter(ex => _normP(ex.movementPattern) === rp && _canPick(ex));
         if (candidates.length > 0) _addEx(candidates[0]);
@@ -1265,14 +1286,29 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     cooldown = _dedup(cooldown, "cooldown");
   }
 
-  // ── EXERCISE ORDERING: Compounds → Isolation → Core → Cardio (Rule 20) ──
+  // ── MOVE CORE TO WARMUP (NASM CEx: Activate phase) ──
+  // Core exercises belong in the activation phase of warm-up, not main workout.
+  // The freed slot gets replaced with an additional body-part exercise for the day's focus.
   {
     const _isCore = ex => ex.bodyPart === "core" || ["anti_rotation","anti_extension","anti_flexion"].includes(ex.movementPattern);
     const _isCardio = ex => ex.category === "cardio" || ex.type === "cardio";
     const _isIso = ex => ex.type === "isolation";
-    const compounds = [], iso = [], core = [], cardio = [], other = [];
-    main.forEach(ex => { if (_isCardio(ex)) cardio.push(ex); else if (_isCore(ex)) core.push(ex); else if (_isIso(ex)) iso.push(ex); else compounds.push(ex); });
-    main = [...compounds, ...iso, ...core, ...cardio];
+    const compounds = [], iso = [], coreForWarmup = [], cardio = [];
+    main.forEach(ex => { if (_isCardio(ex)) cardio.push(ex); else if (_isCore(ex)) coreForWarmup.push(ex); else if (_isIso(ex)) iso.push(ex); else compounds.push(ex); });
+    // Move core exercises to warmup as activation exercises
+    coreForWarmup.forEach(ex => { warmup.push({ ...ex, _reason: (ex._reason ? ex._reason + " · " : "") + "Core activation (warm-up)", _phase: "activate" }); });
+    // Replace freed slots with additional body-part exercises from day's focus
+    const _focusBps = assessment?.preferences?.daysPerWeek >= 4
+      ? ((() => { try { const wp = JSON.parse(localStorage.getItem("apex_weekly_plan")); const td = wp?.days?.[new Date().getDay()]?.focus; return td || ["chest","back","legs"]; } catch { return ["chest","back","legs"]; } })())
+      : ["chest","back","legs","shoulders"];
+    const _mainIds = new Set([...compounds,...iso,...cardio].map(e => e.id));
+    let _replaced = 0;
+    for (const bp of _focusBps) {
+      if (_replaced >= coreForWarmup.length) break;
+      const fill = exerciseDB.find(e => e.category === "main" && e.bodyPart === bp && !_mainIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location) && e.safetyTier !== "red");
+      if (fill) { compounds.push({ ...fill, _reason: `Replaces core slot — ${bp} focus` }); _mainIds.add(fill.id); _replaced++; }
+    }
+    main = [...compounds, ...iso, ...cardio];
   }
 
   // ── PHYSIQUE CATEGORY EXTRA SLOTS (chest/glute emphasis) ──
@@ -1357,8 +1393,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   }
 
   // ── CORE MOVEMENT GUARANTEE ──────────────────────────────────
-  // Every session must include: 1 push, 1 pull, 1 hinge, 1 squat, 1 core
-  const requiredPatterns = ["push", "pull", "hinge", "squat", "core"];
+  // Every session must include: 1 push, 1 pull, 1 hinge, 1 squat (core is in warmup activation)
+  const requiredPatterns = ["push", "pull", "hinge", "squat"];
   const mainIds = new Set(main.map(e => e.id));
   const presentPatterns = new Set();
   for (const ex of [...warmup, ...main]) {
@@ -1508,6 +1544,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   });
   if (blocks.inhibit) blocks.inhibit = _dedupBlock(blocks.inhibit);
   if (blocks.lengthen) blocks.lengthen = _dedupBlock(blocks.lengthen);
+  if (blocks.coreActivation) blocks.coreActivation = _dedupBlock(blocks.coreActivation);
   if (blocks.cooldownStretches) blocks.cooldownStretches = _dedupBlock(blocks.cooldownStretches);
   if (blocks.cardio) blocks.cardio = _dedupBlock(blocks.cardio);
 
@@ -1543,7 +1580,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       const sets = parseInt(params.sets) || 2;
       return sum + Math.round(sets * 1.5 + 0.5);
     }, 0);
-    const blockTime = (blocks.inhibit?.length || 0) * 2 + (blocks.lengthen?.length || 0) * 2 + (blocks.cooldownStretches?.length || 0) * 1.5 + (blocks.cardio?.length || 0) * 15;
+    const blockTime = (blocks.inhibit?.length || 0) * 2 + (blocks.lengthen?.length || 0) * 2 + (blocks.coreActivation?.length || 0) * 2 + (blocks.cooldownStretches?.length || 0) * 1.5 + (blocks.cardio?.length || 0) * 15;
     let totalEst = estTime(eWarmup) + estTime(eMain) + estTime(eCooldown) + blockTime;
 
     if (totalEst > sessionTime) {

@@ -69,51 +69,52 @@ const ROTATION_POOLS = {
 // 2. TRAINING SPLITS — based on days per week
 // ═══════════════════════════════════════════════════════════════
 
+// Core exercises moved to warm-up activation (NASM CEx: Activate phase).
+// Freed slot replaced with additional body-part exercise per day focus.
 const SPLITS = {
   2: {
     label: "Full Body A/B",
     days: [
-      { name: "Full Body A", focus: ["chest", "back", "legs", "core", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "squat", "hinge", "core"] },
-      { name: "Full Body B", focus: ["chest", "back", "legs", "core", "shoulders"], patterns: ["vertical_push", "vertical_pull", "squat", "hinge", "core"] },
+      { name: "Full Body A", focus: ["chest", "back", "legs", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "squat", "hinge", "vertical_pull"] },
+      { name: "Full Body B", focus: ["chest", "back", "legs", "shoulders"], patterns: ["vertical_push", "vertical_pull", "squat", "hinge", "horizontal_push"] },
     ],
   },
   3: {
     label: "Full Body A/B/C",
     days: [
-      { name: "Full Body A", focus: ["chest", "back", "legs", "core"], patterns: ["horizontal_push", "horizontal_pull", "squat", "hinge", "core"] },
-      { name: "Full Body B", focus: ["shoulders", "back", "legs", "core"], patterns: ["vertical_push", "vertical_pull", "hinge", "squat", "core"] },
-      { name: "Full Body C", focus: ["chest", "shoulders", "back", "legs", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "vertical_pull", "squat", "core"] },
+      { name: "Full Body A", focus: ["chest", "back", "legs", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "squat", "hinge", "vertical_pull"] },
+      { name: "Full Body B", focus: ["shoulders", "back", "legs", "chest"], patterns: ["vertical_push", "vertical_pull", "hinge", "squat", "horizontal_push"] },
+      { name: "Full Body C", focus: ["chest", "shoulders", "back", "legs"], patterns: ["horizontal_push", "horizontal_pull", "vertical_push", "vertical_pull", "squat"] },
     ],
   },
   4: {
     label: "Upper/Lower Split",
     days: [
-      // 2 chest pushes per upper day + 2 pulls for balanced push:pull ratio
-      { name: "Upper Body A", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "horizontal_push", "core"] },
-      { name: "Lower Body A", focus: ["legs", "glutes", "hips", "core"], patterns: ["squat", "hinge", "glute", "core"] },
-      { name: "Upper Body B", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "vertical_pull", "horizontal_pull", "vertical_push", "core"] },
-      { name: "Lower Body B", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "glute", "core"] },
+      { name: "Upper Body A", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "horizontal_push", "vertical_push"] },
+      { name: "Lower Body A", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "glute", "hinge"] },
+      { name: "Upper Body B", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "vertical_pull", "horizontal_pull", "vertical_push", "horizontal_pull"] },
+      { name: "Lower Body B", focus: ["legs", "glutes", "hips"], patterns: ["hinge", "squat", "glute", "squat"] },
     ],
   },
   5: {
     label: "Push/Pull/Legs/Upper/Lower",
     days: [
-      { name: "Push", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "core"] },
-      { name: "Pull", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "core"] },
-      { name: "Legs", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "core"] },
-      { name: "Upper", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "vertical_push", "core"] },
-      { name: "Lower", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "core"] },
+      { name: "Push", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "horizontal_push"] },
+      { name: "Pull", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "horizontal_pull"] },
+      { name: "Legs", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "glute"] },
+      { name: "Upper", focus: ["chest", "back", "shoulders"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "vertical_push", "horizontal_push"] },
+      { name: "Lower", focus: ["legs", "glutes", "hips"], patterns: ["hinge", "squat", "glute", "hinge"] },
     ],
   },
   6: {
     label: "Push/Pull/Legs x2",
     days: [
-      { name: "Push A", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "core"] },
-      { name: "Pull A", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "core"] },
-      { name: "Legs A", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "core"] },
-      { name: "Push B", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "core"] },
-      { name: "Pull B", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "core"] },
-      { name: "Legs B", focus: ["legs", "glutes", "hips"], patterns: ["hinge", "squat", "core"] },
+      { name: "Push A", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "horizontal_push"] },
+      { name: "Pull A", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "horizontal_pull"] },
+      { name: "Legs A", focus: ["legs", "glutes", "hips"], patterns: ["squat", "hinge", "glute"] },
+      { name: "Push B", focus: ["chest", "shoulders"], patterns: ["horizontal_push", "vertical_push", "horizontal_push"] },
+      { name: "Pull B", focus: ["back"], patterns: ["horizontal_pull", "vertical_pull", "horizontal_pull"] },
+      { name: "Legs B", focus: ["legs", "glutes", "hips"], patterns: ["hinge", "squat", "glute"] },
     ],
   },
 };
@@ -270,7 +271,6 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
         squat: ["squat"],
         hinge: ["hinge", "hip_hinge"],
         glute: ["hinge"], // glute slot falls back to hinge exercises with glute bodyPart
-        core: ["core", "anti_extension", "anti_rotation"],
       };
       const matchPatterns = patternMap[pattern] || [pattern];
       const _fallbackFilter = (e, checkCeiling) =>
