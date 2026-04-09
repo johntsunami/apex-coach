@@ -19,9 +19,10 @@ export function getOverloadRecommendation(exerciseId, phase = 1) {
   const sessions = getSessions();
   const range = PHASE_RANGES[phase] || PHASE_RANGES[1];
 
-  // Find last 2 sessions that include this exercise
+  // Find last 2 sessions that include this exercise (skip sessions without logged data)
   const recent = [];
   for (let i = sessions.length - 1; i >= 0 && recent.length < 2; i--) {
+    if (sessions[i]._hasLoggedData === false) continue;
     const ec = (sessions[i].exercises_completed || []).find(e => e.exercise_id === exerciseId);
     if (ec) recent.push(ec);
   }

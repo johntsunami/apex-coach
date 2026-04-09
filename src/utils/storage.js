@@ -48,11 +48,18 @@ function getSessions() {
 
 function saveSession(session) {
   const sessions = getSessions();
+  // Ensure every completed exercise has usable sets_done (fallback to sets array length or 1)
+  const exercisesCompleted = (session.exercisesCompleted || []).map(ec => ({
+    ...ec,
+    sets_done: ec.sets_done || (ec.sets || []).length || 1,
+    _source: (ec.sets || []).some(s => s.load > 0 || s.reps_done > 0) ? "logged" : "planned_default",
+  }));
+  const _hasLoggedData = exercisesCompleted.some(ec => ec._source === "logged");
   const entry = {
     session_id: `s_${Date.now()}`,
     date: new Date().toISOString(),
     _dateKey: _dateKey(new Date()), // explicit local date for reliable same-day matching
-    exercises_completed: session.exercisesCompleted || [],
+    exercises_completed: exercisesCompleted,
     exercises_skipped: session.exercisesSkipped || [],
     readiness: session.readiness || {},
     check_in: session.checkIn || {},
@@ -64,6 +71,7 @@ function saveSession(session) {
     overall: session.overall || "just_right",
     duration_minutes: session.durationMinutes || 0,
     total_volume: session.totalVolume || {},
+    _hasLoggedData,
   };
   sessions.push(entry);
   set(KEYS.SESSIONS, sessions);
@@ -90,7 +98,7 @@ async function _syncSessionToSupabase(entry) {
     if (!session?.user) return;
     const sessionPayload = {
       user_id: session.user.id,
-      date: entry.date?.split("T")[0] || new Date().toISOString().split("T")[0],
+      date: entry._dateKey || _dateKey(new Date()),
       location: entry.check_in?.location || "gym",
       duration_minutes: entry.duration_minutes || 0,
       safety_level: entry.readiness?.safety_level || "CLEAR",
@@ -518,7 +526,9 @@ function computeSessionVolume(exercisesCompleted, exerciseDB) {
     const dbEx = exerciseDB.find((e) => e.id === ec.exercise_id);
     if (!dbEx) return;
     const bp = dbEx.bodyPart || "other";
-    volume[bp] = (volume[bp] || 0) + (ec.sets_done || 0);
+    // Use sets_done, fall back to sets array length, fall back to planned sets from DB, minimum 1
+    const sets = ec.sets_done || (ec.sets || []).length || parseInt(dbEx.phaseParams?.["1"]?.sets) || 1;
+    volume[bp] = (volume[bp] || 0) + sets;
   });
   return volume;
 }
