@@ -5,15 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { getSessions, getStats } from "./storage.js";
-
-// ── Phase volume limits (sets per muscle group per week) ──────
-const VOLUME_LIMITS = {
-  1: { min: 10, max: 12 },
-  2: { min: 14, max: 18 },
-  3: { min: 18, max: 24 },
-  4: { min: 18, max: 24 },
-  5: { min: 18, max: 24 },
-};
+import { VOLUME_LIMITS, PHASE_DEFAULTS } from "./constants.js";
 
 // Hypertrophy-specific volume limits by experience (Pelland et al. 2026)
 const HYPERTROPHY_VOLUME = {
@@ -158,9 +150,8 @@ function getExerciseDisplayParams(exercise, phase = 1) {
     return exercise.phaseParams?.[String(Math.min(phase, 2))] || { sets: "2-3", reps: "8-12 each side", tempo: "4/2/1", rest: "30-60s", intensity: "bodyweight" };
   }
 
-  // Normal exercises: use their phaseParams or NASM defaults
-  const _phaseDefaults = { 1: { sets: "2", reps: "12-20", rest: "60" }, 2: { sets: "3", reps: "8-12", rest: "60" }, 3: { sets: "4", reps: "6-12", rest: "75" }, 4: { sets: "5", reps: "3-5", rest: "150" }, 5: { sets: "4", reps: "3-5", rest: "150" } };
-  return exercise.phaseParams?.[String(phase)] || _phaseDefaults[phase] || {};
+  // Normal exercises: use their phaseParams or NASM defaults (from constants.js)
+  return exercise.phaseParams?.[String(phase)] || PHASE_DEFAULTS[phase] || {};
 }
 
 // ── Apply volume caps to exercise parameters ──────────────────

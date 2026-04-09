@@ -31,7 +31,7 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
 // Cache version — increment when generation logic changes to invalidate stale cached weeks
-const PLAN_GEN_VERSION = 3;
+const PLAN_GEN_VERSION = 4;
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
@@ -148,10 +148,9 @@ export default function PlanView({ onClose }) {
           {weekPlan.split} · {weekPlan.weekLabel || ""} · {weekPlan.rpeRange}{weekPlan.setsPerExercise ? ` · ${weekPlan.setsPerExercise} sets/exercise` : ""}
         </div>}
 
-        {weekPlan ? weekPlan.days.map((day, i) => {
-          const isToday = i === dow;
+        {weekPlan ? weekPlan.days.filter(day => day.type !== "rest").map((day, i) => {
+          const isToday = day.dayOfWeek === dow;
           const isDone = day.status === "completed";
-          const isRest = day.type === "rest";
           return (
             <Card key={i} style={{ borderColor: isToday ? C.teal + "60" : isDone ? C.success + "30" : C.border, background: isToday ? C.tealBg : isDone ? C.success + "05" : C.bgCard }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
@@ -159,17 +158,13 @@ export default function PlanView({ onClose }) {
                   <span style={{ fontSize: 13, fontWeight: 700, color: isToday ? C.teal : isDone ? C.success : C.text }}>{day.dayName}</span>
                   {isToday && <Badge color={C.teal}>TODAY</Badge>}
                   {isDone && <Badge color={C.success}>DONE</Badge>}
-                  {isRest && <Badge color={C.textDim}>REST</Badge>}
                 </div>
                 <div style={{ fontSize: 10, color: C.textDim }}>
-                  {isRest ? "" : `${day.exercises?.length || 0} exercises · ~${day.estimatedMinutes} min`}
+                  {`${day.exercises?.length || 0} exercises · ~${day.estimatedMinutes} min`}
                 </div>
               </div>
               <div style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, marginBottom: 4 }}>{day.label}</div>
-              {isRest ? (
-                <div style={{ fontSize: 10, color: C.textDim, fontStyle: "italic" }}>{day.description}</div>
-              ) : (
-                <div>
+              <div>
                   {/* Warmup exercises for this day */}
                   {(() => { const bps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean)); const wu = exerciseDB.filter(e => (e.category === "foam_roll" || (e.category === "warmup" && e.type === "mobility")) && (e.phaseEligibility || []).includes(CURRENT_PHASE) && bps.has(e.bodyPart)).slice(0, 4); return wu.length > 0 ? <div style={{ marginBottom: 6 }}><div style={{ fontSize: 9, fontWeight: 700, color: C.info, letterSpacing: 0.5, marginBottom: 2 }}>WARM-UP</div>{wu.map((we, wi) => <div key={wi} style={{ fontSize: 9, color: C.textDim, paddingLeft: 4 }}>{we.name}</div>)}</div> : null; })()}
                   <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: 0.5, marginBottom: 2 }}>MAIN EXERCISES</div>
@@ -196,7 +191,6 @@ export default function PlanView({ onClose }) {
                     {day.muscleGroups.map(m => <span key={m} style={{ fontSize: 8, color: C.teal, background: C.tealBg, padding: "1px 4px", borderRadius: 3 }}>{m}</span>)}
                   </div>}
                 </div>
-              )}
             </Card>
           );
         }) : (
@@ -413,11 +407,12 @@ export default function PlanView({ onClose }) {
                             if (dupes.length) issues.push("Repeats: " + [...new Set(dupes)].join(", "));
                             console.log("[PLANVIEW " + (issues.length ? "FAIL" : "PASS") + "] Wk" + w + " Ph" + p.num, issues.length ? issues.join(" | ") : "all checks pass");
                           }
+                          const _trainingDays = dayData.filter(day => day.type !== "rest");
                           return <>
-                            {dayData.map((day, di) => (
-                              <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < dayData.length - 1 ? `1px solid ${C.border}` : "none" }}>
-                                <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : day.type === "rest" ? C.textDim : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : day.type === "rest" ? "😴" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
-                                {day.type !== "rest" && (() => {
+                            {_trainingDays.map((day, di) => (
+                              <div key={di} style={{ padding: "4px 0 4px 8px", borderBottom: di < _trainingDays.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                                <div style={{ fontSize: 10, fontWeight: 700, color: day.status === "completed" ? C.success : C.text }}>{day.dayName} — {day.label} {day.status === "completed" ? "✅" : ""}{day.muscleGroups?.length > 0 ? ` (${day.muscleGroups.join(", ")})` : ""}</div>
+                                {(() => {
                                   // Get body parts trained today for warmup/cooldown targeting
                                   const trainedBps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean));
                                   // Generate warmup: foam roll + mobility for trained areas
@@ -449,7 +444,6 @@ export default function PlanView({ onClose }) {
                                     </div>}
                                   </>;
                                 })()}
-                                {day.type === "rest" && <div style={{ fontSize: 9, color: C.textDim, paddingLeft: 8, fontStyle: "italic" }}>{day.description || "Rest & recovery"}</div>}
                               </div>
                             ))}
                             {/* Weekly volume summary */}

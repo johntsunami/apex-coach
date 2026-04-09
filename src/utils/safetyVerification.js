@@ -12,8 +12,8 @@ import {
   getWeeklyVolume,
   getVolumeLimit,
   getTrainingWeek,
-  VOLUME_LIMITS,
 } from "./volumeTracker.js";
+import { VOLUME_LIMITS } from "./constants.js";
 import { getSessions } from "./storage.js";
 
 const exById = Object.fromEntries(exerciseDB.map((e) => [e.id, e]));
