@@ -51,6 +51,7 @@ function saveSession(session) {
   const entry = {
     session_id: `s_${Date.now()}`,
     date: new Date().toISOString(),
+    _dateKey: _dateKey(new Date()), // explicit local date for reliable same-day matching
     exercises_completed: session.exercisesCompleted || [],
     exercises_skipped: session.exercisesSkipped || [],
     readiness: session.readiness || {},
@@ -87,7 +88,7 @@ async function _syncSessionToSupabase(entry) {
     if (!isSupabaseAvailable()) return;
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return;
-    await supabase.from("sessions").insert({
+    const sessionPayload = {
       user_id: session.user.id,
       date: entry.date?.split("T")[0] || new Date().toISOString().split("T")[0],
       location: entry.check_in?.location || "gym",
@@ -100,9 +101,19 @@ async function _syncSessionToSupabase(entry) {
       exercises_completed: entry.exercises_completed || [],
       exercises_skipped: entry.exercises_skipped || [],
       volume_data: entry.total_volume || {},
-      status: "completed",
-      session_type: entry.session_type || "primary",
-    });
+    };
+    const { error: insertError } = await supabase.from("sessions").insert(sessionPayload);
+    if (insertError) {
+      console.error("[SUPABASE SESSION ERROR]", {
+        message: insertError.message,
+        details: insertError.details,
+        hint: insertError.hint,
+        code: insertError.code,
+        sentColumns: Object.keys(sessionPayload),
+      });
+      return; // Don't try to sync reflection if session insert failed
+    }
+    console.log("[SYNC] Session synced to Supabase successfully");
     // Also sync reflection
     if (entry.reflection) {
       const { data: sessRows } = await supabase.from("sessions").select("id").eq("user_id", session.user.id).order("created_at", { ascending: false }).limit(1);
@@ -160,9 +171,8 @@ async function restoreSessionsFromSupabase() {
       console.log("APEX: No sessions in Supabase or localStorage");
       return false;
     }
-    // ALWAYS overwrite localStorage with Supabase data — Supabase is source of truth
+    // Merge Supabase data with local — NEVER drop local sessions that haven't synced yet
     const local = getSessions();
-    console.log(`APEX: Session restore — local: ${local.length}, supabase: ${rows.length} — Supabase wins`);
     const restored = rows.map(r => ({
       session_id: r.id,
       // Prefer created_at (timestamptz with TZ) over date (bare date, UTC-parsed)
@@ -182,16 +192,39 @@ async function restoreSessionsFromSupabase() {
       total_volume: r.volume_data || {},
       session_type: r.session_type || "primary",
     }));
-    set(KEYS.SESSIONS, restored);
-    _updateStats(restored);
-    console.log("APEX: Restored", restored.length, "sessions from Supabase — stats recalculated");
+    // Build a Set of Supabase session dates to detect local-only sessions
+    const supabaseDates = new Set(restored.map(s => _dateKey(s.date)));
+    // Keep any local sessions from TODAY that aren't in Supabase yet (async sync race condition)
+    const today = _dateKey(new Date());
+    const localOnlyToday = local.filter(s => _dateKey(s.date) === today && !supabaseDates.has(today));
+    const merged = [...restored, ...localOnlyToday];
+    if (localOnlyToday.length > 0) {
+      console.log(`APEX: Session restore — keeping ${localOnlyToday.length} local-only session(s) from today that haven't synced yet`);
+    }
+    console.log(`APEX: Session restore — local: ${local.length}, supabase: ${rows.length}, merged: ${merged.length}`);
+    set(KEYS.SESSIONS, merged);
+    _updateStats(merged);
     return true;
   } catch (e) { console.warn("Session restore from Supabase failed:", e); return false; }
 }
 
 // Backfill: sync any localStorage sessions that are missing from Supabase
+let _backfillAttempts = 0;
+const MAX_BACKFILL_ATTEMPTS = 3;
+let _lastBackfillTime = 0;
+
 async function backfillSessionsToSupabase() {
   try {
+    // Prevent rapid retry loops
+    const now = Date.now();
+    if (now - _lastBackfillTime < 60000 && _backfillAttempts >= MAX_BACKFILL_ATTEMPTS) {
+      console.warn("[BACKFILL] Max attempts reached. Sessions are safe in localStorage but not synced to cloud. Will retry on next app load.");
+      return;
+    }
+    if (now - _lastBackfillTime >= 60000) _backfillAttempts = 0; // Reset after cooldown
+    _lastBackfillTime = now;
+    _backfillAttempts++;
+
     const { supabase, isSupabaseAvailable } = await import("../utils/supabase.js");
     if (!isSupabaseAvailable()) return;
     const { data: { session } } = await supabase.auth.getSession();
@@ -201,6 +234,7 @@ async function backfillSessionsToSupabase() {
     const { data: remote } = await supabase.from("sessions").select("date").eq("user_id", session.user.id);
     const remoteDates = new Set((remote || []).map(r => r.date));
     let synced = 0;
+    let failed = 0;
     for (const entry of local) {
       const entryDate = entry.date?.split("T")[0] || "";
       if (!remoteDates.has(entryDate)) {
@@ -209,6 +243,7 @@ async function backfillSessionsToSupabase() {
       }
     }
     if (synced > 0) console.log(`APEX: Backfilled ${synced} sessions to Supabase`);
+    if (synced > 0) _backfillAttempts = 0; // Reset on success
   } catch (e) { console.warn("APEX: Session backfill failed:", e); }
 }
 
@@ -227,8 +262,8 @@ function _computeFreshStats(sessions) {
   const primary = sessions.filter(s => s.session_type !== "supplemental" && s.session_type !== "secondary");
 
   // "Days Done" = unique calendar days with at least one primary session
-  // Pass raw date string to _dateKey to avoid UTC parsing issues with bare dates
-  const sessionDates = new Set(primary.map((s) => _dateKey(s.date)));
+  // Use _dateKey field if available (explicit local date), else derive from ISO timestamp
+  const sessionDates = new Set(primary.map((s) => s._dateKey || _dateKey(s.date)));
   const totalSessions = sessionDates.size;
 
   // Calculate streak (consecutive days with a session, using LOCAL timezone)
@@ -272,7 +307,7 @@ function _computeFreshStats(sessions) {
 
   // "This Week" = unique days with primary sessions in the last 7 days
   const recentPrimary = recentSessions.filter(s => s.session_type !== "supplemental");
-  const recentDays = new Set(recentPrimary.map(s => _dateKey(s.date)));
+  const recentDays = new Set(recentPrimary.map(s => s._dateKey || _dateKey(s.date)));
   const sessionsThisWeek = recentDays.size;
 
   const stats = {
@@ -326,7 +361,8 @@ function isTodayComplete() {
   const sessions = getSessions();
   if (!sessions.length) return null;
   const today = _dateKey(new Date());
-  const todaySessions = sessions.filter(s => _dateKey(s.date) === today);
+  // Use _dateKey field if available (explicit local date), else derive from ISO timestamp
+  const todaySessions = sessions.filter(s => (s._dateKey || _dateKey(s.date)) === today);
   if (!todaySessions.length) return null;
   // Only count primary sessions (not supplemental add-ons)
   const primarySessions = todaySessions.filter(s => s.session_type !== "supplemental");
@@ -346,7 +382,7 @@ function getTodayWorkoutStatus() {
     try {
       const today = _dateKey(new Date());
       const sessions = getSessions();
-      const todaySessions = sessions.filter(s => _dateKey(s.date) === today);
+      const todaySessions = sessions.filter(s => (s._dateKey || _dateKey(s.date)) === today);
 
       // Already did a secondary? No three-a-days
       const secondaryCount = todaySessions.filter(s => s.session_type === "secondary").length;
@@ -389,7 +425,7 @@ function getTodaySessionCompletionTime() {
   const sessions = getSessions();
   const today = _dateKey(new Date());
   const todayPrimary = sessions.filter(s =>
-    _dateKey(s.date) === today && s.session_type !== "supplemental" && s.session_type !== "secondary"
+    (s._dateKey || _dateKey(s.date)) === today && s.session_type !== "supplemental" && s.session_type !== "secondary"
   );
   if (!todayPrimary.length) return null;
   return todayPrimary[todayPrimary.length - 1].date;
@@ -400,7 +436,7 @@ function getFirstSessionMuscles(exerciseDB) {
   const sessions = getSessions();
   const today = _dateKey(new Date());
   const todayPrimary = sessions.filter(s =>
-    _dateKey(s.date) === today && s.session_type !== "supplemental"
+    (s._dateKey || _dateKey(s.date)) === today && s.session_type !== "supplemental"
   );
   if (!todayPrimary.length || !exerciseDB) return new Set();
   const muscles = new Set();
