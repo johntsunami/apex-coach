@@ -490,6 +490,15 @@ Read these files for detailed requirements:
 - `docs/V7_SPEC.md` — Original product specification
 - `src/utils/workoutValidator.js` — Validation rules for generated sessions
 
+### Rule 24: Multi-Profile Engine QA
+
+After ANY change to exercise selection, scoring, filtering, or session generation:
+1. Run Engine QA from Dev tab → Engine → "Run Engine QA (8 profiles)"
+2. All 8 profiles must pass (0 critical failures)
+3. If any profile fails, fix BEFORE committing
+4. The 8 test profiles cover: healthy beginner, physique competitor, carpal tunnel, senior with arthritis, bikini competitor, home-only, severe shoulder, multi-condition (RA+fibro+obesity)
+5. File: `src/utils/engineQA.js`
+
 ---
 
 ## FEATURES CHECKLIST

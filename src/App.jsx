@@ -54,6 +54,7 @@ import { syncOverridesFromSupabase } from "./utils/imageOverrides.js";
 import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase, saveProtocolsToSupabase, generateProtocols, saveLocalProtocols, getLocalProtocols, getLocalPTSessions } from "./components/PTSystem.jsx";
 import { verifyAndFix, runAllChecks } from "./utils/safetyVerification.js";
 import { ALL_TEST_PROFILES } from "./utils/testProfiles.js";
+import { runEngineQA as _runEngineQA } from "./utils/engineQA.js";
 import { buildRoadmap, checkReadiness, getAllFavoriteRoadmaps, checkAutoAdvancements, getUnlockNotifications, markNotificationsSeen, prioritizeFavorites, recordExerciseCompletion, getProgressPercent } from "./utils/progressionRoadmap.js";
 import SwapModal from "./components/ExerciseSwap.jsx";
 import { CardioFitnessCard, VO2TestModal, CardioLogModal, HRZonesCard } from "./components/CardioTracker.jsx";
@@ -1773,8 +1774,28 @@ function DebugPanel({onClose}){
       </div>}
 
       {tab==="engine"&&<div>
-        <button onClick={runEngineTest} style={S.btn}>Test Workout Engine</button>
-        {engineStatus&&<div style={{marginTop:10}}>{engineStatus.map((r,i)=><div key={i} style={S.row}><span style={S.label}>{r.scenario}</span><span style={{color:r.status==="ok"?C.success:C.danger,fontSize:10}}>{r.status==="ok"?`W${r.warmup} M${r.main} C${r.cooldown} = ${r.total}`:r.error}</span></div>)}</div>}
+        <div style={{display:"flex",gap:6,marginBottom:10}}>
+          <button onClick={runEngineTest} style={S.btn}>Test Workout Engine</button>
+          <button onClick={()=>{setQaRunning(true);try{const r=_runEngineQA(exerciseDB,generateWeeklyPlan);setEngineStatus(r);}catch(e){setEngineStatus({error:e.message});}setQaRunning(false);}} disabled={qaRunning} style={{...S.btn,borderColor:C.purple,color:C.purple}}>{qaRunning?"Running...":"Run Engine QA (8 profiles)"}</button>
+        </div>
+        {engineStatus?.results&&<div style={{marginTop:10}}>
+          <div style={{display:"flex",gap:12,marginBottom:8}}>
+            <div><span style={S.stat(C.success)}>{engineStatus.passed}</span><div style={{fontSize:9,color:C.textDim}}>Passed</div></div>
+            <div><span style={S.stat(engineStatus.failed>0?C.danger:C.success)}>{engineStatus.failed}</span><div style={{fontSize:9,color:C.textDim}}>Failed</div></div>
+            <div><span style={S.stat(C.info)}>{engineStatus.total}</span><div style={{fontSize:9,color:C.textDim}}>Total</div></div>
+          </div>
+          {engineStatus.results.map((r,i)=><div key={i} style={{padding:"6px 0",borderBottom:`1px solid ${C.border}`}}>
+            <div style={{display:"flex",justifyContent:"space-between"}}>
+              <span style={{fontSize:10,fontWeight:600,color:C.text}}>{r.label}</span>
+              <div style={{display:"flex",gap:4}}>{Object.entries(r.phases).map(([ph,res])=><span key={ph} style={{fontSize:9,padding:"1px 5px",borderRadius:4,background:res.pass?C.success+"15":C.danger+"15",color:res.pass?C.success:C.danger}}>P{ph} {res.pass?"✓":"✗"}</span>)}</div>
+            </div>
+            {Object.entries(r.phases).filter(([,res])=>!res.pass).map(([ph,res])=><div key={ph}>{(res.issues||[]).map((iss,j)=><div key={j} style={{fontSize:8,color:iss.severity==="critical"?C.danger:C.warning,paddingLeft:8}}>P{ph}: {iss.msg}</div>)}</div>)}
+          </div>)}
+          <div style={{marginTop:6,padding:6,background:engineStatus.failed===0?C.success+"10":C.danger+"10",borderRadius:6}}>
+            <div style={{fontSize:10,fontWeight:700,color:engineStatus.failed===0?C.success:C.danger}}>{engineStatus.failed===0?`ALL ${engineStatus.total} TESTS PASS ✓`:`${engineStatus.failed} FAILED`}</div>
+          </div>
+        </div>}
+        {engineStatus&&!engineStatus.results&&<div style={{marginTop:10}}>{Array.isArray(engineStatus)?engineStatus.map((r,i)=><div key={i} style={S.row}><span style={S.label}>{r.scenario}</span><span style={{color:r.status==="ok"?C.success:C.danger,fontSize:10}}>{r.status==="ok"?`W${r.warmup} M${r.main} C${r.cooldown} = ${r.total}`:r.error}</span></div>):engineStatus.error?<div style={{fontSize:10,color:C.danger}}>Error: {engineStatus.error}</div>:null}</div>}
       </div>}
 
       {tab==="safety"&&<div>
