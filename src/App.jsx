@@ -19,6 +19,7 @@ import { validatePlan as _validatePlan, saveValidation as _saveValidation, getVa
 import { PHASE_EXERCISE_WEIGHTS, EQUIPMENT_TIERS, LOCATION_BOOSTS } from "./utils/constants.js";
 // Note: LOCATION_BOOSTS is now additive (0-0.30). The inline _locBonusMap in buildWorkoutList
 // duplicates these values for historical reasons — both must stay in sync.
+import { applySafeguards } from "./utils/safeguards.js";
 import { validateSession as _validateSession } from "./utils/workoutValidator.js";
 import { getSeniorProfile, computeFallRisk, allocateSeniorSlots, getSeniorDosing, isSeniorUser, getAgeTier } from "./utils/seniorFitness.js";
 import { getWeightTrend, shouldShowWeightNudge, dismissWeightNudge, logWeight, displayWeight, getWeightUnit, lbsToKg, calculateBMI } from "./utils/weightTracking.js";
@@ -1428,6 +1429,13 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         enriched._effortNote = "Reduced from last session (was too hard)";
         if (eff.load && eff.load > 5) enriched._lastLoad = Math.max(0, (enriched._lastLoad || eff.load) - 5);
       }
+    }
+    // Apply loading safeguards (joint rep floors, condition mods, age ceiling)
+    const _injuries = getInjuries().filter(i => i.status !== "resolved");
+    const _sg = applySafeguards(enriched, phase, _injuries, _injuries, assessment?.userAge, assessment?.fitnessLevel);
+    if (_sg.wasModified) {
+      enriched._safeguard = _sg;
+      enriched._safeguardReasons = _sg.reasons;
     }
     return enriched;
   };

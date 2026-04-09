@@ -224,6 +224,18 @@ function _getExerciseSets(exercise, phase) {
   return parseInt(p.sets) || 1;
 }
 
+// ── Safeguard-aware param wrapper ────────────────────────────
+import { getSafeExerciseParams } from './safeguards.js';
+
+function getSafeguardedParams(exercise, phase, profile) {
+  return getSafeExerciseParams(
+    exercise, phase,
+    profile?.injuries || [], profile?.conditions || [],
+    profile?.age, profile?.fitnessLevel,
+    getExerciseDisplayParams
+  );
+}
+
 export {
   getTrainingWeek,
   getWeeklyVolume,
@@ -233,6 +245,7 @@ export {
   findVolumeSub,
   capExerciseParams,
   getExerciseDisplayParams,
+  getSafeguardedParams,
   getVolumeSummary,
   VOLUME_LIMITS,
   HYPERTROPHY_VOLUME,

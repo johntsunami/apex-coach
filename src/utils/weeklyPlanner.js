@@ -10,6 +10,7 @@ import { getAssessment } from "../components/Onboarding.jsx";
 import { getInjuries, conditionToGateKey } from "./injuries.js";
 import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
+import { applySafeguards } from "./safeguards.js";
 import { hasHypertrophyGoals, getReadyPhysiqueMuscles } from "./hypertrophy.js";
 
 const LS_WEEKLY_PLAN = "apex_weekly_plan";
@@ -530,14 +531,19 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
       type: "training",
       label: template.name,
       description: `${template.focus.join(", ")} focus`,
-      exercises: filteredExercises.map(e => ({
-        id: e.id,
-        name: e.name,
-        bodyPart: e.bodyPart,
-        movementPattern: e.movementPattern,
-        _rotationPattern: e._rotationPattern,
-        _reason: e._reason,
-      })),
+      exercises: filteredExercises.map(e => {
+        const _assessment = getAssessment();
+        const sg = applySafeguards(e, phase, injuries, injuries, _assessment?.userAge, _assessment?.fitnessLevel);
+        return {
+          id: e.id,
+          name: e.name,
+          bodyPart: e.bodyPart,
+          movementPattern: e.movementPattern,
+          _rotationPattern: e._rotationPattern,
+          _reason: e._reason,
+          ...(sg.wasModified ? { _safeguard: sg, _safeguardReasons: sg.reasons } : {}),
+        };
+      }),
       muscleGroups: [...new Set(filteredExercises.map(e => e.bodyPart).filter(Boolean))],
       estimatedMinutes: estMin,
       status: "not_started",

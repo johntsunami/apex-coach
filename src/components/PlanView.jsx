@@ -4,6 +4,7 @@ import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { getStats, getSessions } from "../utils/storage.js";
 import { getVolumeSummary, getTrainingWeek, getExerciseDisplayParams } from "../utils/volumeTracker.js";
+import { getSafeExerciseParams } from "../utils/safeguards.js";
 import ExerciseImage from "./ExerciseImage.jsx";
 import SwapModal from "./ExerciseSwap.jsx";
 
@@ -31,7 +32,7 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
 // Cache version — increment when generation logic changes to invalidate stale cached weeks
-const PLAN_GEN_VERSION = 4;
+const PLAN_GEN_VERSION = 5;
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
@@ -172,13 +173,14 @@ export default function PlanView({ onClose }) {
                     const fullEx = exerciseDB.find(x => x.id === e.id) || e;
                     const display = swaps[e.id] || fullEx;
                     const wasSwapped = !!swaps[e.id];
-                    const pp = getExerciseDisplayParams(fullEx, CURRENT_PHASE);
+                    const pp = getSafeExerciseParams(fullEx, CURRENT_PHASE, injuries, injuries, assessment?.userAge, assessment?.fitnessLevel, getExerciseDisplayParams);
                     return (
                       <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 0", borderBottom: ei < day.exercises.length - 1 ? `1px solid ${C.border}` : "none" }}>
                         <ExerciseImage exercise={display} size="thumb" />
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 11, color: C.text, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{display.name}</div>
                           <div style={{ fontSize: 9, color: C.textDim }}>{pp.sets || "2"} sets × {pp.reps || "12"}{pp.tempo ? ` · ${pp.tempo}` : ""} · {(fullEx.bodyPart || "").replace(/_/g, " ")}{pp.intensity ? ` · ${pp.intensity}` : ""}</div>
+                          {pp._safeguarded && <div style={{ fontSize: 8, color: C.warning, marginTop: 1 }}>🛡️ {pp._reasons?.[0]}</div>}
                           {wasSwapped && <div style={{ fontSize: 8, color: C.warning }}>🔄 was {e.name}</div>}
                         </div>
                         <button onClick={() => setSwapTarget(fullEx)} style={{ width: 22, height: 22, borderRadius: 6, background: "transparent", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, opacity: 0.5 }} title="Options">⋯</button>
@@ -430,9 +432,9 @@ export default function PlanView({ onClose }) {
                                       <div style={{ fontSize: 8, fontWeight: 700, color: C.teal, letterSpacing: 0.5, marginBottom: 1 }}>MAIN</div>
                                       {(day.exercises || []).map((e, ei) => {
                                         const full = exerciseDB.find(x => x.id === e.id) || e;
-                                        const pp = getExerciseDisplayParams(full, p.num);
+                                        const pp = getSafeExerciseParams(full, p.num, injuries, injuries, assessment?.userAge, assessment?.fitnessLevel, getExerciseDisplayParams);
                                         return <div key={ei} style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.textMuted, padding: "1px 0", paddingLeft: 4 }}>
-                                          <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span></span>
+                                          <span>{ei + 1}. {full.name} <span style={{ color: C.textDim }}>({(full.bodyPart || e.bodyPart || "").replace(/_/g, " ")})</span>{pp._safeguarded && <span style={{ color: C.warning, marginLeft: 3 }} title={pp._reasons?.[0]}>🛡️</span>}</span>
                                           <span style={{ color: C.textDim, flexShrink: 0, marginLeft: 4 }}>{pp.sets || "2"}×{pp.reps || "12"}</span>
                                         </div>;
                                       })}

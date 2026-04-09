@@ -8,6 +8,7 @@
 import { getSessions, getStats } from "./storage.js";
 import { getAssessment } from "../components/Onboarding.jsx";
 import { getInjuries } from "./injuries.js";
+import { checkSafeguardPhaseReadiness } from "./safeguards.js";
 import { getLatestBaseline, getBaselineCapabilities } from "./baselineTest.js";
 import { getTrainingWeek } from "./volumeTracker.js";
 
@@ -748,6 +749,16 @@ export function checkPhaseReadiness(currentPhase, tier) {
   const injuries = getInjuries().filter(i => i.status !== "resolved");
   const baseline = getLatestBaseline();
   const capabilities = getBaselineCapabilities() || [];
+
+  // Safeguard gate: age/condition may cap the max phase
+  const targetPhase = currentPhase + 1;
+  const sgCheck = checkSafeguardPhaseReadiness(targetPhase, assessment?.userAge, assessment?.fitnessLevel, injuries);
+  if (!sgCheck.allowed) {
+    return {
+      ready: false, checks: [{ label: "Safeguard restriction", met: false, current: sgCheck.message, icon: "🛡️" }],
+      metCount: 0, totalCount: 1, message: sgCheck.message, _safeguardBlocked: true,
+    };
+  }
 
   const criteria = PHASE_CRITERIA[currentPhase]?.[tier];
   if (!criteria) return { ready: false, checks: [], message: "Phase progression criteria not defined" };
