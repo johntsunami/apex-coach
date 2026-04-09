@@ -881,12 +881,27 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
 
   // PHASE C: ACTIVATE — Core activation exercises (NASM CEx: activate phase)
   // 2 core exercises per session, phase-appropriate, for bracing/stabilization before main lifts
+  // Enforces ROTATION — avoid repeating the same core exercise every session
   const coreActivation = [];
+  const _recentCoreIds = new Set();
+  try {
+    const _sess = getSessions() || [];
+    _sess.slice(-2).forEach(s => (s.exercises_completed || []).forEach(ec => {
+      const dbEx = exerciseDB.find(e => e.id === ec.exercise_id);
+      if (dbEx?.bodyPart === "core") _recentCoreIds.add(ec.exercise_id);
+    }));
+  } catch {}
   const corePool = exerciseDB.filter(e =>
     e.bodyPart === "core" && (e.category === "main" || e.type === "stabilization") &&
     (e.phaseEligibility || []).includes(phase) && locOk(e) &&
     !inhibit.find(x => x.id === e.id) && !lengthen.find(x => x.id === e.id)
-  ).sort((a, b) => (a.difficultyLevel || 1) - (b.difficultyLevel || 1));
+  ).sort((a, b) => {
+    // Deprioritize recently-used core exercises for variety
+    const aRecent = _recentCoreIds.has(a.id) ? 1 : 0;
+    const bRecent = _recentCoreIds.has(b.id) ? 1 : 0;
+    if (aRecent !== bRecent) return aRecent - bRecent; // non-recent first
+    return (a.difficultyLevel || 1) - (b.difficultyLevel || 1);
+  });
   // Pick phase-appropriate core: anti-extension + anti-rotation (NASM: both planes)
   const antiExt = corePool.find(e => (e.movementPattern || "").includes("anti_extension"));
   const antiRot = corePool.find(e => (e.movementPattern || "").includes("anti_rotation") && e.id !== antiExt?.id);
@@ -1309,6 +1324,36 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       if (fill) { compounds.push({ ...fill, _reason: `Replaces core slot — ${bp} focus` }); _mainIds.add(fill.id); _replaced++; }
     }
     main = [...compounds, ...iso, ...cardio];
+  }
+
+  // ── MOVE BALANCE TO WARMUP — not a main exercise ──
+  {
+    const _balIdx = [];
+    main.forEach((ex, i) => {
+      if (ex.type === "balance" || (ex.name || "").toLowerCase().includes("single-leg balance")) _balIdx.push(i);
+    });
+    for (let i = _balIdx.length - 1; i >= 0; i--) {
+      const bal = main.splice(_balIdx[i], 1)[0];
+      warmup.push({ ...bal, _reason: (bal._reason ? bal._reason + " · " : "") + "Balance drill (warm-up activation)", _phase: "activate" });
+    }
+  }
+
+  // ── MINIMUM SESSION SIZE ENFORCEMENT (≥ 4 main exercises) ──
+  {
+    const _MIN = 4;
+    if (main.length < _MIN) {
+      console.warn('[MIN SESSION] Only', main.length, 'main exercises. Relaxing constraints...');
+      const _usedIds = new Set(main.map(e => e.id));
+      // 1. Add any main exercise that passes safety filters
+      const _pool = exerciseDB.filter(e => e.category === "main" && !_usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance");
+      for (const ex of _pool) { if (main.length >= _MIN) break; main.push({ ...ex, _reason: "Added to meet minimum session size" }); _usedIds.add(ex.id); }
+      // 2. Relax location filter if still short
+      if (main.length < _MIN) {
+        const _anyLoc = exerciseDB.filter(e => e.category === "main" && !_usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance");
+        for (const ex of _anyLoc) { if (main.length >= _MIN) break; main.push({ ...ex, _reason: "Added (location relaxed) to meet minimum" }); _usedIds.add(ex.id); }
+      }
+      if (main.length < _MIN) console.warn('[MIN SESSION] Still only', main.length, 'exercises after relaxation');
+    }
   }
 
   // ── PHYSIQUE CATEGORY EXTRA SLOTS (chest/glute emphasis) ──

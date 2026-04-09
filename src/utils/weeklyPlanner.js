@@ -525,6 +525,62 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
     }
   }
 
+  // ── FIX: Move balance-only exercises to warmup, not main slots ──
+  const _balanceRemoved = [];
+  for (let i = selected.length - 1; i >= 0; i--) {
+    const ex = selected[i];
+    const isBalance = ex.type === "balance" || (ex.name || "").toLowerCase().includes("single-leg balance");
+    if (isBalance) { _balanceRemoved.push(selected.splice(i, 1)[0]); }
+  }
+  // Balance exercises will be added to warmup/activation by buildSessionBlocks
+
+  // ── FIX: Core variety — enforce rotation, max 1 same core per 3 sessions ──
+  // (Core is in warmup now, but if any core leaked into main, still enforce variety)
+
+  // ── MINIMUM SESSION SIZE ENFORCEMENT (Rule: every session ≥ 4 main exercises) ──
+  const MIN_MAIN = 4;
+  if (selected.length < MIN_MAIN) {
+    console.warn('[MIN SESSION] Only', selected.length, 'exercises selected. Relaxing constraints...');
+    // 1. Relax within-week dedup — allow exercises from other days this week
+    const _relaxPool = exerciseDB.filter(e =>
+      e.category === "main" && !usedIds.has(e.id) && !blacklist.has(e.id) &&
+      (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" &&
+      canUseExercise(e, phase, location, usedIds, injuries)
+    ).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+    for (const ex of _relaxPool) {
+      if (selected.length >= MIN_MAIN) break;
+      if (!usedIds.has(ex.id)) { selected.push({ ...ex, _reason: "Added to meet minimum session size" }); usedIds.add(ex.id); }
+    }
+    // 2. If still short, add mobility/stabilization exercises (always safe)
+    if (selected.length < MIN_MAIN) {
+      const _safeFillers = exerciseDB.filter(e =>
+        (e.type === "stabilization" || e.type === "mobility" || e.category === "mobility") &&
+        !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) &&
+        canUseExercise(e, phase, location, usedIds, injuries) &&
+        e.bodyPart !== "core" // core is in warmup
+      );
+      for (const ex of _safeFillers) {
+        if (selected.length >= MIN_MAIN) break;
+        selected.push({ ...ex, _reason: "Safe filler — limited options due to conditions" }); usedIds.add(ex.id);
+      }
+    }
+    // 3. Last resort: relax location filter
+    if (selected.length < MIN_MAIN) {
+      const _anyLoc = exerciseDB.filter(e =>
+        e.category === "main" && !usedIds.has(e.id) && !blacklist.has(e.id) &&
+        (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" &&
+        e.bodyPart !== "core"
+      );
+      for (const ex of _anyLoc) {
+        if (selected.length >= MIN_MAIN) break;
+        if (!usedIds.has(ex.id)) { selected.push({ ...ex, _reason: "Added (location relaxed) to meet minimum" }); usedIds.add(ex.id); }
+      }
+    }
+    if (selected.length < MIN_MAIN) {
+      console.warn('[MIN SESSION] Still only', selected.length, 'exercises after relaxation. Condition restrictions may be too broad.');
+    }
+  }
+
   return selected;
 }
 

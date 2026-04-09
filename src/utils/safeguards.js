@@ -33,9 +33,10 @@ function normalizeJointName(area) {
 }
 
 const BODY_JOINT_MAP = {
-  chest: ["shoulder"], shoulders: ["shoulder"], back: ["lower_back"],
+  chest: ["shoulder", "wrist"], shoulders: ["shoulder"], back: ["lower_back", "wrist"],
   legs: ["knee", "hip"], glutes: ["hip"], hips: ["hip"],
-  arms: ["elbow"], calves: ["ankle"], neck: ["neck"],
+  arms: ["elbow", "wrist"], calves: ["ankle"], neck: ["neck"],
+  full_body: ["lower_back", "knee", "wrist"],
 };
 
 export function getRepFloor(exercise, injuries) {
