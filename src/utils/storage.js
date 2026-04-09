@@ -527,7 +527,9 @@ function computeSessionVolume(exercisesCompleted, exerciseDB) {
     if (!dbEx) return;
     const bp = dbEx.bodyPart || "other";
     // Use sets_done, fall back to sets array length, fall back to planned sets from DB, minimum 1
-    const sets = ec.sets_done || (ec.sets || []).length || parseInt(dbEx.phaseParams?.["1"]?.sets) || 1;
+    let sets = ec.sets_done || (ec.sets || []).length || parseInt(dbEx.phaseParams?.["1"]?.sets) || 1;
+    // Plyometric exercises count at half volume (explosive, less mechanical tension)
+    if (dbEx.type === "plyometric") sets = Math.ceil(sets * 0.5);
     volume[bp] = (volume[bp] || 0) + sets;
   });
   return volume;

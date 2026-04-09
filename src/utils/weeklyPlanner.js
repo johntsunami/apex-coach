@@ -22,36 +22,44 @@ const LS_ROTATION = "apex_rotation_indices";
 
 const ROTATION_POOLS = {
   squat: [
-    "goblet_squat", "bulgarian_split_squat", "step_up", "leg_press",
-    "bodyweight_squat", "reverse_lunge", "lateral_lunge", "wall_squat",
-    "split_squat", "front_squat", "hack_squat",
+    "str_goblet_squat", "str_bss_bw", "str_step_up", "mach_leg_press",
+    "str_bodyweight_squat", "str_reverse_lunge", "str_lateral_lunge",
+    "str_bss_loaded", "str_front_squat",
   ],
   horizontal_push: [
-    "push_up", "landmine_press", "db_floor_press", "db_bench_press",
-    "cable_chest_press", "incline_db_press", "machine_chest_press",
-    "decline_push_up", "chest_dip",
+    // ACTUAL exercise IDs from the DB — chest-dominant exercises
+    "str_floor_push_up", "str_incline_push_up", "str_db_floor_press",
+    "str_db_bench_press", "band_chest_press", "bb_bench_press",
+    "bb_incline_press", "cable_fly_low", "trx_pushup",
   ],
   horizontal_pull: [
-    "db_row", "seated_cable_row", "chest_supported_row", "inverted_row",
-    "band_row", "machine_row", "face_pull", "trx_row",
+    "str_db_row", "mach_seated_cable_row", "str_chest_supported_row",
+    "str_inverted_row", "band_row", "mach_cable_row",
+    "iso_face_pulls", "trx_row",
   ],
   hinge: [
-    "glute_bridge", "db_romanian_deadlift", "kettlebell_deadlift",
-    "trap_bar_deadlift", "cable_pull_through", "hip_thrust",
-    "back_extension", "single_leg_rdl", "good_morning",
+    "str_glute_bridge", "str_db_rdl", "kb_deadlift",
+    "str_trap_bar_dl_high", "cable_pull_through", "band_hip_thrust",
+    "sport_barbell_hip_thrust", "sl_rdl_bw", "str_sl_glute_bridge",
+  ],
+  // Glute-dominant pool — used by lower body days to guarantee glute work
+  glute: [
+    "sport_barbell_hip_thrust", "cable_pull_through", "band_hip_thrust",
+    "str_sl_glute_bridge", "str_glute_bridge",
   ],
   core: [
-    "dead_bug", "plank", "pallof_press", "bird_dog", "side_plank",
-    "ab_wheel", "cable_rotation", "mcgill_curl_up", "stir_the_pot",
-    "farmers_carry",
+    "stab_dead_bug", "stab_plank_prone", "stab_pallof_press",
+    "stab_bird_dog", "stab_side_plank", "core_ab_wheel",
+    "cable_rotation", "stab_mcgill_curl", "stab_stir_pot",
+    "str_farmers_carry",
   ],
   vertical_push: [
-    "landmine_press_angled", "half_kneeling_db_press", "db_shoulder_press",
-    "machine_shoulder_press", "arnold_press", "pike_push_up",
+    "str_landmine_press", "str_half_kneel_db_press", "str_db_shoulder_press",
+    "mach_shoulder_press", "str_arnold_press", "str_pike_push_up",
   ],
   vertical_pull: [
-    "lat_pulldown", "band_assisted_pull_up", "cable_pullover",
-    "straight_arm_pulldown", "pull_up", "chin_up",
+    "mach_lat_pulldown", "band_assisted_pullup", "cable_pullover",
+    "mach_straight_arm_pulldown", "str_pull_up", "str_chin_up",
   ],
 };
 
@@ -78,11 +86,11 @@ const SPLITS = {
   4: {
     label: "Upper/Lower Split",
     days: [
-      // Issue 6: 2 pulls per upper day for balanced push:pull ratio and adequate back volume
-      { name: "Upper Body A", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "vertical_push", "core"] },
-      { name: "Lower Body A", focus: ["legs", "glutes", "hips", "core"], patterns: ["squat", "hinge", "core"] },
-      { name: "Upper Body B", focus: ["chest", "back", "shoulders", "core"], patterns: ["vertical_push", "vertical_pull", "horizontal_pull", "horizontal_push", "core"] },
-      { name: "Lower Body B", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "core"] },
+      // 2 chest pushes per upper day + 2 pulls for balanced push:pull ratio
+      { name: "Upper Body A", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "horizontal_pull", "vertical_pull", "horizontal_push", "core"] },
+      { name: "Lower Body A", focus: ["legs", "glutes", "hips", "core"], patterns: ["squat", "hinge", "glute", "core"] },
+      { name: "Upper Body B", focus: ["chest", "back", "shoulders", "core"], patterns: ["horizontal_push", "vertical_pull", "horizontal_pull", "vertical_push", "core"] },
+      { name: "Lower Body B", focus: ["legs", "glutes", "hips", "core"], patterns: ["hinge", "squat", "glute", "core"] },
     ],
   },
   5: {
@@ -154,6 +162,13 @@ function resolveExercise(poolId, exerciseDB, phase, location, excludeIds, injuri
   // Try exact ID match first
   let ex = exerciseDB.find(e => e.id === poolId);
   if (ex && canUseExercise(ex, phase, location, excludeIds, injuries)) return ex;
+
+  // Try partial ID match (pool ID may be a suffix: "db_bench_press" matches "str_db_bench_press")
+  ex = exerciseDB.find(e =>
+    e.id.includes(poolId) &&
+    canUseExercise(e, phase, location, excludeIds, injuries)
+  );
+  if (ex) return ex;
 
   // Try fuzzy name match (pool IDs use underscores, exercise IDs may differ)
   const fuzzy = poolId.replace(/_/g, " ").toLowerCase();
@@ -252,6 +267,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
         vertical_pull: ["vertical_pull", "pull"],
         squat: ["squat"],
         hinge: ["hinge", "hip_hinge"],
+        glute: ["hinge"], // glute slot falls back to hinge exercises with glute bodyPart
         core: ["core", "anti_extension", "anti_rotation"],
       };
       const matchPatterns = patternMap[pattern] || [pattern];
@@ -412,6 +428,39 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       } else {
         console.log("[WARNING] No plyometric exercises available for Phase 5 — check injury gates and database");
       }
+    }
+  }
+
+  // ── BODYWEIGHT → LOADED SWAP (Phase 3+) ──
+  // If a bodyweight variant was selected but a loaded variant exists, swap it
+  if (phase >= 3) {
+    const LOADED_VARIANTS = {
+      str_bss_bw: "str_bss_loaded",
+      str_bodyweight_squat: "str_goblet_squat",
+      str_glute_bridge: "sport_barbell_hip_thrust",
+      str_wall_push_up: "str_db_floor_press",
+      str_incline_push_up: "str_floor_push_up",
+    };
+    for (let i = 0; i < selected.length; i++) {
+      const loadedId = LOADED_VARIANTS[selected[i].id];
+      if (!loadedId) continue;
+      const loaded = exerciseDB.find(e => e.id === loadedId);
+      if (loaded && canUseExercise(loaded, phase, location, usedIds, injuries) && !usedIds.has(loaded.id)) {
+        console.log(`[SWAP] Phase ${phase}: ${selected[i].name} → ${loaded.name}`);
+        usedIds.delete(selected[i].id);
+        selected[i] = { ...loaded, _reason: `Loaded variant for Phase ${phase}`, _swappedFor: selected[i].name };
+        usedIds.add(loaded.id);
+      }
+    }
+  }
+
+  // ── PLYOMETRIC CAP: max 2 per session ──
+  const plyos = selected.filter(e => e.type === "plyometric");
+  if (plyos.length > 2) {
+    const excess = plyos.slice(2);
+    for (const ex of excess) {
+      const idx = selected.indexOf(ex);
+      if (idx >= 0) { console.log(`[PLYO CAP] Removed excess plyometric: ${ex.name}`); selected.splice(idx, 1); }
     }
   }
 
