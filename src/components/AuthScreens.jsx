@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "./AuthProvider.jsx";
 import { supabase } from "../utils/supabase.js";
-import { getSportPrefs, saveSportPrefs } from "../utils/storage.js";
+import { getSportPrefs, saveSportPrefs, getPrefs, setPref } from "../utils/storage.js";
 import { getAssessment } from "./Onboarding.jsx";
 import { exportProfile, exportWorkout, isDevExportEnabled, exportDevDiagnostic } from "../utils/dataExport.js";
 import { isDeveloper } from "./BugReport.jsx";
@@ -422,6 +422,33 @@ export function ProfileScreen({ onClose, onRetakeAssessment, onEditInjuries, onV
           </div>
         </div>
       )}
+
+      {/* ═══ CORE EXERCISE ORDER ═══ */}
+      <div style={{ marginTop: 8 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.textDim, letterSpacing: 2, marginBottom: 8 }}>CORE EXERCISE ORDER</div>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 16, padding: 14 }}>
+          <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 10 }}>Where should core exercises appear in your main workout?</div>
+          {[
+            { id: "first", label: "First", desc: "Do core on the mat before main lifts", icon: "1️⃣" },
+            { id: "last", label: "Last", desc: "Do core after main lifts (NASM default)", icon: "🔚" },
+            { id: "auto", label: "Auto", desc: "Let the engine decide", icon: "🤖" },
+          ].map(opt => {
+            const current = getPrefs()?.corePosition || "last";
+            const active = current === opt.id;
+            return <button key={opt.id} onClick={() => setPref("corePosition", opt.id)} style={{
+              width: "100%", padding: "10px 12px", marginBottom: 6, borderRadius: 10, cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+              background: active ? C.teal + "12" : "transparent", border: `1px solid ${active ? C.teal + "60" : C.border}`,
+              display: "flex", alignItems: "center", gap: 10,
+            }}>
+              <span style={{ fontSize: 16, width: 24, textAlign: "center" }}>{active ? "●" : "○"}</span>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: active ? 700 : 500, color: active ? C.teal : C.text }}>{opt.label}</div>
+                <div style={{ fontSize: 10, color: C.textDim }}>{opt.desc}</div>
+              </div>
+            </button>;
+          })}
+        </div>
+      </div>
 
       {/* ═══ THREE UPDATE OPTIONS ═══ */}
       <div style={{ marginTop: 4 }}>

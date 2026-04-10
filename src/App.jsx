@@ -1314,29 +1314,24 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     cooldown = _dedup(cooldown, "cooldown");
   }
 
-  // ── MOVE CORE TO WARMUP (NASM CEx: Activate phase) ──
-  // Core exercises belong in the activation phase of warm-up, not main workout.
-  // The freed slot gets replaced with an additional body-part exercise for the day's focus.
+  // ── EXERCISE ORDERING: Apply user core position preference ──
+  // Core exercises stay in main. User chooses: "first", "last" (default), or "auto".
   {
     const _isCore = ex => ex.bodyPart === "core" || ["anti_rotation","anti_extension","anti_flexion"].includes(ex.movementPattern);
     const _isCardio = ex => ex.category === "cardio" || ex.type === "cardio";
     const _isIso = ex => ex.type === "isolation";
-    const compounds = [], iso = [], coreForWarmup = [], cardio = [];
-    main.forEach(ex => { if (_isCardio(ex)) cardio.push(ex); else if (_isCore(ex)) coreForWarmup.push(ex); else if (_isIso(ex)) iso.push(ex); else compounds.push(ex); });
-    // Move core exercises to warmup as activation exercises
-    coreForWarmup.forEach(ex => { warmup.push({ ...ex, _reason: (ex._reason ? ex._reason + " · " : "") + "Core activation (warm-up)", _phase: "activate" }); });
-    // Replace freed slots with additional body-part exercises from day's focus
-    const _focusBps = assessment?.preferences?.daysPerWeek >= 4
-      ? ((() => { try { const wp = JSON.parse(localStorage.getItem("apex_weekly_plan")); const td = wp?.days?.[new Date().getDay()]?.focus; return td || ["chest","back","legs"]; } catch { return ["chest","back","legs"]; } })())
-      : ["chest","back","legs","shoulders"];
-    const _mainIds = new Set([...compounds,...iso,...cardio].map(e => e.id));
-    let _replaced = 0;
-    for (const bp of _focusBps) {
-      if (_replaced >= coreForWarmup.length) break;
-      const fill = exerciseDB.find(e => e.category === "main" && e.bodyPart === bp && !_mainIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && locationFilter(e, location) && e.safetyTier !== "red");
-      if (fill) { compounds.push({ ...fill, _reason: `Replaces core slot — ${bp} focus` }); _mainIds.add(fill.id); _replaced++; }
+    const compounds = [], iso = [], coreExercises = [], cardio = [];
+    main.forEach(ex => { if (_isCardio(ex)) cardio.push(ex); else if (_isCore(ex)) coreExercises.push(ex); else if (_isIso(ex)) iso.push(ex); else compounds.push(ex); });
+    // Read core position preference
+    const _corePos = (()=>{ try { return JSON.parse(localStorage.getItem("apex_prefs"))?.corePosition || "last"; } catch { return "last"; } })();
+    if (_corePos === "first") {
+      main = [...coreExercises, ...compounds, ...iso, ...cardio];
+    } else if (_corePos === "auto") {
+      main = [...compounds, ...iso, ...coreExercises, ...cardio]; // engine default: compounds → iso → core → cardio
+    } else {
+      // "last" (default) — core after all main lifts, before cardio
+      main = [...compounds, ...iso, ...coreExercises, ...cardio];
     }
-    main = [...compounds, ...iso, ...cardio];
   }
 
   // ── MOVE BALANCE TO WARMUP — not a main exercise ──
@@ -3036,6 +3031,8 @@ function AppInner(){
   // ── DEFENSIVE: Profile condition check + session restore on auth ──
   useEffect(() => {
     if (!user || loading) return;
+    // One-time: set John's core position preference to "first"
+    try { if (user?.email === "johncarrus@gmail.com") { const _p = getPrefs(); if (!_p.corePosition) setPref("corePosition", "first"); } } catch {}
     // Check profile data: conditions, physique category, sports, weak points
     try {
       const _inj = getInjuries();
