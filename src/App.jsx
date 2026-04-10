@@ -916,6 +916,10 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
     }
   }
 
+  // Merge core activation into lengthen array so they appear in the actual workout flow
+  // (blocks.coreActivation was NOT included in workout.all — users never did them)
+  lengthen.push(...coreActivation);
+
   return { inhibit, lengthen, coreActivation, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
 }
 
@@ -1683,7 +1687,11 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Attach sport focus metadata to the workout for UI display (Rule 7)
   const sportMeta = _sportFocus ? { sport: _sportFocus.sport, label: _sportFocus.label, rank: _sportFocus.rank } : null;
 
-  const _plan = { warmup: eWarmup, main: eMain, cooldown: eCooldown, all: [...eWarmup, ...eMain, ...eCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  // Include block exercises (inhibit, lengthen/core activation, cooldown stretches, cardio) in workout.all
+  // so they appear in the exercise-by-exercise flow, not just the plan overview
+  const _blockExercises = [...(blocks.inhibit || []), ...(blocks.lengthen || []), ...(blocks.coreActivation || [])];
+  const _blockCooldown = [...(blocks.cooldownStretches || []), ...(blocks.cardio || [])];
+  const _plan = { warmup: [..._blockExercises, ...eWarmup], main: eMain, cooldown: [...eCooldown, ..._blockCooldown], all: [..._blockExercises, ...eWarmup, ...eMain, ...eCooldown, ..._blockCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
   // Run session validation
   try { const _sv = _validateSession(_plan, phase); if (!_sv.valid) console.warn("[WORKOUT VALIDATION]", _sv.errors.join(" | ")); else console.log("[WORKOUT VALIDATION] PASS — patterns:", JSON.stringify(_sv.patternCounts), "compounds:", _sv.compounds); _plan._sessionValidation = _sv; } catch {}
   // Run plan validation (non-blocking)

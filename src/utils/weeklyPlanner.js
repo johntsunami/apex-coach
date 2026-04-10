@@ -581,6 +581,21 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
     }
   }
 
+  // ── CORE GUARANTEE: every session must have at least 1 core exercise ──
+  const _hasCore = selected.some(e => e.bodyPart === "core");
+  if (!_hasCore) {
+    // Rotate through core exercises — don't always pick the same one
+    const _coreRotation = ["stab_dead_bug", "stab_mcgill_curl_up", "core_pallof_kneel", "stab_bird_dog", "stab_plank", "stab_side_plank", "core_pallof_stand"];
+    const _recentCore = new Set();
+    try { (getSessions() || []).slice(-3).forEach(s => (s.exercises_completed || []).forEach(ec => { const d = exerciseDB.find(x => x.id === ec.exercise_id); if (d?.bodyPart === "core") _recentCore.add(ec.exercise_id); })); } catch {}
+    const _coreId = _coreRotation.find(id => !_recentCore.has(id) && !usedIds.has(id) && !usedThisWeek.has(id)) || _coreRotation[0];
+    const _coreEx = exerciseDB.find(e => e.id === _coreId && (e.phaseEligibility || []).includes(phase)) || exerciseDB.find(e => e.bodyPart === "core" && (e.phaseEligibility || []).includes(phase) && !usedIds.has(e.id));
+    if (_coreEx) {
+      selected.push({ ..._coreEx, _reason: "Core guarantee — every session must include core" });
+      usedIds.add(_coreEx.id);
+    }
+  }
+
   return selected;
 }
 

@@ -340,6 +340,14 @@ function _sessionChecks(session, phase, exerciseDB) {
     msg: balInMain === 0 ? "OK" : `${balInMain} balance drill(s) in main slots`,
   });
 
+  // S11: At least 1 core exercise per session (in warmup or main)
+  const allExercises = [...warmup, ...main];
+  const hasCoreAnywhere = allExercises.some(e => e.bodyPart === "core");
+  results.push({
+    id: "S11", severity: "CRITICAL", pass: hasCoreAnywhere,
+    msg: hasCoreAnywhere ? "OK" : "Zero core exercises in session",
+  });
+
   return results;
 }
 
@@ -362,13 +370,15 @@ function _weekChecks(days, phase) {
     dayMuscles.push(dayBps);
   });
 
-  // W1: Volume within phase limits
+  // W1: Volume within phase limits (CRITICAL — auto-fixable)
   const LIMITS = { 1: [8, 12], 2: [10, 18], 3: [14, 24], 4: [10, 16], 5: [8, 15] };
   const [lo, hi] = LIMITS[phase] || [8, 24];
-  const overVol = Object.entries(vol).filter(([bp, s]) => s > hi && bp !== "other" && bp !== "core");
+  const overVol = Object.entries(vol).filter(([bp, s]) => s > hi * 1.25 && bp !== "other" && bp !== "core"); // flag at 125% of max
   results.push({
-    id: "W1", severity: "WARNING", pass: overVol.length === 0,
+    id: "W1", severity: overVol.length > 0 ? "CRITICAL" : "WARNING",
+    pass: overVol.length === 0,
     msg: overVol.length === 0 ? "OK" : `Over-volume: ${overVol.map(([bp, s]) => `${bp} ${s}/${hi}`).join(", ")}`,
+    _overVol: overVol, _maxSets: hi,
   });
 
   // W5: Minimum volume per major group (≥ 6 sets)
@@ -422,13 +432,25 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
   const isUsable = (e) => e.category === "main" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance";
 
   // S1/S10: Not enough exercises or strength exercises
+  // Respect the day's split focus — don't add push-ups on leg days
   if (fails.some(c => c.id === "S1" || c.id === "S10")) {
-    const pool = (exerciseDB || []).filter(isUsable).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
-    while (fixed.main.length < 4 && pool.length > 0) {
-      const ex = pool.shift();
-      fixed.main.push({ ...ex, _reason: "Auto-fix: minimum session size" });
-      usedIds.add(ex.id);
-      log.push(`S1: Added ${ex.name} to meet minimum`);
+    // Determine which body parts this day's focus covers
+    const _mainBps = new Set(fixed.main.map(e => e.bodyPart).filter(Boolean));
+    const _isLowerDay = _mainBps.has("legs") || _mainBps.has("glutes") || _mainBps.has("hips");
+    const _isUpperDay = _mainBps.has("chest") || _mainBps.has("back") || _mainBps.has("shoulders");
+    const _focusBps = _isLowerDay ? ["legs", "glutes", "hips", "core"] : _isUpperDay ? ["chest", "back", "shoulders", "arms", "core"] : null;
+    // 1. Try exercises matching the day's focus
+    const focusPool = _focusBps ? (exerciseDB || []).filter(e => isUsable(e) && _focusBps.includes(e.bodyPart)).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1)) : [];
+    for (const ex of focusPool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: split-appropriate filler" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (matches day focus)`); }
+    // 2. Try core exercises (always appropriate)
+    if (fixed.main.length < 4) {
+      const corePool = (exerciseDB || []).filter(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
+      for (const ex of corePool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: core filler" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (core filler)`); }
+    }
+    // 3. Last resort: any exercise
+    if (fixed.main.length < 4) {
+      const pool = (exerciseDB || []).filter(isUsable).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+      for (const ex of pool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: minimum session size" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (last resort)`); }
     }
   }
 
@@ -446,6 +468,17 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
         present.add(pattern);
         log.push(`S2: Added ${match.name} for ${pattern} pattern`);
       }
+    }
+  }
+
+  // S11: Core guarantee
+  if (fails.some(c => c.id === "S11")) {
+    const allEx = [...fixed.warmup, ...fixed.main];
+    if (!allEx.some(e => e.bodyPart === "core")) {
+      const coreRotation = ["stab_dead_bug", "stab_mcgill_curl_up", "core_pallof_kneel", "stab_bird_dog", "stab_plank", "stab_side_plank"];
+      const coreEx = (exerciseDB || []).find(e => coreRotation.includes(e.id) && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase))
+        || (exerciseDB || []).find(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
+      if (coreEx) { fixed.warmup.push({ ...coreEx, _reason: "Auto-fix: core guarantee", _phase: "activate" }); usedIds.add(coreEx.id); log.push(`S11: Added ${coreEx.name} as core guarantee`); }
     }
   }
 
