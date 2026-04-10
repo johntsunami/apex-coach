@@ -3034,6 +3034,8 @@ function AppInner(){
     if (!user || loading) return;
     // One-time: set John's core position preference to "first"
     try { if (user?.email === "johncarrus@gmail.com") { const _p = getPrefs(); if (!_p.corePosition) setPref("corePosition", "first"); } } catch {}
+    // Log profile data for debugging (especially condition verification)
+    console.log("[PROFILE LOAD] user:", user?.email, "conditions:", JSON.stringify(profile?.assessment_data?.conditions?.map(c => ({ id: c.conditionId, sev: c.severity })) || []));
     // Check profile data: conditions, physique category, sports, weak points
     try {
       const _inj = getInjuries();

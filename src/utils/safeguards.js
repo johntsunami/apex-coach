@@ -33,7 +33,7 @@ function normalizeJointName(area) {
 }
 
 const BODY_JOINT_MAP = {
-  chest: ["shoulder", "wrist"], shoulders: ["shoulder"], back: ["lower_back", "wrist"],
+  chest: ["shoulder", "wrist"], shoulders: ["shoulder", "wrist"], back: ["lower_back", "wrist"],
   legs: ["knee", "hip"], glutes: ["hip"], hips: ["hip"],
   arms: ["elbow", "wrist"], calves: ["ankle"], neck: ["neck"],
   full_body: ["lower_back", "knee", "wrist"],

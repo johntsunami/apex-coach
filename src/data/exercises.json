@@ -2719,7 +2719,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 3,
-        "shoulder": 5
+        "shoulder": 5,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -2899,7 +2900,8 @@
       "severity_gate": {
         "lower_back": 2,
         "knee": 3,
-        "shoulder": 5
+        "shoulder": 5,
+        "wrist": 3
       }
     },
     "safetyTier": "red",
@@ -3557,7 +3559,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -4735,7 +4738,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -5598,7 +5602,8 @@
       "severity_gate": {
         "lower_back": 2,
         "knee": 2,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 3
       }
     },
     "safetyTier": "red",
@@ -29100,7 +29105,8 @@
       "severity_gate": {
         "lower_back": 2,
         "knee": 3,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -29274,7 +29280,8 @@
       "severity_gate": {
         "lower_back": 2,
         "knee": 2,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 3
       }
     },
     "safetyTier": "red",
@@ -29440,7 +29447,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 5,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -29601,7 +29609,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 5,
-        "shoulder": 4
+        "shoulder": 4,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -39924,7 +39933,8 @@
       "severity_gate": {
         "lower_back": 1,
         "knee": 2,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 2
       }
     },
     "safetyTier": "red",
@@ -41040,7 +41050,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 3,
-        "shoulder": 5
+        "shoulder": 5,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -42015,7 +42026,8 @@
       "severity_gate": {
         "lower_back": 4,
         "knee": 5,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -54200,7 +54212,8 @@
     "safetyTier": "green",
     "contraindications": {
       "severity_gate": {
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -54321,7 +54334,8 @@
     "safetyTier": "green",
     "contraindications": {
       "severity_gate": {
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -54434,7 +54448,8 @@
     "contraindications": {
       "severity_gate": {
         "shoulder": 1,
-        "lower_back": 3
+        "lower_back": 3,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -54556,7 +54571,8 @@
     "safetyTier": "green",
     "contraindications": {
       "severity_gate": {
-        "lower_back": 3
+        "lower_back": 3,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -54675,7 +54691,8 @@
     "safetyTier": "green",
     "contraindications": {
       "severity_gate": {
-        "lower_back": 3
+        "lower_back": 3,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -55008,7 +55025,8 @@
     "safetyTier": "green",
     "contraindications": {
       "severity_gate": {
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 2
       },
       "conditions": [],
       "injuries": []
@@ -62845,7 +62863,8 @@
       "severity_gate": {
         "lower_back": 4,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -63000,7 +63019,8 @@
       "severity_gate": {
         "lower_back": 4,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -63158,7 +63178,8 @@
       "severity_gate": {
         "lower_back": 4,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -63462,7 +63483,8 @@
       "severity_gate": {
         "lower_back": 4,
         "knee": 5,
-        "shoulder": 2
+        "shoulder": 2,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -63614,7 +63636,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 5,
-        "shoulder": 3
+        "shoulder": 3,
+        "wrist": 3
       }
     },
     "safetyTier": "yellow",
@@ -63771,7 +63794,8 @@
       "severity_gate": {
         "lower_back": 3,
         "knee": 4,
-        "shoulder": 4
+        "shoulder": 4,
+        "wrist": 3
       }
     },
     "safetyTier": "green",
