@@ -1906,15 +1906,37 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   {/* Sport badges — HIDDEN on home, visible in profile */}
   {false&&(()=>{try{const sp=getSportPrefs();if(!sp||sp.length===0)return null;const sportEmojis={"Basketball":"🏀","Soccer":"⚽","Baseball/Softball":"⚾","Tennis":"🎾","Golf":"⛳","Swimming":"🏊","Running/Track":"🏃","Cycling":"🚴","Hiking":"🥾","Rock Climbing":"🧗","CrossFit":"🏋️","Boxing/Kickboxing":"🥊","MMA/BJJ":"🥋","Wrestling":"🤼","Volleyball":"🏐","Football":"🏈","Yoga":"🧘","Pilates":"🧘","Dance":"💃","Rowing":"🚣","Skiing/Snowboarding":"⛷️","Surfing":"🏄","Skateboarding":"🛹","Pickleball":"🏓","Martial Arts":"🥋","Muay Thai":"🥊"};const rankColors=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{sp.slice(0,3).map((s,i)=>(<div key={s.sport} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${rankColors[i]}25`,fontSize:11}}><span>{sportEmojis[s.sport]||"🏅"}</span><span style={{color:rankColors[i],fontWeight:700}}>#{i+1}</span><span style={{color:C.textMuted}}>{s.sport}</span></div>))}</div>);}catch{return null;}})()}
   {/* DevBugBadge hidden from home — available in Dev tab */}
-  {/* Daily task hub — shows all daily tasks with PT protocols per condition */}
-  {(()=>{try{const _tasks=[];const _ap=getAssessmentProgress();if(_ap.due.length>0)_tasks.push({id:"assess",label:`${_ap.due[0].name} (assessment due)`,icon:"📊",done:false,action:onBaseline});
-  // PT protocols — one task per condition/protocol
+  {/* Today's Plan — compact 3-row layout */}
+  {(()=>{try{
+  // PT: aggregate all protocols into one row
   const _ptProtos=getLocalProtocols();const _ptSessions=getLocalPTSessions();const _today=new Date().toDateString();
-  _ptProtos.forEach(proto=>{const todayDone=_ptSessions.filter(s=>new Date(s.completed_at).toDateString()===_today&&(s.condition_key===proto.condition_key||s.protocol_id===proto.condition_key)).length;const freq=proto.frequency_per_day||1;const allDone=todayDone>=freq;_tasks.push({id:`pt_${proto.condition_key}`,label:`${proto.protocol_name} (${todayDone}/${freq} today)`,icon:allDone?"✅":"🩺",done:allDone,action:()=>onPTSession?.(proto),conditionKey:proto.condition_key});});
-  const _romDoneToday=(()=>{try{const c=JSON.parse(localStorage.getItem("apex_rom_completions")||"[]");return c.some(r=>r.date===new Date().toISOString().split("T")[0]);}catch{return false;}})();
-  _tasks.push({id:"rom",label:`Daily ROM routine${_romDoneToday?" — done":""}`,icon:_romDoneToday?"✅":"🧘",done:_romDoneToday,action:_romDoneToday?undefined:onROM});const _todayDone=isTodayComplete();_tasks.push({id:"workout",label:`Today's workout${_todayDone?" — done":""}`,icon:_todayDone?"✅":"💪",done:!!_todayDone,action:onStart});const doneCount=_tasks.filter(t=>t.done).length;if(_tasks.length<=1)return null;
-  return<Card style={{padding:14,marginBottom:4,borderColor:C.teal+"20"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:14}}>����</span><span style={{fontSize:13,fontWeight:600,color:C.text}}>Today's Tasks</span></div><span style={{fontSize:11,color:doneCount===_tasks.length?C.success:C.textMuted,fontWeight:600}}>{doneCount}/{_tasks.length}</span></div>
-  {_tasks.map(t=><div key={t.id} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:14,width:20,textAlign:"center"}}>{t.icon}</span><div style={{flex:1,minWidth:0}}><div style={{fontSize:12,color:t.done?C.textDim:C.text,fontWeight:t.done?400:500,textDecoration:t.done?"line-through":"none"}}>{t.label}</div></div>{!t.done&&t.action&&<button onClick={t.action} style={{padding:"4px 10px",borderRadius:6,background:C.tealBg,border:`1px solid ${C.teal}30`,color:C.teal,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Start</button>}</div>)}
+  let _ptTotal=0,_ptDone=0;_ptProtos.forEach(p=>{const freq=p.frequency_per_day||1;_ptTotal+=freq;_ptDone+=Math.min(freq,_ptSessions.filter(s=>new Date(s.completed_at).toDateString()===_today&&(s.condition_key===p.condition_key||s.protocol_id===p.condition_key)).length);});
+  const _ptAllDone=_ptTotal>0&&_ptDone>=_ptTotal;
+  // ROM
+  const _romDone=(()=>{try{return JSON.parse(localStorage.getItem("apex_rom_completions")||"[]").some(r=>r.date===new Date().toISOString().split("T")[0]);}catch{return false;}})();
+  // Workout
+  const _wkDone=isTodayComplete();
+  const _todayPlan=getWeeklyPlan()?getTodayFromPlan(getWeeklyPlan()):null;
+  const _wkLabel=_todayPlan?.label||"Workout";
+  // Count
+  const _items=[{done:_ptAllDone},{done:_romDone},{done:!!_wkDone}];
+  const _doneCount=_items.filter(i=>i.done).length;
+  const _allDone=_doneCount===_items.length;
+  // Row renderer
+  const PlanRow=({icon,label,done,action,primary})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:`1px solid ${C.border}22`,opacity:done?0.5:1}}>
+    <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:16}}>{icon}</span><span style={{color:done?C.textDim:C.text,fontSize:14,fontWeight:primary?600:400,textDecoration:done?"line-through":"none"}}>{label}</span></div>
+    {done?<span style={{color:C.success,fontSize:12}}>done</span>:action?<button onClick={action} style={{padding:"6px 16px",borderRadius:8,border:primary?"none":`1px solid ${C.teal}30`,background:primary?`linear-gradient(135deg,${C.teal},${C.tealDark})`:"transparent",color:primary?"#000":C.teal,fontSize:13,fontWeight:primary?700:500,cursor:"pointer",fontFamily:"inherit"}}>{primary?"Go \u2192":"Go"}</button>:null}
+  </div>;
+  return<Card style={{padding:14,marginBottom:4,borderColor:C.teal+"20"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+      <span style={{fontSize:14,fontWeight:600,color:C.text}}>Today's Plan</span>
+      <span style={{fontSize:12,color:_allDone?C.success:C.textMuted,fontWeight:600}}>{_doneCount}/{_items.length}</span>
+    </div>
+    {_allDone?<div style={{textAlign:"center",padding:"12px 0"}}><div style={{fontSize:20,marginBottom:4}}>✅</div><div style={{fontSize:14,fontWeight:600,color:C.success}}>All done for today</div><div style={{fontSize:11,color:C.textDim,fontStyle:"italic",marginTop:2}}>Consistency is your superpower</div></div>:<>
+    {_ptTotal>0&&<PlanRow icon={_ptAllDone?"✅":"🩺"} label={`PT & Rehab \u00b7 ${_ptDone}/${_ptTotal}`} done={_ptAllDone} action={()=>onPTSession?.(_ptProtos[0])}/>}
+    <PlanRow icon={_romDone?"✅":"🧘"} label="ROM Routine" done={_romDone} action={_romDone?undefined:onROM}/>
+    <PlanRow icon={_wkDone?"✅":"💪"} label={`Workout \u00b7 ${_wkLabel}`} done={!!_wkDone} action={onStart} primary/>
+    </>}
   </Card>;}catch{return null;}})()}
   {/* Active Performance Programs */}
   <ActiveProgramCard onLogSet={() => {}} />
