@@ -880,6 +880,26 @@ const EXERCISE_SVGS = {
   climb_iso_hangboard_loading: svg(300,200,`<rect x="80" y="22" width="140" height="10" rx="3" fill="${L}"/><rect x="100" y="18" width="100" height="8" rx="2" fill="${I}" opacity="0.4"/><text x="150" y="15" fill="${I}" font-size="7" text-anchor="middle">JUG HOLD</text>${HEAD(150,55)}<line x1="150" y1="67" x2="150" y2="115" stroke="${T}" stroke-width="2.5"/><line x1="150" y1="115" x2="140" y2="150" stroke="${T}" stroke-width="2"/><line x1="140" y1="150" x2="140" y2="175" stroke="${T}" stroke-width="2"/><line x1="150" y1="115" x2="160" y2="150" stroke="${T}" stroke-width="2"/><line x1="160" y1="150" x2="160" y2="175" stroke="${T}" stroke-width="2"/><line x1="148" y1="75" x2="125" y2="30" stroke="${T}" stroke-width="2"/><line x1="152" y1="75" x2="175" y2="30" stroke="${T}" stroke-width="2"/><text x="60" y="80" fill="${G}" font-size="7">30-70%</text><text x="60" y="92" fill="${G}" font-size="7">LOAD</text><text x="150" y="185" fill="${W}" font-size="7" text-anchor="middle">OPEN HAND ONLY — FEET ASSIST — Level 4</text>`,"ISOMETRIC HANGBOARD — LEVEL 4"),
   climb_eccentric_wrist_curl: svg(300,200,`<rect x="60" y="100" width="100" height="6" rx="2" fill="${L}" opacity="0.5"/>${HEAD(110,50)}<line x1="110" y1="62" x2="110" y2="100" stroke="${T}" stroke-width="2.5"/><line x1="112" y1="70" x2="160" y2="95" stroke="${T}" stroke-width="2.5"/><line x1="160" y1="95" x2="175" y2="115" stroke="${T}" stroke-width="2" stroke-dasharray="4"/><rect x="170" y="112" width="8" height="12" rx="2" fill="${W}"/><text x="195" y="120" fill="${R}" font-size="7">SLOW 4-5s</text><path d="M175 100 L175 115" stroke="${R}" stroke-width="1.5"/><text x="150" y="155" fill="${G}" font-size="8" text-anchor="middle">ECCENTRIC = HEALING</text><text x="150" y="170" fill="${I}" font-size="7" text-anchor="middle">Palm UP — lower slowly</text>`,"ECCENTRIC WRIST CURL"),
   climb_forearm_flexor_massage: svg(300,200,`<line x1="60" y1="110" x2="230" y2="110" stroke="${T}" stroke-width="6"/><circle cx="140" cy="105" r="8" fill="${W}"/><path d="M110 100 L170 100" stroke="${G}" stroke-width="1" stroke-dasharray="3"/><text x="150" y="85" fill="${G}" font-size="8" text-anchor="middle">SLOW ROLL — FLEXOR SIDE</text><text x="150" y="140" fill="${I}" font-size="7" text-anchor="middle">HOLD ON TENDER SPOTS 10s</text><text x="150" y="165" fill="${W}" font-size="7" text-anchor="middle">2 min each arm — reduces pump</text>`,"FOREARM FLEXOR MASSAGE"),
+  mob_thoracic_rotation: svg(300,200,`${FLOOR(185)}
+${HEAD(90,105)}
+<line x1="90" y1="114" x2="105" y2="145" stroke="${T}" stroke-width="2.5"/>
+<line x1="105" y1="145" x2="100" y2="170" stroke="${T}" stroke-width="2.5"/>
+<line x1="100" y1="170" x2="85" y2="185" stroke="${T}" stroke-width="2.5"/>
+<line x1="100" y1="170" x2="115" y2="185" stroke="${T}" stroke-width="2.5"/>
+<line x1="85" y1="185" x2="75" y2="170" stroke="${T}" stroke-width="2"/>
+<line x1="115" y1="185" x2="105" y2="170" stroke="${T}" stroke-width="2"/>
+<line x1="95" y1="130" x2="70" y2="150" stroke="${T}" stroke-width="2.5"/>
+<line x1="95" y1="130" x2="180" y2="80" stroke="${T}" stroke-width="2.5" stroke-dasharray="4"/>
+<line x1="95" y1="130" x2="130" y2="100" stroke="${T}" stroke-width="2.5"/>
+<circle cx="180" cy="80" r="4" fill="${G}" opacity="0.5"/>
+<path d="M130 100 Q155 75 180 80" stroke="${G}" stroke-width="1.5" fill="none" stroke-dasharray="3"/>
+<text x="195" y="75" fill="${G}" font-size="8" text-anchor="start">ROTATE OPEN</text>
+<text x="200" y="88" fill="${G}" font-size="7" text-anchor="start">Follow hand</text>
+<text x="200" y="99" fill="${G}" font-size="7" text-anchor="start">with eyes</text>
+<text x="70" y="130" fill="${I}" font-size="7" text-anchor="end">KNEES</text>
+<text x="70" y="140" fill="${I}" font-size="7" text-anchor="end">STACKED</text>
+<text x="150" y="160" fill="${W}" font-size="7" text-anchor="middle">Hips stay still — rotate ONLY through mid-back</text>
+<text x="150" y="175" fill="${W}" font-size="7" text-anchor="middle">Exhale as you open · 5-10 reps each side</text>`,"THORACIC ROTATION (OPEN BOOK)"),
   stab_side_plank: svg(300,200,`${FLOOR(175)}${HEAD(80,72)}
 <line x1="80" y1="81" x2="90" y2="120" stroke="${T}" stroke-width="2.5"/>
 <line x1="90" y1="120" x2="100" y2="145" stroke="${T}" stroke-width="2.5"/>
