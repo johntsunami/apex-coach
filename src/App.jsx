@@ -1074,7 +1074,11 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       // Sharp pain filter: block exercises targeting sharp-pain body parts
       (category !== "main" || !sharpPainParts.has(e.bodyPart)) &&
       // Two-a-day: exclude muscle groups trained in first session
-      (!excludeMuscles || !excludeMuscles.has(e.bodyPart))
+      (!excludeMuscles || !excludeMuscles.has(e.bodyPart)) &&
+      // Location filter — only exercises usable at this location
+      locationFilter(e, location) &&
+      // Cardio belongs in its own section, not warmup/cooldown
+      (category === "main" || (e.type !== "cardio" && e.category !== "cardio"))
     );
     // Senior mode: sort senior_safe tagged exercises to front
     if (_isSeniorPick && category === "main") {
@@ -1170,7 +1174,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         return true;
       };
       const _addEx = (ex) => {
-        let picked = locationFilter(ex, location) ? ex : trySubstitute(ex, location, phase);
+        let picked = ex;  // pool is already location-filtered
         if (!picked || usedIds.has(picked.id)) return false;
         // Volume check
         if (category === "main") { const vc = wouldExceedVolume(picked, runningVol, phase); if (vc.exceeded) return false; }
@@ -1710,7 +1714,13 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // coreActivation already inside blocks.lengthen (pushed at line 931) — don't add again
   const _blockExercises = [...(blocks.inhibit || []), ...(blocks.lengthen || [])];
   const _blockCooldown = [...(blocks.cooldownStretches || []), ...(blocks.cardio || [])];
-  const _plan = { warmup: [..._blockExercises, ...eWarmup], main: eMain, cooldown: [...eCooldown, ..._blockCooldown], all: [..._blockExercises, ...eWarmup, ...eMain, ...eCooldown, ..._blockCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  // Final dedup + caps on merged arrays before building _plan
+  const _fSeen = new Set();
+  const _fDedup = (arr) => arr.filter(e => { if (_fSeen.has(e.id)) return false; _fSeen.add(e.id); return true; });
+  eMain = _fDedup(eMain); // main gets priority
+  let _finalWarmup = _fDedup([..._blockExercises, ...eWarmup]).slice(0, 5);
+  let _finalCooldown = _fDedup([...eCooldown, ..._blockCooldown]).slice(0, 5);
+  const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
   // Run session validation
   try { const _sv = _validateSession(_plan, phase); if (!_sv.valid) console.warn("[WORKOUT VALIDATION]", _sv.errors.join(" | ")); else console.log("[WORKOUT VALIDATION] PASS — patterns:", JSON.stringify(_sv.patternCounts), "compounds:", _sv.compounds); _plan._sessionValidation = _sv; } catch {}
   // Run plan validation (non-blocking)
@@ -2200,9 +2210,9 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
       </div>
       <div style={{textAlign:"center",marginTop:8}}><span style={{fontSize:11,color:C.textMuted}}>Phase {CURRENT_PHASE} · Week 1 · Stabilization Endurance</span></div>
     </Card>
-    {/* Factors considered */}
+    {/* Factors considered — collapsed by default */}
+    <CollapseSection title="Why this workout" icon="ℹ️" summary="Factors shaping today">
     <Card>
-      <div style={{fontSize:11,fontWeight:700,color:C.purple,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>FACTORS SHAPING TODAY</div>
       {[
         {icon:"😴",label:"Sleep",value:sleepLabel,impact:sleepImpact,color:checkIn?.sleep==="great"||checkIn?.sleep==="good"?C.success:C.warning},
         {icon:"💪",label:"Soreness",value:soreLabel,impact:soreImpact,color:soreAreas.length===0?C.success:soreAreas.length<=2?C.warning:C.danger},
@@ -2224,6 +2234,7 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
         </div>
       </div>}
     </Card>
+    </CollapseSection>
     {/* Exercise list with WHY */}
     {(()=>{const overloads=getWorkoutOverloads(workout,CURRENT_PHASE);const hasOverloads=Object.keys(overloads).length>0;return(<Card>
       <div style={{fontSize:11,fontWeight:700,color:C.teal,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>YOUR EXERCISES ({workout.all.length} total · ~{Math.round(workout.all.length*3.5)} min)</div>
@@ -2258,16 +2269,15 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
         </div>
         <Badge color={safetyReport.failed===0?C.success:C.warning}>{safetyReport.passed}/{safetyReport.totalChecks}</Badge>
       </div>
-      {safetyReport.allCorrections.length>0&&<div style={{marginTop:8,borderTop:`1px solid ${C.border}`,paddingTop:8}}>
-        <div style={{fontSize:9,fontWeight:700,color:C.textDim,marginBottom:4}}>AUTO-CORRECTIONS</div>
+      {safetyReport.allCorrections.length>0&&<CollapseSection title={`${safetyReport.allCorrections.length} adjustments made`} icon="ℹ️" summary="">
         {safetyReport.allCorrections.slice(0,5).map((c,i)=><div key={i} style={{fontSize:9,color:C.textMuted,padding:"2px 0"}}>
           {c.action==="substitute"?`🔄 ${c.removedName} → ${c.replacementName}`:c.action==="remove"?`❌ Removed ${c.removedName}`:c.action==="add_exercise"?`➕ Added ${c.exerciseName}`:c.action==="modify_intensity"?`⚙️ ${c.exerciseName}: ${c.modification}`:c.reason} — {c.reason}
         </div>)}
         {safetyReport.allCorrections.length>5&&<div style={{fontSize:8,color:C.textDim}}>+{safetyReport.allCorrections.length-5} more</div>}
-      </div>}
+      </CollapseSection>}
     </Card>}
-    {/* Excluded exercises */}
-    {excluded.length>0&&<Card style={{borderColor:C.danger+"20"}}>
+    {/* Excluded exercises — removed from workout screen (dev-only info) */}
+    {false&&excluded.length>0&&<Card style={{borderColor:C.danger+"20"}}>
       <div style={{fontSize:11,fontWeight:700,color:C.danger,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>EXCLUDED ({excluded.length}+ exercises)</div>
       {excluded.map((ex,i)=>(<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}>
         <span style={{fontSize:11,color:C.textDim}}>{ex.name}</span>
