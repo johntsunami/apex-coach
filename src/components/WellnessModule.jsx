@@ -662,20 +662,27 @@ function TimingSheet({ phases, onUpdate, onClose }) {
 // ═══════════════════════════════════════════════════════════════
 
 function TechniquePlayer({ technique, onClose, onComplete, customPhases, customDuration }) {
+  // ALL hooks declared unconditionally at component top (Rule 10B)
+  const [intro, setIntro] = useState(true); // show intro/description before starting
   const [phase, setPhase] = useState(0);
   const [timer, setTimer] = useState(0);
   const [totalElapsed, setTotalElapsed] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true); // start paused until intro is dismissed
   const [round, setRound] = useState(1);
   const [done, setDone] = useState(false);
   const [stressAfter, setStressAfter] = useState(null);
   const [showTimingSheet, setShowTimingSheet] = useState(false);
   const [activePhases, setActivePhases] = useState(customPhases || technique.phases || []);
+  // Step mode hooks — declared here, not after early return
+  const [stepIdx, setStepIdx] = useState(0);
+  const [stepTimer, setStepTimer] = useState(0);
+  const [stepTimerActive, setStepTimerActive] = useState(false);
+  const intervalRef = useRef(null);
+  const stepTimerRef = useRef(null);
   const totalDuration = (customDuration || technique.defaultDuration || 3) * 60;
   const phases = activePhases;
   const steps = technique.steps || [];
   const maxRounds = technique.rounds || 999;
-  const intervalRef = useRef(null);
   const reducedMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
   useEffect(() => {
@@ -733,15 +740,31 @@ function TechniquePlayer({ technique, onClose, onComplete, customPhases, customD
     );
   }
 
+  // ── INTRO SCREEN: show description + how-to before starting ──
+  if (intro) {
+    const introSteps = technique.mode === "steps" ? steps.map(s => typeof s === "string" ? s : s.instruction) : technique.phases?.length > 0 ? [`Follow the breathing pattern: ${technique.phases.map(p => `${p.label} ${p.seconds}s`).join(" → ")}`, "Focus on the rhythm. If your mind wanders, return to the count.", `Duration: ${technique.defaultDuration || 3} minutes`] : ["Follow the prompts on screen.", `Duration: ${technique.defaultDuration || 3} minutes`];
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>← Back</button>
+        <div style={{ textAlign: "center", marginBottom: 8 }}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>{technique.icon}</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: C.text }}>{technique.name}</div>
+          <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4, maxWidth: 300, margin: "4px auto 0" }}>{technique.desc}</div>
+        </div>
+        <Card style={{ padding: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: C.teal, letterSpacing: 1, marginBottom: 8 }}>HOW IT WORKS</div>
+          {introSteps.slice(0, 6).map((s, i) => <div key={i} style={{ display: "flex", gap: 8, padding: "5px 0" }}><span style={{ color: C.teal, fontWeight: 700, minWidth: 18 }}>{i + 1}.</span><span style={{ fontSize: 13, color: C.text, lineHeight: 1.5 }}>{s}</span></div>)}
+        </Card>
+        {technique.bestFor?.length > 0 && <div style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "center" }}>{technique.bestFor.map(b => <span key={b} style={{ fontSize: 10, padding: "3px 8px", borderRadius: 6, background: C.tealBg, color: C.teal, border: `1px solid ${C.teal}30` }}>{b}</span>)}</div>}
+        <button onClick={() => { setIntro(false); setPaused(false); }} style={{ width: "100%", padding: 16, borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Begin {technique.name} →</button>
+      </div>
+    );
+  }
+
   const isStepMode = technique.mode === "steps" && steps.length > 0;
   const currentPhase = !isStepMode && phases.length > 0 ? phases[phase % phases.length] : null;
 
-  // ── STEP MODE: manual/timed step progression ──
-  const [stepIdx, setStepIdx] = useState(0);
-  const [stepTimer, setStepTimer] = useState(0);
-  const [stepTimerActive, setStepTimerActive] = useState(false);
-  const stepTimerRef = useRef(null);
-
+  // Step mode hooks moved to component top (Rule 10B — no hooks after early return)
   const currentStepObj = isStepMode ? steps[Math.min(stepIdx, steps.length - 1)] : null;
   const isLastStep = isStepMode && stepIdx >= steps.length - 1;
   const isTimed = currentStepObj?.stepType === "timed" && currentStepObj?.durationSeconds > 0;
@@ -821,6 +844,8 @@ function TechniquePlayer({ technique, onClose, onComplete, customPhases, customD
       {currentPhase && <ConcentricBreathAnimation phaseLabel={currentPhase.label} phaseSeconds={currentPhase.seconds} elapsedInPhase={timer} reducedMotion={reducedMotion} />}
       {/* Round counter */}
       {phases.length > 0 && <div style={{ textAlign: "center", fontSize: 12, color: C.textDim }}>Round {round}{maxRounds < 999 ? ` of ${maxRounds}` : ""} · {Math.round(totalElapsed)}s elapsed</div>}
+      {/* Guidance text — rotates through description during timer */}
+      {technique.desc && <div style={{ textAlign: "center", fontSize: 12, color: C.textMuted, fontStyle: "italic", padding: "0 16px", maxWidth: 280, margin: "0 auto" }}>{technique.desc}</div>}
       {/* Controls */}
       <div style={{ display: "flex", gap: 8 }}>
         <button onClick={() => setPaused(p => !p)} style={{ flex: 1, padding: "10px", borderRadius: 10, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{paused ? "Resume" : "Pause"}</button>
