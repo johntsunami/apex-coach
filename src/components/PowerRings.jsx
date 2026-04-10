@@ -74,7 +74,7 @@ function drawRings(ctx, rings, palette, ascensionCount) {
 // POWER RINGS COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
-export default function PowerRingsCard({ onStartWorkout }) {
+export default function PowerRingsCard({ onStartWorkout, compact }) {
   const canvasRef = useRef(null);
   const [rings, setRings] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -99,15 +99,46 @@ export default function PowerRingsCard({ onStartWorkout }) {
   const hasSession = !!rings.lastSessionDate;
   const warningColor = warning?.severity === "full_reset" ? C.danger : warning?.severity === "significant" ? C.danger : C.warning;
 
+  const SZ = compact ? 120 : CANVAS_SIZE;
+
+  // ── COMPACT MODE ──
+  if (compact) {
+    return (
+      <div style={{ marginBottom: 6 }}>
+        {warning && <div style={{ fontSize: 11, color: warningColor, marginBottom: 4, padding: "4px 8px", background: warningColor + "08", borderRadius: 6 }}>⚠️ {warning.text}</div>}
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: "10px 14px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ position: "relative", width: SZ, height: SZ, flexShrink: 0 }}>
+              <canvas ref={canvasRef} width={CANVAS_SIZE} height={CANVAS_SIZE} style={{ width: SZ, height: SZ }} />
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif" }}>{powerLevel}</div>
+                <div style={{ fontSize: 7, color: C.textDim, letterSpacing: 1 }}>POWER</div>
+              </div>
+            </div>
+            <div style={{ flex: 1 }}>
+              {RING_LABELS.map(r => (
+                <div key={r.key} style={{ display: "flex", alignItems: "center", gap: 6, padding: "2px 0" }}>
+                  <span style={{ width: 6, height: 6, borderRadius: 3, background: palette[r.key], flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, color: C.textDim, flex: 1 }}>{r.label}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: palette[r.key] }}>{Math.round((rings[r.key] || 0) * 100)}%</span>
+                </div>
+              ))}
+              {(rings.ascensionCount || 0) > 0 && <div style={{ fontSize: 9, color: "#FBBF24", marginTop: 2 }}>{"★".repeat(Math.min(rings.ascensionCount, 5))} × {rings.ascensionCount}</div>}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── FULL MODE ──
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 8 }}>
-      {/* Detraining warning */}
       {warning && <div style={{ background: C.bgCard, border: `1px solid ${warningColor}30`, borderLeft: `3px solid ${warningColor}`, borderRadius: 14, padding: "12px 14px" }}>
         <div style={{ fontSize: 13, color: warningColor, fontWeight: 600, marginBottom: 4 }}>⚠️ {warning.text}</div>
         {onStartWorkout && <button onClick={onStartWorkout} style={{ marginTop: 6, padding: "8px 16px", borderRadius: 10, background: C.teal + "15", border: `1px solid ${C.teal}40`, color: C.teal, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Start comeback session</button>}
       </div>}
 
-      {/* Power Rings Card */}
       <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 14px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: C.textDim, letterSpacing: 2 }}>POWER RINGS</div>
@@ -116,10 +147,8 @@ export default function PowerRingsCard({ onStartWorkout }) {
 
         {showInfo && <div style={{ fontSize: 11, color: C.textMuted, lineHeight: 1.5, marginBottom: 10, padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 8 }}>Your power level tracks strength, mobility, endurance, and recovery. Complete workouts to fill each ring. Reach level 100 to ascend.</div>}
 
-        {/* Ascension stars */}
         {(rings.ascensionCount || 0) > 0 && <div style={{ textAlign: "center", marginBottom: 4, fontSize: 12, color: "#FBBF24" }}>{"★".repeat(Math.min(rings.ascensionCount, 10))} × {rings.ascensionCount}</div>}
 
-        {/* Canvas + center number */}
         <div style={{ position: "relative", width: CANVAS_SIZE, height: CANVAS_SIZE, margin: "0 auto" }}>
           <canvas ref={canvasRef} width={CANVAS_SIZE} height={CANVAS_SIZE} style={{ width: CANVAS_SIZE, height: CANVAS_SIZE }} />
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
@@ -128,7 +157,6 @@ export default function PowerRingsCard({ onStartWorkout }) {
           </div>
         </div>
 
-        {/* Legend */}
         <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 8 }}>
           {RING_LABELS.map(r => (
             <div key={r.key} style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -138,7 +166,6 @@ export default function PowerRingsCard({ onStartWorkout }) {
           ))}
         </div>
 
-        {/* Ring values */}
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 6 }}>
           {RING_LABELS.map(r => (
             <div key={r.key} style={{ textAlign: "center" }}>
