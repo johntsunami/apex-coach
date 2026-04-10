@@ -13,12 +13,53 @@ const KEYS = {
   POWER_RECORDS: "apex_power_records",
 };
 
-// ── Low-level helpers ──────────────────────────────────────────
+// ── User-scoped key helper ────────────────────────────────────
+// All localStorage keys are scoped by user ID to prevent data leaks
+// between accounts on the same device.
+function _uid() {
+  try { return localStorage.getItem("apex_current_uid") || ""; } catch { return ""; }
+}
+function _scopedKey(key) {
+  const uid = _uid();
+  if (!uid) return key; // fallback: no user logged in yet
+  return `${key}_${uid}`;
+}
+// Scoped read for use by any file — reads scoped key, falls back to unscoped + migrates
+function scopedGet(key) {
+  try {
+    const sk = _scopedKey(key);
+    const scoped = localStorage.getItem(sk);
+    if (scoped) return JSON.parse(scoped);
+    const unscoped = localStorage.getItem(key);
+    if (unscoped && _uid()) {
+      localStorage.setItem(sk, unscoped);
+      localStorage.removeItem(key);
+      return JSON.parse(unscoped);
+    }
+    return unscoped ? JSON.parse(unscoped) : null;
+  } catch { return null; }
+}
+// Scoped write for use by any file
+function scopedSet(key, value) {
+  try { localStorage.setItem(_scopedKey(key), JSON.stringify(value)); } catch {}
+}
+
+// ── Low-level helpers (user-scoped) ───────────────────────────
 
 function get(key) {
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : null;
+    // Try scoped key first, fall back to unscoped for migration
+    const scoped = localStorage.getItem(_scopedKey(key));
+    if (scoped) return JSON.parse(scoped);
+    // Migration: if unscoped key exists and user is logged in, migrate it
+    const unscoped = localStorage.getItem(key);
+    if (unscoped && _uid()) {
+      localStorage.setItem(_scopedKey(key), unscoped);
+      localStorage.removeItem(key);
+      console.log("[STORAGE] Migrated unscoped key:", key, "→", _scopedKey(key));
+      return JSON.parse(unscoped);
+    }
+    return unscoped ? JSON.parse(unscoped) : null;
   } catch {
     return null;
   }
@@ -26,7 +67,7 @@ function get(key) {
 
 function set(key, value) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(_scopedKey(key), JSON.stringify(value));
   } catch (e) {
     console.warn("APEX storage write failed:", e);
   }
@@ -34,9 +75,10 @@ function set(key, value) {
 
 function clear(key) {
   if (key) {
-    localStorage.removeItem(key);
+    localStorage.removeItem(_scopedKey(key));
+    localStorage.removeItem(key); // also clean unscoped if exists
   } else {
-    Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
+    Object.values(KEYS).forEach((k) => { localStorage.removeItem(_scopedKey(k)); localStorage.removeItem(k); });
   }
 }
 
@@ -540,37 +582,27 @@ function computeSessionVolume(exercisesCompleted, exerciseDB) {
 const LS_STRETCH_TRACK = "apex_stretch_tracker";
 
 function getStretchTracker() {
-  try {
-    const raw = localStorage.getItem(LS_STRETCH_TRACK);
-    return raw ? JSON.parse(raw) : {};
-  } catch { return {}; }
+  return get(LS_STRETCH_TRACK) || {};
 }
 
 function updateStretchTracker(bodyPartsStretched) {
   try {
     const tracker = getStretchTracker();
     const today = new Date().toISOString().split("T")[0];
-    for (const bp of bodyPartsStretched) {
-      tracker[bp] = today;
-    }
-    localStorage.setItem(LS_STRETCH_TRACK, JSON.stringify(tracker));
+    for (const bp of bodyPartsStretched) { tracker[bp] = today; }
+    set(LS_STRETCH_TRACK, tracker);
   } catch {}
 }
 
-// ── Sport Preferences ────────────────────────────────────────
+// ── Sport Preferences (user-scoped via get/set) ──────────────
 const LS_SPORT_PREFS = "apex_sports";
 
 function getSportPrefs() {
-  try {
-    const raw = localStorage.getItem(LS_SPORT_PREFS);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
+  return get(LS_SPORT_PREFS) || [];
 }
 
 function saveSportPrefs(prefs) {
-  try {
-    localStorage.setItem(LS_SPORT_PREFS, JSON.stringify(prefs));
-  } catch (e) { console.warn("APEX sport prefs write failed:", e); }
+  set(LS_SPORT_PREFS, prefs);
 }
 
 export {
@@ -596,5 +628,8 @@ export {
   getSportPrefs,
   saveSportPrefs,
   backfillSessionsToSupabase,
+  _scopedKey,
+  scopedGet,
+  scopedSet,
   KEYS,
 };

@@ -34,25 +34,26 @@ export default function AuthProvider({ children }) {
   function _getLocalUid() { try { return localStorage.getItem("apex_current_uid"); } catch { return null; } }
   function _setLocalUid(uid) { try { localStorage.setItem("apex_current_uid", uid); } catch {} }
   function _clearUserLocalStorage() {
-    // Clear UI state and preferences on user switch — but NEVER clear session history.
-    // Sessions are the source of truth (per CLAUDE.md Rule 9). They persist across
-    // user switches because Supabase restore will overwrite them with the correct
-    // user's data. Clearing them causes the "0 sessions / Start Workout" bug.
-    const userKeys = [
-      "apex_assessment","apex_injuries","apex_injury_history",
-      // "apex_sessions" — NEVER CLEAR. Supabase restore handles user isolation.
-      // "apex_stats" — NEVER CLEAR. Derived from sessions; clearing causes 0 streak.
+    // With user-scoped storage keys, clearing is simpler:
+    // Each user's data lives at key_${uid} so switching users naturally isolates data.
+    // Clear UNSCOPED legacy keys that may have stale data from before the scoping migration.
+    const legacyKeys = [
+      "apex_assessment","apex_injuries","apex_injury_history","apex_sessions","apex_stats",
       "apex_prefs","apex_paused_workout","apex_last_screen","apex_last_tab",
       "apex_image_overrides","apex_youtube_overrides","apex_baseline_tests",
-      "apex_baseline_capabilities","apex_power_records","apex_current_uid",
+      "apex_baseline_capabilities","apex_power_records",
       "apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps",
       "apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings",
       "apex_pt_protocols","apex_pt_sessions","apex_media_pref",
       "apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover",
       "apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive",
       "apex_mesocycle","apex_mesocycle_archive","apex_exercise_effort",
+      "apex_sports","apex_finger_health","apex_finger_log","apex_stretch_tracker",
+      "apex_breath_prefs","apex_sfs_assessments","apex_plan_validations",
+      "apex_daily_progress","apex_exercise_effort",
     ];
-    userKeys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
+    legacyKeys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
+    console.log("[AUTH] Cleared unscoped legacy keys for user switch");
   }
 
   // Check session on mount + listen for auth changes

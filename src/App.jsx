@@ -437,13 +437,15 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
 function getCurrentPhase() {
   let raw = 1;
   let source = "default";
+  // Use scoped reads to prevent cross-user data leaks
+  const _sg = (key) => { try { const { scopedGet } = require("./utils/storage.js"); return scopedGet(key); } catch { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } } };
   try {
-    const meso = JSON.parse(localStorage.getItem("apex_mesocycle"));
+    const meso = _sg("apex_mesocycle");
     if (meso?.phase) { raw = meso.phase; source = "mesocycle"; }
   } catch {}
   if (raw === 1) {
     try {
-      const a = JSON.parse(localStorage.getItem("apex_assessment"));
+      const a = _sg("apex_assessment");
       if (a?.startingPhase) { raw = a.startingPhase; source = "assessment.startingPhase"; }
     } catch {}
   }
@@ -451,8 +453,7 @@ function getCurrentPhase() {
   // Sanity check: < 6 sessions means Phase 1 regardless of stored value
   let sessionCount = 0;
   try {
-    const sessions = JSON.parse(localStorage.getItem("apex_sessions") || "[]");
-    sessionCount = sessions.length;
+    const sessions = _sg("apex_sessions") || [];
     if (sessions.length < 6 && raw > 1) {
       console.warn('[PHASE SANITY] Resetting phase from', raw, 'to 1 —', sessions.length, 'sessions completed');
       raw = 1;
@@ -462,8 +463,8 @@ function getCurrentPhase() {
   let sgMax = 5;
   try {
     const { checkSafeguardPhaseReadiness } = require("./utils/safeguards.js");
-    const a = JSON.parse(localStorage.getItem("apex_assessment") || "{}");
-    const injuries = JSON.parse(localStorage.getItem("apex_injuries") || "[]").filter(i => i.status !== "resolved");
+    const a = _sg("apex_assessment") || {};
+    const injuries = (_sg("apex_injuries") || []).filter(i => i.status !== "resolved");
     const sg = checkSafeguardPhaseReadiness(raw, a?.userAge, a?.fitnessLevel, injuries);
     sgMax = sg.maxPhase;
     if (!sg.allowed) { console.log('[PHASE CAP]', raw, '→', sg.maxPhase, ':', sg.message); raw = sg.maxPhase; }
