@@ -209,7 +209,12 @@ export function buildCardioBlock(phase = 1, location = "gym", sessionIndex = 0, 
 
   // Get available exercises
   const { exercises, messages, zoneRestriction } = getAvailableCardio(phase, location, injuries);
-  if (exercises.length === 0) return null;
+  // Fallback: if behind schedule but no exercises match, inject walking (always safe)
+  if (exercises.length === 0) {
+    const walkFallback = CARDIO_EXERCISES.find(e => e.id === "cardio_walking");
+    if (walkFallback) exercises.push(walkFallback);
+    else return null;
+  }
 
   // Get NASM stage for this phase
   const stage = getNASMStage(phase);

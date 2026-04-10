@@ -653,7 +653,10 @@ export function generateWeeklyPlan(exerciseDB, phase = 1, defaultLocation = "gym
             : "Recovery — ROM, walking, gentle stretching recommended";
           try {
             const cp = getWeeklyCardioProgress(phase);
-            if (cp && cp.deficit > 15) return base + ` | Cardio suggestion: 20 min walk (${cp.deficit} min remaining this week)`;
+            if (cp && cp.deficit > 15) {
+              const zone = phase <= 2 ? "Zone 1" : phase <= 3 ? "Zone 2" : "Zone 1";
+              return base + ` | 🫀 Cardio: ${Math.min(30, cp.deficit)} min ${zone} walk/bike (${cp.deficit} min remaining)`;
+            }
           } catch {}
           return base;
         })(),
