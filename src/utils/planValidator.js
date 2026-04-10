@@ -348,6 +348,21 @@ function _sessionChecks(session, phase, exerciseDB) {
     msg: hasCoreAnywhere ? "OK" : "Zero core exercises in session",
   });
 
+  // S12: Maximum main exercises (≤ 8)
+  results.push({
+    id: "S12", severity: main.length > 10 ? "CRITICAL" : main.length > 8 ? "WARNING" : "INFO",
+    pass: main.length <= 8,
+    msg: main.length <= 8 ? "OK" : `${main.length} main exercises (max 8) — session bloated`,
+  });
+
+  // S13: Maximum total exercises (≤ 20)
+  const totalEx = all.length;
+  results.push({
+    id: "S13", severity: totalEx > 25 ? "CRITICAL" : totalEx > 20 ? "WARNING" : "INFO",
+    pass: totalEx <= 20,
+    msg: totalEx <= 20 ? "OK" : `${totalEx} total exercises (max 20) — trim warmup/cooldown`,
+  });
+
   return results;
 }
 
@@ -484,6 +499,20 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
       const coreEx = (exerciseDB || []).find(e => coreRotation.includes(e.id) && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase))
         || (exerciseDB || []).find(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
       if (coreEx) { fixed.warmup.push({ ...coreEx, _reason: "Auto-fix: core guarantee", _phase: "activate" }); usedIds.add(coreEx.id); log.push(`S11: Added ${coreEx.name} as core guarantee`); }
+    }
+  }
+
+  // S12: Too many main exercises — trim to 8
+  if (fails.some(c => c.id === "S12")) {
+    const MAX = 8;
+    if (fixed.main.length > MAX) {
+      const rp = new Set(["push","pull","hinge","squat"]);
+      const kept = []; const cov = new Set();
+      for (const ex of fixed.main) { const p = _normP(ex.movementPattern); if (rp.has(p) && !cov.has(p)) { kept.push(ex); cov.add(p); } }
+      if (!kept.some(e => e.bodyPart === "core")) { const c = fixed.main.find(e => e.bodyPart === "core" && !kept.includes(e)); if (c) kept.push(c); }
+      for (const ex of fixed.main) { if (kept.length >= MAX) break; if (!kept.includes(ex)) kept.push(ex); }
+      const removed = fixed.main.length - kept.length;
+      fixed.main = kept; log.push(`S12: Trimmed ${removed} excess main exercises`);
     }
   }
 

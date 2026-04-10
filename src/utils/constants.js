@@ -45,10 +45,10 @@ export const REST_DEFAULTS = { 1: 60, 2: 60, 3: 90, 4: 180, 5: 180 };
 
 // ── Session Time → Exercise Count ───────────────────────────────
 export const SESSION_EXERCISE_COUNTS = {
-  30: { warmup: 3, main: 4, cooldown: 2 },
+  30: { warmup: 3, main: 5, cooldown: 3 },
   45: { warmup: 4, main: 6, cooldown: 3 },
-  60: { warmup: 5, main: 7, cooldown: 3 },
-  90: { warmup: 5, main: 8, cooldown: 3 },
+  60: { warmup: 5, main: 7, cooldown: 4 },
+  90: { warmup: 5, main: 8, cooldown: 4 },
 };
 
 // ── Volume Limits (per phase, sets/muscle/week) ─────────────────

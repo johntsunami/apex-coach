@@ -788,7 +788,7 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
 
   // PHASE E: COOLDOWN — static stretches for ALL muscles trained (per NASM: static stretching in cooldown only)
   // Filter to static stretch_type only (excludes dynamic cooldown exercises like 90/90 hip switch)
-  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type !== "dynamic" && (e.phaseEligibility || []).includes(phase) && locOk(e));
+  const stretchPool = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type !== "dynamic" && e.type !== "strength" && e.type !== "stabilization" && e.type !== "plyometric" && !/(chair pose|side plank pose|bridge pose|warrior|boat pose)/i.test(e.name || "") && (e.phaseEligibility || []).includes(phase) && locOk(e));
   const trainedBps = new Set((mainExercises || []).map(e => e.bodyPart).filter(Boolean));
   const cooldownStretches = [];
   // Stretch every trained muscle
@@ -855,7 +855,7 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   const stressLevel = checkInData?.stress || 5;
   if (stressLevel > 6) {
     const breathingPool = exerciseDB.filter(e => (e.type === "breathing" || (e.name || "").toLowerCase().includes("breath")) && locOk(e));
-    for (const breathEx of breathingPool.slice(0, 2)) {
+    for (const breathEx of breathingPool.slice(0, 1)) {
       if (!cooldownStretches.find(x => x.id === breathEx.id)) cooldownStretches.push({ ...breathEx, _reason: "High stress — wind-down breathing" });
     }
   }
@@ -929,6 +929,18 @@ function buildSessionBlocks(phase, location, checkInData, mainExercises) {
   // Merge core activation into lengthen array so they appear in the actual workout flow
   // (blocks.coreActivation was NOT included in workout.all — users never did them)
   lengthen.push(...coreActivation);
+
+  // ═══ HARD CAPS — trim after all injection layers ═══
+  const BLOCK_CAPS = { inhibit: location === "outdoor" ? 0 : 5, lengthen: 6, cooldownStretches: 5, cardio: 1 };
+  if (inhibit.length > BLOCK_CAPS.inhibit) inhibit.length = BLOCK_CAPS.inhibit;
+  if (lengthen.length > BLOCK_CAPS.lengthen) {
+    const coreIds = new Set(coreActivation.map(c => c.id));
+    const coreIn = lengthen.filter(e => coreIds.has(e.id));
+    const nonCore = lengthen.filter(e => !coreIds.has(e.id)).slice(0, BLOCK_CAPS.lengthen - coreIn.length);
+    lengthen.length = 0; lengthen.push(...nonCore, ...coreIn);
+  }
+  if (cooldownStretches.length > BLOCK_CAPS.cooldownStretches) cooldownStretches.length = BLOCK_CAPS.cooldownStretches;
+  if (cardio.length > BLOCK_CAPS.cardio) cardio.length = BLOCK_CAPS.cardio;
 
   return { inhibit, lengthen, coreActivation, cooldownStretches, foamAddOn, cardio, cardioMeta: cardioBlock };
 }
@@ -1275,7 +1287,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Respect user's session time preference (Fix #8)
   const sessionTime = excludeMuscles ? 30 : (checkInData?.sessionTime || getAssessment()?.preferences?.sessionTime || 45); // Check-in override → assessment default → 45
   const baseWarmup = sessionTime === 30 ? 3 : sessionTime <= 45 ? 4 : 5;
-  const baseMain = sessionTime === 30 ? 4 : sessionTime <= 45 ? 6 : sessionTime <= 60 ? 7 : 8;
+  const baseMain = sessionTime === 30 ? 5 : sessionTime <= 45 ? 6 : sessionTime <= 60 ? 7 : 8;
   const baseCooldown = sessionTime === 30 ? 2 : 3;
   // Apply volume modifier to main exercise count
   const warmupLimit = baseWarmup;
@@ -1350,7 +1362,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
 
   // ── MINIMUM SESSION SIZE ENFORCEMENT (≥ 4 main exercises) ──
   {
-    const _MIN = 4;
+    const _MIN = 5;
     if (main.length < _MIN) {
       console.warn('[MIN SESSION] Only', main.length, 'main exercises. Relaxing constraints...');
       const _usedIds = new Set(main.map(e => e.id));
@@ -1603,7 +1615,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   if (blocks.cooldownStretches) blocks.cooldownStretches = _dedupBlock(blocks.cooldownStretches);
   if (blocks.cardio) blocks.cardio = _dedupBlock(blocks.cardio);
 
-  let eWarmup = dWarmup.map(enrich), eMain = dMain.map(enrich), eCooldown = dCooldown.map(enrich);
+  // Only apply progressive overload (enrich) to MAIN exercises — warmup/cooldown are prep/recovery
+  let eWarmup = dWarmup, eMain = dMain.map(enrich), eCooldown = dCooldown;
 
   // ── Rule 7: Sport transparency — annotate sport-biased exercises ──
   if (_sportFocus) {
@@ -1694,7 +1707,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
 
   // Include block exercises (inhibit, lengthen/core activation, cooldown stretches, cardio) in workout.all
   // so they appear in the exercise-by-exercise flow, not just the plan overview
-  const _blockExercises = [...(blocks.inhibit || []), ...(blocks.lengthen || []), ...(blocks.coreActivation || [])];
+  // coreActivation already inside blocks.lengthen (pushed at line 931) — don't add again
+  const _blockExercises = [...(blocks.inhibit || []), ...(blocks.lengthen || [])];
   const _blockCooldown = [...(blocks.cooldownStretches || []), ...(blocks.cardio || [])];
   const _plan = { warmup: [..._blockExercises, ...eWarmup], main: eMain, cooldown: [...eCooldown, ..._blockCooldown], all: [..._blockExercises, ...eWarmup, ...eMain, ...eCooldown, ..._blockCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
   // Run session validation

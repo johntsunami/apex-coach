@@ -228,6 +228,8 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
   const indices = getRotationIndices();
   const assessment = getAssessment();
   const blacklist = new Set(assessment?.preferences?.blacklist || []);
+  const _weekVol = getWeeklyVolume();
+  const _runVol = { ..._weekVol };
 
   for (const pattern of dayTemplate.patterns) {
     const pool = ROTATION_POOLS[pattern] || [];
@@ -252,7 +254,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       if (ex.bodyPart !== "core" && ex.type !== "stabilization" && phase > getMaxPhaseForDifficulty(ex.difficultyLevel || 3)) continue;
 
       // Check volume
-      const volCheck = wouldExceedVolume(ex, {}, phase);
+      const volCheck = wouldExceedVolume(ex, _runVol, phase);
       if (volCheck.exceeded) continue;
 
       selected.push({ ...ex, _rotationPattern: pattern, _rotationPoolId: poolId });
@@ -538,7 +540,7 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
   // (Core is in warmup now, but if any core leaked into main, still enforce variety)
 
   // ── MINIMUM SESSION SIZE ENFORCEMENT (Rule: every session ≥ 4 main exercises) ──
-  const MIN_MAIN = 4;
+  const MIN_MAIN = 5;
   if (selected.length < MIN_MAIN) {
     console.warn('[MIN SESSION] Only', selected.length, 'exercises selected. Relaxing constraints...');
     // 1. Relax within-week dedup — allow exercises from other days this week
@@ -594,6 +596,18 @@ function selectDayExercises(dayTemplate, exerciseDB, phase, location, usedThisWe
       selected.push({ ..._coreEx, _reason: "Core guarantee — every session must include core" });
       usedIds.add(_coreEx.id);
     }
+  }
+
+  // ═══ MAX CAP — prevent session bloat from injection layers ═══
+  const MAX_MAIN = 8;
+  if (selected.length > MAX_MAIN) {
+    const _reqP = new Set(["push", "pull", "hinge", "squat"]);
+    const _np2 = p => { if (!p) return "other"; const lp = p.toLowerCase(); if (lp.includes("push")) return "push"; if (lp.includes("pull")) return "pull"; if (["anti_rotation","anti_extension","anti_flexion"].includes(lp)) return "core"; if (lp === "lunge") return "squat"; return lp; };
+    const kept = []; const cov = new Set();
+    for (const ex of selected) { const p = _np2(ex.movementPattern); if (_reqP.has(p) && !cov.has(p)) { kept.push(ex); cov.add(p); } }
+    if (!kept.some(e => e.bodyPart === "core")) { const c = selected.find(e => e.bodyPart === "core" && !kept.includes(e)); if (c) kept.push(c); }
+    for (const ex of selected) { if (kept.length >= MAX_MAIN) break; if (!kept.includes(ex)) kept.push(ex); }
+    selected.length = 0; selected.push(...kept);
   }
 
   return selected;
