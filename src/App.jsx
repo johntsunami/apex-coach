@@ -55,6 +55,7 @@ import { PTProgressCard, PTMiniSession, PTProgressPage, saveAssessmentToSupabase
 import { verifyAndFix, runAllChecks } from "./utils/safetyVerification.js";
 import { ALL_TEST_PROFILES } from "./utils/testProfiles.js";
 import { runEngineQA as _runEngineQA } from "./utils/engineQA.js";
+import { runConditionExerciseAudit as _runCondAudit } from "./utils/conditionExerciseAudit.js";
 import { buildRoadmap, checkReadiness, getAllFavoriteRoadmaps, checkAutoAdvancements, getUnlockNotifications, markNotificationsSeen, prioritizeFavorites, recordExerciseCompletion, getProgressPercent } from "./utils/progressionRoadmap.js";
 import SwapModal from "./components/ExerciseSwap.jsx";
 import { CardioFitnessCard, VO2TestModal, CardioLogModal, HRZonesCard } from "./components/CardioTracker.jsx";
@@ -1735,6 +1736,7 @@ function DebugPanel({onClose}){
   const[safetyAudit,setSafetyAudit]=useState(null);
   const[qaResults,setQaResults]=useState(null);
   const[qaRunning,setQaRunning]=useState(false);
+  const[condAudit,setCondAudit]=useState(null);
 
   useEffect(()=>{
     setLs(getLocalStorageStats());
@@ -1817,7 +1819,17 @@ function DebugPanel({onClose}){
         <div style={{display:"flex",gap:6,marginBottom:10}}>
           <button onClick={()=>{const w=buildWorkoutList(CURRENT_PHASE,"gym");const rpt=runAllChecks(w);setSafetyAudit(rpt);}} style={S.btn}>Run Safety Audit</button>
           <button onClick={()=>{setQaRunning(true);const results=ALL_TEST_PROFILES.map(p=>{const w=buildWorkoutList(p.phase||1,"gym");const rpt=runAllChecks(w,p);return{name:p.name,passed:rpt.passed,failed:rpt.failed,total:rpt.totalChecks,blocked:rpt.blocked,issues:rpt.allIssues.length,corrections:rpt.allCorrections.length,checks:rpt.checks};});setQaResults(results);setQaRunning(false);}} disabled={qaRunning} style={{...S.btn,borderColor:C.purple,color:C.purple}}>{qaRunning?"Running...":"Run QA Tests (5 profiles)"}</button>
+          <button onClick={()=>{try{const condDB=require("./data/conditions.json");const r=_runCondAudit(exerciseDB,condDB);setCondAudit(r);}catch(e){setCondAudit({fail:[{message:e.message}],warnings:[],pass:[],summary:{failCount:1}});}}} style={{...S.btn,borderColor:C.orange,color:C.orange}}>Condition Audit</button>
         </div>
+        {condAudit&&<div style={{marginBottom:10}}>
+          <div style={{display:"flex",gap:12,marginBottom:6}}>
+            <div><span style={S.stat(C.success)}>{condAudit.pass?.length||0}</span><div style={{fontSize:9,color:C.textDim}}>Pass</div></div>
+            <div><span style={S.stat(condAudit.fail?.length>0?C.danger:C.success)}>{condAudit.fail?.length||0}</span><div style={{fontSize:9,color:C.textDim}}>Fail</div></div>
+            <div><span style={S.stat(C.warning)}>{condAudit.warnings?.length||0}</span><div style={{fontSize:9,color:C.textDim}}>Warn</div></div>
+          </div>
+          {condAudit.fail?.length>0&&<div style={{maxHeight:120,overflow:"auto",marginBottom:6}}>{condAudit.fail.map((f,i)=><div key={i} style={{fontSize:8,color:C.danger,padding:"1px 0"}}>❌ [{f.condition}] {f.message}</div>)}</div>}
+          {condAudit.warnings?.length>0&&<div style={{maxHeight:80,overflow:"auto"}}>{condAudit.warnings.slice(0,10).map((w,i)=><div key={i} style={{fontSize:8,color:C.warning,padding:"1px 0"}}>⚠️ {w}</div>)}{condAudit.warnings.length>10&&<div style={{fontSize:8,color:C.textDim}}>+{condAudit.warnings.length-10} more</div>}</div>}
+        </div>}
         {safetyAudit&&<div>
           <div style={{display:"flex",gap:16,marginBottom:8}}>
             <div><span style={S.stat(C.success)}>{safetyAudit.passed}</span><div style={{fontSize:9,color:C.textDim}}>Passed</div></div>
