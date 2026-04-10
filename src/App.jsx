@@ -2977,11 +2977,23 @@ function buildROMRoutine() {
     const count = hasInjury ? 2 : 1;
     pool.slice(0, count).forEach(e => { routine.push(e); usedIds.add(e.id); });
   });
-  // Add condition-specific exercises
+  // ── McKENZIE BACK SEQUENCE (always include — foundational spinal mobility) ──
+  const mckBack = ["mck_back_prone_lying", "mck_back_prone_elbows", "mck_back_press_up", "mck_back_ext_standing", "mck_back_lying_flexion"];
+  mckBack.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push({ ...ex, _reason: "McKenzie back protocol" }); usedIds.add(id); } } });
+
+  // ── McKENZIE HIP SEQUENCE ──
+  const mckHip = ["mck_hip_flexion", "mck_hip_rotation", "mck_hip_flexor_str", "mck_hip_abd", "mck_hip_add_str"];
+  mckHip.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push({ ...ex, _reason: "McKenzie hip protocol" }); usedIds.add(id); } } });
+
+  // ── SHOULDER MOBILITY (pass-throughs, arm circles, pendulum, ER/IR stretches) ──
+  const shMob = ["mob_shoulder_pass_through", "dyn_arm_circles", "mck_sh_pendulum", "mck_sh_er_stretch", "mck_sh_ir_stretch", "mck_sh_active_rom"];
+  shMob.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push({ ...ex, _reason: "Shoulder mobility" }); usedIds.add(id); } } });
+
+  // ── CONDITION-SPECIFIC EXTRAS (on top of the above) ──
   injuries.forEach(inj => {
     const gk = inj.gateKey || "";
-    const condExIds = gk === "lower_back" ? ["mob_cat_cow", "mob_thoracic_rotation"] : gk === "shoulder" ? ["mob_shoulder_pass_through"] : gk === "knee" ? ["dyn_walking_lunges"] : gk === "wrist" ? ["climb_finger_tendon_glides"] : [];
-    condExIds.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push(ex); usedIds.add(id); } } });
+    const condExIds = gk === "lower_back" ? ["mob_cat_cow", "mob_thoracic_rotation"] : gk === "shoulder" ? ["mck_sh_wall_walk", "mck_sh_abduction"] : gk === "knee" ? ["dyn_walking_lunges"] : gk === "wrist" ? ["climb_finger_tendon_glides"] : gk === "hip" ? ["mck_hip_ext_prone", "mck_hip_functional"] : [];
+    condExIds.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push({ ...ex, _reason: `${inj.area} condition protocol` }); usedIds.add(id); } } });
   });
   return routine;
 }
