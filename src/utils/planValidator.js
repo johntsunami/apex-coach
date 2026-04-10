@@ -373,7 +373,7 @@ function _weekChecks(days, phase) {
   // W1: Volume within phase limits (CRITICAL — auto-fixable)
   const LIMITS = { 1: [8, 12], 2: [10, 18], 3: [14, 24], 4: [10, 16], 5: [8, 15] };
   const [lo, hi] = LIMITS[phase] || [8, 24];
-  const overVol = Object.entries(vol).filter(([bp, s]) => s > hi * 1.25 && bp !== "other" && bp !== "core"); // flag at 125% of max
+  const overVol = Object.entries(vol).filter(([bp, s]) => s > hi && bp !== "other" && bp !== "core"); // flag when exceeding phase max
   results.push({
     id: "W1", severity: overVol.length > 0 ? "CRITICAL" : "WARNING",
     pass: overVol.length === 0,
@@ -447,10 +447,15 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
       const corePool = (exerciseDB || []).filter(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
       for (const ex of corePool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: core filler" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (core filler)`); }
     }
-    // 3. Last resort: any exercise
+    // 3. Last resort: any exercise — but STILL exclude push/chest on lower days
+    if (fixed.main.length < 4) {
+      const pool = (exerciseDB || []).filter(e => isUsable(e) && !(_isLowerDay && (e.bodyPart === "chest" || e.bodyPart === "shoulders" || _normP(e.movementPattern) === "push"))).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
+      for (const ex of pool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: minimum session size" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (last resort, split-filtered)`); }
+    }
+    // 4. Absolute last resort (if still under 4 — shouldn't happen but safety net)
     if (fixed.main.length < 4) {
       const pool = (exerciseDB || []).filter(isUsable).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1));
-      for (const ex of pool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: minimum session size" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (last resort)`); }
+      for (const ex of pool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: absolute minimum" }); usedIds.add(ex.id); }
     }
   }
 
@@ -540,7 +545,44 @@ export function validateAndFixWeek(weekDays, phase, exerciseDB) {
 
   // Validate week as a whole
   const trainingDays = dayResults.filter(d => d.day.type === "training");
-  const weekCheck = _weekChecks(trainingDays.map(d => d.day), phase);
+  let weekCheck = _weekChecks(trainingDays.map(d => d.day), phase);
+  const weekLog = [];
+
+  // W1 auto-fix: remove lowest-priority exercises for over-volume muscle groups
+  const w1 = weekCheck.results.find(r => r.id === "W1" && !r.pass && r.severity === "CRITICAL");
+  if (w1 && w1._overVol?.length > 0) {
+    const maxSets = w1._maxSets || 16;
+    for (const [bp] of w1._overVol) {
+      // Find all exercises for this body part across all training days, sorted by priority (remove fillers/isolations first)
+      const candidates = [];
+      dayResults.forEach((dr, di) => {
+        if (dr.day.type !== "training") return;
+        const ex = dr.day.exercises || dr.day.main || [];
+        ex.forEach((e, ei) => {
+          if (e.bodyPart === bp) {
+            const priority = e.type === "strength" ? 3 : e.type === "isolation" ? 2 : 1; // remove fillers first
+            candidates.push({ dayIdx: di, exIdx: ei, exercise: e, priority });
+          }
+        });
+      });
+      candidates.sort((a, b) => a.priority - b.priority); // lowest priority first
+
+      // Remove exercises until volume is within limits
+      let currentVol = weekCheck.volume[bp] || 0;
+      for (const c of candidates) {
+        if (currentVol <= maxSets) break;
+        const day = dayResults[c.dayIdx].day;
+        const arr = day.exercises || day.main || [];
+        const removed = arr.splice(c.exIdx, 1)[0];
+        if (removed) {
+          currentVol -= (parseInt(removed.sets || removed.prescribedSets || "2") || 2);
+          weekLog.push(`W1: Removed ${removed.name} from day ${c.dayIdx} (${bp} over-volume ${currentVol}/${maxSets})`);
+        }
+      }
+    }
+    // Recheck after fix
+    weekCheck = _weekChecks(dayResults.filter(d => d.day.type === "training").map(d => d.day), phase);
+  }
 
   const allValid = dayResults.every(d => d.valid) && weekCheck.results.filter(r => !r.pass && r.severity === "CRITICAL").length === 0;
   const totalChecks = dayResults.reduce((s, d) => s + (d.checks?.length || 0), 0) + weekCheck.results.length;
@@ -551,6 +593,6 @@ export function validateAndFixWeek(weekDays, phase, exerciseDB) {
     valid: allValid,
     dayResults, weekResults: weekCheck.results, volume: weekCheck.volume,
     score: totalChecks > 0 ? Math.round((totalPassed / totalChecks) * 100) : 100,
-    log: dayResults.flatMap(d => d.log || []),
+    log: [...dayResults.flatMap(d => d.log || []), ...weekLog],
   };
 }

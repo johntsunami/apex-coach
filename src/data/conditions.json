@@ -1129,7 +1129,9 @@
       "Behind-neck pressing",
       "Overhead at end-range",
       "Dips",
-      "Loaded supination bicep work"
+      "Loaded supination bicep work",
+      "Barbell Overhead Press",
+      "overhead press"
     ],
     "modifications": {},
     "phases": {},
@@ -3940,16 +3942,33 @@
     "userMessage": "Patellofemoral pain responds well to exercise — especially hip strengthening. We focus on your hip abductors and external rotators because weak hips are the most common cause of knee tracking problems.",
     "source": "JOSPT 2019 Clinical Practice Guidelines (APTA), Mass General PFPS protocol"
   },
-
   {
     "id": "CLIMB1",
     "condition": "finger_pulley_strain_mild",
     "name": "Finger Pulley Strain (Grade I — Mild)",
     "category": "climbing_finger",
     "severityRange": "1-2",
-    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch", "climb_forearm_massage", "climb_rice_bucket"],
-    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch"],
-    "avoid": ["Full crimp grip", "Max hangs", "Campus board", "Pocket holds (mono/duo)", "Dynamic climbing moves on small holds", "Hangboard on edges < 20mm"],
+    "recommended": [
+      "climb_finger_tendon_glides",
+      "climb_finger_rom_isolation",
+      "climb_finger_extensor_band",
+      "climb_wrist_flex_ext_stretch",
+      "climb_forearm_massage",
+      "climb_rice_bucket"
+    ],
+    "mandatoryDaily": [
+      "climb_finger_tendon_glides",
+      "climb_finger_extensor_band",
+      "climb_wrist_flex_ext_stretch"
+    ],
+    "avoid": [
+      "Full crimp grip",
+      "Max hangs",
+      "Campus board",
+      "Pocket holds (mono/duo)",
+      "Dynamic climbing moves on small holds",
+      "Hangboard on edges < 20mm"
+    ],
     "modifications": {
       "allGripExercises": "Open hand grip ONLY — no half crimp, no full crimp",
       "hangboard": "Jug holds only at 50% perceived max for first 4 weeks",
@@ -3978,9 +3997,27 @@
     "name": "Finger Pulley Strain (Grade II — Moderate)",
     "category": "climbing_finger",
     "severityRange": "3",
-    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band", "climb_wrist_flex_ext_stretch", "climb_forearm_massage"],
-    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_extensor_band"],
-    "avoid": ["ALL crimping grips", "ALL hangboard types", "Campus board", "Climbing for 4 weeks minimum", "Heavy gripping", "Deadlifts without straps", "Pull-ups without straps", "Farmer carries"],
+    "recommended": [
+      "climb_finger_tendon_glides",
+      "climb_finger_rom_isolation",
+      "climb_finger_extensor_band",
+      "climb_wrist_flex_ext_stretch",
+      "climb_forearm_massage"
+    ],
+    "mandatoryDaily": [
+      "climb_finger_tendon_glides",
+      "climb_finger_extensor_band"
+    ],
+    "avoid": [
+      "ALL crimping grips",
+      "ALL hangboard types",
+      "Campus board",
+      "Climbing for 4 weeks minimum",
+      "Heavy gripping",
+      "Deadlifts without straps",
+      "Pull-ups without straps",
+      "Farmer carries"
+    ],
     "modifications": {
       "allPullingExercises": "Use lifting straps to remove grip demand for 4-8 weeks",
       "upperBody": "Focus on pushing exercises (antagonist work) which is beneficial during recovery",
@@ -4006,9 +4043,22 @@
     "name": "Finger Pulley Rupture (Grade III-IV — Severe)",
     "category": "climbing_finger",
     "severityRange": "4-5",
-    "recommended": ["climb_finger_tendon_glides", "climb_finger_rom_isolation", "climb_finger_extensor_band"],
-    "mandatoryDaily": ["climb_finger_rom_isolation"],
-    "avoid": ["ALL grip loading for 8 weeks minimum", "ALL climbing for 8 weeks minimum", "ALL hangboard", "ALL pulling without straps", "Heavy carrying", "Gripping tools"],
+    "recommended": [
+      "climb_finger_tendon_glides",
+      "climb_finger_rom_isolation",
+      "climb_finger_extensor_band"
+    ],
+    "mandatoryDaily": [
+      "climb_finger_rom_isolation"
+    ],
+    "avoid": [
+      "ALL grip loading for 8 weeks minimum",
+      "ALL climbing for 8 weeks minimum",
+      "ALL hangboard",
+      "ALL pulling without straps",
+      "Heavy carrying",
+      "Gripping tools"
+    ],
     "modifications": {
       "allExercises": "No grip demand whatsoever — use straps, machines, push/leg focus",
       "dailyLife": "Taping or splinting as directed by hand specialist"
@@ -4033,9 +4083,26 @@
     "name": "Finger Flexor Tendinopathy (Climber's Finger)",
     "category": "climbing_finger",
     "severityRange": "1-3",
-    "recommended": ["climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_eccentric_wrist_curl", "climb_forearm_massage", "climb_rice_bucket", "climb_wrist_flex_ext_stretch"],
-    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_forearm_massage", "climb_finger_extensor_band"],
-    "avoid": ["Max hangs", "Campus board", "Full crimp grip", "Small edges under 15mm", "Dynamic moves on small holds"],
+    "recommended": [
+      "climb_finger_tendon_glides",
+      "climb_finger_extensor_band",
+      "climb_eccentric_wrist_curl",
+      "climb_forearm_massage",
+      "climb_rice_bucket",
+      "climb_wrist_flex_ext_stretch"
+    ],
+    "mandatoryDaily": [
+      "climb_finger_tendon_glides",
+      "climb_forearm_massage",
+      "climb_finger_extensor_band"
+    ],
+    "avoid": [
+      "Max hangs",
+      "Campus board",
+      "Full crimp grip",
+      "Small edges under 15mm",
+      "Dynamic moves on small holds"
+    ],
     "modifications": {
       "hangboard": "Reduce to 60-70% intensity, open hand only, increase rest between sets to 5 min",
       "climbing": "Reduce volume 40%, avoid crimping, focus on technique over power",
@@ -4063,9 +4130,22 @@
     "name": "Finger Tenosynovitis (Tendon Sheath Inflammation)",
     "category": "climbing_finger",
     "severityRange": "1-3",
-    "recommended": ["climb_finger_rom_isolation", "climb_finger_tendon_glides", "climb_finger_extensor_band", "climb_forearm_massage", "climb_wrist_flex_ext_stretch"],
-    "mandatoryDaily": ["climb_finger_tendon_glides", "climb_finger_rom_isolation"],
-    "avoid": ["Repetitive high-volume gripping", "Crimping on small holds", "Vibrating tools"],
+    "recommended": [
+      "climb_finger_rom_isolation",
+      "climb_finger_tendon_glides",
+      "climb_finger_extensor_band",
+      "climb_forearm_massage",
+      "climb_wrist_flex_ext_stretch"
+    ],
+    "mandatoryDaily": [
+      "climb_finger_tendon_glides",
+      "climb_finger_rom_isolation"
+    ],
+    "avoid": [
+      "Repetitive high-volume gripping",
+      "Crimping on small holds",
+      "Vibrating tools"
+    ],
     "modifications": {
       "climbingVolume": "Reduce by 50% until catching resolves",
       "gripType": "Open hand only — crimping compresses the sheath"
