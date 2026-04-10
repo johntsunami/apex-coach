@@ -1899,7 +1899,7 @@ function DebugPanel({onClose}){
 // stretches. Activated from Home screen. Designed for use while watching TV.
 
 // ── HOME ────────────────────────────────────────────────────────
-function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline,onAddOn,onStartSecondary,onDevBugs,statsLoading}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
+function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline,onAddOn,onStartSecondary,onDevBugs,onROM,statsLoading}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
   {/* Sport priority badges */}
   {(()=>{try{const sp=getSportPrefs();if(!sp||sp.length===0)return null;const sportEmojis={"Basketball":"🏀","Soccer":"⚽","Baseball/Softball":"⚾","Tennis":"🎾","Golf":"⛳","Swimming":"🏊","Running/Track":"🏃","Cycling":"🚴","Hiking":"🥾","Rock Climbing":"🧗","CrossFit":"🏋️","Boxing/Kickboxing":"🥊","MMA/BJJ":"🥋","Wrestling":"🤼","Volleyball":"🏐","Football":"🏈","Yoga":"🧘","Pilates":"🧘","Dance":"💃","Rowing":"🚣","Skiing/Snowboarding":"⛷️","Surfing":"🏄","Skateboarding":"🛹","Pickleball":"🏓","Martial Arts":"🥋","Muay Thai":"🥊"};const rankColors=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{sp.slice(0,3).map((s,i)=>(<div key={s.sport} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${rankColors[i]}25`,fontSize:11}}><span>{sportEmojis[s.sport]||"🏅"}</span><span style={{color:rankColors[i],fontWeight:700}}>#{i+1}</span><span style={{color:C.textMuted}}>{s.sport}</span></div>))}</div>);}catch{return null;}})()}
@@ -1909,7 +1909,8 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   // PT protocols — one task per condition/protocol
   const _ptProtos=getLocalProtocols();const _ptSessions=getLocalPTSessions();const _today=new Date().toDateString();
   _ptProtos.forEach(proto=>{const todayDone=_ptSessions.filter(s=>new Date(s.completed_at).toDateString()===_today&&(s.condition_key===proto.condition_key||s.protocol_id===proto.condition_key)).length;const freq=proto.frequency_per_day||1;const allDone=todayDone>=freq;_tasks.push({id:`pt_${proto.condition_key}`,label:`${proto.protocol_name} (${todayDone}/${freq} today)`,icon:allDone?"✅":"🩺",done:allDone,action:()=>onPTSession?.(proto),conditionKey:proto.condition_key});});
-  _tasks.push({id:"rom",label:"Daily ROM routine (5 min)",icon:"🧘",done:false});const _todayDone=isTodayComplete();_tasks.push({id:"workout",label:`Today's workout${_todayDone?" — done":""}`,icon:_todayDone?"✅":"💪",done:!!_todayDone,action:onStart});const doneCount=_tasks.filter(t=>t.done).length;if(_tasks.length<=1)return null;
+  const _romDoneToday=(()=>{try{const c=JSON.parse(localStorage.getItem("apex_rom_completions")||"[]");return c.some(r=>r.date===new Date().toISOString().split("T")[0]);}catch{return false;}})();
+  _tasks.push({id:"rom",label:`Daily ROM routine${_romDoneToday?" — done":""}`,icon:_romDoneToday?"✅":"🧘",done:_romDoneToday,action:_romDoneToday?undefined:onROM});const _todayDone=isTodayComplete();_tasks.push({id:"workout",label:`Today's workout${_todayDone?" — done":""}`,icon:_todayDone?"✅":"💪",done:!!_todayDone,action:onStart});const doneCount=_tasks.filter(t=>t.done).length;if(_tasks.length<=1)return null;
   return<Card style={{padding:14,marginBottom:4,borderColor:C.teal+"20"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:14}}>����</span><span style={{fontSize:13,fontWeight:600,color:C.text}}>Today's Tasks</span></div><span style={{fontSize:11,color:doneCount===_tasks.length?C.success:C.textMuted,fontWeight:600}}>{doneCount}/{_tasks.length}</span></div>
   {_tasks.map(t=><div key={t.id} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:14,width:20,textAlign:"center"}}>{t.icon}</span><div style={{flex:1,minWidth:0}}><div style={{fontSize:12,color:t.done?C.textDim:C.text,fontWeight:t.done?400:500,textDecoration:t.done?"line-through":"none"}}>{t.label}</div></div>{!t.done&&t.action&&<button onClick={t.action} style={{padding:"4px 10px",borderRadius:6,background:C.tealBg,border:`1px solid ${C.teal}30`,color:C.teal,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Start</button>}</div>)}
   </Card>;}catch{return null;}})()}
@@ -2934,6 +2935,112 @@ function ReflectScreen({onComplete,exercisesDone}){
     <div style={{height:90}}/>
   </div>);
 }
+// ── ROM ROUTINE ─────────────────────────────────────────────────
+function buildROMRoutine() {
+  const assessment = getAssessment();
+  const injuries = getInjuries().filter(i => i.status !== "resolved");
+  const ROM_AREAS = [
+    { area: "neck", bps: ["neck"] },
+    { area: "shoulders", bps: ["shoulders"] },
+    { area: "upper_back", bps: ["back"] },
+    { area: "lower_back", bps: ["back"] },
+    { area: "hips", bps: ["hips", "glutes"] },
+    { area: "legs", bps: ["legs"] },
+    { area: "ankles", bps: ["ankles", "calves"] },
+  ];
+  // Add wrist area if user has wrist condition
+  if (injuries.some(i => (i.area || "").toLowerCase().includes("wrist") || (i.gateKey || "") === "wrist")) {
+    ROM_AREAS.push({ area: "wrists", bps: ["forearms", "arms"] });
+  }
+  const routine = [];
+  const usedIds = new Set();
+  ROM_AREAS.forEach(({ bps }) => {
+    const pool = exerciseDB.filter(e =>
+      (e.type === "mobility" || e.category === "mobility") &&
+      bps.includes(e.bodyPart) && !usedIds.has(e.id)
+    );
+    // Pick 1-2 per area (2 if user has injury in that area)
+    const hasInjury = injuries.some(i => bps.some(bp => (i.gateKey || "").includes(bp) || (i.area || "").toLowerCase().includes(bp)));
+    const count = hasInjury ? 2 : 1;
+    pool.slice(0, count).forEach(e => { routine.push(e); usedIds.add(e.id); });
+  });
+  // Add condition-specific exercises
+  injuries.forEach(inj => {
+    const gk = inj.gateKey || "";
+    const condExIds = gk === "lower_back" ? ["mob_cat_cow", "mob_thoracic_rotation"] : gk === "shoulder" ? ["mob_shoulder_pass_through"] : gk === "knee" ? ["dyn_walking_lunges"] : gk === "wrist" ? ["climb_finger_tendon_glides"] : [];
+    condExIds.forEach(id => { if (!usedIds.has(id)) { const ex = exerciseDB.find(e => e.id === id); if (ex) { routine.push(ex); usedIds.add(id); } } });
+  });
+  return routine;
+}
+
+function ROMScreen({ onComplete, onClose }) {
+  const [idx, setIdx] = useState(0);
+  const [timer, setTimer] = useState(30);
+  const [timerOn, setTimerOn] = useState(false);
+  const timerRef = useRef(null);
+  const exercises = useMemo(() => buildROMRoutine(), []);
+  const ex = exercises[idx];
+  const isLast = idx === exercises.length - 1;
+  const startTime = useRef(Date.now());
+
+  useEffect(() => {
+    if (!timerOn || timer <= 0) return;
+    timerRef.current = setTimeout(() => setTimer(t => t - 1), 1000);
+    return () => clearTimeout(timerRef.current);
+  }, [timerOn, timer]);
+
+  useEffect(() => { setTimer(30); setTimerOn(false); }, [idx]);
+
+  const handleNext = () => {
+    if (isLast) {
+      // Save ROM completion
+      try {
+        const completions = JSON.parse(localStorage.getItem("apex_rom_completions") || "[]");
+        completions.push({ date: new Date().toISOString().split("T")[0], exercises: exercises.length, durationEst: Math.round((Date.now() - startTime.current) / 60000) });
+        while (completions.length > 90) completions.shift();
+        localStorage.setItem("apex_rom_completions", JSON.stringify(completions));
+      } catch {}
+      onComplete();
+    } else {
+      setIdx(i => i + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  if (!ex) return <div style={{ padding: 20, textAlign: "center", color: C.textMuted }}>No mobility exercises available.</div>;
+
+  return (
+    <div className="fade-in" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>← Back</button>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: 2 }}>ROM ROUTINE</div>
+        <div style={{ fontSize: 11, color: C.textMuted }}>{idx + 1}/{exercises.length}</div>
+      </div>
+      <ProgressBar value={idx + 1} max={exercises.length} color={C.teal} height={4} />
+      <Card>
+        <ExerciseImage exercise={ex} size="large" />
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: C.text, margin: "12px 0 4px", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1 }}>{ex.name}</h3>
+        <div style={{ fontSize: 11, color: C.teal, fontWeight: 600, marginBottom: 8 }}>{(ex.bodyPart || "").replace(/_/g, " ")} · Mobility</div>
+        {ex.steps && <div style={{ marginBottom: 12 }}>{(Array.isArray(ex.steps) ? ex.steps : [ex.steps]).map((s, i) => <div key={i} style={{ display: "flex", gap: 8, padding: "4px 0", fontSize: 12, color: C.textMuted }}><span style={{ color: C.teal, fontWeight: 700, minWidth: 18 }}>{i + 1}.</span><span>{s}</span></div>)}</div>}
+        {ex.formCues && <div style={{ marginBottom: 8 }}>{(Array.isArray(ex.formCues) ? ex.formCues : []).slice(0, 3).map((c, i) => <div key={i} style={{ fontSize: 11, color: C.success, padding: "2px 0" }}>✅ {c}</div>)}</div>}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 16, padding: "12px 0" }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: timerOn && timer <= 5 ? C.warning : C.teal, fontFamily: "'Bebas Neue',sans-serif" }}>{timer}s</div>
+            <div style={{ fontSize: 10, color: C.textDim }}>Hold</div>
+          </div>
+          <button onClick={() => setTimerOn(!timerOn)} style={{ width: 48, height: 48, borderRadius: 24, background: timerOn ? C.warning + "20" : C.teal + "20", border: `2px solid ${timerOn ? C.warning : C.teal}`, color: timerOn ? C.warning : C.teal, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "inherit" }}>{timerOn ? "⏸" : "▶"}</button>
+        </div>
+        <div style={{ fontSize: 11, color: C.textDim, textAlign: "center" }}>30s hold or 10 slow reps{ex.unilateral ? " · each side" : ""}</div>
+      </Card>
+      <div style={{ display: "flex", gap: 10 }}>
+        {idx > 0 && <Btn variant="dark" onClick={() => { setIdx(i => i - 1); window.scrollTo(0, 0); }} style={{ flex: 1 }}>← Previous</Btn>}
+        <Btn onClick={handleNext} style={{ flex: 2 }} icon={isLast ? "✓" : "→"}>{isLast ? "Complete ROM" : "Next Exercise"}</Btn>
+      </div>
+      <div style={{ height: 90 }} />
+    </div>
+  );
+}
+
 function RecapScreen({onFinish,sessionData}){
   const[saved]=useState(()=>{
     if(!sessionData) return null;
@@ -3204,8 +3311,9 @@ function AppInner(){
     {screen==="profile"&&<ProfileScreen onClose={()=>setScreen("home")} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onViewSummary={()=>setScreen("assessment_summary")} onViewPlan={()=>setScreen("plan_view")} onDevBugs={()=>{setScreen("dev_bugs");}} onDevTest={()=>{setScreen("dev_test");}} onSportChange={()=>{/* Sport priorities changed — clear cached daily workout so next session uses new bias */try{localStorage.removeItem("apex_daily_workout");}catch{}}} onStartFresh={()=>{["apex_sessions","apex_prefs","apex_stats","apex_image_overrides","apex_exercise_progress","apex_unlock_notifications","apex_exercise_swaps","apex_overtraining","apex_cardio_sessions","apex_vo2_tests","apex_hr_settings","apex_pt_protocols","apex_pt_sessions","apex_assessment","apex_youtube_overrides","apex_injuries","apex_injury_history","apex_media_pref","apex_baseline_tests","apex_baseline_capabilities","apex_power_records","apex_hypertrophy_settings","apex_cardio_prefs","apex_daily_workout","apex_carryover","apex_weekly_plan","apex_rotation_indices","apex_weekly_plan_archive","apex_mesocycle","apex_mesocycle_archive","apex_sports","apex_finger_health","apex_finger_log"].forEach(k=>localStorage.removeItem(k));setWorkout(defaultWorkout);setScreen("onboarding");}}/>}
     {/* Resume paused workout prompt */}
     {resumePrompt&&screen==="home"&&<Card glow={C.tealGlow} style={{margin:"0 0 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Unfinished Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} exercises done · {formatTimeAgo(resumePrompt.pausedAt)}</div></div></div><div style={{display:"flex",gap:8}}><Btn onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");}} style={{flex:3}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}} style={{flex:1,padding:"8px 10px",fontSize:11}}>Discard</Btn></div></Card>}
-    {screen==="home"&&<HomeScreen key={"home_"+sessionsRestored} onStart={()=>{const _s=getTodayWorkoutStatus();if(_s==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}/* If workout is in progress (daily tracker) but no resume prompt, skip check-in and rebuild from daily state */const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")} onAddOn={(type)=>{if(type==="pt"){const protocols=JSON.parse(localStorage.getItem("apex_pt_protocols")||"[]");if(protocols.length>0){setPtProtocol(protocols[0]);setScreen("pt_session");}return;}if(type==="cardio"){setScreen("extra_work");return;}/* For ROM, foam, stretch — go to extra work screen */setScreen("extra_work");}} onStartSecondary={()=>{setIsSecondarySession(true);setScreen("checkin");}} onDevBugs={()=>{setScreen("dev_bugs");}} statsLoading={!sessionsRestored}/>}
+    {screen==="home"&&<HomeScreen key={"home_"+sessionsRestored} onStart={()=>{const _s=getTodayWorkoutStatus();if(_s==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}/* If workout is in progress (daily tracker) but no resume prompt, skip check-in and rebuild from daily state */const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} onRetakeAssessment={()=>{setReassessSnap(capturePreReassessmentSnapshot());setScreen("onboarding");}} onEditInjuries={()=>setScreen("injuries")} onProfile={()=>setScreen("profile")} onViewPlan={()=>setScreen("plan_view")} onViewSummary={()=>setScreen("assessment_summary")} onPTSession={(p)=>{setPtProtocol(p);setScreen("pt_session");}} onPTProgress={()=>setScreen("pt_progress")} onBaseline={()=>setScreen("baseline")} onAddOn={(type)=>{if(type==="pt"){const protocols=JSON.parse(localStorage.getItem("apex_pt_protocols")||"[]");if(protocols.length>0){setPtProtocol(protocols[0]);setScreen("pt_session");}return;}if(type==="cardio"){setScreen("extra_work");return;}/* For ROM, foam, stretch — go to extra work screen */setScreen("extra_work");}} onStartSecondary={()=>{setIsSecondarySession(true);setScreen("checkin");}} onDevBugs={()=>{setScreen("dev_bugs");}} onROM={()=>setScreen("rom_routine")} statsLoading={!sessionsRestored}/>}
     {screen==="baseline"&&<BaselineTestFlow onComplete={()=>{setScreen("home");setTab("home");}} onClose={()=>{setScreen("home");setTab("home");}}/>}
+    {screen==="rom_routine"&&<ROMScreen onComplete={()=>{setScreen("home");setTab("home");}} onClose={()=>{setScreen("home");setTab("home");}}/>}
     {/* Resume prompt on Train page too (Fix #18) */}
     {resumePrompt&&screen==="train"&&<Card glow={C.tealGlow} style={{margin:"0 16px 8px",borderColor:C.teal+"40"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:24}}>⏸️</span><div><div style={{fontSize:14,fontWeight:700,color:C.text}}>Resume Workout</div><div style={{fontSize:11,color:C.textMuted}}>{resumePrompt.completedExercises?.length||0} of {resumePrompt.workout?.all?.length||"?"} done · {formatTimeAgo(resumePrompt.pausedAt)}</div></div></div><div style={{display:"flex",gap:8}}><Btn onClick={()=>{setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");}} style={{flex:3}}>Resume →</Btn><Btn size="sm" variant="dark" onClick={()=>{localStorage.removeItem("apex_paused_workout");setResumePrompt(null);}} style={{flex:1,padding:"8px 10px",fontSize:11}}>Discard</Btn></div></Card>}
     {screen==="train"&&<TrainScreen onStart={()=>{const _s2=getTodayWorkoutStatus();if(_s2==="completed"){return;}if(resumePrompt){setWorkout(resumePrompt.workout);setExIdx(resumePrompt.exIdx);setCompletedExercises(resumePrompt.completedExercises||[]);setSessionStart(resumePrompt.sessionStart);setCheckInData(resumePrompt.checkInData);setResumePrompt(null);setScreen("perform");return;}const dp=getDailyProgress();if(dp.hasWorkout&&dp.doneCount>0&&dp.pct<100&&dp.workout){setWorkout(dp.workout);setExIdx(dp.doneCount);setCompletedExercises([]);setSessionStart(Date.now());if(dp.checkInData)setCheckInData(dp.checkInData);setScreen("perform");return;}setScreen("checkin");}} resumePrompt={resumePrompt} workout={workout} mode={workoutMode} onModeChange={setWorkoutMode} onExtraWork={()=>setScreen("extra_work")} onSwapExercise={(orig,alt)=>{setWorkout(w=>{const swap={...alt,_swappedFor:orig.name,_swapReason:"User requested alternative"};const newAll=w.all.map(e=>e.id===orig.id?swap:e);const newWarmup=(w.warmup||[]).map(e=>e.id===orig.id?swap:e);const newMain=(w.main||[]).map(e=>e.id===orig.id?swap:e);const newCooldown=(w.cooldown||[]).map(e=>e.id===orig.id?swap:e);const newBlocks={...w.blocks};if(newBlocks.inhibit)newBlocks.inhibit=newBlocks.inhibit.map(e=>e.id===orig.id?swap:e);if(newBlocks.lengthen)newBlocks.lengthen=newBlocks.lengthen.map(e=>e.id===orig.id?swap:e);if(newBlocks.cooldownStretches)newBlocks.cooldownStretches=newBlocks.cooldownStretches.map(e=>e.id===orig.id?swap:e);return{...w,all:newAll,warmup:newWarmup,main:newMain,cooldown:newCooldown,blocks:newBlocks};});}}/>}
