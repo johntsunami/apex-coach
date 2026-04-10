@@ -435,32 +435,39 @@ function ExerciseIllustration({exerciseId, width="100%", height=160}) {
 // Dynamic phase: reads from mesocycle → assessment → default 1
 function getCurrentPhase() {
   let raw = 1;
+  let source = "default";
   try {
     const meso = JSON.parse(localStorage.getItem("apex_mesocycle"));
-    if (meso?.phase) raw = meso.phase;
+    if (meso?.phase) { raw = meso.phase; source = "mesocycle"; }
   } catch {}
   if (raw === 1) {
     try {
       const a = JSON.parse(localStorage.getItem("apex_assessment"));
-      if (a?.startingPhase) raw = a.startingPhase;
+      if (a?.startingPhase) { raw = a.startingPhase; source = "assessment.startingPhase"; }
     } catch {}
   }
+  const rawBefore = raw;
   // Sanity check: < 6 sessions means Phase 1 regardless of stored value
+  let sessionCount = 0;
   try {
     const sessions = JSON.parse(localStorage.getItem("apex_sessions") || "[]");
+    sessionCount = sessions.length;
     if (sessions.length < 6 && raw > 1) {
       console.warn('[PHASE SANITY] Resetting phase from', raw, 'to 1 —', sessions.length, 'sessions completed');
       raw = 1;
     }
   } catch {}
   // Apply safeguard ceiling (age/condition caps)
+  let sgMax = 5;
   try {
     const { checkSafeguardPhaseReadiness } = require("./utils/safeguards.js");
     const a = JSON.parse(localStorage.getItem("apex_assessment") || "{}");
     const injuries = JSON.parse(localStorage.getItem("apex_injuries") || "[]").filter(i => i.status !== "resolved");
     const sg = checkSafeguardPhaseReadiness(raw, a?.userAge, a?.fitnessLevel, injuries);
+    sgMax = sg.maxPhase;
     if (!sg.allowed) { console.log('[PHASE CAP]', raw, '→', sg.maxPhase, ':', sg.message); raw = sg.maxPhase; }
   } catch {}
+  console.log('[PHASE DEBUG] source:', source, 'raw:', rawBefore, 'sessions:', sessionCount, 'safeguard max:', sgMax, 'final:', raw);
   return raw;
 }
 const CURRENT_PHASE = getCurrentPhase();

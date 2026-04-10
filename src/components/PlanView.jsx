@@ -32,7 +32,7 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
 // Cache version — increment when generation logic changes to invalidate stale cached weeks
-const PLAN_GEN_VERSION = 11;
+const PLAN_GEN_VERSION = 12;
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
@@ -82,7 +82,19 @@ export default function PlanView({ onClose }) {
   // Get REAL data from weekly planner and mesocycle
   const weekPlan = getWeeklyPlan?.() || null;
   const meso = getMesocycle?.() || null;
-  const CURRENT_PHASE = meso?.phase || assessment?.startingPhase || 1;
+  // Apply same sanity checks as App.jsx getCurrentPhase()
+  let CURRENT_PHASE = meso?.phase || assessment?.startingPhase || 1;
+  // Sanity: < 6 sessions = Phase 1
+  if ((sessions || []).length < 6 && CURRENT_PHASE > 1) {
+    console.warn('[PLANVIEW PHASE SANITY] Resetting from', CURRENT_PHASE, 'to 1 —', (sessions || []).length, 'sessions');
+    CURRENT_PHASE = 1;
+  }
+  // Safeguard ceiling (age/conditions)
+  try {
+    const { checkSafeguardPhaseReadiness } = require("../utils/safeguards.js");
+    const sg = checkSafeguardPhaseReadiness(CURRENT_PHASE, assessment?.userAge, assessment?.fitnessLevel, injuries);
+    if (!sg.allowed) { console.log('[PLANVIEW PHASE CAP]', CURRENT_PHASE, '→', sg.maxPhase); CURRENT_PHASE = sg.maxPhase; }
+  } catch {}
   const vs = getVolumeSummary(CURRENT_PHASE);
   const tierInfo = meso ? { tier: meso.tier, ...(TIERS[meso.tier] || {}) } : null;
   const readiness = checkPhaseReadiness?.(CURRENT_PHASE, tierInfo?.tier || 2) || null;
