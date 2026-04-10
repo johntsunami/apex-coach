@@ -92,7 +92,14 @@ function protocolNameFromCondition(condition) {
 }
 
 const SESSION_TYPES = ["morning", "midday", "evening", "as_needed"];
-const PHASE_NAMES = ["Pain Management", "Stability Foundation", "Functional Loading", "Progressive Strengthening"];
+const PHASE_NAMES_BY_SEVERITY = {
+  1: ["Maintenance", "Maintenance+", "Integration", "Ongoing"],
+  2: ["Active Management", "Stability Building", "Functional Loading", "Progressive Return"],
+  3: ["Recovery", "Stability Foundation", "Functional Loading", "Progressive Strengthening"],
+  4: ["Pain Management", "Stability Foundation", "Functional Loading", "Progressive Strengthening"],
+  5: ["Acute Care", "Pain Control", "Stability Foundation", "Functional Loading"],
+};
+const PHASE_NAMES = PHASE_NAMES_BY_SEVERITY[4]; // default fallback
 const PHASE_GOALS = [
   ["Pain ≤4/10 during daily activities", "Basic exercises tolerated", "Movement patterns learned"],
   ["Core/joint stability improved", "Hold positions 30s+", "No pain during exercises"],
@@ -105,6 +112,7 @@ const PHASE_WEEKS = [[1,4],[5,8],[9,12],[13,24]];
 export function generateProtocols(assessment) {
   if (!assessment?.conditions?.length) return [];
   const protocols = [];
+  const seenAreas = new Set(); // Deduplicate: one protocol per body area
   for (const cond of assessment.conditions) {
     const dp = assessment.directionalPreferences?.[cond.conditionId];
     const tl = assessment.painTimelines?.[cond.conditionId];
@@ -113,24 +121,44 @@ export function generateProtocols(assessment) {
     const freq = determineFrequency(tl);
     const exMap = PT_EXERCISES[type] || PT_EXERCISES.neutral_stabilization;
     const exerciseIds = exMap.phase1 || [];
+
+    // Deduplicate: skip if we already have a protocol for this body area
+    // Keep the MORE SPECIFIC condition (has a conditionId, not just generic area)
+    const area = (cond.bodyArea || cond.name || "").toLowerCase().replace(/left |right /g, "").trim();
+    if (seenAreas.has(area)) {
+      console.log("[PT DEDUP] Skipping duplicate protocol for area:", area, "condition:", cond.conditionId);
+      continue;
+    }
+    seenAreas.add(area);
+
+    // Severity-based phase names
+    const sev = cond.severity || 2;
+    const phaseNames = PHASE_NAMES_BY_SEVERITY[Math.min(5, Math.max(1, sev))] || PHASE_NAMES;
+    // Start at appropriate phase based on severity
+    const startPhase = sev <= 1 ? 4 : sev <= 2 ? 3 : sev <= 3 ? 2 : 1; // Low severity → skip early rehab phases
+
     const graduation = [
-      { label: "Pain consistently ≤2/10 for 2 weeks", met: false },
-      { label: "Full ROM restored vs baseline", met: false },
+      { label: "Pain consistently ≤2/10 for 2 weeks", met: sev <= 1 },
+      { label: "Full ROM restored vs baseline", met: sev <= 1 },
       { label: "Stability tests passed", met: false },
-      { label: "No flare-ups in last 4 weeks", met: false },
+      { label: "No flare-ups in last 4 weeks", met: sev <= 2 },
       { label: "Cleared by PT/physician", met: false },
     ];
+    // Use condition name in protocol name (not generic area)
+    const condName = cond.name || cond.conditionId?.replace(/_/g, " ") || area;
+    const phaseLabelForName = phaseNames[startPhase - 1] || "Management";
     protocols.push({
       condition_key: cond.conditionId,
       condition: cond,
-      protocol_name: protocolNameFromCondition(cond),
+      protocol_name: `${condName} — ${phaseLabelForName}`,
       protocol_type: type,
-      current_phase: 1,
-      exercises: exerciseIds,
-      frequency_per_day: freq.perDay,
-      session_duration_minutes: freq.duration,
+      current_phase: startPhase,
+      _phaseNames: phaseNames,
+      exercises: (exMap[`phase${startPhase}`] || exMap.phase1 || exerciseIds),
+      frequency_per_day: sev <= 1 ? 1 : freq.perDay, // severity 1 = 1x daily maintenance
+      session_duration_minutes: sev <= 1 ? 10 : freq.duration,
       graduation_criteria: graduation,
-      pain_baseline: pb?.painType === "Constant" ? 6 : 4,
+      pain_baseline: pb?.painType === "Constant" ? 6 : sev <= 1 ? 1 : 4,
       functional_goals: [],
       timeline: tl,
       pain_behavior: pb,
@@ -295,7 +323,7 @@ export function PTProgressCard({ onStartSession, onViewProgress }) {
           <div key={idx} style={{ marginBottom: idx < protocols.length - 1 ? 12 : 0, paddingBottom: idx < protocols.length - 1 ? 12 : 0, borderBottom: idx < protocols.length - 1 ? `1px solid ${C.border}` : "none" }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 4 }}>{proto.protocol_name}</div>
             <div style={{ fontSize: 10, color: C.textDim, marginBottom: 6 }}>
-              Phase {proto.current_phase} of 4 — Week {weekInPhase} of {totalWeeks} · {PHASE_NAMES[proto.current_phase - 1]}
+              Phase {proto.current_phase} of 4 — Week {weekInPhase} of {totalWeeks} · {(proto._phaseNames || PHASE_NAMES)[proto.current_phase - 1] || "Active"}
             </div>
             <ProgressBar value={phasePct} max={100} color={C.purple} height={4} />
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
