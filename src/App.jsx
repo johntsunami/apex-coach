@@ -1145,12 +1145,12 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
         if (ga.includes("strength") && ex.type === "strength") s *= 1.5;
         // Recency penalty
         if (_recentIds.includes(ex.id)) s *= 0.3;
-        // Location filter (can't do this exercise here at all)
-        if (!locationFilter(ex, location)) s *= 0.05;
+        // Location filter — HARD block (don't just reduce score)
+        if (!locationFilter(ex, location)) return 0;
         return s;
       };
 
-      const scored = pool.map(ex => ({ ...ex, _score: _scoreEx(ex) })).sort((a, b) => b._score - a._score);
+      const scored = pool.map(ex => ({ ...ex, _score: _scoreEx(ex) })).filter(ex => ex._score > 0).sort((a, b) => b._score - a._score);
       const result = [];
       const usedIds = new Set();
       const usedChains = new Set();
@@ -2085,7 +2085,7 @@ function TrainScreen({onStart,resumePrompt,workout,mode,onModeChange,onExtraWork
               <div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:C.text}}>{ex.name}</div><div style={{fontSize:10,color:C.textDim}}>{p.sets}×{ex._duration||p.reps}{p.tempo?` · ${p.tempo}`:""} · {exLocationLabel(ex)}{p.intensity?` · ${p.intensity}`:""}</div>{ex._reason&&<div style={{fontSize:8,color:C.teal,marginTop:1}}>{ex._reason}</div>}</div>
               <button onClick={(e)=>{e.stopPropagation();setSwapTarget(ex);}} style={{width:28,height:28,borderRadius:8,background:"transparent",border:"none",color:C.textDim,fontSize:16,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,opacity:0.5}} title="Options">⋯</button>
             </div>
-            {ex._swappedFor&&<div style={{marginTop:4,padding:"4px 8px",background:C.warning+"10",borderRadius:6,borderLeft:`2px solid ${C.warning}`}}><span style={{fontSize:9,color:C.warning,fontWeight:700}}>🔄</span><span style={{fontSize:9,color:C.textMuted}}> Swapped for {ex._swappedFor}</span></div>}
+            {ex._swappedFor&&<div style={{marginTop:4,fontSize:9,color:C.textDim}}>🔄 Replaces {ex._swappedFor}</div>}
             {ex._buildingTowardId&&<div style={{marginTop:4,padding:"4px 8px",background:C.purple+"10",borderRadius:6,borderLeft:`2px solid ${C.purple}`}}><span style={{fontSize:9,color:C.purple,fontWeight:700}}>🎯 {getProgressPercent(ex._buildingTowardId)}%</span><span style={{fontSize:9,color:C.textMuted}}> toward {ex._buildingToward}</span></div>}
           </Card>);})}
         </div>
@@ -2236,7 +2236,7 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
     </Card>
     </CollapseSection>
     {/* Exercise list with WHY */}
-    {(()=>{const overloads=getWorkoutOverloads(workout,CURRENT_PHASE);const hasOverloads=Object.keys(overloads).length>0;return(<Card>
+    {(()=>{const _allOverloads=getWorkoutOverloads(workout,CURRENT_PHASE);const mainIds=new Set((workout.main||[]).map(e=>e.id));const overloads=Object.fromEntries(Object.entries(_allOverloads).filter(([id])=>mainIds.has(id)));const hasOverloads=Object.keys(overloads).length>0;return(<Card>
       <div style={{fontSize:11,fontWeight:700,color:C.teal,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>YOUR EXERCISES ({workout.all.length} total · ~{Math.round(workout.all.length*3.5)} min)</div>
       {hasOverloads&&<div style={{padding:8,background:C.tealBg,borderRadius:8,marginBottom:10,borderLeft:`3px solid ${C.teal}`}}><div style={{fontSize:9,fontWeight:700,color:C.teal,marginBottom:4}}>PROGRESSIVE OVERLOAD — Based on last session</div>{Object.entries(overloads).map(([id,rec])=>{const ex=exerciseDB.find(e=>e.id===id);return ex&&rec.action==="progress"?<div key={id} style={{fontSize:9,color:C.text,padding:"2px 0"}}><b>{ex.name}</b>: {rec.variable==="load"?`${rec.from} → ${rec.to} lbs`:rec.variable==="reps"?`${rec.from} → ${rec.to} reps`:rec.variable==="sets"?`${rec.from} → ${rec.to} sets`:"↓ rest"} — <span style={{color:C.teal}}>{rec.reason}</span></div>:rec.action==="regress"&&ex?<div key={id} style={{fontSize:9,color:C.danger,padding:"2px 0"}}><b>{ex.name}</b>: {rec.reason}</div>:null;})}</div>}
       {[{label:"WARM-UP",exercises:workout.warmup,color:C.info},{label:"MAIN",exercises:workout.main,color:C.teal},{label:"COOLDOWN",exercises:workout.cooldown,color:C.success}].map(sec=>(
@@ -2247,9 +2247,9 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
             <div style={{flex:1}}>
               <div style={{fontSize:12,fontWeight:600,color:C.text}}>{ex.name}</div>
               <div style={{fontSize:10,color:C.textMuted}}>{ex.whyForYou||ex.purpose}</div>
-              {ol&&ol.action==="progress"&&<div style={{fontSize:8,color:C.teal,marginTop:2}}>📈 {ol.variable}: {ol.from}→{ol.to} {ol.variable==="load"?"lbs":ol.variable}</div>}
-              {ol&&ol.action==="regress"&&<div style={{fontSize:8,color:C.danger,marginTop:2}}>⚠️ {ol.reason}</div>}
-              {ex._swappedFor&&<div style={{fontSize:9,color:C.warning,marginTop:2}}>🔄 Swapped for {ex._swappedFor} — {ex._swapReason}</div>}
+              {ol&&ol.action==="progress"&&sec.label==="MAIN"&&<div style={{fontSize:8,color:C.teal,marginTop:2}}>📈 {ol.variable}: {ol.from}→{ol.to} {ol.variable==="load"?"lbs":ol.variable}</div>}
+              {ol&&ol.action==="regress"&&sec.label==="MAIN"&&<div style={{fontSize:8,color:C.danger,marginTop:2}}>⚠️ {ol.reason}</div>}
+              {ex._swappedFor&&<div style={{fontSize:9,color:C.textDim,marginTop:2}}>🔄 Replaces {ex._swappedFor}</div>}
             </div>
           </div>);})}
         </div>
