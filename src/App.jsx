@@ -1437,7 +1437,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     // Track favorites added per body part to prevent imbalance
     const favBpCount = {};
     for (const add of rotatedAdditions) {
-      if (!mainIds.has(add.id) && main.length < mainLimit + 1) {
+      if (!mainIds.has(add.id) && main.length < mainLimit + 1 && locationFilter(add, location)) {
         const bp = add.bodyPart || "other";
         if ((favBpCount[bp] || 0) >= 2) continue; // Max 2 favorites per body part
         const addSets = parseInt(add.phaseParams?.[String(phase)]?.sets) || 1;
@@ -1456,7 +1456,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     const supersets = [];
     for (const ex of main) {
       const power = getPESSuperset(ex, phase);
-      if (power && !main.find(m => m.id === power.id) && !supersets.find(s => s.id === power.id)) {
+      if (power && !main.find(m => m.id === power.id) && !supersets.find(s => s.id === power.id) && locationFilter(power, location)) {
         supersets.push(power);
       }
     }
@@ -1500,6 +1500,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       e.id && !mainIds.has(e.id) &&
       e.category === "main" &&
       (e.phaseEligibility || []).includes(phase) &&
+      locationFilter(e, location) &&
       e.safetyTier !== "red" &&
       (matchPatterns.some(p => (e.movementPattern || "").toLowerCase().includes(p)) ||
        matchBodyParts.includes(e.bodyPart))
