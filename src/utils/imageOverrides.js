@@ -59,30 +59,32 @@ export async function syncOverridesFromSupabase() {
   } catch { /* table may not exist yet — that's fine */ }
 }
 
-// ── Client-side image resize ──────────────────────────────────
+// ── Client-side image resize (800×600 WebP, cover-crop) ──────
 
-function resizeImage(file, maxW = 400, maxH = 300) {
-  return new Promise((resolve) => {
+function resizeImage(file, maxW = 800, maxH = 600) {
+  return new Promise((resolve, reject) => {
     const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
     img.onload = () => {
-      let { width: w, height: h } = img;
-      if (w <= maxW && h <= maxH) {
-        // Already within bounds — convert to JPEG blob anyway
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        c.getContext("2d").drawImage(img, 0, 0);
-        c.toBlob(resolve, "image/jpeg", 0.85);
-        return;
-      }
-      const ratio = Math.min(maxW / w, maxH / h);
-      w = Math.round(w * ratio);
-      h = Math.round(h * ratio);
       const c = document.createElement("canvas");
-      c.width = w; c.height = h;
-      c.getContext("2d").drawImage(img, 0, 0, w, h);
-      c.toBlob(resolve, "image/jpeg", 0.85);
+      c.width = maxW; c.height = maxH;
+      const ctx = c.getContext("2d");
+      // Cover-fit: scale and center-crop to fill target dimensions
+      const scale = Math.max(maxW / img.width, maxH / img.height);
+      const sw = maxW / scale;
+      const sh = maxH / scale;
+      const sx = (img.width - sw) / 2;
+      const sy = (img.height - sh) / 2;
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, maxW, maxH);
+      URL.revokeObjectURL(objectUrl);
+      // Try WebP first, fallback to JPEG
+      c.toBlob(
+        blob => blob ? resolve(blob) : c.toBlob(resolve, "image/jpeg", 0.85),
+        "image/webp", 0.85
+      );
     };
-    img.src = URL.createObjectURL(file);
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error("Image load failed")); };
+    img.src = objectUrl;
   });
 }
 
@@ -90,10 +92,11 @@ function resizeImage(file, maxW = 400, maxH = 300) {
 
 export async function uploadExerciseImage(exerciseId, file, slot = 0) {
   const blob = await resizeImage(file);
-  const path = `${exerciseId}/${slot}.jpg`;
+  const ext = blob.type === "image/webp" ? "webp" : "jpg";
+  const path = `${exerciseId}/${slot}.${ext}`;
 
   const { error } = await supabase.storage.from(BUCKET)
-    .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
+    .upload(path, blob, { upsert: true, contentType: blob.type || "image/webp" });
   if (error) throw new Error(error.message);
 
   const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path);

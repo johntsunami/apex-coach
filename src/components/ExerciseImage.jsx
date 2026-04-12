@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { getOverrideForExercise, uploadExerciseImage, clearOverride } from "../utils/imageOverrides.js";
 import YouTubePlayer, { VideoMapperModal, getVideoOverride, getNasmSlug } from "./YouTubePlayer.jsx";
 import EXERCISE_SVGS from "../data/exerciseSvgs.js";
+import { useAuth } from "./AuthProvider.jsx";
+import { isDeveloper } from "./BugReport.jsx";
 
 // ═══════════════════════════════════════════════════════════════
 // ExerciseImage — two frames: side-by-side or crossfade + dev image editor
@@ -9,6 +11,7 @@ import EXERCISE_SVGS from "../data/exerciseSvgs.js";
 // ═══════════════════════════════════════════════════════════════
 
 const C = { bgCard: "#0a1628", teal: "#00d2c8", textDim: "#4a5a78", textMuted: "#8b95a7", border: "rgba(255,255,255,0.08)", info: "#3b82f6" };
+// Dev mode: production devs (isDeveloper check) OR local dev with ?dev param
 const isDevMode = () => import.meta.env.DEV && new URLSearchParams(window.location.search).has("dev");
 // Images ALWAYS default — video is opt-in per interaction, not persisted
 const getMediaPref = () => "images";
@@ -85,7 +88,7 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
 
   const doUpload = async (file, slot) => {
     if (!file) return;
-    if (file.size > 512000) { setStatus("File too large (max 500KB)"); return; }
+    if (file.size > 10485760) { setStatus("File too large (max 10MB — auto-resized on upload)"); return; }
     setUploading(true); setStatus(null);
     try {
       await uploadExerciseImage(exercise.id, file, slot);
@@ -121,10 +124,10 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
 
         <div style={S.guide}>
           <strong style={{ color: C.teal }}>Image Guidelines</strong><br />
-          Recommended: 400 x 300px (4:3) &middot; Min: 300 x 225px<br />
-          Max file size: 500KB &middot; JPG or WebP preferred<br />
+          Target: 800 x 600px (4:3) &middot; Auto-resized on upload<br />
+          Output: WebP &middot; Max ~200KB after resize<br />
           Landscape orientation &middot; Plain background<br />
-          Images auto-resized to 400x300 if larger
+          Becomes the default image for ALL users
         </div>
 
         {/* Upload same image as both start + end */}
@@ -208,7 +211,8 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [rev, setRev] = useState(0); // bump to force re-read overrides
   const [videoRev, setVideoRev] = useState(0);
-  const dev = isDevMode();
+  const _auth = useAuth();
+  const dev = isDevMode() || isDeveloper(_auth?.user);
 
   // Images always default — video is per-exercise opt-in
   const [showVideo, setShowVideo] = useState(false);
