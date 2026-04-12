@@ -223,6 +223,7 @@ const ROM_EXERCISES = [
   },
   {
     id: "rom_cross_body_stretch", name: "Cross-Body Shoulder Stretch", area: "Shoulders", section: 2,
+    imageUrl: "https://images.pexels.com/photos/5132103/pexels-photo-5132103.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 15, reps: "2 each side", totalTime: 60,
     cues: ["Keep the stretching arm straight", "Pull at the elbow, not the wrist", "Don't let the shoulder hike up"],
     breathing: "Slow breathing, exhale deeper into stretch",
@@ -373,6 +374,7 @@ const ROM_EXERCISES = [
   // ── SECTION 5: LUMBAR SPINE (2) ─────────────────────────
   {
     id: "rom_mckenzie_pressup", name: "McKenzie Press-Up", area: "Lumbar Spine", section: 5,
+    imageUrl: "https://images.pexels.com/photos/4708411/pexels-photo-4708411.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 2, reps: "10", totalTime: 40,
     cues: ["HIPS STAY ON THE FLOOR — this is not a push-up", "Exhale and let your back sag at the top", "If symptoms centralize (move toward midline), this is working"],
     breathing: "Exhale at top of extension, inhale as you lower",
@@ -412,6 +414,7 @@ const ROM_EXERCISES = [
   // ── SECTION 6: HIPS (6) ─────────────────────────────────
   {
     id: "rom_hip_kneeling_ext", name: "Hip Extension in Kneeling (McKenzie)", area: "Hips", section: 6,
+    imageUrl: "https://images.pexels.com/photos/5331197/pexels-photo-5331197.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 15, reps: "3 each side", totalTime: 90,
     cues: ["Squeeze the glute of the BACK leg", "Don't arch your lower back — tuck pelvis slightly", "Feel the stretch in the front of the back hip"],
     breathing: "Exhale as you push forward, breathe normally during hold",
@@ -491,6 +494,7 @@ const ROM_EXERCISES = [
   },
   {
     id: "rom_butterfly", name: "Butterfly Stretch (Adductors)", area: "Hips", section: 6,
+    imageUrl: "https://images.pexels.com/photos/7592487/pexels-photo-7592487.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 20, reps: "3", totalTime: 60,
     cues: ["Sit up TALL — don't round forward", "Use elbows on inner thighs for gentle pressure", "Feet closer to body = more intense"],
     breathing: "Slow breathing, exhale deeper into stretch",

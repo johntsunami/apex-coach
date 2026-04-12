@@ -166,6 +166,7 @@ const PM_EXERCISES = [
   {
     id: "pm_thoracic_roller", name: "Thoracic Extension Over Roller", subtitle: "Passive Drape",
     area: "Thoracic Spine", section: 3,
+    imageUrl: "https://images.pexels.com/photos/4804294/pexels-photo-4804294.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 120, reps: "Reposition roller 3 times (upper, mid, lower)", totalTime: 120,
     cues: [
       "Relax completely — let your body drape over the roller",
@@ -255,6 +256,7 @@ const PM_EXERCISES = [
   {
     id: "pm_legs_up_wall", name: "Legs Up the Wall", subtitle: "Viparita Karani",
     area: "Hips", section: 5,
+    imageUrl: "https://images.pexels.com/photos/3768179/pexels-photo-3768179.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 180, reps: "1 hold", totalTime: 180,
     cues: [
       "Butt doesn't have to touch the wall — get as close as comfortable",
@@ -511,6 +513,7 @@ const PM_EXERCISES = [
   {
     id: "pm_savasana", name: "Savasana", subtitle: "Corpse Pose — Final Relaxation",
     area: "Full Body Release", section: 9,
+    imageUrl: "https://images.pexels.com/photos/3822647/pexels-photo-3822647.jpeg?auto=compress&cs=tinysrgb&w=600",
     hold: 240, reps: "1 hold", totalTime: 240,
     cues: [
       "Scan from head to toes — release any tension you find",
