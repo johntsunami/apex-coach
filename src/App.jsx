@@ -3231,7 +3231,7 @@ function AppInner(){
   // Loading spinner
   // Intercept password recovery flow — show reset form instead of normal app
   if(passwordRecovery)return<PasswordResetForm onComplete={()=>{clearPasswordRecovery();setScreen("home");setTab("home");}}/>;
-  if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg}}><div style={{textAlign:"center"}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{fontSize:12,color:C.textDim,marginTop:8}}>Loading...</div></div></div>);
+  if(loading||screen==="init")return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:C.bg,flexDirection:"column",gap:12}}><div style={{fontSize:48,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:6}}>APEX</div><div style={{width:24,height:24,border:"3px solid rgba(0,210,200,0.2)",borderTopColor:C.teal,borderRadius:"50%",animation:"spin 0.8s linear infinite"}}/><style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style></div>);
   return(<>
     {/* Auth screens (unauthenticated) */}
     {screen==="auth"&&authView==="landing"&&<LandingPage onSignUp={()=>setAuthView("signup")} onLogIn={()=>setAuthView("login")}/>}

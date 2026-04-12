@@ -57,19 +57,27 @@ export default function AuthProvider({ children }) {
   }
 
   // Check session on mount + listen for auth changes
+  // IMPORTANT: onAuthStateChange is the single source of truth for auth state.
+  // getSession() is used only as a fast pre-check. We do NOT set loading=false from
+  // getSession's null-user path to avoid a landing-page flash when onAuthStateChange
+  // will deliver the real session moments later (token refresh, INITIAL_SESSION event).
   useEffect(() => {
     if (!isSupabaseAvailable()) {
       setLoading(false);
       return;
     }
+    let authResolved = false; // tracks whether onAuthStateChange has fired
 
-    // Get initial session
+    // Get initial session — pre-populate user for faster first render,
+    // but do NOT setLoading(false) here. Let onAuthStateChange handle that.
     supabase.auth.getSession().then(({ data }) => {
       const session = data?.session;
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      else setLoading(false);
-    }).catch(() => { setLoading(false); });
+      if (session?.user) {
+        setUser(session.user);
+        fetchProfile(session.user.id);
+      }
+      // If no session, don't set loading=false — wait for onAuthStateChange
+    }).catch(() => {});
 
     // Check URL for password recovery redirect (hash or query params)
     try {
@@ -90,8 +98,9 @@ export default function AuthProvider({ children }) {
       }
     } catch {}
 
-    // Listen for auth changes
+    // Listen for auth changes — this is the authoritative gate for loading=false
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      authResolved = true;
       if (_event === "PASSWORD_RECOVERY") {
         console.log("[AUTH] PASSWORD_RECOVERY event received");
         setPasswordRecovery(true);
@@ -110,7 +119,16 @@ export default function AuthProvider({ children }) {
       else { setProfile(null); setLoading(false); }
     });
 
-    return () => subscription.unsubscribe();
+    // Safety net: if onAuthStateChange never fires within 3s (e.g., network issue,
+    // Supabase outage), stop showing the spinner and let the app render.
+    const timeout = setTimeout(() => {
+      if (!authResolved) {
+        console.warn("[AUTH] onAuthStateChange did not fire within 3s — falling back");
+        setLoading(false);
+      }
+    }, 3000);
+
+    return () => { subscription.unsubscribe(); clearTimeout(timeout); };
   }, []);
 
   async function fetchProfile(userId) {
