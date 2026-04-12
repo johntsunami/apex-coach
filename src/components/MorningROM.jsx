@@ -988,7 +988,9 @@ export default function MorningROMScreen({ onComplete, onClose }) {
         <div style={{ fontSize: 22, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1 }}>
           {next?.name}
         </div>
-        <div style={{ width: "60%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}` }} dangerouslySetInnerHTML={{ __html: next?.svg || "" }} />
+        {next?.imageUrl
+          ? <img src={next.imageUrl} alt={next.name} style={{ width: "60%", borderRadius: 12, border: `1px solid ${C.border}`, display: "block", objectFit: "cover", maxHeight: 160, background: "#0a1628" }} />
+          : <div style={{ width: "60%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}` }} dangerouslySetInnerHTML={{ __html: next?.svg || "" }} />}
       </div>
     );
   }
@@ -1029,8 +1031,11 @@ export default function MorningROMScreen({ onComplete, onClose }) {
           {ex.area?.toUpperCase()} · {idx + 1} of {exercises.length}
         </div>
 
-        {/* SVG illustration */}
-        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: ex.videoUrl ? 6 : 12 }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
+        {/* Exercise illustration — real image if available, SVG fallback */}
+        {ex.imageUrl
+          ? <img src={ex.imageUrl} alt={ex.name} style={{ width: "100%", borderRadius: 12, border: `1px solid ${C.border}`, marginBottom: ex.videoUrl ? 6 : 12, display: "block", objectFit: "cover", maxHeight: 260, background: "#0a1628" }} onError={(e) => { e.target.style.display = "none"; e.target.nextSibling && (e.target.nextSibling.style.display = "block"); }} />
+          : null}
+        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: ex.videoUrl ? 6 : 12, display: ex.imageUrl ? "none" : "block" }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
         {ex.videoUrl && <a href={ex.videoUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: C.info, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, marginBottom: 8 }}>▶ Watch demo</a>}
 
         {/* Exercise name */}
