@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getOverrideForExercise, uploadExerciseImage, clearOverride } from "../utils/imageOverrides.js";
+import { searchExerciseImages as _searchImages, selectWebImage as _selectWebImg, isSearchAvailable as _isSearchAvailable } from "../utils/imageSearch.js";
 import YouTubePlayer, { VideoMapperModal, getVideoOverride, getNasmSlug } from "./YouTubePlayer.jsx";
 import EXERCISE_SVGS from "../data/exerciseSvgs.js";
 import { useAuth } from "./AuthProvider.jsx";
@@ -77,14 +78,22 @@ function PencilIcon({ onClick }) {
   );
 }
 
-// ── Image Edit Modal ──────────────────────────────────────────
+// ── Image Edit Modal (menu / search / preview) ──────────────
 
 function ImageEditModal({ exercise, onClose, onUpdated }) {
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState(null);
-  const startRef = useRef(null);
-  const endRef = useRef(null);
   const bothRef = useRef(null);
+  // Search state
+  const [view, setView] = useState("menu"); // "menu" | "search" | "preview"
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const name = (exercise?.name || "").replace(/\s*\(.*\)\s*$/, "").trim();
+    return name + " exercise proper form";
+  });
+  const [searchResults, setSearchResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const _searchAvail = _isSearchAvailable();
 
   const doUpload = async (file, slot) => {
     if (!file) return;
@@ -106,69 +115,150 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
     onUpdated();
   };
 
+  const doSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setSearching(true); setStatus(null);
+    try {
+      const { results } = await _searchImages(searchQuery);
+      setSearchResults(results);
+      if (results.length === 0) setStatus("No images found. Try different keywords.");
+    } catch (e) { setStatus("Search error: " + e.message); }
+    setSearching(false);
+  };
+
+  const doSelectWeb = async () => {
+    if (!selectedImage) return;
+    setUploading(true); setStatus(null);
+    try {
+      await _selectWebImg(exercise.id, selectedImage.url);
+      setStatus("Saved!");
+      onUpdated();
+      setView("menu");
+    } catch (e) {
+      setStatus("Could not download image. Long-press to save it, then use Upload.");
+    }
+    setUploading(false);
+  };
+
+  const hasOverride = !!getOverrideForExercise(exercise?.id);
+
   const S = {
     overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 },
-    card: { background: "#0d1425", border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, width: "100%", maxWidth: 360 },
+    card: { background: "#0d1425", border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, width: "100%", maxWidth: 380, maxHeight: "90vh", overflowY: "auto" },
     title: { fontSize: 16, fontWeight: 700, color: "#e8ecf4", marginBottom: 4 },
-    sub: { fontSize: 11, color: C.textDim, marginBottom: 16 },
+    sub: { fontSize: 11, color: C.textDim, marginBottom: 12 },
     btn: (color = C.teal) => ({ width: "100%", padding: "12px 16px", borderRadius: 10, border: `1px solid ${color}40`, background: color + "15", color, fontSize: 13, fontWeight: 600, cursor: uploading ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 8, opacity: uploading ? 0.5 : 1 }),
-    guide: { fontSize: 10, color: C.textDim, lineHeight: 1.6, padding: "10px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 8, marginBottom: 12 },
-    status: { fontSize: 12, fontWeight: 600, color: status?.startsWith("Error") ? "#ef4444" : C.teal, textAlign: "center", marginTop: 8 },
+    status: { fontSize: 12, fontWeight: 600, color: status?.startsWith("Error") || status?.startsWith("Could not") || status?.startsWith("No images") || status?.startsWith("Search error") ? "#ef4444" : C.teal, textAlign: "center", marginTop: 8 },
   };
 
   return (
     <div style={S.overlay} onClick={onClose}>
       <div style={S.card} onClick={e => e.stopPropagation()}>
-        <div style={S.title}>Edit Image: {exercise.name}</div>
-        <div style={S.sub}>{exercise.id}</div>
 
-        <div style={S.guide}>
-          <strong style={{ color: C.teal }}>Image Guidelines</strong><br />
-          Target: 800 x 600px (4:3) &middot; Auto-resized on upload<br />
-          Output: WebP &middot; Max ~200KB after resize<br />
-          Landscape orientation &middot; Plain background<br />
-          Becomes the default image for ALL users
-        </div>
+        {/* ── MENU VIEW ── */}
+        {view === "menu" && <>
+          <div style={S.title}>Update Exercise Image</div>
+          <div style={S.sub}>{exercise.name}</div>
 
-        {/* Upload same image as both start + end */}
-        <input ref={bothRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
-          onChange={async (e) => {
-            const f = e.target.files[0]; if (!f) return;
-            await doUpload(f, 0);
-            await doUpload(f, 1);
-          }} />
-        <button style={S.btn()} disabled={uploading}
-          onClick={() => bothRef.current?.click()}>
-          📷 Upload Custom Image (both positions)
-        </button>
+          <div style={{ fontSize: 10, color: C.textDim, lineHeight: 1.6, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 8, marginBottom: 12 }}>
+            Auto-resized to 800x600 WebP. Becomes the default for ALL users.
+          </div>
 
-        {/* Upload start position */}
-        <input ref={startRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
-          onChange={(e) => doUpload(e.target.files[0], 0)} />
-        <button style={S.btn("#3b82f6")} disabled={uploading}
-          onClick={() => startRef.current?.click()}>
-          ① Upload Start Position
-        </button>
+          {/* Upload from camera roll */}
+          <input ref={bothRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }}
+            onChange={async (e) => {
+              const f = e.target.files[0]; if (!f) return;
+              await doUpload(f, 0);
+              await doUpload(f, 1);
+            }} />
+          <button style={S.btn()} disabled={uploading} onClick={() => bothRef.current?.click()}>
+            📷 Upload from Camera Roll
+          </button>
 
-        {/* Upload end position */}
-        <input ref={endRef} type="file" accept="image/jpeg,image/png,image/webp" style={{ display: "none" }}
-          onChange={(e) => doUpload(e.target.files[0], 1)} />
-        <button style={S.btn("#a855f7")} disabled={uploading}
-          onClick={() => endRef.current?.click()}>
-          ② Upload End Position
-        </button>
+          {/* Search web images */}
+          {_searchAvail && (
+            <button style={S.btn("#3b82f6")} disabled={uploading} onClick={() => { setView("search"); setSearchResults([]); setSelectedImage(null); setStatus(null); }}>
+              🔍 Search Web Images
+            </button>
+          )}
 
-        {/* Reset */}
-        <button style={S.btn("#ef4444")} disabled={uploading} onClick={doReset}>
-          ↩ Reset to Default
-        </button>
+          {/* Revert */}
+          {hasOverride && (
+            <button style={S.btn("#ef4444")} disabled={uploading} onClick={doReset}>
+              ↩ Revert to Original
+            </button>
+          )}
 
-        {/* Cancel */}
-        <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={onClose}>
-          Cancel
-        </button>
+          {/* Cancel */}
+          <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={onClose}>Cancel</button>
 
-        {status && <div style={S.status}>{status}</div>}
+          {status && <div style={S.status}>{status}</div>}
+        </>}
+
+        {/* ── SEARCH VIEW ── */}
+        {view === "search" && <>
+          <div style={S.title}>Search Images</div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+            <input
+              value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && doSearch()}
+              placeholder="Search exercise images..."
+              style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: `1px solid ${C.border}`, background: "#0a1628", color: "#e8ecf4", fontSize: 12, fontFamily: "inherit", outline: "none" }}
+            />
+            <button onClick={doSearch} disabled={searching} style={{ padding: "10px 14px", borderRadius: 8, border: "none", background: "#3b82f6", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", opacity: searching ? 0.5 : 1 }}>
+              {searching ? "..." : "Search"}
+            </button>
+          </div>
+
+          {/* Results grid */}
+          {searchResults.length > 0 && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, maxHeight: 280, overflowY: "auto", marginBottom: 10 }}>
+              {searchResults.map((img, i) => (
+                <div key={i} onClick={() => { setSelectedImage(img); setView("preview"); }} style={{
+                  aspectRatio: "4/3", borderRadius: 8, overflow: "hidden", cursor: "pointer",
+                  border: `2px solid transparent`, background: "#0a1628",
+                }}>
+                  <img src={img.thumb} alt={`Result ${i + 1}`} referrerPolicy="no-referrer"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    onError={(e) => { e.target.parentElement.style.display = "none"; }} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {searchResults.length === 0 && !searching && (
+            <div style={{ textAlign: "center", color: C.textDim, fontSize: 11, padding: 20 }}>
+              Tap Search to find images
+            </div>
+          )}
+          {searching && (
+            <div style={{ textAlign: "center", color: C.teal, fontSize: 11, padding: 20 }}>
+              Searching...
+            </div>
+          )}
+
+          <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={() => setView("menu")}>← Back</button>
+          {status && <div style={S.status}>{status}</div>}
+        </>}
+
+        {/* ── PREVIEW VIEW ── */}
+        {view === "preview" && selectedImage && <>
+          <div style={S.title}>Use this image?</div>
+          <div style={{ borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: 10, background: "#0a1628" }}>
+            <img src={selectedImage.url} alt="Preview" referrerPolicy="no-referrer"
+              style={{ width: "100%", maxHeight: 260, objectFit: "cover", display: "block" }}
+              onError={(e) => { e.target.alt = "Image failed to load"; }} />
+          </div>
+          <div style={{ fontSize: 10, color: C.textDim, marginBottom: 12, textAlign: "center" }}>
+            Source: {selectedImage.source}{selectedImage.photographer ? ` · ${selectedImage.photographer}` : ""}
+          </div>
+
+          <button style={S.btn()} disabled={uploading} onClick={doSelectWeb}>
+            {uploading ? "Saving..." : "✓ Set as Default"}
+          </button>
+          <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={() => setView("search")}>← Back</button>
+          {status && <div style={S.status}>{status}</div>}
+        </>}
       </div>
     </div>
   );
