@@ -232,8 +232,8 @@ export default function ExerciseImage({ exercise, size = "full", showBoth = fals
 
   const onUpdated = () => setRev(r => r + 1);
 
-  // ── NO URL → check SVG map → video → emoji ──────────────
-  const svgMarkup = EXERCISE_SVGS[exercise?.id];
+  // ── NO URL → check SVG map → exercise.svg → video → emoji ──
+  const svgMarkup = EXERCISE_SVGS[exercise?.id] || exercise?.svg;
   if (!url) {
     // SVG diagram available — render inline
     if (svgMarkup) {
