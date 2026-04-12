@@ -49,42 +49,10 @@ const WALL = (x = 260) => `<line x1="${x}" y1="20" x2="${x}" y2="185" stroke="${
 // ═══════════════════════════════════════════════════════════════
 
 const PM_EXERCISES = [
-  // ── SECTION 1: SPINE — McKENZIE SUSTAINED EXTENSION ─────
-  {
-    id: "pm_mckenzie_sphinx", name: "McKenzie Prone on Elbows", subtitle: "Sphinx Pose — Sustained Extension",
-    area: "Spine", section: 1,
-    hold: 300, reps: "1 hold (work up from 2 min)", totalTime: 300,
-    cues: [
-      "Let your lower back SAG — don't hold it up with your muscles",
-      "Elbows directly under shoulders — not forward",
-      "Breathe slowly — each exhale deepens the sag",
-      "This is passive time — read, listen to music, just relax",
-      "If symptoms centralize (move toward midline), this is working",
-    ],
-    breathing: "Slow nasal breathing. Exhale fully — each exhale deepens the sag.",
-    note: "McKenzie's sustained extension protocol. The gold standard for disc maintenance. Non-negotiable with microdiscectomy history.",
-    injuryNotes: { lower_back: "⚠️ If pain radiates further into legs (peripheralizes), STOP. If it centralizes, stay longer." },
-    svg: pmSvg(`
-      ${PRONE(145)}
-      <line x1="75" y1="145" x2="75" y2="185" stroke="${T}" stroke-width="2"/>
-      <line x1="90" y1="145" x2="90" y2="185" stroke="${T}" stroke-width="2"/>
-      ${HEAD(60, 95)}
-      <line x1="68" y1="100" x2="80" y2="125" stroke="${T}" stroke-width="2.5"/>
-      <line x1="80" y1="125" x2="80" y2="145" stroke="${T}" stroke-width="2"/>
-      <line x1="68" y1="108" x2="60" y2="135" stroke="${T}" stroke-width="2"/>
-      <line x1="60" y1="135" x2="60" y2="145" stroke="${T}" stroke-width="2"/>
-      <line x1="80" y1="145" x2="200" y2="150" stroke="${T}" stroke-width="2"/>
-      <path d="M80 140 Q140 130 200 148" stroke="${W}" stroke-width="1" fill="none" stroke-dasharray="3"/>
-      <text x="140" y="125" text-anchor="middle" fill="${W}" font-size="8">Gravity sags belly</text>
-      <text x="200" y="100" text-anchor="middle" fill="${G}" font-size="8">5 min hold</text>
-      <text x="200" y="112" text-anchor="middle" fill="${I}" font-size="7">Elbows under shoulders</text>
-    `, "McKENZIE SPHINX (5 MIN)"),
-  },
-
-  // ── SECTION 2: NECK ─────────────────────────────────────
+  // ── SECTION 1: NECK ────────────────────────────────────
   {
     id: "pm_neck_release", name: "Supine Neck Release", subtitle: "Gravity Traction",
-    area: "Neck", section: 2,
+    area: "Neck", section: 1,
     hold: 120, reps: "1 hold", totalTime: 120,
     cues: [
       "Zero effort — let the weight of your head do the work",
@@ -110,7 +78,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_neck_rotation", name: "Supine Neck Rotation", subtitle: "Passive",
-    area: "Neck", section: 2,
+    area: "Neck", section: 1,
     hold: 30, reps: "3 each side", totalTime: 180,
     cues: [
       "Don't turn your head — let it FALL to the side",
@@ -134,10 +102,10 @@ const PM_EXERCISES = [
     `, "SUPINE NECK ROTATION"),
   },
 
-  // ── SECTION 3: SHOULDERS & CHEST ────────────────────────
+  // ── SECTION 2: SHOULDERS & CHEST ────────────────────────
   {
     id: "pm_chest_opener", name: "Supine Chest Opener", subtitle: "Lying on Rolled Towel",
-    area: "Shoulders & Chest", section: 3,
+    area: "Shoulders & Chest", section: 2,
     hold: 180, reps: "1 hold", totalTime: 180,
     cues: [
       "Arms relaxed — let gravity pull them toward the floor",
@@ -166,7 +134,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_arms_overhead", name: "Supine Arms Overhead", subtitle: "Gravity Lat Stretch",
-    area: "Shoulders & Chest", section: 3,
+    area: "Shoulders & Chest", section: 2,
     hold: 120, reps: "1 hold", totalTime: 120,
     cues: [
       "Thumbs up — externally rotated is safer for the labrum",
@@ -194,10 +162,10 @@ const PM_EXERCISES = [
     `, "SUPINE ARMS OVERHEAD"),
   },
 
-  // ── SECTION 4: THORACIC SPINE ───────────────────────────
+  // ── SECTION 3: THORACIC SPINE ───────────────────────────
   {
     id: "pm_thoracic_roller", name: "Thoracic Extension Over Roller", subtitle: "Passive Drape",
-    area: "Thoracic Spine", section: 4,
+    area: "Thoracic Spine", section: 3,
     hold: 120, reps: "Reposition roller 3 times (upper, mid, lower)", totalTime: 120,
     cues: [
       "Relax completely — let your body drape over the roller",
@@ -223,10 +191,40 @@ const PM_EXERCISES = [
     `, "THORACIC DRAPE OVER ROLLER"),
   },
 
-  // ── SECTION 5: LUMBAR SPINE ─────────────────────────────
+  // ── SECTION 4: LUMBAR SPINE ─────────────────────────────
+  {
+    id: "pm_mckenzie_sphinx", name: "McKenzie Prone on Elbows", subtitle: "Sphinx Pose — Sustained Extension",
+    area: "Lumbar Spine", section: 4,
+    hold: 300, reps: "1 hold (work up from 2 min)", totalTime: 300,
+    cues: [
+      "Let your lower back SAG — don't hold it up with your muscles",
+      "Elbows directly under shoulders — not forward",
+      "Breathe slowly — each exhale deepens the sag",
+      "This is passive time — read, listen to music, just relax",
+      "If symptoms centralize (move toward midline), this is working",
+    ],
+    breathing: "Slow nasal breathing. Exhale fully — each exhale deepens the sag.",
+    note: "McKenzie's sustained extension protocol. The gold standard for disc maintenance. Non-negotiable with microdiscectomy history.",
+    injuryNotes: { lower_back: "⚠️ If pain radiates further into legs (peripheralizes), STOP. If it centralizes, stay longer." },
+    svg: pmSvg(`
+      ${PRONE(145)}
+      <line x1="75" y1="145" x2="75" y2="185" stroke="${T}" stroke-width="2"/>
+      <line x1="90" y1="145" x2="90" y2="185" stroke="${T}" stroke-width="2"/>
+      ${HEAD(60, 95)}
+      <line x1="68" y1="100" x2="80" y2="125" stroke="${T}" stroke-width="2.5"/>
+      <line x1="80" y1="125" x2="80" y2="145" stroke="${T}" stroke-width="2"/>
+      <line x1="68" y1="108" x2="60" y2="135" stroke="${T}" stroke-width="2"/>
+      <line x1="60" y1="135" x2="60" y2="145" stroke="${T}" stroke-width="2"/>
+      <line x1="80" y1="145" x2="200" y2="150" stroke="${T}" stroke-width="2"/>
+      <path d="M80 140 Q140 130 200 148" stroke="${W}" stroke-width="1" fill="none" stroke-dasharray="3"/>
+      <text x="140" y="125" text-anchor="middle" fill="${W}" font-size="8">Gravity sags belly</text>
+      <text x="200" y="100" text-anchor="middle" fill="${G}" font-size="8">5 min hold</text>
+      <text x="200" y="112" text-anchor="middle" fill="${I}" font-size="7">Elbows under shoulders</text>
+    `, "McKENZIE SPHINX (5 MIN)"),
+  },
   {
     id: "pm_spinal_twist", name: "Supine Spinal Twist", subtitle: "Gravity Rotation",
-    area: "Lumbar Spine", section: 5,
+    area: "Lumbar Spine", section: 4,
     hold: 120, reps: "2 min each side", totalTime: 240,
     cues: [
       "Don't force knees to the floor — let gravity do it over time",
@@ -253,10 +251,10 @@ const PM_EXERCISES = [
     `, "SUPINE SPINAL TWIST"),
   },
 
-  // ── SECTION 6: HIPS ─────────────────────────────────────
+  // ── SECTION 5: HIPS ─────────────────────────────────────
   {
     id: "pm_legs_up_wall", name: "Legs Up the Wall", subtitle: "Viparita Karani",
-    area: "Hips", section: 6,
+    area: "Hips", section: 5,
     hold: 180, reps: "1 hold", totalTime: 180,
     cues: [
       "Butt doesn't have to touch the wall — get as close as comfortable",
@@ -282,7 +280,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_wall_straddle", name: "Wall Straddle", subtitle: "Gravity Adductor Stretch",
-    area: "Hips", section: 6,
+    area: "Hips", section: 5,
     hold: 180, reps: "1 hold", totalTime: 180,
     cues: [
       "Do NOT force the legs apart — let gravity do ALL the work",
@@ -311,7 +309,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_reclined_butterfly", name: "Reclined Butterfly", subtitle: "Supta Baddha Konasana",
-    area: "Hips", section: 6,
+    area: "Hips", section: 5,
     hold: 180, reps: "1 hold", totalTime: 180,
     cues: [
       "Support your knees — they should NOT be hanging unsupported",
@@ -341,7 +339,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_supine_figure4", name: "Supine Figure-4", subtitle: "Gravity Piriformis Stretch",
-    area: "Hips", section: 6,
+    area: "Hips", section: 5,
     hold: 120, reps: "2 min each side", totalTime: 240,
     cues: [
       "Crossed ankle FLEXED (toes toward shin) to protect the knee",
@@ -367,7 +365,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_happy_baby", name: "Happy Baby", subtitle: "Ananda Balasana",
-    area: "Hips", section: 6,
+    area: "Hips", section: 5,
     hold: 120, reps: "1 hold with gentle rocking", totalTime: 120,
     cues: [
       "Grab wherever you can reach — feet, ankles, or shins",
@@ -395,10 +393,10 @@ const PM_EXERCISES = [
     `, "HAPPY BABY"),
   },
 
-  // ── SECTION 7: QUADS & HIP FLEXORS ─────────────────────
+  // ── SECTION 6: QUADS & HIP FLEXORS ─────────────────────
   {
     id: "pm_half_frog", name: "Supported Half Frog", subtitle: "Prone Passive Quad Stretch",
-    area: "Quads & Hip Flexors", section: 7,
+    area: "Quads & Hip Flexors", section: 6,
     hold: 120, reps: "2 min each side", totalTime: 240,
     cues: [
       "Don't pull actively — let the weight of the lower leg create the stretch",
@@ -423,10 +421,10 @@ const PM_EXERCISES = [
     `, "SUPPORTED HALF FROG"),
   },
 
-  // ── SECTION 8: HAMSTRINGS ───────────────────────────────
+  // ── SECTION 7: HAMSTRINGS ───────────────────────────────
   {
     id: "pm_wall_hamstring", name: "Wall Hamstring Stretch", subtitle: "Supine — One Leg on Wall",
-    area: "Hamstrings", section: 8,
+    area: "Hamstrings", section: 7,
     hold: 120, reps: "2 min each side", totalTime: 240,
     cues: [
       "Keep raised leg as straight as possible — knee can be slightly bent",
@@ -452,10 +450,10 @@ const PM_EXERCISES = [
     `, "WALL HAMSTRING STRETCH"),
   },
 
-  // ── SECTION 9: CALVES & ACHILLES ────────────────────────
+  // ── SECTION 8: CALVES & ACHILLES ────────────────────────
   {
     id: "pm_wall_calf", name: "Wall Calf Stretch", subtitle: "Supine — Foot on Wall",
-    area: "Calves & Achilles", section: 9,
+    area: "Calves & Achilles", section: 8,
     hold: 90, reps: "90s each side (straight + bent knee)", totalTime: 180,
     cues: [
       "Straight knee targets gastrocnemius, bent knee targets soleus — do both",
@@ -482,10 +480,10 @@ const PM_EXERCISES = [
     `, "WALL CALF STRETCH"),
   },
 
-  // ── SECTION 10: FULL BODY RELEASE ───────────────────────
+  // ── SECTION 9: FULL BODY RELEASE ────────────────────────
   {
     id: "pm_childs_pose", name: "Supported Child's Pose", subtitle: "Balasana with Pillow",
-    area: "Full Body Release", section: 10,
+    area: "Full Body Release", section: 9,
     hold: 180, reps: "1 hold (turn head halfway)", totalTime: 180,
     cues: [
       "The pillow should support your entire torso — no effort to hold yourself up",
@@ -512,7 +510,7 @@ const PM_EXERCISES = [
   },
   {
     id: "pm_savasana", name: "Savasana", subtitle: "Corpse Pose — Final Relaxation",
-    area: "Full Body Release", section: 10,
+    area: "Full Body Release", section: 9,
     hold: 240, reps: "1 hold", totalTime: 240,
     cues: [
       "Scan from head to toes — release any tension you find",
@@ -542,11 +540,11 @@ const PM_EXERCISES = [
 
 // Section labels
 const SECTIONS = {
-  1: "SPINE · McKenzie Extension", 2: "NECK · Passive Release",
-  3: "SHOULDERS & CHEST · Gravity Openers", 4: "THORACIC SPINE · Passive Drape",
-  5: "LUMBAR SPINE · Restorative Twist", 6: "HIPS · Gravity Openers",
-  7: "QUADS & HIP FLEXORS · Passive", 8: "HAMSTRINGS · Wall Stretch",
-  9: "CALVES & ACHILLES · Supine", 10: "FULL BODY RELEASE",
+  1: "NECK · Passive Release", 2: "SHOULDERS & CHEST · Gravity Openers",
+  3: "THORACIC SPINE · Passive Drape", 4: "LUMBAR SPINE · McKenzie + Twist",
+  5: "HIPS · Gravity Openers", 6: "QUADS & HIP FLEXORS · Passive",
+  7: "HAMSTRINGS · Wall Stretch", 8: "CALVES & ACHILLES · Supine",
+  9: "FULL BODY RELEASE",
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -819,7 +817,8 @@ export default function EveningROMScreen({ onComplete, onClose }) {
         </div>
 
         {/* SVG illustration */}
-        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
+        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: ex.videoUrl ? 6 : 12 }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
+        {ex.videoUrl && <a href={ex.videoUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: C.info, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, marginBottom: 8 }}>▶ Watch demo</a>}
 
         {/* Exercise name + subtitle */}
         <h3 style={{ fontSize: 20, fontWeight: 800, color: C.text, margin: "0 0 2px", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1 }}>{ex.name}</h3>
@@ -916,3 +915,28 @@ export default function EveningROMScreen({ onComplete, onClose }) {
     </div>
   );
 }
+
+// ── Library metadata & export ─────────────────────────────────
+// Shared defaults for all PM ROM exercises
+const PM_ROM_DEFAULTS = {
+  category: "cooldown", type: "flexibility",
+  locationCompatible: ["gym", "home", "outdoor"],
+  phaseEligibility: [1, 2, 3, 4, 5],
+  difficultyLevel: 1,
+};
+
+// Export tagged exercises for Library integration
+export const PM_ROM_EXERCISES = PM_EXERCISES.map(ex => ({
+  ...PM_ROM_DEFAULTS,
+  ...ex,
+  bodyPart: ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
+  equipmentRequired: ex.id.includes("roller") ? ["foam_roller"] : ex.id.includes("sphinx") || ex.id.includes("childs") ? ["mat"] : ["none"],
+  tags: [
+    "rom_pm", "passive", "restorative",
+    ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
+    ...(ex.id.includes("wall") || ex.id.includes("legs_up") ? ["wall"] : []),
+    ...(ex.id.includes("supine") || ex.id.includes("reclined") || ex.id.includes("happy") || ex.id.includes("savasana") ? ["supine"] : []),
+    ...(ex.id.includes("sphinx") || ex.id.includes("half_frog") ? ["prone"] : []),
+    ...(ex.id.includes("mckenzie") ? ["mckenzie_back"] : []),
+  ].filter(Boolean),
+}));

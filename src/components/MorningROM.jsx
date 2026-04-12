@@ -1009,7 +1009,8 @@ export default function MorningROMScreen({ onComplete, onClose }) {
         </div>
 
         {/* SVG illustration */}
-        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
+        <div style={{ width: "100%", borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: ex.videoUrl ? 6 : 12 }} dangerouslySetInnerHTML={{ __html: ex.svg }} />
+        {ex.videoUrl && <a href={ex.videoUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: C.info, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, marginBottom: 8 }}>▶ Watch demo</a>}
 
         {/* Exercise name */}
         <h3 style={{ fontSize: 20, fontWeight: 800, color: C.text, margin: "0 0 4px", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 1 }}>{ex.name}</h3>
@@ -1105,3 +1106,27 @@ export default function MorningROMScreen({ onComplete, onClose }) {
     </div>
   );
 }
+
+// ── Library metadata & export ─────────────────────────────────
+// Shared defaults for all AM ROM exercises
+const AM_ROM_DEFAULTS = {
+  category: "mobility", type: "mobility",
+  locationCompatible: ["gym", "home", "outdoor"],
+  phaseEligibility: [1, 2, 3, 4, 5],
+  difficultyLevel: 1,
+};
+
+// Export tagged exercises for Library integration
+export const AM_ROM_EXERCISES = ROM_EXERCISES.map(ex => ({
+  ...AM_ROM_DEFAULTS,
+  ...ex,
+  bodyPart: ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
+  equipmentRequired: ["none"],
+  tags: [
+    "rom_am",
+    ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
+    ...(ex.id.includes("mckenzie") ? ["mckenzie_back"] : []),
+    ...(ex.area === "Neck" && ex.id.includes("retraction") ? ["mckenzie_neck"] : []),
+    ...(ex.id.includes("hip_abd_er") || ex.id.includes("hip_kneeling") ? ["mckenzie_hip"] : []),
+  ].filter(Boolean),
+}));
