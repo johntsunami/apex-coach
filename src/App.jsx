@@ -1939,14 +1939,17 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   const _ptProtos=getLocalProtocols();const _ptSessions=getLocalPTSessions();const _today=new Date().toDateString();
   let _ptTotal=0,_ptDone=0;_ptProtos.forEach(p=>{const freq=p.frequency_per_day||1;_ptTotal+=freq;_ptDone+=Math.min(freq,_ptSessions.filter(s=>new Date(s.completed_at).toDateString()===_today&&(s.condition_key===p.condition_key||s.protocol_id===p.condition_key)).length);});
   const _ptAllDone=_ptTotal>0&&_ptDone>=_ptTotal;
-  // ROM — AM and PM tracked independently
+  // ROM — Morning and Before Bed tracked independently
   const _romComps=(()=>{try{return JSON.parse(localStorage.getItem("apex_rom_completions")||"[]");}catch{return[];}})();
   const _todayISO=new Date().toISOString().split("T")[0];
   const _amRomDone=_romComps.some(r=>r.date===_todayISO&&r.type==="morning_rom");
   const _pmRomDone=_romComps.some(r=>r.date===_todayISO&&r.type==="evening_rom");
-  // Legacy entries (no type field) count as AM done
+  // Legacy entries (no type field) count as Morning done
   const _legacyRomDone=_romComps.some(r=>r.date===_todayISO&&!r.type);
   const _amDone=_amRomDone||_legacyRomDone;
+  // ROM progress (for resume)
+  const _amProg=(()=>{try{const s=JSON.parse(localStorage.getItem("apex_morning_rom_progress")||"null");return s&&s.date===_todayISO&&s.idx>0?s:null;}catch{return null;}})();
+  const _pmProg=(()=>{try{const s=JSON.parse(localStorage.getItem("apex_bedtime_rom_progress")||"null");return s&&s.date===_todayISO&&s.idx>0?s:null;}catch{return null;}})();
   // Workout
   const _wkDone=isTodayComplete();
   const _todayPlan=getWeeklyPlan()?getTodayFromPlan(getWeeklyPlan()):null;
@@ -1956,9 +1959,9 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   const _doneCount=_items.filter(i=>i.done).length;
   const _allDone=_doneCount===_items.length;
   // Row renderer
-  const PlanRow=({icon,label,done,action,primary})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:`1px solid ${C.border}22`,opacity:done?0.5:1}}>
+  const PlanRow=({icon,label,done,action,primary,btnLabel})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:`1px solid ${C.border}22`,opacity:done?0.5:1}}>
     <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:16}}>{icon}</span><span style={{color:done?C.textDim:C.text,fontSize:14,fontWeight:primary?600:400,textDecoration:done?"line-through":"none"}}>{label}</span></div>
-    {done?<span style={{color:C.success,fontSize:12}}>done</span>:action?<button onClick={action} style={{padding:"6px 16px",borderRadius:8,border:primary?"none":`1px solid ${C.teal}30`,background:primary?`linear-gradient(135deg,${C.teal},${C.tealDark})`:"transparent",color:primary?"#000":C.teal,fontSize:13,fontWeight:primary?700:500,cursor:"pointer",fontFamily:"inherit"}}>{primary?"Go \u2192":"Go"}</button>:null}
+    {done?<span style={{color:C.success,fontSize:12}}>done</span>:action?<button onClick={action} style={{padding:"6px 16px",borderRadius:8,border:primary?"none":`1px solid ${C.teal}30`,background:primary?`linear-gradient(135deg,${C.teal},${C.tealDark})`:"transparent",color:primary?"#000":C.teal,fontSize:13,fontWeight:primary?700:500,cursor:"pointer",fontFamily:"inherit"}}>{btnLabel||(primary?"Go \u2192":"Go")}</button>:null}
   </div>;
   return<Card style={{padding:14,marginBottom:4,borderColor:C.teal+"20"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
@@ -1967,8 +1970,8 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
     </div>
     {_allDone?<div style={{textAlign:"center",padding:"12px 0"}}><div style={{fontSize:20,marginBottom:4}}>✅</div><div style={{fontSize:14,fontWeight:600,color:C.success}}>All done for today</div><div style={{fontSize:11,color:C.textDim,fontStyle:"italic",marginTop:2}}>Consistency is your superpower</div></div>:<>
     {_ptTotal>0&&<PlanRow icon={_ptAllDone?"✅":"🩺"} label={`PT & Rehab \u00b7 ${_ptDone}/${_ptTotal}`} done={_ptAllDone} action={()=>onPTSession?.(_ptProtos[0])}/>}
-    <PlanRow icon={_amDone?"✅":"☀️"} label="AM ROM Routine" done={_amDone} action={_amDone?undefined:onROM}/>
-    <PlanRow icon={_pmRomDone?"✅":"🌙"} label="PM ROM Routine" done={_pmRomDone} action={_pmRomDone?undefined:onPMROM}/>
+    <PlanRow icon={_amDone?"✅":"☀️"} label={_amProg&&!_amDone?`Morning ROM · ${_amProg.idx}/30`:"Morning ROM"} done={_amDone} action={_amDone?undefined:onROM} btnLabel={_amProg&&!_amDone?"Continue":undefined}/>
+    <PlanRow icon={_pmRomDone?"✅":"🌙"} label={_pmProg&&!_pmRomDone?`Before Bed ROM · ${_pmProg.idx}/17`:"Before Bed ROM"} done={_pmRomDone} action={_pmRomDone?undefined:onPMROM} btnLabel={_pmProg&&!_pmRomDone?"Continue":undefined}/>
     <PlanRow icon={_wkDone?"✅":"💪"} label={`Workout \u00b7 ${_wkLabel}`} done={!!_wkDone} action={onStart} primary/>
     </>}
   </Card>;}catch{return null;}})()}

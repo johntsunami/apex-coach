@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { getInjuries } from "../utils/injuries.js";
 
 // ═══════════════════════════════════════════════════════════════
-// Evening ROM Routine — 17 passive, gravity-assisted poses
+// Before Bed ROM Routine — 17 passive, gravity-assisted poses
 // Wind-down mode: long holds (90s-5min), floor-based, restorative
 // ═══════════════════════════════════════════════════════════════
 
@@ -548,17 +548,37 @@ const SECTIONS = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// EVENING ROM SCREEN — guided wind-down experience
+// BEFORE BED ROM SCREEN — guided wind-down experience
 // ═══════════════════════════════════════════════════════════════
 
+const STORAGE_KEY = "apex_bedtime_rom_progress";
+
 export default function EveningROMScreen({ onComplete, onClose }) {
-  const [phase, setPhase] = useState("intro"); // "intro" | "exercise" | "transition" | "done"
-  const [idx, setIdx] = useState(0);
+  // Restore progress from localStorage if user left mid-routine
+  const savedProgress = useMemo(() => {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (s && s.date === new Date().toISOString().split("T")[0] && s.idx > 0) return s;
+    } catch {}
+    return null;
+  }, []);
+
+  const [phase, setPhase] = useState(savedProgress ? "exercise" : "intro");
+  const [idx, setIdx] = useState(savedProgress ? savedProgress.idx : 0);
   const [timer, setTimer] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
   const timerRef = useRef(null);
   const startTime = useRef(Date.now());
   const [completedIds, setCompletedIds] = useState(new Set());
+
+  // Save progress on every exercise change
+  useEffect(() => {
+    if (phase === "exercise" || phase === "transition") {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: new Date().toISOString().split("T")[0], idx }));
+      } catch {}
+    }
+  }, [idx, phase]);
 
   // Get active injuries for injury notes
   const injuries = useMemo(() => {
@@ -638,6 +658,7 @@ export default function EveningROMScreen({ onComplete, onClose }) {
 
   const handleComplete = useCallback(() => {
     try {
+      localStorage.removeItem(STORAGE_KEY);
       const completions = JSON.parse(localStorage.getItem("apex_rom_completions") || "[]");
       completions.push({
         date: new Date().toISOString().split("T")[0],
@@ -672,13 +693,13 @@ export default function EveningROMScreen({ onComplete, onClose }) {
       <div className="fade-in" style={{ display: "flex", flexDirection: "column", gap: 16, padding: "0 0 90px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>← Back</button>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.accent, letterSpacing: 2 }}>EVENING ROM</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: C.accent, letterSpacing: 2 }}>🌙 BEFORE BED ROM</div>
           <div style={{ width: 40 }} />
         </div>
 
         <div style={{ textAlign: "center", padding: "20px 0" }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🌙</div>
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: C.text, margin: "0 0 8px", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>EVENING ROM ROUTINE</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: C.text, margin: "0 0 8px", fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>BEFORE BED ROM</h2>
           <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 4 }}>Passive · Gravity-Assisted · Restorative</div>
           <div style={{ fontSize: 12, color: C.textDim }}>17 exercises · ~20-25 min · Floor-based</div>
         </div>
@@ -732,13 +753,13 @@ export default function EveningROMScreen({ onComplete, onClose }) {
     return (
       <div className="fade-in" style={{ display: "flex", flexDirection: "column", gap: 16, padding: "0 0 90px", textAlign: "center" }}>
         <div style={{ fontSize: 64, marginTop: 30 }}>🌙</div>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: C.calm, margin: 0, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>EVENING ROM COMPLETE</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: C.calm, margin: 0, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>BEFORE BED ROM COMPLETE</h2>
         <div style={{ fontSize: 14, color: C.textMuted }}>
           {exercises.length} poses · {duration || "< 1"} min
         </div>
         <div style={{ background: C.bgCard, borderRadius: 16, padding: 16, border: `1px solid ${C.accent}15`, margin: "8px 0" }}>
           <div style={{ fontSize: 13, color: C.text, lineHeight: 1.7 }}>
-            Your body is stretched, your spine is decompressed, and your nervous system has downshifted. Time to rest.
+            Before Bed ROM complete. Time to rest.
           </div>
         </div>
         <button onClick={handleComplete} style={{
@@ -791,8 +812,8 @@ export default function EveningROMScreen({ onComplete, onClose }) {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <button onClick={onClose} style={{ background: "none", border: "none", color: C.textDim, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>← Back</button>
-        <div style={{ fontSize: 11, fontWeight: 700, color: C.accent, letterSpacing: 2 }}>EVENING ROM</div>
-        <div style={{ fontSize: 11, color: C.textMuted }}>{idx + 1}/{exercises.length}</div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: C.accent, letterSpacing: 2 }}>🌙 Before Bed ROM · {idx + 1} of {exercises.length}</div>
+        <div style={{ width: 40 }} />
       </div>
 
       {/* Progress bar — purple accent */}
@@ -932,7 +953,7 @@ export const PM_ROM_EXERCISES = PM_EXERCISES.map(ex => ({
   bodyPart: ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
   equipmentRequired: ex.id.includes("roller") ? ["foam_roller"] : ex.id.includes("sphinx") || ex.id.includes("childs") ? ["mat"] : ["none"],
   tags: [
-    "rom_pm", "passive", "restorative",
+    "rom_bedtime", "passive", "restorative",
     ex.area?.toLowerCase().replace(/ & /g, "_").replace(/ /g, "_"),
     ...(ex.id.includes("wall") || ex.id.includes("legs_up") ? ["wall"] : []),
     ...(ex.id.includes("supine") || ex.id.includes("reclined") || ex.id.includes("happy") || ex.id.includes("savasana") ? ["supine"] : []),
