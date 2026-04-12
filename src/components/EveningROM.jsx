@@ -568,7 +568,8 @@ export default function EveningROMScreen({ onComplete, onClose }) {
 
   const [phase, setPhase] = useState(savedProgress ? "exercise" : "intro");
   const [idx, setIdx] = useState(savedProgress ? savedProgress.idx : 0);
-  const [timer, setTimer] = useState(0);
+  // On resume, initialize timer to the exercise's totalTime so auto-advance doesn't fire immediately
+  const [timer, setTimer] = useState(() => savedProgress ? (PM_EXERCISES[savedProgress.idx]?.totalTime || 120) : 0);
   const [timerOn, setTimerOn] = useState(false);
   const timerRef = useRef(null);
   const startTime = useRef(Date.now());
