@@ -78,6 +78,90 @@ function PencilIcon({ onClick }) {
   );
 }
 
+// ── Preview View (tries auto-download, falls back to manual save-then-upload) ──
+
+function PreviewView({ selectedImage, exercise, uploading, autoBlob, setAutoBlob, autoTried, setAutoTried, previewUploadRef, doUpload, setView, setUploading, status, setStatus, onUpdated, S }) {
+  // Attempt auto-download on mount — if CORS allows, skip manual steps
+  useEffect(() => {
+    setAutoBlob(null);
+    setAutoTried(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(selectedImage.url, { mode: "cors" });
+        if (res.ok && !cancelled) {
+          const blob = await res.blob();
+          if (blob.size > 0 && !cancelled) {
+            setAutoBlob(new File([blob], exercise.id + ".webp", { type: blob.type }));
+          }
+        }
+      } catch { /* CORS blocked — expected */ }
+      if (!cancelled) setAutoTried(true);
+    })();
+    return () => { cancelled = true; };
+  }, [selectedImage.url]);
+
+  const doAutoUpload = async () => {
+    if (!autoBlob) return;
+    setUploading(true); setStatus(null);
+    try {
+      await uploadExerciseImage(exercise.id, autoBlob, 0);
+      await uploadExerciseImage(exercise.id, autoBlob, 1);
+      setStatus("Saved!");
+      onUpdated();
+    } catch (e) { setStatus("Error: " + e.message); }
+    setUploading(false);
+  };
+
+  return <>
+    {/* Auto-download succeeded — one-tap confirm */}
+    {autoBlob && autoTried && <>
+      <div style={S.title}>Use this image?</div>
+      <div style={{ borderRadius: 12, overflow: "hidden", border: `2px solid rgba(0,210,200,0.3)`, marginBottom: 10, background: "#0a1628" }}>
+        <img src={selectedImage.url} alt="Preview" referrerPolicy="no-referrer" style={{ width: "100%", maxHeight: 260, objectFit: "cover", display: "block" }} />
+      </div>
+      <div style={{ fontSize: 10, color: C.textDim, marginBottom: 12, textAlign: "center" }}>
+        Source: {selectedImage.source}{selectedImage.photographer ? ` · ${selectedImage.photographer}` : ""}
+      </div>
+      <button style={S.btn()} disabled={uploading} onClick={doAutoUpload}>
+        {uploading ? "Saving..." : "✓ Set as Default Image"}
+      </button>
+    </>}
+
+    {/* Auto-download failed — guided two-step manual save */}
+    {!autoBlob && autoTried && <>
+      <div style={{ ...S.title, fontSize: 14 }}>Step 1: Save this image</div>
+      <div style={{ fontSize: 11, color: "#7a8ba8", marginBottom: 10 }}>Long-press the image below, then tap <strong style={{ color: "#e8ecf4" }}>"Save Image"</strong></div>
+      <div style={{ borderRadius: 12, overflow: "hidden", border: "2px solid rgba(0,210,200,0.3)", marginBottom: 12, background: "#0a1628" }}>
+        <img src={selectedImage.url} alt="Preview — long-press to save" referrerPolicy="no-referrer" style={{ width: "100%", display: "block" }} />
+      </div>
+      <div style={{ fontSize: 10, color: C.textDim, marginBottom: 14, textAlign: "center" }}>
+        Source: {selectedImage.source}{selectedImage.photographer ? ` · ${selectedImage.photographer}` : ""}
+      </div>
+
+      <div style={{ ...S.title, fontSize: 14 }}>Step 2: Upload it</div>
+      <div style={{ fontSize: 11, color: "#7a8ba8", marginBottom: 10 }}>After saving, tap below to select it from your camera roll.</div>
+      <input ref={previewUploadRef} type="file" accept="image/*" style={{ display: "none" }}
+        onChange={async (e) => {
+          const f = e.target.files?.[0]; if (!f) return;
+          await doUpload(f, 0);
+          await doUpload(f, 1);
+        }} />
+      <button style={S.btn()} disabled={uploading} onClick={() => previewUploadRef.current?.click()}>
+        {uploading ? "Uploading..." : "📷 Upload Saved Image"}
+      </button>
+    </>}
+
+    {/* Still checking auto-download */}
+    {!autoTried && (
+      <div style={{ textAlign: "center", color: C.teal, fontSize: 12, padding: 24 }}>Preparing image...</div>
+    )}
+
+    <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim, marginTop: 4 }} onClick={() => setView("search")}>← Back to Results</button>
+    {status && <div style={S.status}>{status}</div>}
+  </>;
+}
+
 // ── Image Edit Modal (menu / search / preview) ──────────────
 
 function ImageEditModal({ exercise, onClose, onUpdated }) {
@@ -93,6 +177,9 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [autoBlob, setAutoBlob] = useState(null); // set if CORS download succeeds
+  const [autoTried, setAutoTried] = useState(false); // true after auto-download attempt
+  const previewUploadRef = useRef(null);
   const _searchAvail = _isSearchAvailable();
 
   const doUpload = async (file, slot) => {
@@ -124,20 +211,6 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
       if (results.length === 0) setStatus("No images found. Try different keywords.");
     } catch (e) { setStatus("Search error: " + e.message); }
     setSearching(false);
-  };
-
-  const doSelectWeb = async () => {
-    if (!selectedImage) return;
-    setUploading(true); setStatus(null);
-    try {
-      await _selectWebImg(exercise.id, selectedImage.url);
-      setStatus("Saved!");
-      onUpdated();
-      setView("menu");
-    } catch (e) {
-      setStatus("Could not download image. Long-press to save it, then use Upload.");
-    }
-    setUploading(false);
   };
 
   const hasOverride = !!getOverrideForExercise(exercise?.id);
@@ -241,24 +314,13 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
           {status && <div style={S.status}>{status}</div>}
         </>}
 
-        {/* ── PREVIEW VIEW ── */}
-        {view === "preview" && selectedImage && <>
-          <div style={S.title}>Use this image?</div>
-          <div style={{ borderRadius: 12, overflow: "hidden", border: `1px solid ${C.border}`, marginBottom: 10, background: "#0a1628" }}>
-            <img src={selectedImage.url} alt="Preview" referrerPolicy="no-referrer"
-              style={{ width: "100%", maxHeight: 260, objectFit: "cover", display: "block" }}
-              onError={(e) => { e.target.alt = "Image failed to load"; }} />
-          </div>
-          <div style={{ fontSize: 10, color: C.textDim, marginBottom: 12, textAlign: "center" }}>
-            Source: {selectedImage.source}{selectedImage.photographer ? ` · ${selectedImage.photographer}` : ""}
-          </div>
-
-          <button style={S.btn()} disabled={uploading} onClick={doSelectWeb}>
-            {uploading ? "Saving..." : "✓ Set as Default"}
-          </button>
-          <button style={{ ...S.btn(), background: "transparent", borderColor: C.border, color: C.textDim }} onClick={() => setView("search")}>← Back</button>
-          {status && <div style={S.status}>{status}</div>}
-        </>}
+        {/* ── PREVIEW VIEW (auto-download attempt + manual fallback) ── */}
+        {view === "preview" && selectedImage && <PreviewView
+          selectedImage={selectedImage} exercise={exercise} uploading={uploading}
+          autoBlob={autoBlob} setAutoBlob={setAutoBlob} autoTried={autoTried} setAutoTried={setAutoTried}
+          previewUploadRef={previewUploadRef} doUpload={doUpload} setView={setView}
+          setUploading={setUploading} status={status} setStatus={setStatus} onUpdated={onUpdated} S={S}
+        />}
       </div>
     </div>
   );
