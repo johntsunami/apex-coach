@@ -5,7 +5,7 @@
 import { supabase } from "./supabase.js";
 
 const LS_KEY = "apex_image_overrides";
-const BUCKET = "exercise-images";
+const BUCKET = "exercise_images";
 
 // ── localStorage cache ────────────────────────────────────────
 
@@ -103,7 +103,7 @@ export async function uploadExerciseImage(exerciseId, file, slot = 0) {
   if (error) {
     console.error("[ImageOverride] Upload error:", error);
     if (error.message?.toLowerCase().includes("bucket") || error.statusCode === 404 || error.message?.includes("not found")) {
-      throw new Error('Storage bucket "exercise-images" not found. Create it in Supabase Dashboard → Storage → New Bucket (name: exercise-images, Public: ON).');
+      throw new Error('Storage bucket "exercise_images" not found. Create it in Supabase Dashboard → Storage → New Bucket (name: exercise_images, Public: ON).');
     }
     throw new Error(error.message);
   }
