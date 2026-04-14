@@ -231,11 +231,23 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
         {/* ── MENU VIEW ── */}
         {view === "menu" && <>
           <div style={S.title}>Update Exercise Image</div>
-          <div style={S.sub}>{exercise.name}</div>
-
-          <div style={{ fontSize: 10, color: C.textDim, lineHeight: 1.6, padding: "8px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 8, marginBottom: 12 }}>
-            Auto-resized to 800x600 WebP. Becomes the default for ALL users.
+          <div style={{ fontSize: 12, color: "#7a8ba8", marginBottom: 4 }}>{exercise.name}</div>
+          <div style={{ fontSize: 10, color: C.textDim, lineHeight: 1.5, marginBottom: 10 }}>
+            Replaces the image everywhere this exercise appears: workout, library, ROM, and detail view. One image per exercise.
           </div>
+
+          {/* Current image preview */}
+          {(()=>{
+            const _ov = getOverrideForExercise(exercise?.id);
+            const _url = _ov?.imageUrl || exercise?.gifUrl || exercise?.imageUrl;
+            const _svg = EXERCISE_SVGS[exercise?.id] || exercise?.svg;
+            return <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: 1, marginBottom: 4 }}>CURRENT IMAGE</div>
+              {_url ? <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}` }}><img src={_url} alt={exercise?.name} referrerPolicy="no-referrer" style={{ width: "100%", maxHeight: 140, objectFit: "cover", display: "block" }} /></div>
+                : _svg ? <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}` }} dangerouslySetInnerHTML={{ __html: _svg }} />
+                : <div style={{ height: 60, display: "flex", alignItems: "center", justifyContent: "center", background: C.bgCard, borderRadius: 10, border: `1px solid ${C.border}`, fontSize: 24 }}>{exercise?.emoji || "💪"}</div>}
+            </div>;
+          })()}
 
           {/* Upload from camera roll */}
           <input ref={bothRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }}

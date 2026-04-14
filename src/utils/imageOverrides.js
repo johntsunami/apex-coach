@@ -40,8 +40,11 @@ export function clearOverride(exerciseId) {
   const map = getCache();
   delete map[exerciseId];
   setCache(map);
-  // Clean up Supabase storage + DB row
-  supabase.storage.from(BUCKET).remove([`${exerciseId}/0.jpg`, `${exerciseId}/1.jpg`]);
+  // Clean up Supabase storage (try both old .jpg and new .webp paths) + DB row
+  supabase.storage.from(BUCKET).remove([
+    `${exerciseId}/0.jpg`, `${exerciseId}/1.jpg`,
+    `${exerciseId}/0.webp`, `${exerciseId}/1.webp`,
+  ]);
   supabase.from("exercise_image_overrides").delete().eq("exercise_id", exerciseId);
 }
 
@@ -97,7 +100,13 @@ export async function uploadExerciseImage(exerciseId, file, slot = 0) {
 
   const { error } = await supabase.storage.from(BUCKET)
     .upload(path, blob, { upsert: true, contentType: blob.type || "image/webp" });
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("[ImageOverride] Upload error:", error);
+    if (error.message?.toLowerCase().includes("bucket") || error.statusCode === 404 || error.message?.includes("not found")) {
+      throw new Error('Storage bucket "exercise-images" not found. Create it in Supabase Dashboard → Storage → New Bucket (name: exercise-images, Public: ON).');
+    }
+    throw new Error(error.message);
+  }
 
   const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path);
   const publicUrl = urlData.publicUrl + "?t=" + Date.now(); // cache-bust
