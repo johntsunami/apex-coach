@@ -236,29 +236,46 @@ function ImageEditModal({ exercise, onClose, onUpdated }) {
             Replaces the image everywhere this exercise appears: workout, library, ROM, and detail view. One image per exercise.
           </div>
 
-          {/* Current image preview */}
+          {/* Current image preview — shows both positions if available */}
           {(()=>{
             const _ov = getOverrideForExercise(exercise?.id);
-            const _url = _ov?.imageUrl || exercise?.gifUrl || exercise?.imageUrl;
+            const _url1 = _ov?.imageUrl || exercise?.gifUrl || exercise?.imageUrl;
+            const _url2 = _ov?.imageUrl2 || exercise?.imageUrl2;
             const _svg = EXERCISE_SVGS[exercise?.id] || exercise?.svg;
+            const _hasBoth = _url1 && _url2;
             return <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: 1, marginBottom: 4 }}>CURRENT IMAGE</div>
-              {_url ? <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}` }}><img src={_url} alt={exercise?.name} referrerPolicy="no-referrer" style={{ width: "100%", maxHeight: 140, objectFit: "cover", display: "block" }} /></div>
+              <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: 1, marginBottom: 4 }}>CURRENT IMAGE{_hasBoth ? "S" : ""}</div>
+              {_hasBoth
+                ? <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+                    <div><div style={{ fontSize: 8, color: C.teal, fontWeight: 700, textAlign: "center", marginBottom: 2 }}>START</div><div style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${C.border}` }}><img src={_url1} alt="Start" referrerPolicy="no-referrer" style={{ width: "100%", height: 80, objectFit: "cover", display: "block" }} /></div></div>
+                    <div><div style={{ fontSize: 8, color: C.teal, fontWeight: 700, textAlign: "center", marginBottom: 2 }}>END</div><div style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${C.border}` }}><img src={_url2} alt="End" referrerPolicy="no-referrer" style={{ width: "100%", height: 80, objectFit: "cover", display: "block" }} /></div></div>
+                  </div>
+                : _url1 ? <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}` }}><img src={_url1} alt={exercise?.name} referrerPolicy="no-referrer" style={{ width: "100%", maxHeight: 140, objectFit: "cover", display: "block" }} /></div>
                 : _svg ? <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${C.border}` }} dangerouslySetInnerHTML={{ __html: _svg }} />
                 : <div style={{ height: 60, display: "flex", alignItems: "center", justifyContent: "center", background: C.bgCard, borderRadius: 10, border: `1px solid ${C.border}`, fontSize: 24 }}>{exercise?.emoji || "💪"}</div>}
             </div>;
           })()}
 
-          {/* Upload from camera roll */}
+          {/* Upload from camera roll — slot picker */}
           <input ref={bothRef} type="file" accept="image/*" capture="environment" style={{ display: "none" }}
             onChange={async (e) => {
               const f = e.target.files[0]; if (!f) return;
-              await doUpload(f, 0);
-              await doUpload(f, 1);
+              const _slot = bothRef.current?.dataset?.slot;
+              if (_slot === "0") { await doUpload(f, 0); }
+              else if (_slot === "1") { await doUpload(f, 1); }
+              else { await doUpload(f, 0); await doUpload(f, 1); }
             }} />
-          <button style={S.btn()} disabled={uploading} onClick={() => bothRef.current?.click()}>
-            📷 Upload from Camera Roll
+          <button style={S.btn()} disabled={uploading} onClick={() => { bothRef.current.dataset.slot = "both"; bothRef.current?.click(); }}>
+            📷 Upload Image (both positions)
           </button>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 8 }}>
+            <button style={{ ...S.btn("#3b82f6"), marginBottom: 0 }} disabled={uploading} onClick={() => { bothRef.current.dataset.slot = "0"; bothRef.current?.click(); }}>
+              ① Start Only
+            </button>
+            <button style={{ ...S.btn("#a855f7"), marginBottom: 0 }} disabled={uploading} onClick={() => { bothRef.current.dataset.slot = "1"; bothRef.current?.click(); }}>
+              ② End Only
+            </button>
+          </div>
 
           {/* Search web images */}
           {_searchAvail && (
