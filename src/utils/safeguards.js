@@ -138,6 +138,8 @@ const CONDITION_REP_RULES = {
   pregnancy_2nd_3rd:         { minReps: 10, maxPhase: 2, reason: "No max effort during pregnancy" },
   postpartum:                { minReps: 10, maxPhase: 2, reason: "Pelvic floor recovery" },
   spinal_fusion:             { minReps: 8,  maxPhase: 3, reason: "Protect fused segments" },
+  spinal_fusion_lumbar:      { minReps: 8,  maxPhase: 3, reason: "Lumbar fusion — protect fused segments, no deadlift/heavy axial load ever" },
+  spinal_fusion_cervical:    { minReps: 8,  maxPhase: 3, reason: "Cervical fusion — no overhead barbell, no behind-neck, permanently" },
   disc_herniation_acute:     { minReps: 12, maxPhase: 1, reason: "Acute disc — stabilization only" },
   frozen_shoulder:           { minReps: 10, maxPhase: 2, reason: "ROM priority — no heavy loading" },
   total_joint_replacement:   { minReps: 10, maxPhase: 2, reason: "Prosthetic protection" },
@@ -157,7 +159,10 @@ export function getConditionRepModifications(conditions) {
   const reasons = [];
 
   (conditions || []).forEach(c => {
-    const key = c.id || c.type || c.condition || (c.area || "").toLowerCase().replace(/\s+/g, "_");
+    // Injury rows store the condition key in conditionId/condition_key/condition.
+    // c.id is often a localStorage row id like "inj_<ts>_<i>" — check it last.
+    const rawId = typeof c.id === "string" && c.id.startsWith("inj_") ? null : c.id;
+    const key = c.conditionId || c.condition_key || c.condition || c.type || rawId || (c.area || "").toLowerCase().replace(/\s+/g, "_");
     const rule = CONDITION_REP_RULES[key];
     if (!rule) return;
 

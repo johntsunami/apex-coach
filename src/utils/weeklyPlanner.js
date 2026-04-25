@@ -8,6 +8,9 @@ import { getSessions, isTodayComplete } from "./storage.js";
 import { getWeeklyVolume, getVolumeLimit, wouldExceedVolume, capExerciseParams, getTrainingWeek } from "./volumeTracker.js";
 import { getAssessment } from "../components/Onboarding.jsx";
 import { getInjuries, conditionToGateKey } from "./injuries.js";
+import conditionsDB from "../data/conditions.json";
+import { isExerciseAllowedByPostOp, getCombinedPostOpRestrictions } from "./postOpTimeline.js";
+import { checkExerciseSafety } from "./safetyGate.js";
 import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
 import { applySafeguards } from "./safeguards.js";
@@ -207,7 +210,92 @@ function canUseExercise(ex, phase, location, excludeIds, injuries) {
     }
   }
 
+  // ── PERMANENT CONDITION CONTRAINDICATIONS (apply at every phase) ──
+  // Critical safety bug fix: roadmap preview must not show exercises that
+  // violate condition "avoid" lists in future phases. Spinal fusion, ACL post-op,
+  // rotator cuff post-op, and other chronic/post-surgical conditions have
+  // PERMANENT restrictions that do not lift with phase progression.
+  if (injuries && injuries.length > 0 && isExerciseBlockedByConditions(ex, injuries)) return false;
+
+  // ── POST-OP TIMELINE (surgery-date-driven, tier-specific) ──
+  if (injuries && injuries.length > 0 && !isExerciseAllowedByPostOp(ex, injuries)) return false;
+
+  // ── UNIVERSAL SAFETY GATE (canonical authority — runs every time) ──
+  // Note: skipPhaseCheck=true because this fn is called per-phase and phase
+  // eligibility is enforced just above. Avoids redundant work / false-blocks.
+  if (injuries && injuries.length > 0) {
+    const gate = checkExerciseSafety(ex, { conditions: injuries }, { phase, skipPhaseCheck: true });
+    if (!gate.safe) return false;
+  }
+
   return true;
+}
+
+// ── PERMANENT CONDITION CONTRAINDICATIONS ─────────────────────
+// Hard blocks that apply regardless of phase. Chronic conditions
+// like spinal fusion never "unlock" deadlifts or heavy axial loading.
+const SPINAL_FUSION_BLOCKS = {
+  byKeyword: [/\bdeadlift\b/i, /\bbarbell.*press\b/i, /\bchin.?up\b/i, /\bpull.?up\b/i, /\bsquat.*heavy\b/i, /\bjump\b/i, /\barnold\b/i, /\bsplit step\b/i, /\bplyo\b/i, /\bpower clean\b/i, /\bclean\b/i, /\bsnatch\b/i, /\boverhead.*barbell\b/i, /\bback extension\b/i, /\bgood morning\b/i, /\bsit.?up\b/i, /\bcrunch\b/i, /\brussian twist\b/i, /\bmax effort\b/i, /\b1rm\b/i],
+  byPattern: ["squat_loaded_heavy", "deadlift_all", "overhead_press_barbell", "plyometric"],
+  byTag: ["plyometric", "olympic_lift", "max_effort", "heavy_axial_load"],
+  byType: ["plyometric"],
+};
+
+const CONDITION_BLOCK_MAP = {
+  spinal_fusion_lumbar: SPINAL_FUSION_BLOCKS,
+  spinal_fusion_cervical: { byKeyword: [/\bbehind.?neck\b/i, /\boverhead.*press\b/i, /\bheadstand\b/i, /\bjerk\b/i], byTag: ["overhead_loaded"] },
+};
+
+function _conditionKey(inj) {
+  const raw = inj.conditionId || inj.condition_key || inj.condition || inj.id || "";
+  // Strip injection prefix ("inj_..." is the localStorage row id, not the condition key)
+  if (typeof raw === "string" && raw.startsWith("inj_")) return inj.conditionId || inj.condition_key || "";
+  return raw;
+}
+
+export function isExerciseBlockedByConditions(ex, injuries) {
+  if (!ex || !injuries?.length) return false;
+  const name = ex.name || "";
+  const tags = ex.tags || [];
+  const movementPattern = ex.movementPattern || "";
+  const exType = ex.type || "";
+
+  for (const inj of injuries) {
+    const key = _conditionKey(inj);
+    if (!key) continue;
+    const sev = inj.severity || 2;
+
+    // Microdiscectomy at high severity uses the same blocks as fusion
+    const useFusionBlocks = key === "spinal_fusion_lumbar" || (key === "microdiscectomy" && sev >= 3);
+    const blocks = useFusionBlocks ? SPINAL_FUSION_BLOCKS : CONDITION_BLOCK_MAP[key];
+
+    if (blocks) {
+      if (blocks.byKeyword?.some(rx => rx.test(name))) return true;
+      if (blocks.byTag?.some(t => tags.includes(t))) return true;
+      if (blocks.byPattern?.includes(movementPattern)) return true;
+      if (blocks.byType?.includes(exType)) return true;
+    }
+
+    // Generic: pull the condition's "avoid" array from conditions.json
+    // and apply keyword matching. This makes new conditions auto-respected.
+    const cond = conditionsDB?.find(c => c.condition === key || c.id === key);
+    if (cond?.avoid?.length) {
+      for (const avoidStr of cond.avoid) {
+        const lower = String(avoidStr).toLowerCase();
+        // Pattern phrases like "ALL spinal flexion under load" → keyword check
+        if (lower.includes("deadlift") && /deadlift/i.test(name)) return true;
+        if (lower.includes("plyometric") && (exType === "plyometric" || tags.includes("plyometric"))) return true;
+        if (lower.includes("sit-up") && /sit.?up/i.test(name)) return true;
+        if (lower.includes("crunch") && /crunch/i.test(name)) return true;
+        if (lower.includes("russian twist") && /russian twist/i.test(name)) return true;
+        if (lower.includes("good morning") && /good morning/i.test(name)) return true;
+        if (lower.includes("back extension") && /back extension/i.test(name)) return true;
+        if (lower.includes("behind-neck") && /behind.?neck/i.test(name)) return true;
+        if (lower.includes("headstand") && /headstand/i.test(name)) return true;
+      }
+    }
+  }
+  return false;
 }
 
 // ── ISSUE 1: Difficulty ceiling — exercises too easy for late phases are BLOCKED ──

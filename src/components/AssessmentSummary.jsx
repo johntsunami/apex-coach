@@ -5,6 +5,26 @@ import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { buildWorkoutList } from "../utils/workoutHelpers.js";
 import { generateProtocols, saveLocalProtocols } from "./PTSystem.jsx";
+import { isMedicalClearanceConfirmed, confirmMedicalClearance } from "../utils/safetyGate.js";
+
+function ClearanceBanner() {
+  const [confirmed, setConfirmed] = useState(isMedicalClearanceConfirmed());
+  if (confirmed) {
+    return (
+      <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 10, padding: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#22c55e", marginBottom: 2 }}>✓ MEDICAL CLEARANCE CONFIRMED</div>
+        <div style={{ fontSize: 11, color: "#e8ecf4", lineHeight: 1.5 }}>You confirmed clearance from your medical team. Continue to follow their specific guidance.</div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ background: "rgba(239,68,68,0.1)", border: "2px solid #ef4444", borderRadius: 10, padding: 14 }}>
+      <div style={{ fontSize: 13, fontWeight: 700, color: "#ef4444", marginBottom: 6 }}>⚠️ MEDICAL CLEARANCE REQUIRED</div>
+      <div style={{ fontSize: 11, color: "#e8ecf4", lineHeight: 1.5, marginBottom: 10 }}>Your profile shows a post-surgical or high-severity condition. Please review this plan with your surgeon or physical therapist before starting any exercises.</div>
+      <button onClick={() => { confirmMedicalClearance(); setConfirmed(true); }} style={{ width: "100%", padding: 10, borderRadius: 8, background: "#ef4444", color: "#fff", fontWeight: 700, fontSize: 12, border: "none", cursor: "pointer", fontFamily: "inherit" }}>I have clearance from my medical team</button>
+    </div>
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Post-Assessment Summary — comprehensive profile review
@@ -84,6 +104,10 @@ export default function AssessmentSummary({ onContinue, userName }) {
     }).filter(Boolean);
   }, [prefs.favorites]);
 
+  // Medical clearance required for high-severity post-op or post-surgical conditions
+  const _clearanceConditionIds = ["spinal_fusion_lumbar","spinal_fusion_cervical","acl_post_op","meniscus_post_op","rotator_cuff_post_op","total_joint_replacement"];
+  const requiresClearance = activeInjuries.some(c => (c.severity || 0) >= 4 || _clearanceConditionIds.includes(c.conditionId || c.condition_key || c.condition || ""));
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {/* Header */}
@@ -92,6 +116,9 @@ export default function AssessmentSummary({ onContinue, userName }) {
         <div style={{ fontSize: 28, fontWeight: 800, color: C.text, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 3, marginTop: 4 }}>YOUR PLAN IS READY</div>
         <div style={{ fontSize: 12, color: C.textMuted, marginTop: 4 }}>Built by your coaching team. Evidence-based. Personalized.</div>
       </div>
+      {requiresClearance && (
+        <ClearanceBanner />
+      )}
 
       {/* Section 1: Profile at a Glance */}
       <Card>

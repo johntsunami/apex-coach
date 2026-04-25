@@ -4,7 +4,9 @@ import { getAssessment } from "./Onboarding.jsx";
 import { getInjuries } from "../utils/injuries.js";
 import { getStats, getSessions } from "../utils/storage.js";
 import { getVolumeSummary, getTrainingWeek, getExerciseDisplayParams } from "../utils/volumeTracker.js";
-import { getSafeExerciseParams } from "../utils/safeguards.js";
+import { getSafeExerciseParams, getConditionRepModifications } from "../utils/safeguards.js";
+import { getCombinedPostOpRestrictions, getRestrictionsAtWeekOffset, POST_OP_TIMELINES, getCurrentTimelineTier } from "../utils/postOpTimeline.js";
+import { checkExerciseSafety } from "../utils/safetyGate.js";
 import ExerciseImage from "./ExerciseImage.jsx";
 import SwapModal from "./ExerciseSwap.jsx";
 
@@ -32,7 +34,7 @@ const Badge=({children,color=C.teal})=><span style={{display:"inline-flex",paddi
 const ProgressBar=({value,max=100,color=C.teal,height=5})=><div style={{width:"100%",height,background:C.border,borderRadius:height/2,overflow:"hidden"}}><div style={{width:`${Math.min(100,(value/max)*100)}%`,height:"100%",background:color,borderRadius:height/2}}/></div>;
 
 // Cache version — increment when generation logic changes to invalidate stale cached weeks
-const PLAN_GEN_VERSION = 14;
+const PLAN_GEN_VERSION = 15;
 
 export default function PlanView({ onClose }) {
   const [tab, setTab] = useState("week");
@@ -316,6 +318,22 @@ export default function PlanView({ onClose }) {
 
       {/* ── TAB: 12-MONTH ROADMAP ───────────────────────────── */}
       {tab === "roadmap" && (() => {
+        // Compute condition-driven max phase ceiling — phases above this are locked
+        const _condMods = getConditionRepModifications(injuries);
+        const _condMaxPhase = _condMods.globalMaxPhase || 5;
+        const _phaseLockReasons = _condMods.reasons || [];
+        // Compute post-op phase lock per phase number — finds earliest week where each phase unlocks
+        const _postOpNow = getCombinedPostOpRestrictions(injuries);
+        const _postOpMaxPhaseNow = _postOpNow.maxPhase != null ? _postOpNow.maxPhase : 5;
+        // For each future phase number (2-5), find the earliest week-offset at which it would be allowed
+        const _postOpUnlockWeek = (phaseNum) => {
+          // Search 0..104 weeks (2 years out)
+          for (let w = 0; w <= 104; w++) {
+            const r = getRestrictionsAtWeekOffset(injuries, w);
+            if ((r.maxPhase != null ? r.maxPhase : 5) >= phaseNum) return w;
+          }
+          return null;
+        };
         const phases = [
           { num: 1, name: "Stabilization", weeks: [1,8], style: "1-3 sets · 12-20 reps · 4/2/1 tempo", unlocks: ["Core stability","Hip hinge competent"], criteria: "8+ sessions, no pain, core earned" },
           { num: 2, name: "Strength Endurance", weeks: [9,16], style: "2-4 sets · 8-12 reps · 2/0/2 tempo", unlocks: ["Barbell competent","Heavy loading ready"], criteria: "All injuries ≤2, barbell competent" },
@@ -342,22 +360,27 @@ export default function PlanView({ onClose }) {
             const isCurrent = p.num === CURRENT_PHASE;
             const isPast = p.num < CURRENT_PHASE;
             const isFuture = p.num > CURRENT_PHASE;
+            const _postOpLockedNow = p.num > _postOpMaxPhaseNow;
+            const _postOpUnlockW = _postOpLockedNow ? _postOpUnlockWeek(p.num) : null;
+            const isLocked = p.num > _condMaxPhase || _postOpLockedNow;
             const phaseWeeks = [];
             for (let w = p.weeks[0]; w <= p.weeks[1]; w++) phaseWeeks.push(w);
-            return <Card key={p.num} style={{ padding: 0, overflow: "hidden", borderColor: isCurrent ? C.teal + "40" : C.border, opacity: isFuture ? 0.7 : 1 }}>
+            return <Card key={p.num} style={{ padding: 0, overflow: "hidden", borderColor: isLocked ? C.danger + "30" : isCurrent ? C.teal + "40" : C.border, opacity: isLocked ? 0.55 : isFuture ? 0.7 : 1 }}>
               <div style={{ padding: "12px 14px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 12, background: isCurrent ? C.teal : isPast ? C.success : C.bgElevated, border: `2px solid ${isCurrent ? C.teal : isPast ? C.success : C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: isCurrent || isPast ? "#000" : C.textDim }}>{isPast ? "✓" : p.num}</div>
+                    <div style={{ width: 24, height: 24, borderRadius: 12, background: isLocked ? C.bgElevated : isCurrent ? C.teal : isPast ? C.success : C.bgElevated, border: `2px solid ${isLocked ? C.danger + "60" : isCurrent ? C.teal : isPast ? C.success : C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800, color: isLocked ? C.danger : isCurrent || isPast ? "#000" : C.textDim }}>{isLocked ? "🔒" : isPast ? "✓" : p.num}</div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: isCurrent ? C.teal : C.text }}>Phase {p.num}: {p.name}</div>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: isLocked ? C.textMuted : isCurrent ? C.teal : C.text }}>Phase {p.num}: {p.name}</div>
                       <div style={{ fontSize: 10, color: C.textDim }}>Weeks {p.weeks[0]}-{p.weeks[1]} · {p.style}</div>
                     </div>
                   </div>
                   {isCurrent && <Badge color={C.teal}>CURRENT</Badge>}
+                  {isLocked && <Badge color={C.danger}>LOCKED</Badge>}
                 </div>
+                {isLocked && <div style={{ marginTop: 8, padding: "8px 10px", background: C.danger + "10", border: `1px solid ${C.danger}30`, borderRadius: 8, fontSize: 10, color: C.text, lineHeight: 1.5 }}>⚠️ Phase {p.num} not available due to your condition profile — protecting safety. Reason: {_phaseLockReasons.join("; ") || "active condition restrictions"}{_postOpLockedNow && _postOpUnlockW != null && <div style={{ marginTop: 4, color: C.teal }}>Available at week {_postOpUnlockW} post-op{_postOpUnlockW > 0 ? ` (in ${_postOpUnlockW} more weeks)` : ""}</div>}</div>}
                 {/* Week rows — tappable to expand and see exercises */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 8 }}>
+                {!isLocked && <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 8 }}>
                   {phaseWeeks.map(w => {
                     const isThisWeek = w === currentWeek;
                     const isDoneWeek = w < currentWeek;
@@ -429,10 +452,16 @@ export default function PlanView({ onClose }) {
                                 {(() => {
                                   // Get body parts trained today for warmup/cooldown targeting
                                   const trainedBps = new Set((day.exercises || []).map(e => { const f = exerciseDB.find(x => x.id === e.id); return f?.bodyPart; }).filter(Boolean));
-                                  // Generate warmup: foam roll + mobility for trained areas
-                                  const warmup = exerciseDB.filter(e => (e.category === "foam_roll" || (e.category === "warmup" && e.type === "mobility")) && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart)).slice(0, 4);
-                                  // Generate cooldown: static stretches for trained areas
-                                  const cooldown = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type === "static" && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart)).slice(0, 3);
+                                  // Compute simulated weeks-post-op for THIS preview week so future-phase
+                                  // restrictions reflect when the user would actually be there.
+                                  const _datedNow = injuries.filter(c => c.surgeryDate);
+                                  const _curMaxPostOpWeeks = _datedNow.length ? Math.max(..._datedNow.map(c => Math.floor((Date.now() - new Date(c.surgeryDate).getTime()) / (7*86400000)))) : 0;
+                                  const _simWks = _curMaxPostOpWeeks + Math.max(0, w - currentWeekNum);
+                                  const _gateOpts = { phase: p.num, simulatedWeeksPostOp: _simWks, skipPhaseCheck: false };
+                                  // Generate warmup: foam roll + mobility for trained areas, gated by universal safety
+                                  const warmup = exerciseDB.filter(e => (e.category === "foam_roll" || (e.category === "warmup" && e.type === "mobility")) && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart) && checkExerciseSafety(e, { conditions: injuries }, _gateOpts).safe).slice(0, 4);
+                                  // Generate cooldown: static stretches for trained areas, gated by universal safety
+                                  const cooldown = exerciseDB.filter(e => e.category === "cooldown" && e.stretch_type === "static" && (e.phaseEligibility || []).includes(p.num) && trainedBps.has(e.bodyPart) && checkExerciseSafety(e, { conditions: injuries }, _gateOpts).safe).slice(0, 3);
                                   return <>
                                     {/* Warmup */}
                                     {warmup.length > 0 && <div style={{ paddingLeft: 8, marginTop: 2 }}>
@@ -472,7 +501,7 @@ export default function PlanView({ onClose }) {
                       </div>}
                     </div>;
                   })}
-                </div>
+                </div>}
                 {/* Unlocks */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 6 }}>
                   {p.unlocks.map(u => <span key={u} style={{ fontSize: 8, padding: "2px 5px", borderRadius: 4, background: isPast ? C.success + "15" : C.bgElevated, color: isPast ? C.success : C.textDim }}>{isPast ? "✓ " : ""}{u}</span>)}

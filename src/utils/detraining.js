@@ -222,3 +222,226 @@ export function setReturnState(state) {
 export function clearReturnState() {
   try { localStorage.removeItem(LS_RETURN); } catch {}
 }
+
+// ═══════════════════════════════════════════════════════════════
+// RTT TIER LAYER — User-facing names mapped to existing breakpoints.
+// Volume reduction stays in getReturnVolumeMultiplier (single source).
+// This layer adds: modal text, RPE cap, phase override, warmup
+// extension, capability regression, session counter, auto-detect.
+// ═══════════════════════════════════════════════════════════════
+
+// Reuses the 14/28/57/85 breakpoints from getPhaseRegression.
+// Tier names align with NASM detraining bands; adjustments below
+// are layered ON TOP of the existing volumeRamp (no double-volume).
+export const RTT_TIERS = [
+  { name: "fresh",     min: 0,  max: 3,    sessionsToRebuild: 0, rpeCap: null, warmupExtraMinutes: 0,  weekOverride: null, phaseOverrideOffset: 0,  phaseOverrideTo: null },
+  { name: "minor",     min: 4,  max: 13,   sessionsToRebuild: 2, rpeCap: 8,    warmupExtraMinutes: 0,  weekOverride: null, phaseOverrideOffset: 0,  phaseOverrideTo: null },
+  { name: "moderate",  min: 14, max: 27,   sessionsToRebuild: 3, rpeCap: 7,    warmupExtraMinutes: 5,  weekOverride: null, phaseOverrideOffset: 0,  phaseOverrideTo: null },
+  { name: "extended",  min: 28, max: 56,   sessionsToRebuild: 5, rpeCap: 6,    warmupExtraMinutes: 8,  weekOverride: 1,    phaseOverrideOffset: 0,  phaseOverrideTo: null },
+  { name: "long",      min: 57, max: 84,   sessionsToRebuild: 7, rpeCap: 6,    warmupExtraMinutes: 10, weekOverride: 1,    phaseOverrideOffset: -1, phaseOverrideTo: null },
+  { name: "extensive", min: 85, max: 9999, sessionsToRebuild: 7, rpeCap: 5,    warmupExtraMinutes: 10, weekOverride: 1,    phaseOverrideOffset: 0,  phaseOverrideTo: 1 },
+];
+
+export const RTT_TIERS_ORDERED = ["fresh","minor","moderate","extended","long","extensive"];
+
+export function getDaysOff(lastWorkoutDate) {
+  if (!lastWorkoutDate) return 0;
+  return Math.max(0, Math.floor((Date.now() - new Date(lastWorkoutDate).getTime()) / 86400000));
+}
+
+export function getRttTier(daysOff) {
+  return RTT_TIERS.find(t => daysOff >= t.min && daysOff <= t.max) || RTT_TIERS[0];
+}
+
+// Async — checks Supabase workout_sessions, falls back to ring lastSessionDate.
+export async function detectReturnToTraining() {
+  let lastDate = null;
+  try {
+    const { supabase, isSupabaseAvailable } = await import("./supabase.js");
+    if (isSupabaseAvailable()) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { data } = await supabase
+          .from("workout_sessions")
+          .select("completed_at")
+          .eq("user_id", session.user.id)
+          .not("completed_at", "is", null)
+          .order("completed_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (data?.completed_at) lastDate = data.completed_at;
+      }
+    }
+  } catch {}
+  if (!lastDate) {
+    const rings = getRings();
+    if (rings.lastSessionDate) lastDate = rings.lastSessionDate;
+  }
+  if (!lastDate) return { isReturning: false, daysOff: 0 };
+  const daysOff = getDaysOff(lastDate);
+  const tier = getRttTier(daysOff);
+  return { isReturning: daysOff >= 4, daysOff, tier, lastSessionDate: lastDate };
+}
+
+export function activateRtt(tier, daysOff, opts = {}) {
+  const state = {
+    activatedAt: new Date().toISOString(),
+    tier: tier.name,
+    daysOff,
+    sessionsCompleted: 0,
+    sessionsToRebuild: tier.sessionsToRebuild || 2,
+    modalShown: false,
+    upgradedFrom: opts.upgradedFrom || null,
+  };
+  setReturnState(state);
+  return state;
+}
+
+export function getRttState() {
+  const state = getReturnState();
+  if (!state) return null;
+  // Auto-deactivate when rebuild complete (only for the new schema)
+  if (typeof state.sessionsToRebuild === "number" && state.sessionsCompleted >= state.sessionsToRebuild) {
+    clearReturnState();
+    return null;
+  }
+  return state;
+}
+
+export function incrementRttSessions() {
+  const state = getRttState();
+  if (!state) return null;
+  state.sessionsCompleted = (state.sessionsCompleted || 0) + 1;
+  if (state.sessionsCompleted >= state.sessionsToRebuild) {
+    clearReturnState();
+    return null;
+  }
+  setReturnState(state);
+  return state;
+}
+
+export function deactivateRtt() { clearReturnState(); }
+
+export function shouldShowRttModal() {
+  const state = getRttState();
+  return !!state && !state.modalShown;
+}
+
+export function markRttModalShown() {
+  const state = getRttState();
+  if (!state) return;
+  state.modalShown = true;
+  setReturnState(state);
+}
+
+// Returns NON-volume adjustments only — volume is handled by getReturnVolumeMultiplier.
+export function applyRttAdjustments(sessionParams, rttState, currentPhase) {
+  if (!rttState) return sessionParams;
+  const tier = RTT_TIERS.find(t => t.name === rttState.tier);
+  if (!tier) return sessionParams;
+  const out = { ...sessionParams };
+  if (tier.rpeCap != null) out.rpeCap = tier.rpeCap;
+  if (tier.warmupExtraMinutes) out.warmupExtraMinutes = tier.warmupExtraMinutes;
+  if (tier.weekOverride) out.weekOverride = tier.weekOverride;
+  if (tier.phaseOverrideTo != null) out.phaseOverride = tier.phaseOverrideTo;
+  else if (tier.phaseOverrideOffset) out.phaseOverride = Math.max(1, currentPhase + tier.phaseOverrideOffset);
+  return out;
+}
+
+export function getRttMessage(daysOff, tier) {
+  const messages = {
+    minor:     `Welcome back! ${daysOff} days off — easing in slightly today.`,
+    moderate:  `Welcome back! It's been ${daysOff} days. We're cutting volume and capping intensity for the first ${tier.sessionsToRebuild} sessions, then rebuilding from there.`,
+    extended:  `Welcome back! ${daysOff} days off. Resetting to Week 1 of your current phase — your motor patterns need a refresh. We'll rebuild over the next ${tier.sessionsToRebuild} sessions.`,
+    long:      `Welcome back! ${daysOff} days is a real break. Dropping you back one phase and restarting from Week 1. NASM principle: rebuild before reload. ${tier.sessionsToRebuild} sessions to return to where you left off.`,
+    extensive: `Welcome back! ${daysOff} days off requires a true reset. Restarting Phase 1 — stabilization and movement quality first. Don't rush this. ${tier.sessionsToRebuild}+ sessions to assess where you really are.`,
+  };
+  return messages[tier.name] || `Welcome back! ${daysOff} days since your last session.`;
+}
+
+// ── CAPABILITY REGRESSION ──────────────────────────────────────
+const CAPABILITY_TIERS = {
+  beginner:     ["bodyweight_basic","stretching","mobility"],
+  intermediate: ["core_stability_basic","single_leg_stable","hip_hinge_competent","shoulder_pressing_cleared"],
+  advanced:     ["barbell_competent","pull_up_ready","overhead_cleared","core_stability_intermediate"],
+  elite:        ["plyometric_ready","heavy_loading_ready","olympic_lift_ready","power_ready","depth_jump_ready"],
+};
+
+const CAPABILITY_REGRESSION = {
+  fresh:     { revoke: [] },
+  minor:     { revoke: [] },
+  moderate:  { revoke: ["plyometric_ready","power_ready","depth_jump_ready"] },
+  extended:  { revoke: ["plyometric_ready","power_ready","depth_jump_ready","olympic_lift_ready","heavy_loading_ready"] },
+  long:      { revoke: [...CAPABILITY_TIERS.elite, ...CAPABILITY_TIERS.advanced] },
+  extensive: { revoke: [...CAPABILITY_TIERS.elite, ...CAPABILITY_TIERS.advanced, ...CAPABILITY_TIERS.intermediate] },
+};
+
+const MAX_DIFFICULTY_BY_TIER = { fresh: 5, minor: 5, moderate: 4, extended: 3, long: 2, extensive: 1 };
+
+export function isExerciseAllowedDuringRtt(exercise, rttState) {
+  if (!rttState) return true;
+  const tierName = rttState.tier;
+  const maxDifficulty = MAX_DIFFICULTY_BY_TIER[tierName] || 5;
+  const exDifficulty = exercise.difficultyLevel || 1;
+  if (exDifficulty > maxDifficulty) return false;
+
+  const stillRevoked = getRevokedCapabilities();
+  const requiredCaps = exercise.prerequisites?.requiredCapabilities || [];
+  for (const cap of requiredCaps) if (stillRevoked.has(cap)) return false;
+
+  const exName = (exercise.name || "").toLowerCase();
+  if (tierName !== "minor" && tierName !== "fresh") {
+    if (exercise.type === "plyometric" || /\b(jump|plyo|hop|bound|throw|slam|sprint)\b/i.test(exName)) return false;
+  }
+  if (["extended","long","extensive"].includes(tierName)) {
+    if (/\b(clean|snatch|jerk|kipping|muscle.up|pistol|depth jump)\b/i.test(exName)) return false;
+  }
+  if (["long","extensive"].includes(tierName)) {
+    if (/\b(1rm|max effort|heavy|barbell)\b/i.test(exName) && exercise.type !== "stabilization") return false;
+  }
+  return true;
+}
+
+export function getCapabilityRegressionMessage(tier) {
+  const messages = {
+    fresh: null,
+    minor: null,
+    moderate:  "Plyometrics paused for the rebuild — explosive movements need a fresh nervous system.",
+    extended:  "Advanced exercises (heavy loading, plyometrics, complex lifts) are paused. Mastery degrades with time off — we'll re-earn them as you rebuild.",
+    long:      "Returning to intermediate exercises only. Your motor patterns need to be re-established before complex or heavy movements. This is the NASM principle: rebuild the foundation first.",
+    extensive: "Restarting at beginner level. After this much time off, even unlocked exercises need to be re-earned through movement quality. Expect to progress quickly back to your previous level over 4-6 weeks.",
+  };
+  return messages[tier.name] || null;
+}
+
+export function getRevokedCapabilities() {
+  const state = getReturnState();
+  if (!state) return new Set();
+  if (typeof state.sessionsToRebuild === "number" && state.sessionsCompleted >= state.sessionsToRebuild) return new Set();
+  const revoked = CAPABILITY_REGRESSION[state.tier]?.revoke || [];
+  if (revoked.length === 0) return new Set();
+  const rebuildProgress = state.sessionsToRebuild > 0 ? state.sessionsCompleted / state.sessionsToRebuild : 1;
+  const numToRestore = Math.floor(rebuildProgress * revoked.length);
+  return new Set(revoked.slice(0, revoked.length - numToRestore));
+}
+
+// ── AUTO-DETECT BEFORE EVERY WORKOUT ──────────────────────────
+export async function autoDetectAndApplyRtt() {
+  const detection = await detectReturnToTraining();
+  const currentState = getRttState();
+
+  if (!detection.isReturning && !currentState) return null;
+  if (detection.isReturning && !currentState) return activateRtt(detection.tier, detection.daysOff);
+
+  if (detection.isReturning && currentState) {
+    const newIdx = RTT_TIERS_ORDERED.indexOf(detection.tier.name);
+    const curIdx = RTT_TIERS_ORDERED.indexOf(currentState.tier);
+    if (newIdx > curIdx) {
+      console.log(`[RTT] Upgrading tier: ${currentState.tier} → ${detection.tier.name} (${detection.daysOff} days off)`);
+      return activateRtt(detection.tier, detection.daysOff, { upgradedFrom: currentState.tier });
+    }
+    return currentState;
+  }
+  if (!detection.isReturning && currentState) return currentState;
+  return null;
+}

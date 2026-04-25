@@ -38047,7 +38047,8 @@
   },
   {
     "id": "cond_clamshell_preg",
-    "name": "Side-Lying Clamshell (Pregnancy-Safe)",
+    "name": "Side-Lying Clamshell",
+    "pregnancySafe": true,
     "category": "main",
     "type": "stabilization",
     "movementPattern": "isolation",

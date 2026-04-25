@@ -4,6 +4,7 @@ import compensationsDB from "../data/compensations.json";
 import exerciseDB from "../data/exercises.json";
 import ExerciseImage from "./ExerciseImage.jsx";
 import { saveSeniorProfile, computeFallRisk, getAgeTier } from "../utils/seniorFitness.js";
+import { POST_SURGICAL_CONDITIONS, getWeeksPostOp } from "../utils/postOpTimeline.js";
 
 // ═══════════════════════════════════════════════════════════════
 // APEX Coach — Onboarding Assessment (14 screens)
@@ -898,6 +899,17 @@ export default function OnboardingFlow({ onComplete, initialData }) {
                                 color: sel.severity === s ? C.text : C.textDim }}>{s}</button>
                           ))}
                         </div>}
+                        {/* Surgery date — for post-surgical conditions, drives timeline-based phase locks */}
+                        {(POST_SURGICAL_CONDITIONS.includes(cond.id) || sel.condType === "Post-Surgical") && (
+                          <div style={{ background: "rgba(0,210,200,0.05)", border: "1px solid rgba(0,210,200,0.2)", borderRadius: 8, padding: 10, marginTop: 8 }}>
+                            <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, marginBottom: 4 }}>📅 SURGERY DATE</div>
+                            <div style={{ fontSize: 10, color: C.textDim, marginBottom: 6 }}>When was your surgery? Determines which exercises are safe based on healing timeline.</div>
+                            <input type="date" value={sel.surgeryDate || ""} max={new Date().toISOString().split("T")[0]}
+                              onChange={(e) => setConditions(p => p.map(c => c.conditionId === cond.id ? { ...c, surgeryDate: e.target.value } : c))}
+                              style={{ width: "100%", padding: 8, borderRadius: 6, border: `1px solid ${C.border}`, background: C.bgElevated, color: C.text, fontSize: 13, fontFamily: "inherit" }}/>
+                            {sel.surgeryDate && <div style={{ fontSize: 10, color: C.teal, marginTop: 4 }}>{getWeeksPostOp(sel.surgeryDate)} weeks post-op</div>}
+                          </div>
+                        )}
                       </div>;
                       })()}
                     </div>

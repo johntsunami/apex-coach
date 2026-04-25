@@ -6,10 +6,35 @@
 // plyometrics, power caps). This module adds NASM-specific QA checks.
 // ═══════════════════════════════════════════════════════════════
 
+import { checkExerciseSafety } from "./safetyGate.js";
+import { isExerciseBlockedByConditions } from "./weeklyPlanner.js";
+import { isExerciseAllowedByPostOp } from "./postOpTimeline.js";
+
 // ── Helpers ─────────────────────────────────────────────────────
 
 function safeGet(key) {
   try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+}
+
+// Pull active conditions/injuries for safety filtering during auto-fix.
+function _getActiveInjuriesForFix() {
+  try {
+    const inj = safeGet("apex_injuries") || [];
+    return inj.filter(i => i.status !== "resolved");
+  } catch { return []; }
+}
+
+// Universal "is this exercise safe to inject during auto-fix?" — wraps every
+// in-DB lookup. Prevents the validator from re-introducing dangerous exercises
+// on contraindicated profiles (spinal fusion, post-op, etc.).
+function _autoFixSafe(ex, phase) {
+  if (!ex) return false;
+  const injuries = _getActiveInjuriesForFix();
+  if (!injuries.length) return true; // healthy users → no extra filtering needed
+  if (isExerciseBlockedByConditions(ex, injuries)) return false;
+  if (!isExerciseAllowedByPostOp(ex, injuries)) return false;
+  const gate = checkExerciseSafety(ex, { conditions: injuries }, { phase, skipPhaseCheck: true });
+  return gate.safe;
 }
 
 function getUserGoalTier() {
@@ -444,7 +469,11 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
   if (fails.length === 0) return { session: fixed, log };
 
   const usedIds = new Set(fixed.main.map(e => e.id));
-  const isUsable = (e) => e.category === "main" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance";
+  // CRITICAL: every auto-fix lookup must run through _autoFixSafe so condition
+  // contraindications, post-op timeline, and universal safety gate are respected.
+  // Previously isUsable bypassed all of these and was the source of Barbell Bench,
+  // Chin-Up, Pistol Squat, Arnold Press appearing on contraindicated profiles.
+  const isUsable = (e) => e.category === "main" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && e.safetyTier !== "red" && e.bodyPart !== "core" && e.type !== "balance" && _autoFixSafe(e, phase);
 
   // S1/S10: Not enough exercises or strength exercises
   // Respect the day's split focus — don't add push-ups on leg days
@@ -457,9 +486,9 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
     // 1. Try exercises matching the day's focus
     const focusPool = _focusBps ? (exerciseDB || []).filter(e => isUsable(e) && _focusBps.includes(e.bodyPart)).sort((a, b) => (b.difficultyLevel || 1) - (a.difficultyLevel || 1)) : [];
     for (const ex of focusPool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: split-appropriate filler" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (matches day focus)`); }
-    // 2. Try core exercises (always appropriate)
+    // 2. Try core exercises (always appropriate) — gated by safety
     if (fixed.main.length < 4) {
-      const corePool = (exerciseDB || []).filter(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
+      const corePool = (exerciseDB || []).filter(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && _autoFixSafe(e, phase));
       for (const ex of corePool) { if (fixed.main.length >= 4) break; fixed.main.push({ ...ex, _reason: "Auto-fix: core filler" }); usedIds.add(ex.id); log.push(`S1: Added ${ex.name} (core filler)`); }
     }
     // 3. Last resort: any exercise — but STILL exclude push/chest on lower days
@@ -491,13 +520,14 @@ function _autoFixSession(session, checks, phase, exerciseDB) {
     }
   }
 
-  // S11: Core guarantee
+  // S11: Core guarantee — gated so spinal-fusion users never get McGill-curl-up
+  // (loaded spinal flexion) or other contraindicated core work.
   if (fails.some(c => c.id === "S11")) {
     const allEx = [...fixed.warmup, ...fixed.main];
     if (!allEx.some(e => e.bodyPart === "core")) {
       const coreRotation = ["stab_dead_bug", "stab_mcgill_curl_up", "core_pallof_kneel", "stab_bird_dog", "stab_plank", "stab_side_plank"];
-      const coreEx = (exerciseDB || []).find(e => coreRotation.includes(e.id) && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase))
-        || (exerciseDB || []).find(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase));
+      const coreEx = (exerciseDB || []).find(e => coreRotation.includes(e.id) && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && _autoFixSafe(e, phase))
+        || (exerciseDB || []).find(e => e.bodyPart === "core" && !usedIds.has(e.id) && (e.phaseEligibility || []).includes(phase) && _autoFixSafe(e, phase));
       if (coreEx) { fixed.warmup.push({ ...coreEx, _reason: "Auto-fix: core guarantee", _phase: "activate" }); usedIds.add(coreEx.id); log.push(`S11: Added ${coreEx.name} as core guarantee`); }
     }
   }

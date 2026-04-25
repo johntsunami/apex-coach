@@ -12,6 +12,9 @@ import ExerciseImage from "./components/ExerciseImage.jsx";
 import ExtraWork from "./components/ExtraWork.jsx";
 import PlanView from "./components/PlanView.jsx";
 import { getInjuries, saveInjuries, conditionToGateKey, updatePainTracking, getSeverityReductionSuggestions } from "./utils/injuries.js";
+import { isExerciseBlockedByConditions } from "./utils/weeklyPlanner.js";
+import { isExerciseAllowedByPostOp, getCombinedPostOpRestrictions, getPostOpTimelineMessage } from "./utils/postOpTimeline.js";
+import { checkExerciseSafety, requiresMedicalClearance, isMedicalClearanceConfirmed, confirmMedicalClearance } from "./utils/safetyGate.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
@@ -27,7 +30,7 @@ import WellnessScreen, { StressResetCard } from "./components/WellnessModule.jsx
 import { CelebrationLayer, CelebrationAPI } from "./components/CelebrationSystem.jsx";
 import PowerRingsCard from "./components/PowerRings.jsx";
 import { getAssessmentProgress, getDismissedToday, dismissForToday, ASSESSMENT_TYPES, getAssessmentResults } from "./utils/fitnessAssessments.js";
-import { checkAndApplyDecay, addSessionGains, getRings, getReturnVolumeMultiplier, getPhaseRegression, restoreRingsFromSupabase } from "./utils/detraining.js";
+import { checkAndApplyDecay, addSessionGains, getRings, getReturnVolumeMultiplier, getPhaseRegression, restoreRingsFromSupabase, getRttState, applyRttAdjustments, isExerciseAllowedDuringRtt, autoDetectAndApplyRtt, shouldShowRttModal, markRttModalShown, incrementRttSessions, getRttMessage, getCapabilityRegressionMessage, RTT_TIERS } from "./utils/detraining.js";
 import MorningROMScreen from "./components/MorningROM.jsx";
 import EveningROMScreen from "./components/EveningROM.jsx";
 
@@ -1007,6 +1010,18 @@ function buildStretchSession(location = "gym") {
 }
 
 function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkInData=null, excludeMuscles=null) {
+  // ── RTT NON-VOLUME OVERRIDES (phase, warmup, RPE cap) ─────────
+  // Volume reduction is handled by getReturnVolumeMultiplier below — do not double-apply.
+  let _rttWarmupExtra = 0; let _rttRpeCap = null;
+  try {
+    const _rttS = getRttState();
+    if (_rttS) {
+      const _adj = applyRttAdjustments({}, _rttS, phase);
+      if (_adj.phaseOverride) { console.log(`[RTT] Phase override: ${phase} → ${_adj.phaseOverride}`); phase = _adj.phaseOverride; }
+      if (_adj.warmupExtraMinutes) _rttWarmupExtra = _adj.warmupExtraMinutes;
+      if (_adj.rpeCap) _rttRpeCap = _adj.rpeCap;
+    }
+  } catch (e) { console.warn("RTT override error (non-blocking):", e); }
   const weeklyVol = getWeeklyVolume();
   const runningVol = { ...weeklyVol }; // mutable copy for tracking within this session
   const volSwaps = []; // track volume-based substitutions
@@ -1061,6 +1076,16 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   // Issue 1: Difficulty ceiling — exercises too easy for late phases are BLOCKED
   const _maxPhaseForDiff = (diff) => ({ 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 }[diff] || 5);
 
+  // RTT capability regression — block advanced exercises during return-to-training
+  const _rttStateForPick = getRttState();
+  // Permanent condition contraindications — applied at every phase (chronic/post-surgical)
+  const _activeInjuries = getInjuries().filter(i => i.status !== "resolved");
+  // Post-op timeline restrictions — surgery-date-driven phase + pattern locks
+  const _postOpRestrictions = getCombinedPostOpRestrictions(_activeInjuries);
+  if (_postOpRestrictions.maxPhase < phase) {
+    console.log(`[POST-OP] Phase ceiling override: ${phase} → ${_postOpRestrictions.maxPhase} (${_postOpRestrictions.messages.join(" | ")})`);
+    phase = Math.max(1, _postOpRestrictions.maxPhase);
+  }
   const pick = (category, limit, excludeStarters) => {
     let pool = exerciseDB.filter(e =>
       e.category === category &&
@@ -1068,6 +1093,12 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       !recentPainIds.has(e.id) && // exclude yesterday's painful exercises
       (e.phaseEligibility || []).includes(phase) &&
       (category !== "main" || e.safetyTier !== "red") &&
+      // Permanent condition contraindications (e.g., spinal fusion blocks deadlift forever)
+      !isExerciseBlockedByConditions(e, _activeInjuries) &&
+      // Post-op timeline contraindications (surgery-date-driven, tier-aware)
+      isExerciseAllowedByPostOp(e, _activeInjuries) &&
+      // Universal safety gate — single source of truth for condition + severity + RTT + post-op + universal blocks
+      checkExerciseSafety(e, { conditions: _activeInjuries }, { phase, skipPhaseCheck: true }).safe &&
       // Issue 1: difficulty ceiling — block exercises too easy for this phase
       // Exempt core/stabilization — they always appear with stabilization params (Issue 2)
       (category !== "main" || e.bodyPart === "core" || e.type === "stabilization" || phase <= _maxPhaseForDiff(e.difficultyLevel || 3)) &&
@@ -1079,6 +1110,8 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       (!excludeMuscles || !excludeMuscles.has(e.bodyPart)) &&
       // Location filter — only exercises usable at this location
       locationFilter(e, location) &&
+      // RTT capability regression — block plyo/power/heavy moves on long breaks
+      isExerciseAllowedDuringRtt(e, _rttStateForPick) &&
       // Cardio belongs in its own section, not warmup/cooldown
       (category === "main" || (e.type !== "cardio" && e.category !== "cardio"))
     );
@@ -1296,7 +1329,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   const baseMain = sessionTime === 30 ? 5 : sessionTime <= 45 ? 6 : sessionTime <= 60 ? 7 : 8;
   const baseCooldown = sessionTime === 30 ? 2 : 3;
   // Apply volume modifier to main exercise count
-  const warmupLimit = baseWarmup;
+  const warmupLimit = baseWarmup + Math.floor((_rttWarmupExtra || 0) / 2); // ~2 min per extra warmup exercise on cold returns
   const mainLimit = Math.max(3, Math.round(baseMain * volumeModifier));
   const cooldownLimit = baseCooldown;
 
@@ -1723,7 +1756,7 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   eMain = _fDedup(eMain); // main gets priority
   let _finalWarmup = _fDedup([..._blockExercises, ...eWarmup]).slice(0, 5);
   let _finalCooldown = _fDedup([...eCooldown, ..._blockCooldown]).slice(0, 5);
-  const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta };
+  const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta, _rttRpeCap: _rttRpeCap, _rttWarmupExtra: _rttWarmupExtra };
   // Run session validation
   try { const _sv = _validateSession(_plan, phase); if (!_sv.valid) console.warn("[WORKOUT VALIDATION]", _sv.errors.join(" | ")); else console.log("[WORKOUT VALIDATION] PASS — patterns:", JSON.stringify(_sv.patternCounts), "compounds:", _sv.compounds); _plan._sessionValidation = _sv; } catch {}
   // Run plan validation (non-blocking)
@@ -1930,6 +1963,12 @@ function DebugPanel({onClose}){
 function CollapseSection({title,summary,icon,children,defaultOpen=false}){const[open,setOpen]=useState(defaultOpen);return<div style={{background:C.bgCard,border:`1px solid ${C.border}`,borderRadius:14,marginBottom:8,overflow:"hidden"}}><div onClick={()=>setOpen(!open)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",cursor:"pointer"}}><div style={{display:"flex",alignItems:"center",gap:8}}>{icon&&<span style={{fontSize:14}}>{icon}</span>}<div><div style={{color:C.text,fontWeight:600,fontSize:13}}>{title}</div>{!open&&summary&&<div style={{color:C.textDim,fontSize:11,marginTop:1}}>{summary}</div>}</div></div><span style={{color:C.textDim,fontSize:11}}>{open?"▾":"▸"}</span></div>{open&&<div style={{padding:"0 14px 14px"}}>{children}</div>}</div>;}
 function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onProfile,onViewPlan,onViewSummary,onPTSession,onPTProgress,onBaseline,onAddOn,onStartSecondary,onDevBugs,onROM,onPMROM,onPrograms,statsLoading}){const[si,setSi]=useState(null);const[debugTaps,setDebugTaps]=useState(0);const[showDebug,setShowDebug]=useState(false);const[showVO2Test,setShowVO2Test]=useState(false);const[showCardioLog,setShowCardioLog]=useState(false);const[cardioRev,setCardioRev]=useState(0);const stats=getStats();const dynamicInjuries=getInjuries().filter(i=>i.status!=="resolved");const rx=getCardioPrescription(CURRENT_PHASE,dynamicInjuries);const auth=useAuth();const userName=auth?.profile?.first_name||USER.name;const handleApexTap=()=>{const next=debugTaps+1;setDebugTaps(next);if(next>=5){setShowDebug(true);setDebugTaps(0);}setTimeout(()=>setDebugTaps(0),2000);};const easterEgg=checkEasterEgg(stats);return(<div className="stagger safe-bottom" style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",justifyContent:"space-between"}}><div><div onClick={handleApexTap} style={{fontSize:28,fontWeight:800,color:C.teal,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:4,cursor:"default",userSelect:"none"}}>APEX<span style={{fontSize:9,color:C.textDim,letterSpacing:1,marginLeft:6}}>v13</span></div><div style={{fontSize:13,color:C.textMuted}}>{getGreeting(userName,stats).toUpperCase()} 👋</div>{easterEgg&&<div style={{fontSize:10,color:C.purple,marginTop:2,fontStyle:"italic"}}>{easterEgg}</div>}</div><div onClick={onProfile} style={{width:40,height:40,borderRadius:12,background:C.bgElevated,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,cursor:"pointer"}}>⚙️</div></div>
   {showDebug&&<DebugPanel onClose={()=>setShowDebug(false)}/>}
+  {/* Medical clearance gate — high-severity post-op conditions; blocks workout start until confirmed */}
+  {(()=>{const _need=requiresMedicalClearance({conditions:dynamicInjuries});const _confirmed=isMedicalClearanceConfirmed();if(!_need||_confirmed)return null;return(<div style={{background:"rgba(239,68,68,0.1)",border:"2px solid #ef4444",borderRadius:10,padding:14,marginBottom:8}}><div style={{fontSize:13,fontWeight:700,color:"#ef4444",marginBottom:6}}>⚠️ MEDICAL CLEARANCE REQUIRED</div><div style={{fontSize:11,color:C.text,lineHeight:1.5,marginBottom:10}}>Your profile shows a post-surgical or high-severity condition. Please review this plan with your surgeon or physical therapist before starting any exercises.</div><button onClick={()=>{confirmMedicalClearance();setCardioRev(r=>r+1);}} style={{width:"100%",padding:10,borderRadius:8,background:"#ef4444",color:"#fff",fontWeight:700,fontSize:12,border:"none",cursor:"pointer",fontFamily:"inherit"}}>I have clearance from my medical team</button></div>);})()}
+  {/* Post-Op Timeline status — visible only when at least one condition has a surgery date */}
+  {(()=>{const _ts=getPostOpTimelineMessage(dynamicInjuries);if(!_ts.length)return null;return(<div style={{background:"rgba(0,210,200,0.05)",border:"1px solid rgba(0,210,200,0.2)",borderRadius:10,padding:12,marginBottom:4}}><div style={{fontSize:11,fontWeight:700,color:C.teal,marginBottom:8,letterSpacing:1}}>📅 POST-OP TIMELINE</div>{_ts.map((s,i)=>(<div key={i} style={{marginBottom:i<_ts.length-1?10:0}}><div style={{fontSize:12,fontWeight:700,color:C.text}}>Week {s.weeks} post-op · {s.currentTier}</div><div style={{fontSize:10,color:C.textMuted,marginTop:2,lineHeight:1.5}}>{s.message}</div>{s.nextTier&&<div style={{fontSize:9,color:C.teal,marginTop:4}}>→ Next phase ({s.nextTier}) in {s.weeksUntilNext} weeks</div>}</div>))}</div>);})()}
+  {/* RTT Active Banner — visible while rebuild is in progress */}
+  {(()=>{const _rs=getRttState();if(!_rs||_rs.tier==="fresh")return null;const _pct=_rs.sessionsToRebuild>0?(_rs.sessionsCompleted/_rs.sessionsToRebuild):0;return(<div style={{background:"rgba(0,210,200,0.05)",border:"1px solid rgba(0,210,200,0.2)",borderRadius:10,padding:10,marginBottom:4}}><div style={{fontSize:11,color:"#00d2c8",fontWeight:700,marginBottom:4}}>🔄 RETURN-TO-TRAINING ACTIVE — {_rs.tier.toUpperCase()}</div><div style={{fontSize:11,color:C.text}}>Session {Math.min(_rs.sessionsCompleted+1,_rs.sessionsToRebuild)} of {_rs.sessionsToRebuild} — {Math.round(_pct*100)}% rebuilt</div><div style={{height:4,background:"rgba(255,255,255,0.05)",borderRadius:2,marginTop:6,overflow:"hidden"}}><div style={{height:"100%",width:`${_pct*100}%`,background:"#00d2c8",transition:"width 0.3s"}}/></div></div>);})()}
   {/* Sport badges — HIDDEN on home, visible in profile */}
   {false&&(()=>{try{const sp=getSportPrefs();if(!sp||sp.length===0)return null;const sportEmojis={"Basketball":"🏀","Soccer":"⚽","Baseball/Softball":"⚾","Tennis":"🎾","Golf":"⛳","Swimming":"🏊","Running/Track":"🏃","Cycling":"🚴","Hiking":"🥾","Rock Climbing":"🧗","CrossFit":"🏋️","Boxing/Kickboxing":"🥊","MMA/BJJ":"🥋","Wrestling":"🤼","Volleyball":"🏐","Football":"🏈","Yoga":"🧘","Pilates":"🧘","Dance":"💃","Rowing":"🚣","Skiing/Snowboarding":"⛷️","Surfing":"🏄","Skateboarding":"🛹","Pickleball":"🏓","Martial Arts":"🥋","Muay Thai":"🥊"};const rankColors=["#FFD700","#C0C0C0","#CD7F32"];return(<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{sp.slice(0,3).map((s,i)=>(<div key={s.sport} style={{display:"flex",alignItems:"center",gap:4,padding:"4px 10px",borderRadius:8,background:C.bgCard,border:`1px solid ${rankColors[i]}25`,fontSize:11}}><span>{sportEmojis[s.sport]||"🏅"}</span><span style={{color:rankColors[i],fontWeight:700}}>#{i+1}</span><span style={{color:C.textMuted}}>{s.sport}</span></div>))}</div>);}catch{return null;}})()}
   {/* DevBugBadge hidden from home — available in Dev tab */}
@@ -1978,7 +2017,7 @@ function HomeScreen({onStart,resumePrompt,onRetakeAssessment,onEditInjuries,onPr
   {/* Active Performance Programs */}
   <ActiveProgramCard onLogSet={() => {}} />
   {/* Power Rings — compact on home */}
-  <PowerRingsCard onStartWorkout={onStart} compact/>
+  <PowerRingsCard onStartWorkout={(()=>{const _need=requiresMedicalClearance({conditions:dynamicInjuries});const _ok=isMedicalClearanceConfirmed();return (_need&&!_ok)?(()=>{alert("Confirm medical clearance above before starting a workout.");}):onStart;})()} compact/>
   {/* Benchmarks — HIDDEN from home, available in Assessment tab */}
   {false&&(()=>{try{const ar=getAssessmentResults();const entries=ASSESSMENT_TYPES.filter(a=>ar[a.id]).map(a=>{const r=ar[a.id];const prev=r.previousValue;const change=prev?Math.round(((r.value-prev)/prev)*100):null;const isRHR=a.id==="rhr";return{...a,value:r.value,prev,change,isImproved:change!==null?(isRHR?change<0:change>0):null,assessedAt:r.assessedAt};});if(entries.length===0)return null;return<Card style={{padding:14,marginBottom:8}}><div style={{fontSize:11,fontWeight:700,color:C.textDim,letterSpacing:2,marginBottom:6}}>YOUR BENCHMARKS</div>{entries.slice(0,6).map(e=><div key={e.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:`1px solid ${C.border}`}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:12}}>{e.icon}</span><span style={{fontSize:12,color:C.text}}>{e.name}</span></div><div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:12,fontWeight:600,color:C.text}}>{e.value} {e.unit?.split(" ")[0]}</span>{e.change!==null&&<span style={{fontSize:10,color:e.isImproved?C.success:C.danger}}>{e.isImproved?"↑":"↓"} {Math.abs(e.change)}%</span>}</div></div>)}</Card>;}catch{return null;}})()}
   {/* Stress reset card — shown when today's check-in reported high stress */}
@@ -3063,18 +3102,33 @@ function AppInner(){
   const[showPause,setShowPause]=useState(false);
   const[showEndConfirm,setShowEndConfirm]=useState(false);
   const[showHomeScreenPrompt,setShowHomeScreenPrompt]=useState(false);
+  const[rttPrompt,setRttPrompt]=useState(null); // { daysOff, tier } when welcome-back modal should show
+  const[rttToast,setRttToast]=useState(null); // string toast for capability restoration / RTT complete
+  // Auto-detect RTT on every app load (and surface modal once per gap)
+  useEffect(()=>{(async()=>{try{await autoDetectAndApplyRtt();if(shouldShowRttModal()){const st=getRttState();if(st){const tier=RTT_TIERS.find(t=>t.name===st.tier);if(tier&&tier.name!=="fresh"){setRttPrompt({daysOff:st.daysOff,tier,upgradedFrom:st.upgradedFrom});}}}}catch(e){console.warn("RTT auto-detect error (non-blocking):",e);}})();},[user]);
+  // Auto-dismiss RTT toast
+  useEffect(()=>{if(!rttToast)return;const t=setTimeout(()=>setRttToast(null),4500);return()=>clearTimeout(t);},[rttToast]);
   // Dev bypass: add ?dev to URL to skip auth (dev mode only)
   const devBypass=import.meta.env.DEV&&new URLSearchParams(window.location.search).has("dev");
   // Route logic: auth state → screen
   useEffect(()=>{
     if(loading&&!devBypass)return;
     if(!user&&!devBypass){setScreen("auth");return;}
-    // Check assessment completion: Supabase is source of truth, localStorage is cache
-    const supabaseCompleted = profile?.assessment_completed === true;
+    // NOTE: The route effect no longer auto-redirects to onboarding. PAR-Q is reached
+    // only via explicit user action: signup onSuccess, "Retake Assessment" from profile,
+    // or "Start Fresh". Forcing onboarding from the route effect was bouncing logged-in
+    // users back to PAR-Q on every refresh whenever Supabase profile.assessment_completed
+    // wasn't synced (silent .catch on saveAssessmentToSupabase) and localStorage signals
+    // were stale/missing. If a brand-new account somehow lands here without prior
+    // onboarding, the home screen handles missing data gracefully and the user can
+    // open Profile → "Retake Assessment" to do PAR-Q intentionally.
+    const supabaseCompleted = profile?.assessment_completed === true || !!profile?.assessment_data;
     const localCompleted = hasCompletedAssessment();
-    if(!devBypass && !supabaseCompleted && !localCompleted){
-      // Neither Supabase nor localStorage has completed assessment → show onboarding
-      setScreen("onboarding");return;
+    let _hasLocalAssessmentRaw = false;
+    try { _hasLocalAssessmentRaw = !!localStorage.getItem("apex_assessment"); } catch {}
+    // Keep the stub-save so future refreshes have a stable signal.
+    if ((supabaseCompleted || localCompleted) && !_hasLocalAssessmentRaw) {
+      try { saveAssessment({ _restoredStub: true, completedAt: new Date().toISOString() }); } catch {}
     }
     // If Supabase says completed but localStorage is empty → restore from Supabase
     if(supabaseCompleted && !localCompleted){
@@ -3084,7 +3138,7 @@ function AppInner(){
           // Rebuild injuries from assessment conditions
           const conds=profile.assessment_data.conditions||[];
           if(conds.length){
-            const restored=conds.map((c,i)=>({id:"inj_r_"+i,area:c.name||c.conditionId||"Unknown",type:"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,protocols:[],notes:"",tempFlag:null}));
+            const restored=conds.map((c,i)=>({id:"inj_r_"+i,area:c.name||c.conditionId||"Unknown",type:"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,surgeryDate:c.surgeryDate||null,protocols:[],notes:"",tempFlag:null}));
             saveInjuries(restored);
           }
           // Rebuild PT protocols from assessment
@@ -3170,9 +3224,11 @@ function AppInner(){
   const navTo=useCallback(t=>{setTab(t);if(t==="home")setScreen("home");else if(t==="train")setScreen("train");else if(t==="library")setScreen("library");else if(t==="tasks")setScreen("tasks");else if(t==="wellness")setScreen("wellness");else if(t==="coach")setScreen("coach");else if(t==="dev_test")setScreen("dev_test");},[]);
   const[safetyReport,setSafetyReport]=useState(null);
   const[isSecondarySession,setIsSecondarySession]=useState(false);
-  const handleCheckIn=(data)=>{
+  const handleCheckIn=async(data)=>{
     // Block only if truly completed (no second workout option)
     try{const status=getTodayWorkoutStatus();if(status==="completed"){setScreen("home");setTab("home");return;}}catch(e){console.warn("Status check error:",e);}
+    // Re-evaluate RTT before generating today's workout — catches new gaps mid-rebuild
+    try{await autoDetectAndApplyRtt();if(shouldShowRttModal()){const st=getRttState();if(st){const tier=RTT_TIERS.find(t=>t.name===st.tier);if(tier&&tier.name!=="fresh")setRttPrompt({daysOff:st.daysOff,tier,upgradedFrom:st.upgradedFrom});}}}catch(e){console.warn("RTT re-detect error (non-blocking):",e);}
     const loc=data?.location||"gym";
     // Weekly plan integration — wrapped in try/catch so it NEVER blocks the core workout flow
     try{const weekPlan=getOrCreateWeeklyPlan(exerciseDB,CURRENT_PHASE,loc);const todayPlan=getTodayFromPlan(weekPlan);if(todayPlan)adjustPlanForCheckIn(todayPlan,data,exerciseDB,CURRENT_PHASE);updateDayStatus(weekPlan,getDayOfWeek(),"in_progress");}catch(e){console.warn("Weekly plan adjust error (non-blocking):",e);}
@@ -3247,7 +3303,7 @@ function AppInner(){
         if(data&&user){saveAssessmentToSupabase(user.id,data).catch(()=>{});}
         // Rebuild injuries from updated conditions
         const rConds=data.conditions||[];
-        if(rConds.length){const rBuilt=rConds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));saveInjuries(rBuilt);}
+        if(rConds.length){const rBuilt=rConds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",surgeryDate:c.surgeryDate||null,protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));saveInjuries(rBuilt);}
         // Clear stale workout data so new assessment takes effect
         localStorage.removeItem("apex_paused_workout");
         try{clearDailyWorkout();}catch{}
@@ -3262,7 +3318,7 @@ function AppInner(){
           // Build injuries from assessment conditions (same as Supabase restore flow)
           const conds=data.conditions||[];
           if(conds.length){
-            const built=conds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));
+            const built=conds.map((c,i)=>({id:"inj_"+Date.now()+"_"+i,area:c.name||c.conditionId||"Unknown",type:c.condType||"Condition",severity:c.severity||2,status:"active",gateKey:conditionToGateKey(c.category)||"other",conditionId:c.conditionId,bodyArea:c.bodyArea||"",surgeryDate:c.surgeryDate||null,protocols:[],notes:"",tempFlag:null,dateAdded:new Date().toISOString()}));
             saveInjuries(built);
           }
           const protocols=generateProtocols(data);
@@ -3318,7 +3374,7 @@ function AppInner(){
     {/* Pause overlay */}
     {showPause&&<div style={{position:"fixed",inset:0,background:"rgba(6,11,24,0.95)",zIndex:500,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20}}><div style={{fontSize:64}}>⏸️</div><div style={{fontSize:28,fontWeight:800,color:C.text,fontFamily:"'Bebas Neue',sans-serif",letterSpacing:3}}>WORKOUT PAUSED</div><div style={{fontSize:13,color:C.textMuted}}>Exercise {exIdx+1}/{wxAll.length} · {completedExercises.length} completed</div>{sessionStart&&<div style={{fontSize:12,color:C.textDim}}>{formatDuration(sessionStart)} elapsed</div>}<Btn onClick={()=>{setShowPause(false);}} style={{maxWidth:300}} icon="▶">Resume Workout</Btn><Btn variant="dark" onClick={()=>{setShowPause(false);setShowEndConfirm(true);}} style={{maxWidth:300}} icon="🛑">End Workout</Btn><button onClick={()=>{try{localStorage.setItem("apex_paused_workout",JSON.stringify({exIdx,completedExercises,workout,sessionStart,checkInData,pausedAt:Date.now()}));}catch{}setShowPause(false);setScreen("home");setTab("home");}} style={{background:"none",border:"none",color:C.textDim,fontSize:12,cursor:"pointer",marginTop:8,fontFamily:"inherit"}}>Save & exit — resume later</button></div>}
     {screen==="mindfulness"&&<Mindfulness type={getMT()} onContinue={()=>setScreen("perform")}/>}
-    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");try{const s=getStats();CelebrationAPI.workoutComplete({exerciseCount:completedExercises.length,totalSets:completedExercises.reduce((a,e)=>a+(e.sets_done||1),0),durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,phase:CURRENT_PHASE,streak:s.streak,safetyLevel:checkInData?.readiness>=70?"CLEAR":"CAUTION",injuryModified:getInjuries().some(i=>i.status!=="resolved"),isFloorSession:difficulty==="floor"});if(s.totalSessions===1)CelebrationAPI.milestone("first_workout");if(s.streak===7)CelebrationAPI.milestone("streak_7");if(s.totalSessions===30)CelebrationAPI.milestone("sessions_30");addSessionGains({exercisesCompleted:completedExercises.length,exercisesPlanned:workout?.all?.length||completedExercises.length,warmupCompleted:true,cooldownCompleted:true,cardioMinutes:0,cardioTarget:20},CURRENT_PHASE);const updRings=getRings();if(updRings.ascended)CelebrationAPI.milestone("phase_complete",{from:CURRENT_PHASE,to:1});}catch{}}}/>}
+    {screen==="reflect"&&<ReflectScreen exercisesDone={completedExercises} onComplete={d=>{setReflectData(d);setScreen("recap");try{const s=getStats();CelebrationAPI.workoutComplete({exerciseCount:completedExercises.length,totalSets:completedExercises.reduce((a,e)=>a+(e.sets_done||1),0),durationMinutes:sessionStart?Math.round((Date.now()-sessionStart)/60000):0,phase:CURRENT_PHASE,streak:s.streak,safetyLevel:checkInData?.readiness>=70?"CLEAR":"CAUTION",injuryModified:getInjuries().some(i=>i.status!=="resolved"),isFloorSession:difficulty==="floor"});if(s.totalSessions===1)CelebrationAPI.milestone("first_workout");if(s.streak===7)CelebrationAPI.milestone("streak_7");if(s.totalSessions===30)CelebrationAPI.milestone("sessions_30");addSessionGains({exercisesCompleted:completedExercises.length,exercisesPlanned:workout?.all?.length||completedExercises.length,warmupCompleted:true,cooldownCompleted:true,cardioMinutes:0,cardioTarget:20},CURRENT_PHASE);const updRings=getRings();if(updRings.ascended)CelebrationAPI.milestone("phase_complete",{from:CURRENT_PHASE,to:1});/* RTT session counter */try{const _prev=getRttState();const _next=incrementRttSessions();if(_prev&&_next){const _prevPct=_prev.sessionsCompleted/_prev.sessionsToRebuild;const _newPct=_next.sessionsCompleted/_next.sessionsToRebuild;if(Math.floor(_newPct*4)>Math.floor(_prevPct*4))setRttToast(`✨ Rebuild progress: ${Math.round(_newPct*100)}% — capabilities returning`);}else if(_prev&&!_next){setRttToast("🎉 Return-to-Training complete! All capabilities restored.");}}catch{}}catch{}}}/>}
     {screen==="recap"&&<RecapScreen onFinish={reset} sessionData={reflectData?buildSessionData(reflectData):null}/>}
     {screen==="wellness"&&<WellnessScreen/>}
     {screen==="coach"&&<CoachScreen/>}
@@ -3331,6 +3387,44 @@ function AppInner(){
     {screen!=="auth"&&screen!=="profile"&&<BottomNav active={tab} onNav={navTo}/>}
     <BugReportButton screen={screen} tab={tab}/>
     {showHomeScreenPrompt&&<SaveToHomeScreenModal onDismiss={(action)=>{setShowHomeScreenPrompt(false);if(action==="never"){try{localStorage.setItem("apex_home_screen_prompt","never");}catch{}if(user)updateProfile({home_screen_prompt_dismissed:true}).catch(()=>{});}}} onRemindLater={()=>{setShowHomeScreenPrompt(false);try{localStorage.setItem("apex_home_screen_prompt","remind_later");}catch{}}}/>}
+    {/* RTT Welcome-Back Modal — shows once per gap (or on tier upgrade) */}
+    {rttPrompt&&(
+      <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+        <div style={{background:"#0d1425",border:"1px solid rgba(0,210,200,0.3)",borderRadius:16,padding:24,maxWidth:360,width:"100%",maxHeight:"90vh",overflowY:"auto"}}>
+          <div style={{fontSize:32,marginBottom:8}}>👋</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#e8ecf4",marginBottom:8}}>Welcome back{profile?.first_name?", "+profile.first_name:""}</div>
+          {rttPrompt.upgradedFrom&&<div style={{fontSize:11,color:"#fbbf24",marginBottom:8}}>Adjusting from {rttPrompt.upgradedFrom} → {rttPrompt.tier.name} (another break detected)</div>}
+          <div style={{fontSize:14,color:"#7a8ba8",marginBottom:16,lineHeight:1.5}}>{getRttMessage(rttPrompt.daysOff,rttPrompt.tier)}</div>
+          <div style={{background:"rgba(0,210,200,0.05)",borderRadius:10,padding:12,marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#00d2c8",marginBottom:6}}>RETURN-TO-TRAINING PROTOCOL</div>
+            <div style={{fontSize:11,color:"#e8ecf4",lineHeight:1.6}}>
+              {rttPrompt.tier.name==="minor"&&<>• Volume eased 10%<br/>• Standard intensity<br/>• Back to normal in {rttPrompt.tier.sessionsToRebuild} sessions</>}
+              {rttPrompt.tier.name==="moderate"&&<>• Volume reduced<br/>• RPE capped at 7<br/>• Warmup extended 5 min<br/>• Rebuild over {rttPrompt.tier.sessionsToRebuild} sessions</>}
+              {rttPrompt.tier.name==="extended"&&<>• Volume reduced<br/>• RPE capped at 6<br/>• Warmup extended 8 min<br/>• Reset to Week 1 of current phase<br/>• Rebuild over {rttPrompt.tier.sessionsToRebuild} sessions</>}
+              {rttPrompt.tier.name==="long"&&<>• Volume reduced<br/>• RPE capped at 6<br/>• Dropped back 1 phase<br/>• Reset to Week 1<br/>• Rebuild over {rttPrompt.tier.sessionsToRebuild} sessions</>}
+              {rttPrompt.tier.name==="extensive"&&<>• Volume reduced<br/>• RPE capped at 5<br/>• Restarted Phase 1<br/>• Movement quality focus<br/>• Take your time</>}
+            </div>
+          </div>
+          {rttPrompt.tier.name!=="minor"&&(
+            <div style={{background:"rgba(239,68,68,0.05)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:12,marginBottom:16}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#ef4444",marginBottom:6}}>⚠ TEMPORARILY PAUSED</div>
+              <div style={{fontSize:11,color:"#e8ecf4",lineHeight:1.6}}>
+                {rttPrompt.tier.name==="moderate"&&<>• Plyometrics & explosive movements<br/>• Will return after rebuild sessions</>}
+                {rttPrompt.tier.name==="extended"&&<>• All plyometrics & power movements<br/>• Heavy loading (Phase 4+ exercises)<br/>• Olympic lifts & complex compounds<br/>• Will return as you rebuild</>}
+                {rttPrompt.tier.name==="long"&&<>• All Phase 3+ exercises<br/>• Heavy loading, plyometrics, power<br/>• Restarting from intermediate level<br/>• Re-earn through rebuild sessions</>}
+                {rttPrompt.tier.name==="extensive"&&<>• All advanced exercises<br/>• All intermediate compound lifts<br/>• Beginner foundation only<br/>• Rebuild progressively over 4-6 weeks</>}
+              </div>
+            </div>
+          )}
+          <button onClick={()=>{markRttModalShown();setRttPrompt(null);}} style={{width:"100%",padding:14,borderRadius:10,background:"linear-gradient(135deg, #00d2c8, #00a89f)",color:"#000",fontWeight:700,fontSize:14,border:"none",cursor:"pointer"}}>Let's rebuild →</button>
+          <button onClick={()=>{markRttModalShown();setRttPrompt(null);}} style={{width:"100%",marginTop:8,padding:10,borderRadius:10,background:"transparent",border:"1px solid rgba(255,255,255,0.08)",color:"#7a8ba8",fontSize:12,cursor:"pointer"}}>Skip — train at full intensity (not recommended)</button>
+        </div>
+      </div>
+    )}
+    {/* RTT Toast — capability restored / RTT complete */}
+    {rttToast&&(
+      <div style={{position:"fixed",bottom:90,left:"50%",transform:"translateX(-50%)",zIndex:600,background:"#0d1425",border:"1px solid rgba(0,210,200,0.4)",borderRadius:12,padding:"12px 18px",color:"#e8ecf4",fontSize:13,fontWeight:600,boxShadow:"0 8px 24px rgba(0,0,0,0.5)",maxWidth:340,textAlign:"center"}}>{rttToast}</div>
+    )}
   </>);
 }
 
