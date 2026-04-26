@@ -16,6 +16,8 @@ import { isExerciseBlockedByConditions } from "./utils/weeklyPlanner.js";
 import { isExerciseAllowedByPostOp, getCombinedPostOpRestrictions, getPostOpTimelineMessage } from "./utils/postOpTimeline.js";
 import { checkExerciseSafety, requiresMedicalClearance, isMedicalClearanceConfirmed, confirmMedicalClearance } from "./utils/safetyGate.js";
 import { isExerciseEligibleSafe } from "./utils/exerciseEligibility.js";
+import { exParams, exMuscles, exInjuryNotes, exLocationLabel, ALWAYS_AVAILABLE, getUserEquipment, locationFilter, exById, trySubstitute } from "./utils/workoutBuilder.js";
+import { estimateSessionMinutes } from "./utils/sessionEstimator.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
@@ -485,82 +487,7 @@ const CATEGORIES=["All","warmup","main","cooldown","rehab","cardio","foam_roll"]
 const MOVEMENT_PATTERNS=["All","push","pull","hinge","squat","lunge","carry","rotation","anti_rotation","anti_extension","isolation","mobility","static_stretch","foam_roll","breathing"];
 const ABILITY_LEVELS=["All","beginner","intermediate","advanced"];
 
-// Extract phase-appropriate sets/reps/rest/intensity from phaseParams (with volume caps)
-function exParams(ex, phase=CURRENT_PHASE, diff="standard") {
-  // Session-time-driven rest override: 30-min sessions use 30s, 90-min use 90s, etc.
-  // Stamped onto each exercise during buildWorkoutList; here we honor it.
-  const _restOverride = typeof ex._restSecondsOverride === "number" ? ex._restSecondsOverride : null;
-  if (ex._legacy) return { sets: ex.sets||1, reps: ex.reps||"—", rest: _restOverride != null ? _restOverride : (ex.rest||0), intensity: ex.intensity||"", tempo: ex.tempo||"" };
-  const cp = capExerciseParams(ex, phase, diff);
-  const _rest = _restOverride != null ? _restOverride : cp.rest;
-  return { sets: cp.sets, reps: cp.reps, rest: _rest, intensity: cp.intensity, tempo: cp.tempo, _capped: cp._capped, _deload: cp._deload };
-}
-
-// Normalize muscles access (new schema uses flat arrays)
-function exMuscles(ex) {
-  return { primary: ex.primaryMuscles || ex.muscles?.primary || [], secondary: ex.secondaryMuscles || ex.muscles?.secondary || [] };
-}
-
-// Normalize injury notes (new schema: object, old: string)
-function exInjuryNotes(ex) {
-  if (typeof ex.injuryNotes === "string") return ex.injuryNotes;
-  const n = ex.injuryNotes || {};
-  return [n.lower_back && `⚠️ BACK: ${n.lower_back}`, n.knee && `⚠️ KNEE: ${n.knee}`, n.shoulder && `⚠️ SHOULDER: ${n.shoulder}`].filter(Boolean).join("\n");
-}
-
-// Normalize location display
-function exLocationLabel(ex) {
-  if (typeof ex.location === "string") return ex.location;
-  return (ex.locationCompatible || []).join(", ") || (ex.equipmentRequired || []).join(", ");
-}
-
-// ── Location-aware workout builder with equipment filtering + substitutions ──
-// Base equipment everyone has (bodyweight, walls, towels)
-const ALWAYS_AVAILABLE = new Set(["none","wall","towel","strap"]);
-const exById = Object.fromEntries(exerciseDB.map(e => [e.id, e]));
-
-// Build the user's actual equipment set from their assessment
-function getUserEquipment() {
-  try {
-    const assessment = getAssessment();
-    const selected = assessment?.preferences?.homeEquipment || [];
-    const equip = new Set(ALWAYS_AVAILABLE);
-    selected.forEach(id => equip.add(id));
-    // "none" means bodyweight only — don't add anything extra
-    if (selected.includes("none") && selected.length === 1) return equip;
-    return equip;
-  } catch { return new Set(ALWAYS_AVAILABLE); }
-}
-
-function locationFilter(ex, location) {
-  if (location === "gym") return true;
-  if (location === "outdoor") {
-    // Outdoor: only bodyweight + minimal. Check locationCompatible tag AND equipment
-    if (!(ex.locationCompatible || []).includes("outdoor")) return false;
-    const outdoorEquip = new Set(["none","wall","towel","strap","mat","band"]);
-    return (ex.equipmentRequired || []).every(eq => outdoorEquip.has(eq));
-  }
-  // Home: check against user's actual equipment
-  const userEquip = getUserEquipment();
-  // Fallback: if no equipment specified, assume minimal home setup
-  if (!userEquip || userEquip.size === 0) {
-    const defaultHomeEquip = new Set(["none","mat","band","dumbbell"]);
-    return (ex.equipmentRequired || []).every(eq => defaultHomeEquip.has(eq));
-  }
-  return (ex.equipmentRequired || []).every(eq => userEquip.has(eq));
-}
-
-function trySubstitute(ex, location, phase) {
-  const subKey = location === "outdoor" ? "outdoor" : "home";
-  const subId = ex.substitutions?.[subKey];
-  if (!subId) return null;
-  const sub = exById[subId];
-  if (!sub) return null;
-  if (!(sub.phaseEligibility || []).includes(phase)) return null;
-  if (!locationFilter(sub, location)) return null;
-  // Return the substitute exercise with swap metadata
-  return { ...sub, _swappedFor: ex.name, _swapReason: location === "outdoor" ? "outdoor — no gym equipment" : "home — equipment not available" };
-}
+// Extracted helpers — see src/utils/workoutBuilder.js + src/utils/sessionEstimator.js
 
 // ── Dynamic session block builder (CEx Continuum) ─────────────
 // Generates warm-up ROM + cooldown stretches from DB based on check-in
@@ -1768,52 +1695,14 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
     _ex._restSecondsOverride = _restSecondsForSession;
   }
 
-  // ── REALISTIC SESSION TIME ESTIMATE ───────────────────────────
-  // Includes setup, transitions, equipment changes — overhead the prior
-  // estimator missed (it returned ~70% of actual elapsed time).
-  const _estimateSessionMinutes = (workout, restOverride) => {
-    const TRANSITION = 45;       // seconds between exercises
-    const SETUP = 20;            // reading instructions / getting into position
-    const EQUIPMENT_CHANGE = 30; // when equipment differs from previous
-    const all = [...(workout.warmup || []), ...(workout.main || []), ...(workout.cooldown || [])];
-    let total = 0;
-    let prevEquip = null;
-    for (const ex of all) {
-      const pp = ex.phaseParams?.[String(phase)] || {};
-      const sets = parseInt(pp.sets) || 2;
-      const repsRaw = String(pp.reps || "");
-      const isHold = /\bhold\b|\bs\b|isometric/i.test(repsRaw);
-      const tempoSecs = (() => {
-        const t = String(pp.tempo || "");
-        const parts = t.split("/").map(s => parseFloat(s)).filter(n => !isNaN(n));
-        return parts.length ? parts.reduce((a, b) => a + b, 0) : 4;
-      })();
-      const restSecs = restOverride != null ? restOverride : (parseInt(pp.rest) || 60);
-      let exSecs;
-      if (isHold) {
-        const m = repsRaw.match(/(\d+)/);
-        const holdSecs = m ? parseInt(m[1]) : 30;
-        exSecs = sets * holdSecs + Math.max(0, sets - 1) * restSecs;
-      } else {
-        const reps = parseInt(repsRaw) || 12;
-        exSecs = sets * reps * tempoSecs + Math.max(0, sets - 1) * restSecs;
-      }
-      exSecs += SETUP + TRANSITION;
-      const curEquip = (ex.equipmentRequired || [])[0] || "none";
-      if (prevEquip && prevEquip !== curEquip) exSecs += EQUIPMENT_CHANGE;
-      prevEquip = curEquip;
-      total += exSecs;
-    }
-    return Math.round(total / 60);
-  };
-
+  // Realistic session-time estimate — see src/utils/sessionEstimator.js
   // Trim main if estimate exceeds budget by >10%
-  let _estMin = _estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, _restSecondsForSession);
+  let _estMin = estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, phase, _restSecondsForSession);
   const _budgetCeil = Math.round(sessionTime * 1.10);
   while (_estMin > _budgetCeil && eMain.length > 4) {
     const _trimmed = eMain.pop();
     console.log(`[TIME BUDGET] Trimmed ${_trimmed?.name} (estimate ${_estMin}min > ${_budgetCeil}min ceiling)`);
-    _estMin = _estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, _restSecondsForSession);
+    _estMin = estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, phase, _restSecondsForSession);
   }
 
   const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta, _rttRpeCap: _rttRpeCap, _rttWarmupExtra: _rttWarmupExtra, estimatedMinutes: _estMin, sessionTime, restSeconds: _restSecondsForSession };
