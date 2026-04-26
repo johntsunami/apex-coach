@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 import { validateSession } from "../utils/workoutValidator.js";
+import SafetyAudit from "./SafetyAudit.jsx";
 
 const C={bg:"#060b18",bgCard:"#0d1425",bgElevated:"#162040",border:"rgba(255,255,255,0.08)",text:"#e8ecf4",textMuted:"#7a8ba8",textDim:"#4a5a78",teal:"#00d2c8",tealDark:"#00a89f",tealBg:"rgba(0,210,200,0.08)",success:"#22c55e",danger:"#ef4444",warning:"#eab308",info:"#3b82f6",purple:"#a855f7"};
 
@@ -266,6 +267,11 @@ export default function DevTestDashboard({ onClose }) {
       <div style={{ display: "flex", gap: 8 }}>
         <button onClick={runAll} disabled={runningAll} style={{ flex: 1, padding: "12px", borderRadius: 12, background: `linear-gradient(135deg,${C.teal},${C.tealDark})`, border: "none", color: "#000", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", opacity: runningAll ? 0.5 : 1 }}>{runningAll ? `Testing ${Object.keys(loading).filter(k => loading[k]).length + 1} of ${PROFILES.length}...` : "Run all 8 profiles"}</button>
         {tested > 0 && <button onClick={exportReport} style={{ padding: "12px 16px", borderRadius: 12, background: C.bgElevated, border: `1px solid ${C.border}`, color: C.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>Copy report</button>}
+      </div>
+
+      {/* ── SAFETY AUDIT — contraindication regression test ── */}
+      <div style={{ marginTop: 24, paddingTop: 16, borderTop: `1px solid ${C.border}` }}>
+        <SafetyAudit />
       </div>
 
       <div style={{ height: 80 }} />
