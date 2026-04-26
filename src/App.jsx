@@ -19,7 +19,7 @@ import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
 import { validatePlan as _validatePlan, saveValidation as _saveValidation, getValidationSummary, validateAndFixSession as _validateAndFix } from "./utils/planValidator.js";
-import { PHASE_EXERCISE_WEIGHTS, EQUIPMENT_TIERS, LOCATION_BOOSTS } from "./utils/constants.js";
+import { PHASE_EXERCISE_WEIGHTS, EQUIPMENT_TIERS, LOCATION_BOOSTS, SESSION_EXERCISE_COUNTS } from "./utils/constants.js";
 // Note: LOCATION_BOOSTS is now additive (0-0.30). The inline _locBonusMap in buildWorkoutList
 // duplicates these values for historical reasons — both must stay in sync.
 import { applySafeguards } from "./utils/safeguards.js";
@@ -486,9 +486,13 @@ const ABILITY_LEVELS=["All","beginner","intermediate","advanced"];
 
 // Extract phase-appropriate sets/reps/rest/intensity from phaseParams (with volume caps)
 function exParams(ex, phase=CURRENT_PHASE, diff="standard") {
-  if (ex._legacy) return { sets: ex.sets||1, reps: ex.reps||"—", rest: ex.rest||0, intensity: ex.intensity||"", tempo: ex.tempo||"" };
+  // Session-time-driven rest override: 30-min sessions use 30s, 90-min use 90s, etc.
+  // Stamped onto each exercise during buildWorkoutList; here we honor it.
+  const _restOverride = typeof ex._restSecondsOverride === "number" ? ex._restSecondsOverride : null;
+  if (ex._legacy) return { sets: ex.sets||1, reps: ex.reps||"—", rest: _restOverride != null ? _restOverride : (ex.rest||0), intensity: ex.intensity||"", tempo: ex.tempo||"" };
   const cp = capExerciseParams(ex, phase, diff);
-  return { sets: cp.sets, reps: cp.reps, rest: cp.rest, intensity: cp.intensity, tempo: cp.tempo, _capped: cp._capped, _deload: cp._deload };
+  const _rest = _restOverride != null ? _restOverride : cp.rest;
+  return { sets: cp.sets, reps: cp.reps, rest: _rest, intensity: cp.intensity, tempo: cp.tempo, _capped: cp._capped, _deload: cp._deload };
 }
 
 // Normalize muscles access (new schema uses flat arrays)
@@ -1325,9 +1329,12 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
 
   // Respect user's session time preference (Fix #8)
   const sessionTime = excludeMuscles ? 30 : (checkInData?.sessionTime || getAssessment()?.preferences?.sessionTime || 45); // Check-in override → assessment default → 45
-  const baseWarmup = sessionTime === 30 ? 3 : sessionTime <= 45 ? 4 : 5;
-  const baseMain = sessionTime === 30 ? 5 : sessionTime <= 45 ? 6 : sessionTime <= 60 ? 7 : 8;
-  const baseCooldown = sessionTime === 30 ? 2 : 3;
+  // Single source of truth: SESSION_EXERCISE_COUNTS in constants.js
+  const _sessionCounts = SESSION_EXERCISE_COUNTS[sessionTime] || SESSION_EXERCISE_COUNTS[45];
+  const baseWarmup = _sessionCounts.warmup;
+  const baseMain = _sessionCounts.main;
+  const baseCooldown = _sessionCounts.cooldown;
+  const _restSecondsForSession = _sessionCounts.restSeconds || 60;
   // Apply volume modifier to main exercise count
   const warmupLimit = baseWarmup + Math.floor((_rttWarmupExtra || 0) / 2); // ~2 min per extra warmup exercise on cold returns
   const mainLimit = Math.max(3, Math.round(baseMain * volumeModifier));
@@ -1756,7 +1763,62 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
   eMain = _fDedup(eMain); // main gets priority
   let _finalWarmup = _fDedup([..._blockExercises, ...eWarmup]).slice(0, 5);
   let _finalCooldown = _fDedup([...eCooldown, ..._blockCooldown]).slice(0, 5);
-  const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta, _rttRpeCap: _rttRpeCap, _rttWarmupExtra: _rttWarmupExtra };
+  // ── REST PERIOD OVERRIDE BY SESSION TIME ──────────────────────
+  // 30-min sessions use 30s rest, 90-min use 90s, etc. Stamp _restOverride
+  // onto every main exercise so the rest timer + display reflect it.
+  for (const _ex of eMain) {
+    _ex._restSecondsOverride = _restSecondsForSession;
+  }
+
+  // ── REALISTIC SESSION TIME ESTIMATE ───────────────────────────
+  // Includes setup, transitions, equipment changes — overhead the prior
+  // estimator missed (it returned ~70% of actual elapsed time).
+  const _estimateSessionMinutes = (workout, restOverride) => {
+    const TRANSITION = 45;       // seconds between exercises
+    const SETUP = 20;            // reading instructions / getting into position
+    const EQUIPMENT_CHANGE = 30; // when equipment differs from previous
+    const all = [...(workout.warmup || []), ...(workout.main || []), ...(workout.cooldown || [])];
+    let total = 0;
+    let prevEquip = null;
+    for (const ex of all) {
+      const pp = ex.phaseParams?.[String(phase)] || {};
+      const sets = parseInt(pp.sets) || 2;
+      const repsRaw = String(pp.reps || "");
+      const isHold = /\bhold\b|\bs\b|isometric/i.test(repsRaw);
+      const tempoSecs = (() => {
+        const t = String(pp.tempo || "");
+        const parts = t.split("/").map(s => parseFloat(s)).filter(n => !isNaN(n));
+        return parts.length ? parts.reduce((a, b) => a + b, 0) : 4;
+      })();
+      const restSecs = restOverride != null ? restOverride : (parseInt(pp.rest) || 60);
+      let exSecs;
+      if (isHold) {
+        const m = repsRaw.match(/(\d+)/);
+        const holdSecs = m ? parseInt(m[1]) : 30;
+        exSecs = sets * holdSecs + Math.max(0, sets - 1) * restSecs;
+      } else {
+        const reps = parseInt(repsRaw) || 12;
+        exSecs = sets * reps * tempoSecs + Math.max(0, sets - 1) * restSecs;
+      }
+      exSecs += SETUP + TRANSITION;
+      const curEquip = (ex.equipmentRequired || [])[0] || "none";
+      if (prevEquip && prevEquip !== curEquip) exSecs += EQUIPMENT_CHANGE;
+      prevEquip = curEquip;
+      total += exSecs;
+    }
+    return Math.round(total / 60);
+  };
+
+  // Trim main if estimate exceeds budget by >10%
+  let _estMin = _estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, _restSecondsForSession);
+  const _budgetCeil = Math.round(sessionTime * 1.10);
+  while (_estMin > _budgetCeil && eMain.length > 4) {
+    const _trimmed = eMain.pop();
+    console.log(`[TIME BUDGET] Trimmed ${_trimmed?.name} (estimate ${_estMin}min > ${_budgetCeil}min ceiling)`);
+    _estMin = _estimateSessionMinutes({ warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown }, _restSecondsForSession);
+  }
+
+  const _plan = { warmup: _finalWarmup, main: eMain, cooldown: _finalCooldown, all: [..._finalWarmup, ...eMain, ..._finalCooldown], location, volSwaps, weeklyVol: runningVol, blocks, sportMeta, fingerMeta, _rttRpeCap: _rttRpeCap, _rttWarmupExtra: _rttWarmupExtra, estimatedMinutes: _estMin, sessionTime, restSeconds: _restSecondsForSession };
   // Run session validation
   try { const _sv = _validateSession(_plan, phase); if (!_sv.valid) console.warn("[WORKOUT VALIDATION]", _sv.errors.join(" | ")); else console.log("[WORKOUT VALIDATION] PASS — patterns:", JSON.stringify(_sv.patternCounts), "compounds:", _sv.compounds); _plan._sessionValidation = _sv; } catch {}
   // Run plan validation (non-blocking)
@@ -2261,6 +2323,7 @@ function PlanScreen({checkIn,workout,onGo,safetyReport}){
         <div style={{textAlign:"center"}}><div style={{fontSize:28,fontWeight:800,color:safetyColor,fontFamily:"'Bebas Neue',sans-serif"}}>{locLabel==="Gym"?"🏋️":locLabel==="Home"?"🏠":"🌳"}</div><div style={{fontSize:9,color:C.textDim,textTransform:"uppercase"}}>{locLabel}</div></div>
       </div>
       <div style={{textAlign:"center",marginTop:8}}><span style={{fontSize:11,color:C.textMuted}}>Phase {CURRENT_PHASE} · Week 1 · Stabilization Endurance</span></div>
+      {workout?.estimatedMinutes&&<div style={{textAlign:"center",marginTop:6,padding:"6px 10px",background:C.tealBg,borderRadius:8,border:`1px solid ${C.teal}25`}}><span style={{fontSize:11,color:C.teal,fontWeight:700,letterSpacing:1}}>⏱ ~{workout.estimatedMinutes} MIN</span><span style={{fontSize:10,color:C.textDim,marginLeft:8}}>target {workout.sessionTime}min · rest {workout.restSeconds}s</span></div>}
     </Card>
     {/* Factors considered — collapsed by default */}
     <CollapseSection title="Why this workout" icon="ℹ️" summary="Factors shaping today">

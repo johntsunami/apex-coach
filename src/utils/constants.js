@@ -43,12 +43,15 @@ export const PHASE_PARAMS = {
 // ── Rest Timer Defaults (per phase) ─────────────────────────────
 export const REST_DEFAULTS = { 1: 60, 2: 60, 3: 90, 4: 180, 5: 180 };
 
-// ── Session Time → Exercise Count ───────────────────────────────
+// ── Session Time → Exercise Count + Rest Period ────────────────
+// restSeconds drives the rest between sets; aggressive scaling so a 30-min
+// session truly feels different from a 60-min one (not just one fewer exercise).
 export const SESSION_EXERCISE_COUNTS = {
-  30: { warmup: 3, main: 5, cooldown: 3 },
-  45: { warmup: 4, main: 6, cooldown: 3 },
-  60: { warmup: 5, main: 7, cooldown: 4 },
-  90: { warmup: 5, main: 8, cooldown: 4 },
+  30:  { warmup: 2, main: 4,  cooldown: 2, restSeconds: 30 },   //  8 ex, fast circuits
+  45:  { warmup: 3, main: 5,  cooldown: 3, restSeconds: 45 },   // 11 ex
+  60:  { warmup: 4, main: 7,  cooldown: 4, restSeconds: 60 },   // 15 ex
+  90:  { warmup: 5, main: 9,  cooldown: 5, restSeconds: 90 },   // 19 ex, longer rest for heavier work
+  120: { warmup: 6, main: 11, cooldown: 6, restSeconds: 120 },  // 23 ex
 };
 
 // ── Volume Limits (per phase, sets/muscle/week) ─────────────────
