@@ -15,6 +15,7 @@ import { getInjuries, saveInjuries, conditionToGateKey, updatePainTracking, getS
 import { isExerciseBlockedByConditions } from "./utils/weeklyPlanner.js";
 import { isExerciseAllowedByPostOp, getCombinedPostOpRestrictions, getPostOpTimelineMessage } from "./utils/postOpTimeline.js";
 import { checkExerciseSafety, requiresMedicalClearance, isMedicalClearanceConfirmed, confirmMedicalClearance } from "./utils/safetyGate.js";
+import { isExerciseEligibleSafe } from "./utils/exerciseEligibility.js";
 import AuthProvider, { useAuth } from "./components/AuthProvider.jsx";
 import { LandingPage, SignUpScreen, LogInScreen, ForgotPasswordScreen, ProfileScreen, SaveToHomeScreenModal } from "./components/AuthScreens.jsx";
 import { BugReportButton, DevBugDashboard, DevBugBadge, isDeveloper } from "./components/BugReport.jsx";
@@ -1097,12 +1098,9 @@ function buildWorkoutList(phase=1, location="gym", difficulty="standard", checkI
       !recentPainIds.has(e.id) && // exclude yesterday's painful exercises
       (e.phaseEligibility || []).includes(phase) &&
       (category !== "main" || e.safetyTier !== "red") &&
-      // Permanent condition contraindications (e.g., spinal fusion blocks deadlift forever)
-      !isExerciseBlockedByConditions(e, _activeInjuries) &&
-      // Post-op timeline contraindications (surgery-date-driven, tier-aware)
-      isExerciseAllowedByPostOp(e, _activeInjuries) &&
-      // Universal safety gate — single source of truth for condition + severity + RTT + post-op + universal blocks
-      checkExerciseSafety(e, { conditions: _activeInjuries }, { phase, skipPhaseCheck: true }).safe &&
+      // Universal safety chain (permanent contraindications + post-op timeline + safety gate + RTT).
+      // Single source of truth shared with weeklyPlanner.canUseExercise — exerciseEligibility.js.
+      isExerciseEligibleSafe(e, { conditions: _activeInjuries }, { phase, skipPhaseCheck: true }) &&
       // Issue 1: difficulty ceiling — block exercises too easy for this phase
       // Exempt core/stabilization — they always appear with stabilization params (Issue 2)
       (category !== "main" || e.bodyPart === "core" || e.type === "stabilization" || phase <= _maxPhaseForDiff(e.difficultyLevel || 3)) &&

@@ -7,9 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import exerciseDB from "../data/exercises.json";
-import { checkExerciseSafety } from "./safetyGate.js";
-import { isExerciseBlockedByConditions } from "./weeklyPlanner.js";
-import { isExerciseAllowedByPostOp } from "./postOpTimeline.js";
+import { checkExerciseEligibility } from "./exerciseEligibility.js";
 
 const LS_LAST_AUDIT = "apex_last_audit";
 
@@ -224,16 +222,12 @@ export function runSafetyAudit() {
           if (!(ex.phaseEligibility || []).includes(phase)) continue;
           profileResult.stats.exercisesChecked++;
 
-          // Run the actual filter chain used by the planners
+          // Run the actual filter chain used by the planners — single source of truth
           let blocked = false;
           let blockedBy = null;
           if (injuries.length > 0) {
-            if (isExerciseBlockedByConditions(ex, injuries)) { blocked = true; blockedBy = "permanent_contraindication"; }
-            else if (!isExerciseAllowedByPostOp(ex, injuries)) { blocked = true; blockedBy = "post_op_timeline"; }
-            else {
-              const gate = checkExerciseSafety(ex, profileForGate, { phase, skipPhaseCheck: true });
-              if (!gate.safe) { blocked = true; blockedBy = gate.blockedBy; }
-            }
+            const elig = checkExerciseEligibility(ex, profileForGate, { phase, skipPhaseCheck: true });
+            if (!elig.eligible) { blocked = true; blockedBy = elig.blockedBy; }
           }
 
           if (!blocked) profileResult.stats.exercisesAllowed++;

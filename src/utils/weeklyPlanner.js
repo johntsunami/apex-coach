@@ -11,6 +11,7 @@ import { getInjuries, conditionToGateKey } from "./injuries.js";
 import conditionsDB from "../data/conditions.json";
 import { isExerciseAllowedByPostOp, getCombinedPostOpRestrictions } from "./postOpTimeline.js";
 import { checkExerciseSafety } from "./safetyGate.js";
+import { isExerciseEligibleSafe } from "./exerciseEligibility.js";
 import { getWeeklyCardioProgress } from "./cardioEngine.js";
 import { getMesocycleContext, getOrCreateMesocycle, determineTrainingTier, TIERS } from "./mesocycle.js";
 import { applySafeguards } from "./safeguards.js";
@@ -210,22 +211,12 @@ function canUseExercise(ex, phase, location, excludeIds, injuries) {
     }
   }
 
-  // ── PERMANENT CONDITION CONTRAINDICATIONS (apply at every phase) ──
-  // Critical safety bug fix: roadmap preview must not show exercises that
-  // violate condition "avoid" lists in future phases. Spinal fusion, ACL post-op,
-  // rotator cuff post-op, and other chronic/post-surgical conditions have
-  // PERMANENT restrictions that do not lift with phase progression.
-  if (injuries && injuries.length > 0 && isExerciseBlockedByConditions(ex, injuries)) return false;
-
-  // ── POST-OP TIMELINE (surgery-date-driven, tier-specific) ──
-  if (injuries && injuries.length > 0 && !isExerciseAllowedByPostOp(ex, injuries)) return false;
-
-  // ── UNIVERSAL SAFETY GATE (canonical authority — runs every time) ──
-  // Note: skipPhaseCheck=true because this fn is called per-phase and phase
-  // eligibility is enforced just above. Avoids redundant work / false-blocks.
+  // ── UNIVERSAL SAFETY CHAIN ──
+  // Single source of truth: exerciseEligibility.isExerciseEligibleSafe wraps
+  // permanent contraindications + post-op timeline + universal safety gate.
+  // Same call used by App.jsx buildWorkoutList pick() — guarantees parity.
   if (injuries && injuries.length > 0) {
-    const gate = checkExerciseSafety(ex, { conditions: injuries }, { phase, skipPhaseCheck: true });
-    if (!gate.safe) return false;
+    if (!isExerciseEligibleSafe(ex, { conditions: injuries }, { phase, skipPhaseCheck: true })) return false;
   }
 
   return true;
