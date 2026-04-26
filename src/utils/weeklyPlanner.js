@@ -235,9 +235,22 @@ function canUseExercise(ex, phase, location, excludeIds, injuries) {
 // Hard blocks that apply regardless of phase. Chronic conditions
 // like spinal fusion never "unlock" deadlifts or heavy axial loading.
 const SPINAL_FUSION_BLOCKS = {
-  byKeyword: [/\bdeadlift\b/i, /\bbarbell.*press\b/i, /\bchin.?up\b/i, /\bpull.?up\b/i, /\bsquat.*heavy\b/i, /\bjump\b/i, /\barnold\b/i, /\bsplit step\b/i, /\bplyo\b/i, /\bpower clean\b/i, /\bclean\b/i, /\bsnatch\b/i, /\boverhead.*barbell\b/i, /\bback extension\b/i, /\bgood morning\b/i, /\bsit.?up\b/i, /\bcrunch\b/i, /\brussian twist\b/i, /\bmax effort\b/i, /\b1rm\b/i],
+  byKeyword: [
+    /\bdeadlift\b/i, /\bbarbell.*press\b/i, /\bbarbell.*bench\b/i, /\bbench.*barbell\b/i,
+    /\bchin.?up\b/i, /\bpull.?up\b/i, /\bsquat.*heavy\b/i, /\bjump\b/i, /\barnold\b/i,
+    /\bsplit step\b/i, /\bplyo\b/i, /\bpower clean\b/i, /\bclean\b/i, /\bsnatch\b/i,
+    /\bjerk\b/i, /\boverhead.*barbell\b/i, /\bback extension\b/i, /\bgood morning\b/i,
+    /\bsit.?up\b/i, /\bcrunch\b/i, /\brussian twist\b/i, /\bmax effort\b/i, /\b1rm\b/i,
+    // Unilateral high-axial / anti-rotation demand — clinically contraindicated for fusion
+    /\bpistol\b/i, /\bsingle.?leg.*squat\b/i, /\bsl.*squat\b/i,
+    /\bsingle.?leg.*deadlift\b/i, /\bsl.?rdl\b/i, /\bsingle.?leg.*rdl\b/i,
+    /\bsingle.?leg.*press\b/i, /\bsingle.?leg.*shoulder\b/i,
+    /\bsingle.?leg.*row\b/i, /\bsl.?row\b/i,
+    /\bdead hang\b/i, /\bhanging.*leg.*raise\b/i, /\btoes.?to.?bar\b/i,
+    /\bturkish get.?up\b/i, /\bwindmill\b/i,
+  ],
   byPattern: ["squat_loaded_heavy", "deadlift_all", "overhead_press_barbell", "plyometric"],
-  byTag: ["plyometric", "olympic_lift", "max_effort", "heavy_axial_load"],
+  byTag: ["plyometric", "olympic_lift", "max_effort", "heavy_axial_load", "single_leg_loaded", "spinal_loading"],
   byType: ["plyometric"],
 };
 

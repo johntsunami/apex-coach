@@ -26,13 +26,17 @@ function _conditionKey(c) {
 
 // Pattern matching for "avoid" entries from CONDITIONS_INDEX. Uses the
 // raw avoid string and normalizes it to a comparable key.
+// CRITICAL: must handle parentheses ("deadlifts (all variations)"),
+// hyphens ("sit-ups/crunches"), slashes, and ALL/ANY prefix uniformly.
 function _normalizeAvoid(avoid) {
   return String(avoid || "")
     .toLowerCase()
-    .replace(/[()/]/g, " ")
-    .replace(/\s+/g, "_")
-    .replace(/[^a-z0-9_]/g, "")
-    .replace(/^all_/, "any_");
+    .replace(/[-/()]/g, " ")          // hyphens, slashes, parens → spaces
+    .replace(/[^a-z0-9\s]/g, "")      // strip remaining punctuation
+    .replace(/\s+/g, "_")             // collapse all whitespace runs to single _
+    .replace(/_+/g, "_")              // collapse multi-_ runs (defensive)
+    .replace(/^_+|_+$/g, "")          // strip leading/trailing _
+    .replace(/^all_/, "any_");        // unify ALL/ANY prefix
 }
 
 const PATTERN_MATCHERS = {
